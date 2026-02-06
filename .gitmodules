@@ -1,3 +1,3 @@
-[submodule "js/xstate-fsm-espruino"]
-	path = js/xstate-fsm-espruino
+[submodule "projects/xstate-fsm-espruino"]
+	path = projects/xstate-fsm-espruino
 	url = https://github.com/SimonGAndrews/xstate-fsm-Espruino.git
