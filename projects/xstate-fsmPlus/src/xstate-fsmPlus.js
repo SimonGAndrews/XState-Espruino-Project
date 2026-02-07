@@ -68,15 +68,40 @@ function createUnchangedState(value, context) {
   };
 }
 
-function findTransition(stateValue, eventType, stateLookup) {
+function selectTransitionCandidate(candidate, context, eventObject) {
+  var i;
+
+  if (candidate === undefined || candidate === null) return null;
+
+  if (Array.isArray(candidate)) {
+    for (i = 0; i < candidate.length; i++) {
+      if (!candidate[i]) continue;
+      if (candidate[i].guard && !candidate[i].guard(context, eventObject)) {
+        continue;
+      }
+      return candidate[i];
+    }
+    return null;
+  }
+
+  if (candidate.guard && !candidate.guard(context, eventObject)) {
+    return null;
+  }
+
+  return candidate;
+}
+
+function findTransition(stateValue, eventObject, stateLookup, context) {
   // Walk up from leaf to root looking for a handler for eventType.
   // stateValue is a dot-path string (ADR-0002).
   var currentValue = stateValue;
 
   while (currentValue) {
     var currentState = stateLookup[currentValue];
-    if (currentState && currentState.on && currentState.on[eventType] !== undefined) {
-      return currentState.on[eventType];
+    if (currentState && currentState.on && currentState.on[eventObject.type] !== undefined) {
+      var candidate = currentState.on[eventObject.type];
+      var resolved = selectTransitionCandidate(candidate, context, eventObject);
+      if (resolved) return resolved;
     }
 
     // Move to parent: strip last segment
@@ -148,7 +173,7 @@ function createMachine(fsmConfig, options) {
 
       console.log("Available transitions in", state.value, ":", Object.keys(currentState.on));
 
-      var transition = findTransition(state.value, eventObject.type, stateLookup);
+      var transition = findTransition(state.value, eventObject, stateLookup, state.context);
 
       if (!transition) {
         console.log("No transition defined for event:", eventObject.type, "in state:", state.value);
