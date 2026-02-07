@@ -60,3 +60,5 @@ This document should reference ADR numbers where applicable, rather
 
 ## ongoing additions
 Entries should be added only when a change would not be obvious from the ADRs and commit history alone.
+
+V15 snapshot referenced findTransition but omitted its definition; canonical fixed by adding helper consistent with ADR-0006.
