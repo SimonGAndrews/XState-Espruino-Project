@@ -31,6 +31,20 @@ Where possible, links are grouped by topic and relevance.
 - XState FSM licence (MIT)  
   https://github.com/statelyai/xstate/blob/main/packages/xstate-fsm/LICENSE
 
+### XState v4 (Pinned References)
+
+These references are pinned to the v4 series because the truth runner targets
+v4 semantics and API shape.
+
+- XState v4 package (version pinned)  
+  https://www.npmjs.com/package/xstate/v/4.38.2
+
+- XState v4 API (legacy docs for `createMachine`, `interpret`, etc.)  
+  https://xstate.js.org/api
+
+- XState v4 → v5 migration guide  
+  https://stately.ai/docs/migration
+
 ---
 
 ## SCXML (State Chart XML)

@@ -169,3 +169,10 @@ If you want, I’ll suggest a minimal repo skeleton for a v4 truth runner that y
 
 # Conclusion
 I’m going to progress with your practical approach in codex.  Thanks for your oversight of the project
+
+## References (Pinned)
+
+To keep the truth runner aligned with v4 semantics, use pinned references:
+
+- XState v4 package (version pinned): https://www.npmjs.com/package/xstate/v/4.38.2
+- XState v4 API (legacy docs): https://xstate.js.org/api
