@@ -1,4 +1,4 @@
-# Testing and Issue Tracking Strategy
+# Testing and Issue Tracking Strategy (v2)
 
 This project uses **scenario-driven testing** combined with **clear issue ownership**
 to validate behaviour and manage defects across multiple FSM implementations.
@@ -36,15 +36,43 @@ This approach is particularly well suited to:
 ## Where Tests Live
 
 - Shared machine definitions and scenarios live under:
-  - `examples/` (repo root)
+  - `examples/` (repo root, **single source of truth**)
 - Expected traces are stored alongside examples:
   - `examples/<scenario>/<scenario>.expected.js`
-- Actual run outputs may be stored under:
-  - `tests/results/` (per runtime, e.g. `node/`, `espruino/`)
+- Actual run outputs may be stored under per-engine test folders:
+  - `projects/<engine>/tests/results/<runtime>/`
+- Test run logs are stored per engine:
+  - `projects/<engine>/tests/test-log.md`
 - Tests are intended to run against:
   - FSMPlus (JavaScript module)
   - XFSM (native C engine)
+  - XState v4 truth runner (reference)
   using the same inputs where possible
+
+## Truth Runner (XState v4)
+
+### Motivation
+
+FSMPlus and the Stage 1 baseline are v4-family in semantics and model shape.
+A truth runner built on **XState v4 `createMachine`** provides the closest
+reference implementation without requiring a translation layer.
+
+This keeps comparison honest: mismatches should reflect engine behaviour,
+not adapter differences.
+
+XState v4 also provides a clean path for validating the migration from flat
+FSM (`xstate/fsm`) to hierarchical FSMPlus by exercising **additional v4 features**
+(e.g. compound states, entry/exit ordering, parent fallback). This makes v4 the
+best bridge between existing flat semantics and the richer FSMPlus surface.
+
+### Direction
+
+- The truth runner will live as a **subfolder under the umbrella repo**.
+- It will consume the same shared scenarios under `examples/`.
+- It will emit the **same normalized trace format** used by FSMPlus.
+- Node-based FSMPlus runs are used as **rapid feedback** and a **sanity check**
+  for anomalies, but **XState v4 remains the reference truth** for expected
+  behaviour in this phase.
 
 ## Issue Tracking: Ownership Model
 
@@ -169,13 +197,14 @@ What stays fixed across scenarios:
 Framework location:
 - Node harness: `projects/xstate-fsmPlus/tests/node/run-<scenario>.js`
 - Espruino harness: `projects/xstate-fsmPlus/tests/espruino/run-<scenario>.js`
+- XState v4 truth runner: `projects/xstate-v4-truth/runner/run-<scenario>.js` (planned)
 
 Shared framework responsibilities:
 - Create machine from scenario definition.
 - Run the event sequence in order.
 - Capture a trace of observed behaviour.
 - Compare actual vs expected trace.
-- Write actual output to `projects/xstate-fsmPlus/tests/results/<runtime>/`.
+- Write actual output to `projects/<engine>/tests/results/<runtime>/`.
 
 What can vary per runtime:
 - Output destination (e.g., `tests/results/node/` vs `tests/results/espruino/`).

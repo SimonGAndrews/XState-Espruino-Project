@@ -1,0 +1,14 @@
+{
+  "name": "xstate-v4-truth",
+  "private": true,
+  "version": "0.1.0",
+  "description": "XState v4 truth runner for FSMPlus/XFSM scenario parity",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "run:greenhouse": "node runner/run-greenhouse.js"
+  },
+  "dependencies": {
+    "xstate": "^4.38.2"
+  }
+}
