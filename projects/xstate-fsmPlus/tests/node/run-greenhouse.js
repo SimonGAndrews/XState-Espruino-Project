@@ -1,9 +1,11 @@
 'use strict';
 
 var fsm = require('../../src/xstate-fsmPlus');
-var machineConfig = require('../../examples/greenhouse/greenhouse.machine');
-var events = require('../../examples/greenhouse/greenhouse.events');
-var expected = require('../expected/greenhouse.trace');
+var machineConfig = require('../../../../examples/greenhouse/greenhouse.machine');
+var events = require('../../../../examples/greenhouse/greenhouse.events');
+var expected = require('../../../../examples/greenhouse/greenhouse.expected');
+var fs = require('fs');
+var path = require('path');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;
@@ -64,6 +66,16 @@ function runScenario() {
   for (i = 0; i < events.length; i++) {
     trace.push('EVENT ' + eventType(events[i]));
     service.send(events[i]);
+  }
+
+  var resultsDir = path.join(__dirname, '..', 'results', 'node');
+  var resultsPath = path.join(resultsDir, 'greenhouse.trace.txt');
+  try {
+    fs.mkdirSync(resultsDir, { recursive: true });
+    fs.writeFileSync(resultsPath, trace.join('\n') + '\n');
+  } catch (err) {
+    console.error('Failed to write results file:', resultsPath);
+    console.error(err && err.message ? err.message : err);
   }
 
   var diffs = compareTraces(trace, expected);

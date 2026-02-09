@@ -1,9 +1,9 @@
 'use strict';
 
 var fsm = require('../../src/xstate-fsmPlus');
-var machineConfig = require('../../examples/greenhouse/greenhouse.machine');
-var events = require('../../examples/greenhouse/greenhouse.events');
-var expected = require('../expected/greenhouse.trace');
+var machineConfig = require('../../../../examples/greenhouse/greenhouse.machine');
+var events = require('../../../../examples/greenhouse/greenhouse.events');
+var expected = require('../../../../examples/greenhouse/greenhouse.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;

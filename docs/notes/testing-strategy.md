@@ -5,6 +5,13 @@ to validate behaviour and manage defects across multiple FSM implementations.
 
 The emphasis is on **observable behaviour**, not exhaustive unit testing.
 
+Advantages of this approach:
+
+- aligns with embedded constraints (small footprint, minimal harness)
+- validates real ordering and side effects rather than internal implementation details
+- enables cross-engine parity checks (FSMPlus vs XFSM) using the same scenarios
+- keeps tests stable across refactors as long as behaviour is preserved
+
 ## Testing Approach
 
 Testing is primarily based on:
@@ -29,9 +36,11 @@ This approach is particularly well suited to:
 ## Where Tests Live
 
 - Shared machine definitions and scenarios live under:
-  - `examples/`
-- Expected traces may be stored alongside examples or under:
-  - `tests/`
+  - `examples/` (repo root)
+- Expected traces are stored alongside examples:
+  - `examples/<scenario>/<scenario>.expected.js`
+- Actual run outputs may be stored under:
+  - `tests/results/` (per runtime, e.g. `node/`, `espruino/`)
 - Tests are intended to run against:
   - FSMPlus (JavaScript module)
   - XFSM (native C engine)
@@ -133,3 +142,61 @@ This strategy aims to:
 - avoid unnecessary process overhead
 
 It is expected to evolve as the project matures, but simplicity is a deliberate choice.
+
+## Appendix: Test Workflow (Operational Guide)
+
+This appendix describes how a test is assembled and executed, with clear source locations
+and the roles of shared framework vs scenario-specific inputs.
+
+### 1. Scenario definition (inputs)
+
+Sources:
+- Machine definition: `examples/<scenario>/<scenario>.machine.js`
+- Event sequence: `examples/<scenario>/<scenario>.events.js`
+- Expected trace: `examples/<scenario>/<scenario>.expected.js`
+
+What varies per scenario:
+- State topology, transitions, guards, and actions in the machine definition.
+- Ordered list of events in the event sequence.
+- Expected trace lines for the scenario.
+
+What stays fixed across scenarios:
+- Trace format and comparison rules used by the harness.
+- Use of dot-path state values and ordered action logging.
+
+### 2. Execution (framework)
+
+Framework location:
+- Node harness: `projects/xstate-fsmPlus/tests/node/run-<scenario>.js`
+- Espruino harness: `projects/xstate-fsmPlus/tests/espruino/run-<scenario>.js`
+
+Shared framework responsibilities:
+- Create machine from scenario definition.
+- Run the event sequence in order.
+- Capture a trace of observed behaviour.
+- Compare actual vs expected trace.
+- Write actual output to `projects/xstate-fsmPlus/tests/results/<runtime>/`.
+
+What can vary per runtime:
+- Output destination (e.g., `tests/results/node/` vs `tests/results/espruino/`).
+- Minimal runtime glue needed to load files in Node vs Espruino.
+
+### 3. Updating or extending scenarios
+
+To change scenario behaviour:
+- Edit the machine file to adjust transitions, guards, or actions.
+- Adjust the event sequence to exercise the new behaviour.
+- Update the expected trace to match the new observable output.
+
+To add a new scenario:
+- Create a new folder under `examples/<scenario>/`.
+- Add machine and events files with the same naming convention.
+- Add a corresponding expected trace in the same scenario folder.
+- Add a harness file in `projects/xstate-fsmPlus/tests/node/` and optionally in `projects/xstate-fsmPlus/tests/espruino/`.
+
+### 4. Test designer checklist
+
+- Confirm the scenario uses dot-path state identifiers.
+- Ensure guarded transitions are ordered correctly for selection.
+- Include at least one compound state transition if testing hierarchy.
+- Keep logs deterministic and avoid non-deterministic actions.
