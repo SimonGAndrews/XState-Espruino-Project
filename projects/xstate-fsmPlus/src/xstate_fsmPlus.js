@@ -29,6 +29,29 @@ function toEventObject(event) {
   return typeof event === 'string' ? { type: event } : event;
 }
 
+function isPlainObject(value) {
+  return value && typeof value === 'object' && !Array.isArray(value);
+}
+
+function mergeOn(parentOn, childOn) {
+  var merged = {};
+  var key;
+
+  if (isPlainObject(parentOn)) {
+    for (key in parentOn) {
+      if (parentOn.hasOwnProperty(key)) merged[key] = parentOn[key];
+    }
+  }
+
+  if (isPlainObject(childOn)) {
+    for (key in childOn) {
+      if (childOn.hasOwnProperty(key)) merged[key] = childOn[key];
+    }
+  }
+
+  return merged;
+}
+
 // Build a state object that represents "no transition".
 function createUnchangedState(value, context) {
   return {
@@ -101,7 +124,7 @@ function preprocessFSMConfig(fsmConfig) {
       id: fullPath,
       parent: parentPath,
       initialResolved: resolveInitialState(path, stateConfig),
-      on: Object.assign({}, parentConfig && parentConfig.on ? parentConfig.on : {}, typeof stateConfig.on === "object" ? stateConfig.on : {}),
+      on: mergeOn(parentConfig ? parentConfig.on : null, stateConfig ? stateConfig.on : null),
       entry: toArray(stateConfig.entry),
       exit: toArray(stateConfig.exit)
     };

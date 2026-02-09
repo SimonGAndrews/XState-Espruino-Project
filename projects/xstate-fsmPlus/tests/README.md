@@ -22,16 +22,24 @@ Output is written to:
 
 ## Run (Espruino)
 
-Load the Espruino harness and call `run()`:
+Load the Espruino harness (module name from flash) and call `run()`:
 
 ```
-var t = require('projects/xstate-fsmPlus/tests/espruino/run_greenhouse');
+var t = require('run_greenhouse');
 t.run();
 ```
 
 Output is written to:
 
 - `projects/xstate-fsmPlus/tests/results/espruino/greenhouse.trace.txt`
+
+## Diff (offline)
+
+Compare expected vs actual trace:
+
+```
+node projects/xstate-fsmPlus/tests/diff_trace.js greenhouse espruino
+```
 
 ## Scenarios
 

@@ -35,6 +35,16 @@ function formatState(state) {
   return 'STATE ' + state.value + ' ACTIONS ' + formatActions(state.actions);
 }
 
+
+function printTrace(trace) {
+  var i = 0;
+  console.log('TRACE BEGIN');
+  for (i = 0; i < trace.length; i++) {
+    console.log(trace[i]);
+  }
+  console.log('TRACE END');
+}
+
 function compareTraces(actual, expectedTrace) {
   var max = Math.max(actual.length, expectedTrace.length);
   var i = 0;
@@ -66,6 +76,8 @@ function runScenario() {
     trace.push('EVENT ' + eventType(events[i]));
     service.send(events[i]);
   }
+
+  printTrace(trace);
 
   var diff = compareTraces(trace, expected);
   if (diff) {
