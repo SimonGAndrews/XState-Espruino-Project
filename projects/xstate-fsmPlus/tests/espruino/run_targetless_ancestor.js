@@ -2,10 +2,10 @@
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
-var fsm = require('../../src/xstate_fsmPlus');
-var machineConfig = require('../../../../examples/targetless-ancestor/targetless_ancestor.machine');
-var events = require('../../../../examples/targetless-ancestor/targetless_ancestor.events');
-var expected = require('../../../../examples/targetless-ancestor/targetless_ancestor.expected');
+var fsm = require('xstate_fsmPlus');
+var machineConfig = require('targetless_ancestor.machine');
+var events = require('targetless_ancestor.events');
+var expected = require('targetless_ancestor.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;

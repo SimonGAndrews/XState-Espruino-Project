@@ -2,10 +2,10 @@
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
-var fsm = require('../../src/xstate_fsmPlus');
-var machineConfig = require('../../../../examples/assign-entry/assign_entry.machine');
-var events = require('../../../../examples/assign-entry/assign_entry.events');
-var expected = require('../../../../examples/assign-entry/assign_entry.expected');
+var fsm = require('xstate_fsmPlus');
+var machineConfig = require('assign_entry.machine');
+var events = require('assign_entry.events');
+var expected = require('assign_entry.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;

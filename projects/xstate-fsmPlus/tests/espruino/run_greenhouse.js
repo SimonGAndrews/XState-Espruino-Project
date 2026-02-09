@@ -2,10 +2,10 @@
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
-var fsm = require('../../src/xstate_fsmPlus');
-var machineConfig = require('../../../../examples/greenhouse/greenhouse.machine');
-var events = require('../../../../examples/greenhouse/greenhouse.events');
-var expected = require('../../../../examples/greenhouse/greenhouse.expected');
+var fsm = require('xstate_fsmPlus');
+var machineConfig = require('greenhouse.machine');
+var events = require('greenhouse.events');
+var expected = require('greenhouse.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;

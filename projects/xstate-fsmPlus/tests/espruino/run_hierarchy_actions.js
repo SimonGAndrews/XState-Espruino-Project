@@ -2,10 +2,10 @@
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
-var fsm = require('../../src/xstate_fsmPlus');
-var machineConfig = require('../../../../examples/hierarchy-actions/hierarchy_actions.machine');
-var events = require('../../../../examples/hierarchy-actions/hierarchy_actions.events');
-var expected = require('../../../../examples/hierarchy-actions/hierarchy_actions.expected');
+var fsm = require('xstate_fsmPlus');
+var machineConfig = require('hierarchy_actions.machine');
+var events = require('hierarchy_actions.events');
+var expected = require('hierarchy_actions.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;
