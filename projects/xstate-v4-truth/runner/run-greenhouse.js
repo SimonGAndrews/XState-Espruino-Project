@@ -1,3 +1,5 @@
+// XState v4 truth runner for the greenhouse scenario.
+// Usage: `node projects/xstate-v4-truth/runner/run-greenhouse.js`
 'use strict';
 
 var path = require('path');

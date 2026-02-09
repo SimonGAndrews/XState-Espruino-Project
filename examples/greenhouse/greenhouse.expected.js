@@ -1,3 +1,5 @@
+// Expected normalized trace for the greenhouse scenario.
+// Used by all runners for pass/fail comparison.
 'use strict';
 
 module.exports = [

@@ -1,3 +1,5 @@
+// FSMPlus Espruino harness for the greenhouse scenario.
+// Usage: load this file in Espruino and call `run()`.
 'use strict';
 
 var fsm = require('../../src/xstate-fsmPlus');
