@@ -1,5 +1,5 @@
-// XState v4 truth runner for the greenhouse scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-greenhouse.js`
+// XState v4 truth runner for the lcca-cross scenario.
+// Usage: `node projects/xstate-v4-truth/runner/run-lcca-cross.js`
 'use strict';
 
 var path = require('path');
@@ -9,9 +9,9 @@ var createMachine = xstate.createMachine;
 var interpret = xstate.interpret;
 
 var adapter = require('./adapter');
-var machineConfig = require('../../../examples/greenhouse/greenhouse.machine');
-var events = require('../../../examples/greenhouse/greenhouse.events');
-var expected = require('../../../examples/greenhouse/greenhouse.expected');
+var machineConfig = require('../../../examples/lcca-cross/lcca-cross.machine');
+var events = require('../../../examples/lcca-cross/lcca-cross.events');
+var expected = require('../../../examples/lcca-cross/lcca-cross.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;
@@ -106,7 +106,7 @@ function runScenario() {
   }
 
   var resultsDir = path.join(__dirname, '..', 'tests', 'results', 'node');
-  var resultsPath = path.join(resultsDir, 'greenhouse.trace.txt');
+  var resultsPath = path.join(resultsDir, 'lcca-cross.trace.txt');
   try {
     fs.mkdirSync(resultsDir, { recursive: true });
     fs.writeFileSync(resultsPath, trace.join('\n') + '\n');

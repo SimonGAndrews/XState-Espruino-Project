@@ -32,7 +32,13 @@ function mapTarget(target, rootId) {
   return '#' + rootId + '.' + target;
 }
 
-function mapTransition(transition, rootId) {
+function isDescendant(target, sourcePath) {
+  if (!target || !sourcePath) return false;
+  if (target === sourcePath) return false;
+  return target.indexOf(sourcePath + '.') === 0;
+}
+
+function mapTransition(transition, rootId, sourcePath) {
   if (!transition) return transition;
 
   var mapped = {};
@@ -46,10 +52,16 @@ function mapTransition(transition, rootId) {
   if (transition.actions) mapped.actions = mapActions(transition.actions);
   if (mapped.target) mapped.target = mapTarget(mapped.target, rootId);
 
+  if (transition.target && typeof transition.target === 'string') {
+    if (isDescendant(transition.target, sourcePath)) {
+      mapped.internal = true;
+    }
+  }
+
   return mapped;
 }
 
-function mapOn(on, rootId) {
+function mapOn(on, rootId, sourcePath) {
   if (!on) return on;
   var mapped = {};
 
@@ -57,27 +69,28 @@ function mapOn(on, rootId) {
     var value = on[eventType];
     if (Array.isArray(value)) {
       mapped[eventType] = value.map(function (item) {
-        return mapTransition(item, rootId);
+        return mapTransition(item, rootId, sourcePath);
       });
     } else {
-      mapped[eventType] = mapTransition(value, rootId);
+      mapped[eventType] = mapTransition(value, rootId, sourcePath);
     }
   });
 
   return mapped;
 }
 
-function mapState(state, rootId) {
+function mapState(state, rootId, statePath) {
   var mapped = {};
   if (state.initial) mapped.initial = state.initial;
   if (state.entry) mapped.entry = mapActions(state.entry);
   if (state.exit) mapped.exit = mapActions(state.exit);
-  if (state.on) mapped.on = mapOn(state.on, rootId);
+  if (state.on) mapped.on = mapOn(state.on, rootId, statePath);
 
   if (state.states) {
     mapped.states = {};
     Object.keys(state.states).forEach(function (key) {
-      mapped.states[key] = mapState(state.states[key], rootId);
+      var childPath = statePath ? (statePath + '.' + key) : key;
+      mapped.states[key] = mapState(state.states[key], rootId, childPath);
     });
   }
 
@@ -95,7 +108,7 @@ function convertMachineConfig(config) {
   };
 
   Object.keys(config.states).forEach(function (key) {
-    mapped.states[key] = mapState(config.states[key], rootId);
+    mapped.states[key] = mapState(config.states[key], rootId, key);
   });
 
   return mapped;
