@@ -1,5 +1,5 @@
 // XState v4 truth runner for the assign_entry scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-assign_entry.js`
+// Usage: `node projects/xstate-v4-truth/runner/run_assign_entry.js`
 'use strict';
 
 var path = require('path');

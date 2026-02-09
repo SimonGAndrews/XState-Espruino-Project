@@ -1,5 +1,5 @@
 // XState v4 truth runner for the guarded_parent scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-guarded_parent.js`
+// Usage: `node projects/xstate-v4-truth/runner/run_guarded_parent.js`
 'use strict';
 
 var path = require('path');

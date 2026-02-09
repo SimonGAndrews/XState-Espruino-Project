@@ -2,7 +2,7 @@
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
-var fsm = require('../../src/xstate-fsmPlus');
+var fsm = require('../../src/xstate_fsmPlus');
 var machineConfig = require('../../../../examples/targetless-ancestor/targetless_ancestor.machine');
 var events = require('../../../../examples/targetless-ancestor/targetless_ancestor.events');
 var expected = require('../../../../examples/targetless-ancestor/targetless_ancestor.expected');

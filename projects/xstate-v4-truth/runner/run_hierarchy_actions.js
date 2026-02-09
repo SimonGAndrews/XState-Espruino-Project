@@ -1,5 +1,5 @@
 // XState v4 truth runner for the hierarchy_actions scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-hierarchy_actions.js`
+// Usage: `node projects/xstate-v4-truth/runner/run_hierarchy_actions.js`
 'use strict';
 
 var path = require('path');

@@ -1,8 +1,8 @@
 // FSMPlus Node harness for the lcca_cross scenario.
-// Usage: `node projects/xstate-fsmPlus/tests/node/run-lcca_cross.js`
+// Usage: `node projects/xstate_fsmPlus/tests/node/run_lcca_cross.js`
 'use strict';
 
-var fsm = require('../../src/xstate-fsmPlus');
+var fsm = require('../../src/xstate_fsmPlus');
 var machineConfig = require('../../../../examples/lcca-cross/lcca_cross.machine');
 var events = require('../../../../examples/lcca-cross/lcca_cross.events');
 var expected = require('../../../../examples/lcca-cross/lcca_cross.expected');

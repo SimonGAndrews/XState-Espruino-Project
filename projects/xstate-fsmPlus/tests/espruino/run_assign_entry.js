@@ -2,7 +2,7 @@
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
-var fsm = require('../../src/xstate-fsmPlus');
+var fsm = require('../../src/xstate_fsmPlus');
 var machineConfig = require('../../../../examples/assign-entry/assign_entry.machine');
 var events = require('../../../../examples/assign-entry/assign_entry.events');
 var expected = require('../../../../examples/assign-entry/assign_entry.expected');

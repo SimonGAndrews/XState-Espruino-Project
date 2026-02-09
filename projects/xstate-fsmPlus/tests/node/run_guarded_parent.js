@@ -1,8 +1,8 @@
 // FSMPlus Node harness for the guarded_parent scenario.
-// Usage: `node projects/xstate-fsmPlus/tests/node/run-guarded_parent.js`
+// Usage: `node projects/xstate_fsmPlus/tests/node/run_guarded_parent.js`
 'use strict';
 
-var fsm = require('../../src/xstate-fsmPlus');
+var fsm = require('../../src/xstate_fsmPlus');
 var machineConfig = require('../../../../examples/guarded-parent/guarded_parent.machine');
 var events = require('../../../../examples/guarded-parent/guarded_parent.events');
 var expected = require('../../../../examples/guarded-parent/guarded_parent.expected');

@@ -1,8 +1,8 @@
 // FSMPlus Node harness for the greenhouse scenario.
-// Usage: `node projects/xstate-fsmPlus/tests/node/run_greenhouse.js`
+// Usage: `node projects/xstate_fsmPlus/tests/node/run_greenhouse.js`
 'use strict';
 
-var fsm = require('../../src/xstate-fsmPlus');
+var fsm = require('../../src/xstate_fsmPlus');
 var machineConfig = require('../../../../examples/greenhouse/greenhouse.machine');
 var events = require('../../../../examples/greenhouse/greenhouse.events');
 var expected = require('../../../../examples/greenhouse/greenhouse.expected');

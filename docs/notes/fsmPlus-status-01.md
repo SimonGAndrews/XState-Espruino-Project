@@ -2,7 +2,7 @@
 
 This note summarises the **functional changes** from the flat Espruino FSM
 (`projects/xstate-fsm-espruino/src/xstate-fsm.js`) to the current FSMPlus engine
-(`projects/xstate-fsmPlus/src/xstate-fsmPlus.js`).
+(`projects/xstate-fsmPlus/src/xstate_fsmPlus.js`).
 
 ## What’s working now
 

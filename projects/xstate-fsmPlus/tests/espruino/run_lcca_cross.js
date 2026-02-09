@@ -2,7 +2,7 @@
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
-var fsm = require('../../src/xstate-fsmPlus');
+var fsm = require('../../src/xstate_fsmPlus');
 var machineConfig = require('../../../../examples/lcca-cross/lcca_cross.machine');
 var events = require('../../../../examples/lcca-cross/lcca_cross.events');
 var expected = require('../../../../examples/lcca-cross/lcca_cross.expected');

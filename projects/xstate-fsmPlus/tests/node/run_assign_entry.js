@@ -1,8 +1,8 @@
 // FSMPlus Node harness for the assign_entry scenario.
-// Usage: `node projects/xstate-fsmPlus/tests/node/run-assign_entry.js`
+// Usage: `node projects/xstate_fsmPlus/tests/node/run_assign_entry.js`
 'use strict';
 
-var fsm = require('../../src/xstate-fsmPlus');
+var fsm = require('../../src/xstate_fsmPlus');
 var machineConfig = require('../../../../examples/assign-entry/assign_entry.machine');
 var events = require('../../../../examples/assign-entry/assign_entry.events');
 var expected = require('../../../../examples/assign-entry/assign_entry.expected');

@@ -1,5 +1,5 @@
 // XState v4 truth runner for the targetless_ancestor scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-targetless_ancestor.js`
+// Usage: `node projects/xstate-v4-truth/runner/run_targetless_ancestor.js`
 'use strict';
 
 var path = require('path');

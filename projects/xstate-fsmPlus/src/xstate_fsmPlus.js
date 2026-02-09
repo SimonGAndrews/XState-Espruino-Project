@@ -1,4 +1,4 @@
-/*   xstate-fsmPlus.js - Hierarchical FSM for Espruino V15 */
+/*   xstate_fsmPlus.js - Hierarchical FSM for Espruino V15 */
   
   
 

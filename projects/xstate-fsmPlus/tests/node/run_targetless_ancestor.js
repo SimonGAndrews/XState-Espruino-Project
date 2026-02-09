@@ -1,8 +1,8 @@
 // FSMPlus Node harness for the targetless_ancestor scenario.
-// Usage: `node projects/xstate-fsmPlus/tests/node/run-targetless_ancestor.js`
+// Usage: `node projects/xstate_fsmPlus/tests/node/run_targetless_ancestor.js`
 'use strict';
 
-var fsm = require('../../src/xstate-fsmPlus');
+var fsm = require('../../src/xstate_fsmPlus');
 var machineConfig = require('../../../../examples/targetless-ancestor/targetless_ancestor.machine');
 var events = require('../../../../examples/targetless-ancestor/targetless_ancestor.events');
 var expected = require('../../../../examples/targetless-ancestor/targetless_ancestor.expected');

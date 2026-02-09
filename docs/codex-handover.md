@@ -22,13 +22,13 @@ Goal: avoid losing subtle context and ensure work continues with clear intent an
 ### Stage 2 canonical (FSMPlus)
 - Folder: `projects/xstate-fsmPlus/`
 - Canonical engine source:
-  - `projects/xstate-fsmPlus/src/xstate-fsmPlus.js`
+  - `projects/xstate-fsmPlus/src/xstate_fsmPlus.js`
 - Provenance snapshots:
   - `projects/xstate-fsmPlus/archive/source/fsmPlus_ChatGPT_V15.js`
   - `projects/xstate-fsmPlus/archive/source/fsmPlus_ChatGPT_V16.js`
 - Baseline tag:
   - `fsmplus-baseline-v15`
-- Known state: `src/xstate-fsmPlus.js` matches V15 (diff = none at time of import/provenance capture).
+- Known state: `src/xstate_fsmPlus.js` matches V15 (diff = none at time of import/provenance capture).
 - `projects/xstate-fsmPlus/docs/` exists locally but currently untracked/empty placeholder (`evolution.md` was explicitly not committed).
 
 ### Legacy public FSMPlus repo (reference only)
@@ -106,7 +106,7 @@ Even without parallel states, transitions must behave as:
 
 - `fsmplus-baseline-v15` tag marks the baseline moment.
 - `archive/source/*` snapshots are immutable provenance.
-- `src/xstate-fsmPlus.js` may be refactored later, but provenance snapshots must remain unchanged.
+- `src/xstate_fsmPlus.js` may be refactored later, but provenance snapshots must remain unchanged.
 - Any promotion of V16 changes should be:
   - driven by tests
   - done via small commits
@@ -172,7 +172,7 @@ After tests exist:
         projects/xstate-fsmPlus/archive/source/fsmPlus_ChatGPT_V16.js | head -n 120
 
 ### Confirm canonical matches V15
-  diff -u projects/xstate-fsmPlus/src/xstate-fsmPlus.js \
+  diff -u projects/xstate-fsmPlus/src/xstate_fsmPlus.js \
         projects/xstate-fsmPlus/archive/source/fsmPlus_ChatGPT_V15.js | head -n 60
 
 ---
@@ -194,7 +194,7 @@ After tests exist:
 
 “Open the umbrella repo at `/home/simon/SGAdev/XState-Espruino-Project`.
 We have FSMPlus baseline tagged `fsmplus-baseline-v15` with V15/V16 snapshots archived.
-Please help scaffold a minimal scenario-driven test harness for `projects/xstate-fsmPlus/src/xstate-fsmPlus.js`,
+Please help scaffold a minimal scenario-driven test harness for `projects/xstate-fsmPlus/src/xstate_fsmPlus.js`,
 starting with one greenhouse control machine that exercises compound state transitions and parent fallback.
 Tests must be deterministic and Espruino-friendly (no modern JS features).”
 

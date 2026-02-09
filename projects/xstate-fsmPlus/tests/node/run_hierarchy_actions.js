@@ -1,8 +1,8 @@
 // FSMPlus Node harness for the hierarchy_actions scenario.
-// Usage: `node projects/xstate-fsmPlus/tests/node/run-hierarchy_actions.js`
+// Usage: `node projects/xstate_fsmPlus/tests/node/run_hierarchy_actions.js`
 'use strict';
 
-var fsm = require('../../src/xstate-fsmPlus');
+var fsm = require('../../src/xstate_fsmPlus');
 var machineConfig = require('../../../../examples/hierarchy-actions/hierarchy_actions.machine');
 var events = require('../../../../examples/hierarchy-actions/hierarchy_actions.events');
 var expected = require('../../../../examples/hierarchy-actions/hierarchy_actions.expected');

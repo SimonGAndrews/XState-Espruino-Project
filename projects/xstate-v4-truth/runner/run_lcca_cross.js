@@ -1,5 +1,5 @@
 // XState v4 truth runner for the lcca_cross scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-lcca_cross.js`
+// Usage: `node projects/xstate-v4-truth/runner/run_lcca_cross.js`
 'use strict';
 
 var path = require('path');

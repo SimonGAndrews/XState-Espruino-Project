@@ -97,4 +97,3 @@ Initial work in this subproject typically proceeds in this order:
 3. Verify behaviour on Espruino hardware
 4. Iterate until MVHE scope is stable
 5. Compare parity against the native XFSM engine
-
