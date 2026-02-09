@@ -1,5 +1,5 @@
-// XState v4 truth runner for the assign-entry scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-assign-entry.js`
+// XState v4 truth runner for the assign_entry scenario.
+// Usage: `node projects/xstate-v4-truth/runner/run-assign_entry.js`
 'use strict';
 
 var path = require('path');
@@ -9,9 +9,9 @@ var createMachine = xstate.createMachine;
 var interpret = xstate.interpret;
 
 var adapter = require('./adapter');
-var machineConfig = require('../../../examples/assign-entry/assign-entry.machine');
-var events = require('../../../examples/assign-entry/assign-entry.events');
-var expected = require('../../../examples/assign-entry/assign-entry.expected');
+var machineConfig = require('../../../examples/assign-entry/assign_entry.machine');
+var events = require('../../../examples/assign-entry/assign_entry.events');
+var expected = require('../../../examples/assign-entry/assign_entry.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;
@@ -106,7 +106,7 @@ function runScenario() {
   }
 
   var resultsDir = path.join(__dirname, '..', 'tests', 'results', 'node');
-  var resultsPath = path.join(resultsDir, 'assign-entry.trace.txt');
+  var resultsPath = path.join(resultsDir, 'assign_entry.trace.txt');
   try {
     fs.mkdirSync(resultsDir, { recursive: true });
     fs.writeFileSync(resultsPath, trace.join('\n') + '\n');

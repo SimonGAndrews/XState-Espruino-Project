@@ -44,4 +44,4 @@ Scenarios are shared at the repo root:
 
 Append results to:
 
-- `projects/xstate-v4-truth/tests/test-log.md`
+- `projects/xstate-v4-truth/tests/test_log.md`

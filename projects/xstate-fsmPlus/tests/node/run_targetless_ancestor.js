@@ -1,11 +1,13 @@
-// FSMPlus Espruino harness for the guarded-parent scenario.
-// Usage: load this file in Espruino and call `run()`.
+// FSMPlus Node harness for the targetless_ancestor scenario.
+// Usage: `node projects/xstate-fsmPlus/tests/node/run-targetless_ancestor.js`
 'use strict';
 
 var fsm = require('../../src/xstate-fsmPlus');
-var machineConfig = require('../../../../examples/guarded-parent/guarded-parent.machine');
-var events = require('../../../../examples/guarded-parent/guarded-parent.events');
-var expected = require('../../../../examples/guarded-parent/guarded-parent.expected');
+var machineConfig = require('../../../../examples/targetless-ancestor/targetless_ancestor.machine');
+var events = require('../../../../examples/targetless-ancestor/targetless_ancestor.events');
+var expected = require('../../../../examples/targetless-ancestor/targetless_ancestor.expected');
+var fs = require('fs');
+var path = require('path');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;
@@ -38,16 +40,17 @@ function formatState(state) {
 function compareTraces(actual, expectedTrace) {
   var max = Math.max(actual.length, expectedTrace.length);
   var i = 0;
+  var diffs = [];
   for (i = 0; i < max; i++) {
     if (actual[i] !== expectedTrace[i]) {
-      return {
+      diffs.push({
         index: i,
         expected: expectedTrace[i],
         actual: actual[i]
-      };
+      });
     }
   }
-  return null;
+  return diffs;
 }
 
 function runScenario() {
@@ -67,17 +70,26 @@ function runScenario() {
     service.send(events[i]);
   }
 
-  var diff = compareTraces(trace, expected);
-  if (diff) {
-    console.log('Trace mismatch. First diff:');
-    console.log('  index:   ' + diff.index);
-    console.log('  expected:' + diff.expected);
-    console.log('  actual:  ' + diff.actual);
-    return false;
+  var resultsDir = path.join(__dirname, '..', 'results', 'node');
+  var resultsPath = path.join(resultsDir, 'targetless_ancestor.trace.txt');
+  try {
+    fs.mkdirSync(resultsDir, { recursive: true });
+    fs.writeFileSync(resultsPath, trace.join('\n') + '\n');
+  } catch (err) {
+    console.error('Failed to write results file:', resultsPath);
+    console.error(err && err.message ? err.message : err);
+  }
+
+  var diffs = compareTraces(trace, expected);
+  if (diffs.length) {
+    console.error('Trace mismatch. First diff:');
+    console.error('  index:   ' + diffs[0].index);
+    console.error('  expected:' + diffs[0].expected);
+    console.error('  actual:  ' + diffs[0].actual);
+    process.exit(1);
   }
 
   console.log('Trace matched (' + trace.length + ' lines).');
-  return true;
 }
 
-exports.run = runScenario;
+runScenario();

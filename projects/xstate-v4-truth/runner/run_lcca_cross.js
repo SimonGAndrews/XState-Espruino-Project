@@ -1,5 +1,5 @@
-// XState v4 truth runner for the hierarchy-actions scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-hierarchy-actions.js`
+// XState v4 truth runner for the lcca_cross scenario.
+// Usage: `node projects/xstate-v4-truth/runner/run-lcca_cross.js`
 'use strict';
 
 var path = require('path');
@@ -9,9 +9,9 @@ var createMachine = xstate.createMachine;
 var interpret = xstate.interpret;
 
 var adapter = require('./adapter');
-var machineConfig = require('../../../examples/hierarchy-actions/hierarchy-actions.machine');
-var events = require('../../../examples/hierarchy-actions/hierarchy-actions.events');
-var expected = require('../../../examples/hierarchy-actions/hierarchy-actions.expected');
+var machineConfig = require('../../../examples/lcca-cross/lcca_cross.machine');
+var events = require('../../../examples/lcca-cross/lcca_cross.events');
+var expected = require('../../../examples/lcca-cross/lcca_cross.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;
@@ -106,7 +106,7 @@ function runScenario() {
   }
 
   var resultsDir = path.join(__dirname, '..', 'tests', 'results', 'node');
-  var resultsPath = path.join(resultsDir, 'hierarchy-actions.trace.txt');
+  var resultsPath = path.join(resultsDir, 'lcca_cross.trace.txt');
   try {
     fs.mkdirSync(resultsDir, { recursive: true });
     fs.writeFileSync(resultsPath, trace.join('\n') + '\n');

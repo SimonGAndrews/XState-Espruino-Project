@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "commonjs",
   "scripts": {
-    "run:greenhouse": "node runner/run-greenhouse.js"
+    "run:greenhouse": "node runner/run_greenhouse.js"
   },
   "dependencies": {
     "xstate": "^4.38.2"

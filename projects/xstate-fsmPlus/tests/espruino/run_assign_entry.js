@@ -1,11 +1,11 @@
-// FSMPlus Espruino harness for the targetless-ancestor scenario.
+// FSMPlus Espruino harness for the assign_entry scenario.
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
 var fsm = require('../../src/xstate-fsmPlus');
-var machineConfig = require('../../../../examples/targetless-ancestor/targetless-ancestor.machine');
-var events = require('../../../../examples/targetless-ancestor/targetless-ancestor.events');
-var expected = require('../../../../examples/targetless-ancestor/targetless-ancestor.expected');
+var machineConfig = require('../../../../examples/assign-entry/assign_entry.machine');
+var events = require('../../../../examples/assign-entry/assign_entry.events');
+var expected = require('../../../../examples/assign-entry/assign_entry.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;

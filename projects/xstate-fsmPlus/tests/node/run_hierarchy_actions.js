@@ -1,11 +1,11 @@
-// FSMPlus Node harness for the targetless-ancestor scenario.
-// Usage: `node projects/xstate-fsmPlus/tests/node/run-targetless-ancestor.js`
+// FSMPlus Node harness for the hierarchy_actions scenario.
+// Usage: `node projects/xstate-fsmPlus/tests/node/run-hierarchy_actions.js`
 'use strict';
 
 var fsm = require('../../src/xstate-fsmPlus');
-var machineConfig = require('../../../../examples/targetless-ancestor/targetless-ancestor.machine');
-var events = require('../../../../examples/targetless-ancestor/targetless-ancestor.events');
-var expected = require('../../../../examples/targetless-ancestor/targetless-ancestor.expected');
+var machineConfig = require('../../../../examples/hierarchy-actions/hierarchy_actions.machine');
+var events = require('../../../../examples/hierarchy-actions/hierarchy_actions.events');
+var expected = require('../../../../examples/hierarchy-actions/hierarchy_actions.expected');
 var fs = require('fs');
 var path = require('path');
 
@@ -71,7 +71,7 @@ function runScenario() {
   }
 
   var resultsDir = path.join(__dirname, '..', 'results', 'node');
-  var resultsPath = path.join(resultsDir, 'targetless-ancestor.trace.txt');
+  var resultsPath = path.join(resultsDir, 'hierarchy_actions.trace.txt');
   try {
     fs.mkdirSync(resultsDir, { recursive: true });
     fs.writeFileSync(resultsPath, trace.join('\n') + '\n');

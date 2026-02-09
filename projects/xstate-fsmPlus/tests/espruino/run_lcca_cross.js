@@ -1,11 +1,11 @@
-// FSMPlus Espruino harness for the hierarchy-actions scenario.
+// FSMPlus Espruino harness for the lcca_cross scenario.
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
 var fsm = require('../../src/xstate-fsmPlus');
-var machineConfig = require('../../../../examples/hierarchy-actions/hierarchy-actions.machine');
-var events = require('../../../../examples/hierarchy-actions/hierarchy-actions.events');
-var expected = require('../../../../examples/hierarchy-actions/hierarchy-actions.expected');
+var machineConfig = require('../../../../examples/lcca-cross/lcca_cross.machine');
+var events = require('../../../../examples/lcca-cross/lcca_cross.events');
+var expected = require('../../../../examples/lcca-cross/lcca_cross.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;

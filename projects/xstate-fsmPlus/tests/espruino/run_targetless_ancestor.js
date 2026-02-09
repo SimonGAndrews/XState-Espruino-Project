@@ -1,11 +1,11 @@
-// FSMPlus Espruino harness for the lcca-cross scenario.
+// FSMPlus Espruino harness for the targetless_ancestor scenario.
 // Usage: load this file in Espruino and call `run()`.
 'use strict';
 
 var fsm = require('../../src/xstate-fsmPlus');
-var machineConfig = require('../../../../examples/lcca-cross/lcca-cross.machine');
-var events = require('../../../../examples/lcca-cross/lcca-cross.events');
-var expected = require('../../../../examples/lcca-cross/lcca-cross.expected');
+var machineConfig = require('../../../../examples/targetless-ancestor/targetless_ancestor.machine');
+var events = require('../../../../examples/targetless-ancestor/targetless_ancestor.events');
+var expected = require('../../../../examples/targetless-ancestor/targetless_ancestor.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;

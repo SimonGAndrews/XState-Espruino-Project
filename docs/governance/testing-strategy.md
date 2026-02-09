@@ -42,7 +42,7 @@ This approach is particularly well suited to:
 - Actual run outputs may be stored under per-engine test folders:
   - `projects/<engine>/tests/results/<runtime>/`
 - Test run logs are stored per engine:
-  - `projects/<engine>/tests/test-log.md`
+  - `projects/<engine>/tests/test_log.md`
 - Tests are intended to run against:
   - FSMPlus (JavaScript module)
   - XFSM (native C engine)
@@ -195,9 +195,9 @@ What stays fixed across scenarios:
 ### 2. Execution (framework)
 
 Framework location:
-- Node harness: `projects/xstate-fsmPlus/tests/node/run-<scenario>.js`
-- Espruino harness: `projects/xstate-fsmPlus/tests/espruino/run-<scenario>.js`
-- XState v4 truth runner: `projects/xstate-v4-truth/runner/run-<scenario>.js` (planned)
+- Node harness: `projects/xstate-fsmPlus/tests/node/run_<scenario>.js`
+- Espruino harness: `projects/xstate-fsmPlus/tests/espruino/run_<scenario>.js`
+- XState v4 truth runner: `projects/xstate-v4-truth/runner/run_<scenario>.js` (planned)
 
 Shared framework responsibilities:
 - Create machine from scenario definition.

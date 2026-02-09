@@ -1,17 +1,13 @@
-// XState v4 truth runner for the greenhouse scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-greenhouse.js`
+// FSMPlus Node harness for the guarded_parent scenario.
+// Usage: `node projects/xstate-fsmPlus/tests/node/run-guarded_parent.js`
 'use strict';
 
-var path = require('path');
+var fsm = require('../../src/xstate-fsmPlus');
+var machineConfig = require('../../../../examples/guarded-parent/guarded_parent.machine');
+var events = require('../../../../examples/guarded-parent/guarded_parent.events');
+var expected = require('../../../../examples/guarded-parent/guarded_parent.expected');
 var fs = require('fs');
-var xstate = require('xstate');
-var createMachine = xstate.createMachine;
-var interpret = xstate.interpret;
-
-var adapter = require('./adapter');
-var machineConfig = require('../../../examples/greenhouse/greenhouse.machine');
-var events = require('../../../examples/greenhouse/greenhouse.events');
-var expected = require('../../../examples/greenhouse/greenhouse.expected');
+var path = require('path');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;
@@ -32,32 +28,13 @@ function formatActions(actions) {
   var out = [];
   var i = 0;
   for (i = 0; i < actions.length; i++) {
-    if (actions[i] && actions[i].type === 'xstate.assign') continue;
     out.push(formatAction(actions[i]));
   }
-  if (!out.length) return '-';
   return out.join(',');
 }
 
 function formatState(state) {
-  var value;
-  if (state && typeof state.value === 'string') {
-    value = state.value;
-  } else if (state && typeof state.toStrings === 'function') {
-    var paths = state.toStrings();
-    if (paths && paths.length) {
-      value = paths[0];
-      var i = 0;
-      for (i = 1; i < paths.length; i++) {
-        if (paths[i].length > value.length) value = paths[i];
-      }
-    } else {
-      value = state.value;
-    }
-  } else {
-    value = state.value;
-  }
-  return 'STATE ' + value + ' ACTIONS ' + formatActions(state.actions);
+  return 'STATE ' + state.value + ' ACTIONS ' + formatActions(state.actions);
 }
 
 function compareTraces(actual, expectedTrace) {
@@ -77,27 +54,15 @@ function compareTraces(actual, expectedTrace) {
 }
 
 function runScenario() {
-  var mappedConfig = adapter.convertMachineConfig(machineConfig);
-  var machine = createMachine(mappedConfig, {
-    actions: {
-      log: function () {}
-    }
-  });
-  var service = interpret(machine);
+  var machine = fsm.createMachine(machineConfig);
+  var service = fsm.interpret(machine);
   var trace = [];
 
-  var isFirst = true;
-  service.onTransition(function (state) {
-    if (isFirst) {
-      isFirst = false;
-      var initial = Object.assign({}, state, { actions: [] });
-      trace.push(formatState(initial));
-      return;
-    }
+  service.start();
+
+  service.subscribe(function (state) {
     trace.push(formatState(state));
   });
-
-  service.start();
 
   var i = 0;
   for (i = 0; i < events.length; i++) {
@@ -105,8 +70,8 @@ function runScenario() {
     service.send(events[i]);
   }
 
-  var resultsDir = path.join(__dirname, '..', 'tests', 'results', 'node');
-  var resultsPath = path.join(resultsDir, 'greenhouse.trace.txt');
+  var resultsDir = path.join(__dirname, '..', 'results', 'node');
+  var resultsPath = path.join(resultsDir, 'guarded_parent.trace.txt');
   try {
     fs.mkdirSync(resultsDir, { recursive: true });
     fs.writeFileSync(resultsPath, trace.join('\n') + '\n');

@@ -1,5 +1,5 @@
-// XState v4 truth runner for the guarded-parent scenario.
-// Usage: `node projects/xstate-v4-truth/runner/run-guarded-parent.js`
+// XState v4 truth runner for the targetless_ancestor scenario.
+// Usage: `node projects/xstate-v4-truth/runner/run-targetless_ancestor.js`
 'use strict';
 
 var path = require('path');
@@ -9,9 +9,9 @@ var createMachine = xstate.createMachine;
 var interpret = xstate.interpret;
 
 var adapter = require('./adapter');
-var machineConfig = require('../../../examples/guarded-parent/guarded-parent.machine');
-var events = require('../../../examples/guarded-parent/guarded-parent.events');
-var expected = require('../../../examples/guarded-parent/guarded-parent.expected');
+var machineConfig = require('../../../examples/targetless-ancestor/targetless_ancestor.machine');
+var events = require('../../../examples/targetless-ancestor/targetless_ancestor.events');
+var expected = require('../../../examples/targetless-ancestor/targetless_ancestor.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;
@@ -106,7 +106,7 @@ function runScenario() {
   }
 
   var resultsDir = path.join(__dirname, '..', 'tests', 'results', 'node');
-  var resultsPath = path.join(resultsDir, 'guarded-parent.trace.txt');
+  var resultsPath = path.join(resultsDir, 'targetless_ancestor.trace.txt');
   try {
     fs.mkdirSync(resultsDir, { recursive: true });
     fs.writeFileSync(resultsPath, trace.join('\n') + '\n');

@@ -1,5 +1,5 @@
 // Adapter: converts FSMPlus-style scenario configs into XState v4 createMachine configs.
-// Used by the truth runner (projects/xstate-v4-truth/runner/run-greenhouse.js).
+// Used by the truth runner (projects/xstate-v4-truth/runner/run_greenhouse.js).
 'use strict';
 
 var xstate = require('xstate');

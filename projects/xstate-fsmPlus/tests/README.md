@@ -8,12 +8,12 @@ Scenarios are **shared** and live under the repo root `examples/` folder.
 - `node/` — Node.js harnesses
 - `espruino/` — Espruino harnesses
 - `results/` — actual run outputs (gitignored)
-- `test-log.md` — append-only run log
+- `test_log.md` — append-only run log
 
 ## Run (Node)
 
 ```
-node projects/xstate-fsmPlus/tests/node/run-greenhouse.js
+node projects/xstate-fsmPlus/tests/node/run_greenhouse.js
 ```
 
 Output is written to:
@@ -25,7 +25,7 @@ Output is written to:
 Load the Espruino harness and call `run()`:
 
 ```
-var t = require('projects/xstate-fsmPlus/tests/espruino/run-greenhouse');
+var t = require('projects/xstate-fsmPlus/tests/espruino/run_greenhouse');
 t.run();
 ```
 
