@@ -96,10 +96,14 @@ function preprocessFSMConfig(fsmConfig) {
 
   function processState(path, stateConfig, parentConfig) {
     var fullPath = path.join('.');
+    var parentPath = path.length > 1 ? path.slice(0, -1).join('.') : null;
     stateLookup[fullPath] = {
       id: fullPath,
+      parent: parentPath,
       initialResolved: resolveInitialState(path, stateConfig),
-      on: Object.assign({}, parentConfig && parentConfig.on ? parentConfig.on : {}, typeof stateConfig.on === "object" ? stateConfig.on : {})
+      on: Object.assign({}, parentConfig && parentConfig.on ? parentConfig.on : {}, typeof stateConfig.on === "object" ? stateConfig.on : {}),
+      entry: toArray(stateConfig.entry),
+      exit: toArray(stateConfig.exit)
     };
     if (stateConfig.states) {
       Object.keys(stateConfig.states).forEach(function (subState) {
@@ -119,6 +123,81 @@ function preprocessFSMConfig(fsmConfig) {
   });
 
   return stateLookup;
+}
+
+// Build leaf-to-root ancestor chain (including leaf).
+function getAncestorChain(stateValue, stateLookup) {
+  var chain = [];
+  var current = stateValue;
+
+  while (current) {
+    chain.push(current);
+    current = stateLookup[current] ? stateLookup[current].parent : null;
+  }
+
+  return chain;
+}
+
+// Find least common compound ancestor (LCCA) between source and target.
+function findLCCA(sourceValue, targetValue, stateLookup) {
+  var sourceChain = getAncestorChain(sourceValue, stateLookup);
+  var sourceSet = {};
+  var i;
+
+  for (i = 0; i < sourceChain.length; i++) {
+    sourceSet[sourceChain[i]] = true;
+  }
+
+  var targetChain = getAncestorChain(targetValue, stateLookup);
+  for (i = 0; i < targetChain.length; i++) {
+    if (sourceSet[targetChain[i]]) return targetChain[i];
+  }
+
+  return null;
+}
+
+// Collect exit actions from leaf up to (but excluding) LCCA.
+function collectExitActions(sourceValue, lcca, stateLookup) {
+  var actions = [];
+  var chain = getAncestorChain(sourceValue, stateLookup);
+  var i;
+
+  for (i = 0; i < chain.length; i++) {
+    if (chain[i] === lcca) break;
+    var stateNode = stateLookup[chain[i]];
+    if (stateNode && stateNode.exit && stateNode.exit.length) {
+      actions = actions.concat(stateNode.exit);
+    }
+  }
+
+  return actions;
+}
+
+// Collect entry actions from (excluding) LCCA down to target leaf.
+function collectEntryActions(targetValue, lcca, stateLookup) {
+  var actions = [];
+  var chain = getAncestorChain(targetValue, stateLookup);
+  chain.reverse(); // root -> leaf
+
+  var i;
+  var startIndex = 0;
+  if (lcca) {
+    for (i = 0; i < chain.length; i++) {
+      if (chain[i] === lcca) {
+        startIndex = i + 1;
+        break;
+      }
+    }
+  }
+
+  for (i = startIndex; i < chain.length; i++) {
+    var stateNode = stateLookup[chain[i]];
+    if (stateNode && stateNode.entry && stateNode.entry.length) {
+      actions = actions.concat(stateNode.entry);
+    }
+  }
+
+  return actions;
 }
 
 // -----------------------------
@@ -178,14 +257,37 @@ function createMachine(fsmConfig, options) {
 
       console.log("Context updated before transition:", newContext);
 
-      var targetResolved = stateLookup[transition.target] ? stateLookup[transition.target].initialResolved : transition.target;
-      console.log("Transition from:", state.value, "on event:", eventObject.type, "to:", targetResolved);
+      var hasTarget = transition.target !== undefined && transition.target !== null;
+      var targetResolved = hasTarget
+        ? (stateLookup[transition.target] ? stateLookup[transition.target].initialResolved : transition.target)
+        : state.value;
+
+      if (hasTarget) {
+        console.log("Transition from:", state.value, "on event:", eventObject.type, "to:", targetResolved);
+      } else {
+        console.log("Targetless transition on event:", eventObject.type, "in state:", state.value);
+      }
+
+      var lcca = null;
+      if (hasTarget) {
+        lcca = findLCCA(state.value, targetResolved, stateLookup);
+        if (targetResolved === state.value) {
+          lcca = stateLookup[state.value] ? stateLookup[state.value].parent : null;
+        }
+      }
+
+      var exitActions = hasTarget ? collectExitActions(state.value, lcca, stateLookup) : [];
+      var entryActions = hasTarget ? collectEntryActions(targetResolved, lcca, stateLookup) : [];
+      var nonAssignActions = actions.filter(action => action.type !== ASSIGN_ACTION);
+      var allActions = hasTarget
+        ? exitActions.concat(nonAssignActions, entryActions)
+        : nonAssignActions;
 
       return {
         value: targetResolved,
         context: newContext,
-        actions: actions.filter(action => action.type !== ASSIGN_ACTION),
-        changed: targetResolved !== state.value,
+        actions: allActions,
+        changed: hasTarget ? targetResolved !== state.value : false,
         matches: createMatcher(targetResolved)
       };
     }
