@@ -37,6 +37,28 @@ function formatState(state) {
   return 'STATE ' + state.value + ' ACTIONS ' + formatActions(state.actions);
 }
 
+function sortedKeys(obj) {
+  var keys = [];
+  var key;
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) keys.push(key);
+  }
+  keys.sort();
+  return keys;
+}
+
+function formatContext(context) {
+  if (!context) return 'CTX {}';
+  var keys = sortedKeys(context);
+  var parts = [];
+  var i = 0;
+  for (i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    parts.push('\"' + key + '\":' + JSON.stringify(context[key]));
+  }
+  return 'CTX {' + parts.join(',') + '}';
+}
+
 function compareTraces(actual, expectedTrace) {
   var max = Math.max(actual.length, expectedTrace.length);
   var i = 0;
@@ -62,6 +84,7 @@ function runScenario() {
 
   service.subscribe(function (state) {
     trace.push(formatState(state));
+    trace.push(formatContext(state.context));
   });
 
   var i = 0;
