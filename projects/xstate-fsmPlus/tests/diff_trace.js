@@ -7,13 +7,19 @@ var fs = require('fs');
 var path = require('path');
 
 function usage() {
-  console.log('Usage: node projects/xstate-fsmPlus/tests/diff_trace.js <scenario> <runtime>');
+  console.log('Usage: node projects/xstate-fsmPlus/tests/diff_trace.js <scenario> <runtime> [--file <path>]');
   console.log('  scenario: e.g. greenhouse, hierarchy_actions');
   console.log('  runtime: node or espruino');
+  console.log('  --file: optional explicit results file path');
 }
 
 var scenario = process.argv[2];
 var runtime = process.argv[3];
+var fileArgIndex = process.argv.indexOf('--file');
+var explicitPath = null;
+if (fileArgIndex !== -1 && process.argv[fileArgIndex + 1]) {
+  explicitPath = process.argv[fileArgIndex + 1];
+}
 
 if (!scenario || !runtime) {
   usage();
@@ -21,7 +27,9 @@ if (!scenario || !runtime) {
 }
 
 var expectedPath = path.join(__dirname, '..', '..', '..', 'examples', scenario, scenario + '.expected.js');
-var actualPath = path.join(__dirname, 'results', runtime, scenario + '.trace.txt');
+var actualPath = explicitPath
+  ? explicitPath
+  : path.join(__dirname, 'results', runtime, scenario + '.trace.txt');
 
 if (!fs.existsSync(expectedPath)) {
   console.error('Expected file not found:', expectedPath);

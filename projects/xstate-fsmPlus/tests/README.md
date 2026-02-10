@@ -41,6 +41,13 @@ Compare expected vs actual trace:
 node projects/xstate-fsmPlus/tests/diff_trace.js greenhouse espruino
 ```
 
+If you need to diff a timestamped results file, use `--file`:
+
+```
+node projects/xstate-fsmPlus/tests/diff_trace.js greenhouse espruino --file \
+  projects/xstate-fsmPlus/tests/results/espruino/greenhouse.20260210_115242.trace.txt
+```
+
 ## Scenarios
 
 Scenario sources are shared at:

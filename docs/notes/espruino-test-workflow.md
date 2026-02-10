@@ -10,6 +10,36 @@ future Codex threads can resume with minimal context loss.
 - Paste the trace between `TRACE BEGIN/END` into the prepared results file.
 - Run the diff tool offline to compare against expected output.
 
+## Trace Capabilities (What We Compare)
+
+The normalized trace can capture four dimensions of behavior. Each is optional
+per scenario, depending on what the harness prints and what the expected trace
+contains.
+
+1. **Transition sequence (EVENT lines)**  
+   - What it proves: the event ordering and event-to-transition flow.  
+   - How to implement: each runner pushes `EVENT <type>` before `send(...)`.
+
+2. **Resulting state (STATE lines)**  
+   - What it proves: the resolved leaf state after each transition.  
+   - How to implement: use `STATE <state.value> ACTIONS <...>` for each
+     emitted state.
+
+3. **Executed actions (ACTIONS in STATE lines)**  
+   - What it proves: which action descriptors were emitted for the transition,
+     in order.  
+   - How to implement: format `state.actions` via a stable string representation
+     (e.g., `log:name`, `xstate.assign` filtered out for v4 truth) and join.
+
+4. **Context snapshots (CTX lines)**  
+   - What it proves: that `assign` logic and context mutation behave as expected.  
+   - How to implement: append a `CTX {...}` line after each `STATE` line.
+     Use a stable, sorted key order.  
+   - Current usage: enabled in the **greenhouse** scenario.
+
+If a scenario does **not** include CTX lines in its expected trace, the diff tool
+will only compare the state + action + event sequence.
+
 ## Tool Summary (`tools/espruino_test.js`)
 
 **Purpose**
@@ -62,6 +92,13 @@ projects/xstate-fsmPlus/tests/results/espruino/greenhouse.trace.txt
 **Diff (offline)**
 ```
 node projects/xstate-fsmPlus/tests/diff_trace.js greenhouse espruino
+```
+
+If you need to compare a **timestamped** results file, pass `--file`:
+
+```
+node projects/xstate-fsmPlus/tests/diff_trace.js greenhouse espruino --file \
+  projects/xstate-fsmPlus/tests/results/espruino/greenhouse.20260210_115242.trace.txt
 ```
 
 ## Notes
