@@ -38,6 +38,10 @@ FSMPlus targets a practical subset required for compound states, with predictabl
   - `context`
   - `changed`
   - `matches(state)`
+- Runtime configuration overrides:
+  - `createMachine(config, options)` (actions/guards)
+  - `machine.withConfig(options, contextOverride)`
+  - `machine.withContext(contextOverride)`
 
 ### Out of Scope (explicitly not now)
 
@@ -87,6 +91,22 @@ See:
 
 - `docs/notes/testing-strategy.md`
 - `examples/` (once greenhouse scenarios are added)
+
+## Runtime Configuration (Actions/Guards)
+
+FSMPlus supports a small subset of XState-style configuration overrides:
+
+```
+var machine = fsm.createMachine(config, {
+  actions: { logGo: function () {} },
+  guards: { allow: function (ctx) { return true; } }
+});
+
+var tuned = machine.withConfig({
+  actions: { logGo: function () {} },
+  guards: { allow: function (ctx) { return ctx.count > 0; } }
+}, { count: 1 });
+```
 
 ## Next Steps
 

@@ -42,6 +42,9 @@ v4 semantics and API shape.
 - XState v4 API (legacy docs for `createMachine`, `interpret`, etc.)  
   https://xstate.js.org/api
 
+- XState v4 legacy documentation (archived guides/concepts)  
+  https://xstate.js.org/docs/
+
 - XState v4 → v5 migration guide  
   https://stately.ai/docs/migration
 

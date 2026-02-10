@@ -13,6 +13,7 @@ This note summarises the **functional changes** from the flat Espruino FSM
 - **Preprocessing**: flattened lookup table keyed by dot‑path IDs.
 - **Assign precedence**: `assign` actions run before other transition actions.
 - **Runtime API continuity**: v4‑shaped `createMachine`, `interpret`, `state.value`/`context`.
+- **Runtime configuration overrides**: `withConfig()` and `withContext()` supported.
 
 ## High‑Level Code Changes (as reflected in source comments)
 
@@ -41,7 +42,6 @@ ordering) to reach full MVHE parity.
 
 ## Next Steps / TODO
 
-- Add `withConfig()` support (XState‑style convenience override for actions/guards/context).
 - Export an `assign()` helper from `xstate_fsmPlus` for parity and ergonomic usage.
 - Add a debug flag to toggle verbose engine logging.
 - Consider wildcard (`*`) transitions for per-state fallback.

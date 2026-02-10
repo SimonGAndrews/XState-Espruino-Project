@@ -91,6 +91,11 @@ Instead it favors:
 FSMPlus remains v4‑shaped, so `withConfig()` is still the pragmatic compatibility
 target, even if v5 patterns differ.
 
+## Implementation Status
+
+- Implemented in `v15.2-configs` (options merge, `withConfig`, `withContext`).
+- First scenario: `withconfig_basic` (string guards/actions).
+
 ## Open Questions
 
 - Should we also support `withContext(context)` as a convenience? (Proposed: yes, alias)
