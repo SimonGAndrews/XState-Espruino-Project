@@ -337,6 +337,7 @@ function interpret(machine) {
   if (!machine) {
     throw new Error("Machine instance is undefined");
   }
+  var stateLookup = machine._stateLookup;
   var state = machine.initialState;
   var status = InterpreterStatus.NotStarted;
   var listeners = {};
