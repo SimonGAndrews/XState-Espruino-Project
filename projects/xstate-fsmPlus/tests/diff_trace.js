@@ -61,6 +61,8 @@ var rawActual = fs.readFileSync(actualPath, 'utf8').trim().split(/\r?\n/);
 function isIgnorable(line) {
   if (!line) return true;
   if (line === 'TRACE BEGIN' || line === 'TRACE END') return true;
+  if (line.indexOf('TRACE BEGIN') === 0) return true;
+  if (line.indexOf('TRACE END') === 0) return true;
   return false;
 }
 var actual = rawActual.filter(function (line) {

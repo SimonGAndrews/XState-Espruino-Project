@@ -56,6 +56,55 @@ function mergeOn(parentOn, childOn) {
   return merged;
 }
 
+// Merge two plain maps (options/actions/guards) into a new object.
+function mergeMaps(baseMap, overrideMap) {
+  var merged = {};
+  var key;
+  if (baseMap) {
+    for (key in baseMap) {
+      if (baseMap.hasOwnProperty(key)) merged[key] = baseMap[key];
+    }
+  }
+  if (overrideMap) {
+    for (key in overrideMap) {
+      if (overrideMap.hasOwnProperty(key)) merged[key] = overrideMap[key];
+    }
+  }
+  return merged;
+}
+
+// Normalize and merge machine options (actions/guards) into a single bag.
+function mergeOptions(baseOptions, overrideOptions) {
+  var base = baseOptions || {};
+  var over = overrideOptions || {};
+  return {
+    actions: mergeMaps(base.actions, over.actions),
+    guards: mergeMaps(base.guards, over.guards)
+  };
+}
+
+// Resolve action names/descriptors to a concrete action object when possible.
+function resolveAction(action, options) {
+  var actions = options && options.actions ? options.actions : null;
+  if (!actions) return action;
+  if (typeof action === 'string') {
+    if (actions[action]) {
+      return { type: action, exec: actions[action] };
+    }
+    return action;
+  }
+  if (action && action.type && actions[action.type]) {
+    var copy = {};
+    var key;
+    for (key in action) {
+      if (action.hasOwnProperty(key)) copy[key] = action[key];
+    }
+    if (!copy.exec) copy.exec = actions[action.type];
+    return copy;
+  }
+  return action;
+}
+
 // Build a state object that represents "no transition".
 function createUnchangedState(value, context) {
   return {
@@ -71,39 +120,53 @@ function createUnchangedState(value, context) {
 // Transition selection (guards + parent fallback)
 // - Supports transition arrays; first passing guard wins
 // -----------------------------
-function selectTransitionCandidate(candidate, context, eventObject) {
+function selectTransitionCandidate(candidate, context, eventObject, options) {
   var i;
+  var guards = options && options.guards ? options.guards : null;
 
   if (candidate === undefined || candidate === null) return null;
 
   if (Array.isArray(candidate)) {
     for (i = 0; i < candidate.length; i++) {
       if (!candidate[i]) continue;
-      if (candidate[i].guard && !candidate[i].guard(context, eventObject)) {
+      var guardFn = candidate[i].guard;
+      if (typeof guardFn === 'string' && guards) {
+        guardFn = guards[guardFn];
+      }
+      if (guardFn && typeof guardFn !== 'function') {
         continue;
       }
+      if (guardFn && !guardFn(context, eventObject)) {
+        continue;
+      }
+      if (guardFn) candidate[i].guard = guardFn;
       return candidate[i];
     }
     return null;
   }
 
-  if (candidate.guard && !candidate.guard(context, eventObject)) {
+  var guard = candidate.guard;
+  if (typeof guard === 'string' && guards) guard = guards[guard];
+  if (guard && typeof guard !== 'function') {
     return null;
   }
+  if (guard && !guard(context, eventObject)) {
+    return null;
+  }
+  if (guard) candidate.guard = guard;
 
   return candidate;
 }
 
-function findTransition(stateValue, eventObject, stateLookup, context) {
+function findTransition(stateValue, eventObject, stateLookup, context, options) {
   // Walk up from leaf to root looking for a handler for eventType.
   // stateValue is a dot-path string (ADR-0002).
   var currentValue = stateValue;
-
   while (currentValue) {
     var currentState = stateLookup[currentValue];
     if (currentState && currentState.on && currentState.on[eventObject.type] !== undefined) {
       var candidate = currentState.on[eventObject.type];
-      var resolved = selectTransitionCandidate(candidate, context, eventObject);
+      var resolved = selectTransitionCandidate(candidate, context, eventObject, options);
       if (resolved) return resolved;
     }
 
@@ -242,7 +305,7 @@ function createMatcher(stateValue) {
 }
 
 function createMachine(fsmConfig, options) {
-  options = options || {};
+  options = mergeOptions(null, options || {});
   var stateLookup = preprocessFSMConfig(fsmConfig);
   var initialResolved = stateLookup[fsmConfig.initial] ? stateLookup[fsmConfig.initial].initialResolved : fsmConfig.initial;
   var initialEntryActions = collectEntryActions(initialResolved, null, stateLookup);
@@ -251,6 +314,24 @@ function createMachine(fsmConfig, options) {
     config: fsmConfig,
     _options: options,
     _stateLookup: stateLookup,
+    // Return a new machine with merged options and optional context override.
+    withConfig: function (overrideOptions, contextOverride) {
+      var merged = mergeOptions(machine._options, overrideOptions || {});
+      var nextConfig = machine.config;
+      if (contextOverride !== undefined) {
+        nextConfig = {};
+        var key;
+        for (key in machine.config) {
+          if (machine.config.hasOwnProperty(key)) nextConfig[key] = machine.config[key];
+        }
+        nextConfig.context = contextOverride;
+      }
+      return createMachine(nextConfig, merged);
+    },
+    // Convenience alias for overriding only context.
+    withContext: function (contextOverride) {
+      return machine.withConfig(null, contextOverride);
+    },
     initialState: {
       value: initialResolved,
       actions: initialEntryActions,
@@ -267,20 +348,29 @@ function createMachine(fsmConfig, options) {
 
       console.log("Available transitions in", state.value, ":", Object.keys(currentState.on));
 
-      var transition = findTransition(state.value, eventObject, stateLookup, state.context);
+      var transition = findTransition(state.value, eventObject, stateLookup, state.context, machine._options);
 
       if (!transition) {
         console.log("No transition defined for event:", eventObject.type, "in state:", state.value);
         return createUnchangedState(state.value, state.context);
       }
 
+      if (transition.guard && typeof transition.guard !== 'function') {
+        console.log("Guard not resolved for transition:", eventObject.type, "in state:", state.value);
+        return createUnchangedState(state.value, state.context);
+      }
       if (transition.guard && !transition.guard(state.context, eventObject)) {
         console.log("Guard condition failed for transition:", eventObject.type, "in state:", state.value);
         return createUnchangedState(state.value, state.context);
       }
 
       var newContext = Object.assign({}, state.context);
-      var actions = transition.actions || [];
+      var rawActions = transition.actions || [];
+      var actions = [];
+      var ai = 0;
+      for (ai = 0; ai < rawActions.length; ai++) {
+        actions.push(resolveAction(rawActions[ai], machine._options));
+      }
 
       var assignActions = actions.filter(action => action.type === ASSIGN_ACTION);
       assignActions.forEach(action => {
