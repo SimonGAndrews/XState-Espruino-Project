@@ -3,7 +3,7 @@
 'use strict';
 
 module.exports = [
-  'STATE root.child.leaf ACTIONS -',
+  'STATE root.child.leaf ACTIONS log:enter_leaf',
   'EVENT PING',
   'STATE root.child.leaf ACTIONS log:root_ping'
 ];

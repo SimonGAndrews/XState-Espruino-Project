@@ -3,7 +3,7 @@
 'use strict';
 
 module.exports = [
-  'STATE outer.a ACTIONS -',
+  'STATE outer.a ACTIONS log:enter_outer,log:enter_a',
   'EVENT PING',
   'STATE outer.a ACTIONS log:ping',
   'EVENT TO_B',

@@ -86,14 +86,7 @@ function runScenario() {
   var service = interpret(machine);
   var trace = [];
 
-  var isFirst = true;
   service.onTransition(function (state) {
-    if (isFirst) {
-      isFirst = false;
-      var initial = Object.assign({}, state, { actions: [] });
-      trace.push(formatState(initial));
-      return;
-    }
     trace.push(formatState(state));
   });
 

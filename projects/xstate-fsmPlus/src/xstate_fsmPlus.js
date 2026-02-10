@@ -239,13 +239,14 @@ function createMachine(fsmConfig, options) {
   options = options || {};
   var stateLookup = preprocessFSMConfig(fsmConfig);
   var initialResolved = stateLookup[fsmConfig.initial] ? stateLookup[fsmConfig.initial].initialResolved : fsmConfig.initial;
+  var initialEntryActions = collectEntryActions(initialResolved, null, stateLookup);
 
   var machine = {
     config: fsmConfig,
     _options: options,
     initialState: {
       value: initialResolved,
-      actions: [],
+      actions: initialEntryActions,
       context: fsmConfig.context,
       matches: createMatcher(initialResolved)
     },
