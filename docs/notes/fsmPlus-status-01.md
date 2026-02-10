@@ -38,3 +38,13 @@ compound states, parent fallback resolution, and guarded transition selection
 while maintaining the same runtime API and Espruino constraints. The remaining
 work is to complete hierarchical action semantics (entry/exit/LCCA and related
 ordering) to reach full MVHE parity.
+
+## Next Steps / TODO
+
+- Add `withConfig()` support (XState‑style convenience override for actions/guards/context).
+- Export an `assign()` helper from `xstate_fsmPlus` for parity and ergonomic usage.
+- Add a debug flag to toggle verbose engine logging.
+- Consider wildcard (`*`) transitions for per-state fallback.
+- Consider `final` state semantics (done events / completion handling).
+- Note: no built-in parameterized guard helpers; closures over `(context, event)` work.
+- Consider aligning `state.changed` semantics with XState v4.
