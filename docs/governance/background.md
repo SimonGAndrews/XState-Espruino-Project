@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains a structured exploration, implementation, and evaluation of **XState-style finite state machines (FSMs)** for use on **Espruino-based microcontroller systems**, with a particular focus on **hierarchical (compound) states** suitable for real-world control and UI problems.
+This repository contains a structured exploration, implementation, and evaluation of **[XState](https://xstate.js.org/)-style finite state machines (FSMs)** for use on **[Espruino](https://www.espruino.com/)-based microcontroller systems**, with a particular focus on **hierarchical (compound) states** suitable for real-world control and UI problems.
 
 The work began with a practical requirement: to express **non-trivial control logic** (menus, modes, automation flows) on constrained embedded hardware in a way that is:
 
@@ -10,6 +10,7 @@ The work began with a practical requirement: to express **non-trivial control lo
 - deterministic and testable
 - suitable for event-driven systems
 - small enough to run on microcontrollers
+- extensible to model-driven tooling and AI-assisted development
 
 This document provides the **background, motivation, and evolution** of the project, and explains why the repository is structured into multiple implementation paths.
 
@@ -31,11 +32,17 @@ A declarative state machine approach was preferred, particularly one aligned wit
 - guard conditions
 - separation of state, context, and side effects
 
+Statecharts also offer a **compact, explicit contract** for microcontroller behaviour. This makes them a strong foundation for:
+
+- model-driven tooling (visual designers, code generation, trace-based testing)
+- automated review of system logic and edge cases
+- AI-assisted workflows that can propose or refine statecharts as the primary logic model
+
 ---
 
 ## Starting Point: XState FSM
 
-The project began by evaluating **`xstate/fsm`**, the lightweight finite state machine package maintained by the XState project.
+The project began by evaluating **`xstate/fsm`**, the lightweight finite state machine package maintained by the [XState](https://xstate.js.org/) project.
 
 Reasons for selecting this as a starting point:
 
@@ -64,7 +71,7 @@ This stage resulted in a **stable flat FSM engine** suitable for simple state ma
 
 > This flat Espruino FSM remains a useful baseline and reference implementation.
 
-In this umbrella repository, the Stage 1 engine is maintained as a **Git submodule** under `js/xstate-fsm-espruino/`.
+In this umbrella repository, the Stage 1 engine is maintained as a **Git submodule** under `projects/xstate-fsm-espruino/`.
 
 ---
 
@@ -91,6 +98,12 @@ Key goals of FSMPlus:
 - remain small, inspectable, and debuggable
 
 FSMPlus is designed as a **drop-in Espruino module**, allowing users to adopt hierarchical state machines **without requiring custom firmware builds**.
+
+Looking forward, the project is also motivated by **[Stately](https://stately.ai/) tooling** and similar model-driven workflows. If XState-compatible statecharts can execute directly on Espruino, then:
+
+- microcontroller logic can be designed in standard statechart tools
+- validation can use shared traces across JS and embedded runs
+- AI-assisted generation of statecharts becomes a viable, testable path to embedded applications
 
 ---
 
