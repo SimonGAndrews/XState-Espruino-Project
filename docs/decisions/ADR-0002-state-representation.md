@@ -1,4 +1,4 @@
-# ADR-0002: Use Dot-Path State Identifiers and Simple `matches()` Semantics
+# ADR-0002: Use Dot-Path State Identifiers and `matches()` Semantics
 
 ## Status
 
@@ -42,12 +42,15 @@ Examples:
 
 ### `matches()` semantics
 
-FSMPlus will provide a `state.matches(target)` helper with **simple equality semantics** against
-the canonical resolved state value:
+FSMPlus will provide a `state.matches(target)` helper with **dot-path equality or ancestor
+matching** against the canonical resolved state value:
 
 - `state.matches("heating.on")` is true iff `state.value === "heating.on"`
+- `state.matches("heating")` is true iff `state.value` is within that subtree
+  (e.g., `state.value === "heating.on"` or `state.value === "heating.off"`)
 
-This is intentionally narrower than full XState’s richer matching semantics.
+This brings FSMPlus closer to XState v4 `matches()` semantics while keeping the
+string-based dot-path representation.
 
 ### Targets and resolved paths
 
@@ -87,6 +90,5 @@ In this case, `state.value` stores the **resolved** leaf dot-path.
 
 - Parallel state support is excluded by ADR-0001, so a single active leaf dot-path is sufficient
   for the canonical state value.
-- If future work introduces a richer `matches()` (e.g., prefix matching for ancestor states),
-  it should be captured in a new ADR to avoid breaking test expectations.
-
+- Prefix/ancestor matching is supported by this ADR; any richer matching should be captured
+  in a new ADR to avoid breaking test expectations.

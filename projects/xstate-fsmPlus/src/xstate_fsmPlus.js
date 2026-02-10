@@ -19,9 +19,13 @@ function toArray(item) {
   return item === undefined ? [] : [].concat(item);
 }
 
-// State matcher helper (strict equality on dot-path value).
+// State matcher helper (dot-path equality or ancestor match).
 function createMatcher(value) {
-  return function (stateValue) { return value === stateValue; };
+  return function (target) {
+    if (target === value) return true;
+    if (typeof target !== 'string') return false;
+    return value.indexOf(target + '.') === 0;
+  };
 }
 
 // Normalize event inputs into `{ type, ... }` objects.
@@ -231,7 +235,9 @@ function collectEntryActions(targetValue, lcca, stateLookup) {
 // -----------------------------
 function createMatcher(stateValue) {
   return function (target) {
-    return stateValue === target;
+    if (target === stateValue) return true;
+    if (typeof target !== 'string') return false;
+    return stateValue.indexOf(target + '.') === 0;
   };
 }
 
