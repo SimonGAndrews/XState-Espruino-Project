@@ -12,6 +12,7 @@
 //   - run_<scenario>
 //
 // Preps a results file for pasting TRACE output from Espruino.
+// If a results file already exists, a timestamped filename is created and printed.
 //
 // Requires EspruinoTools CLI. Set ESPRUINO_CLI to the cli path if needed.
 // Example: ESPRUINO_CLI=../EspruinoTools/bin/espruino-cli.js
@@ -118,10 +119,12 @@ function prepResults(name) {
     var stamped = path.join(resultsDir, name + '.' + timestamp() + '.trace.txt');
     console.warn('Warning: results file already exists, creating new file:', stamped);
     fs.writeFileSync(stamped, '# Paste TRACE lines here (between TRACE BEGIN/END)\n');
-    return;
+    console.log('Prepared:', stamped);
+    return stamped;
   }
   fs.writeFileSync(resultsPath, '# Paste TRACE lines here (between TRACE BEGIN/END)\n');
   console.log('Prepared:', resultsPath);
+  return resultsPath;
 }
 
 if (cmd === 'upload') {
