@@ -40,6 +40,17 @@ Provenance snapshots are stored in:
 
 Subsequent changes should reference this baseline explicitly where relevant.
 
+## Recent Activity
+
+- Added missing `findTransition` helper (parent fallback) and guard-array selection.
+- Implemented MVHE action ordering: exit → transition (assigns first) → entry, with LCCA-based
+  exit/entry sets and self-reentry handling.
+- Added targetless transition handling (actions only, no exit/entry).
+- Added test harnesses and shared scenario library under repo-root `examples/`.
+- Added XState v4 truth runner and adapter to validate FSMPlus parity.
+- Added Espruino test workflow and CLI helper to upload modules and capture traces.
+- Renamed scenario/runner filenames to underscores for Espruino module compatibility.
+
 ## Planned Sections (to be populated)
 
 The following sections may be added over time as implementation progresses:

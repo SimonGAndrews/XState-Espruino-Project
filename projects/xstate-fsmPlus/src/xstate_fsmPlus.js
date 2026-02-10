@@ -65,6 +65,7 @@ function createUnchangedState(value, context) {
 
 // -----------------------------
 // Transition selection (guards + parent fallback)
+// - Supports transition arrays; first passing guard wins
 // -----------------------------
 function selectTransitionCandidate(candidate, context, eventObject) {
   var i;
@@ -113,6 +114,7 @@ function findTransition(stateValue, eventObject, stateLookup, context) {
 
 // -----------------------------
 // Preprocessing (flatten + initial resolution)
+// - Records parent links and entry/exit arrays for LCCA/action ordering
 // -----------------------------
 function preprocessFSMConfig(fsmConfig) {
   var stateLookup = {};
@@ -225,6 +227,7 @@ function collectEntryActions(targetValue, lcca, stateLookup) {
 
 // -----------------------------
 // Machine creation + transition processing
+// - Handles targetless transitions and self-reentry semantics
 // -----------------------------
 function createMatcher(stateValue) {
   return function (target) {
@@ -320,6 +323,7 @@ function createMachine(fsmConfig, options) {
 
 // -----------------------------
 // Interpreter lifecycle (start/stop/send/subscribe)
+// - Emits state to listeners on each transition
 // -----------------------------
 function interpret(machine) {
   if (!machine) {
