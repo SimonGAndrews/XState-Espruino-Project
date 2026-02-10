@@ -26,7 +26,22 @@ if (!scenario || !runtime) {
   process.exit(1);
 }
 
-var expectedPath = path.join(__dirname, '..', '..', '..', 'examples', scenario, scenario + '.expected.js');
+function resolveScenarioDir(name) {
+  var direct = path.join(__dirname, '..', '..', '..', 'examples', name);
+  if (fs.existsSync(direct)) return name;
+  var dashed = name.replace(/_/g, '-');
+  var dashedPath = path.join(__dirname, '..', '..', '..', 'examples', dashed);
+  if (fs.existsSync(dashedPath)) return dashed;
+  return null;
+}
+
+var scenarioDir = resolveScenarioDir(scenario);
+if (!scenarioDir) {
+  console.error('Expected scenario folder not found for:', scenario);
+  process.exit(1);
+}
+
+var expectedPath = path.join(__dirname, '..', '..', '..', 'examples', scenarioDir, scenario + '.expected.js');
 var actualPath = explicitPath
   ? explicitPath
   : path.join(__dirname, 'results', runtime, scenario + '.trace.txt');
@@ -42,7 +57,15 @@ if (!fs.existsSync(actualPath)) {
 }
 
 var expected = require(expectedPath);
-var actual = fs.readFileSync(actualPath, 'utf8').trim().split(/\r?\n/);
+var rawActual = fs.readFileSync(actualPath, 'utf8').trim().split(/\r?\n/);
+function isIgnorable(line) {
+  if (!line) return true;
+  if (line === 'TRACE BEGIN' || line === 'TRACE END') return true;
+  return false;
+}
+var actual = rawActual.filter(function (line) {
+  return !isIgnorable(line);
+});
 
 var max = Math.max(expected.length, actual.length);
 var i = 0;

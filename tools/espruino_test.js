@@ -11,6 +11,9 @@
 //   - <scenario>.expected
 //   - run_<scenario>
 //
+// Note: Espruino Storage has filename length limits. Some scenarios use
+// short storage prefixes to keep module names within bounds.
+//
 // Preps a results file for pasting TRACE output from Espruino.
 // If a results file already exists, a timestamped filename is created and printed.
 //
@@ -53,12 +56,34 @@ if (!cmd || !scenario) {
 var root = process.cwd();
 var toolsCli = process.env.ESPRUINO_CLI || 'espruino-cli';
 
+var storagePrefixOverrides = {
+  guarded_multi_parent: 'gmp'
+};
+
+function storagePrefix(name) {
+  return storagePrefixOverrides[name] || name;
+}
+
+function resolveScenarioDir(name) {
+  var direct = path.join(root, 'examples', name);
+  if (fs.existsSync(direct)) return name;
+  var dashed = name.replace(/_/g, '-');
+  var dashedPath = path.join(root, 'examples', dashed);
+  if (fs.existsSync(dashedPath)) return dashed;
+  return null;
+}
+
 function scenarioFiles(name) {
+  var dirName = resolveScenarioDir(name);
+  if (!dirName) {
+    console.error('Missing scenario folder for:', name);
+    process.exit(1);
+  }
   return {
     engine: path.join(root, 'projects', 'xstate-fsmPlus', 'src', 'xstate_fsmPlus.js'),
-    machine: path.join(root, 'examples', name, name + '.machine.js'),
-    events: path.join(root, 'examples', name, name + '.events.js'),
-    expected: path.join(root, 'examples', name, name + '.expected.js'),
+    machine: path.join(root, 'examples', dirName, name + '.machine.js'),
+    events: path.join(root, 'examples', dirName, name + '.events.js'),
+    expected: path.join(root, 'examples', dirName, name + '.expected.js'),
     runner: path.join(root, 'projects', 'xstate-fsmPlus', 'tests', 'espruino', 'run_' + name + '.js')
   };
 }
@@ -82,11 +107,12 @@ function uploadScenario(name) {
     ensureFileExists(files[key]);
   });
 
+  var prefix = storagePrefix(name);
   var moduleMap = [
     { file: files.engine, name: 'xstate_fsmPlus' },
-    { file: files.machine, name: name + '.machine' },
-    { file: files.events, name: name + '.events' },
-    { file: files.expected, name: name + '.expected' },
+    { file: files.machine, name: prefix + '.machine' },
+    { file: files.events, name: prefix + '.events' },
+    { file: files.expected, name: prefix + '.expected' },
     { file: files.runner, name: 'run_' + name }
   ];
 

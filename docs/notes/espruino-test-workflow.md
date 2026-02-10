@@ -53,6 +53,10 @@ will only compare the state + action + event sequence.
 - `<scenario>.expected`
 - `run_<scenario>`
 
+Some scenarios use **short storage prefixes** to stay within Espruino filename
+limits. The tool handles this automatically (for example, `guarded_multi_parent`
+is stored as `gmp.*`).
+
 **Modes**
 - `upload <scenario>` — upload modules only
 - `prep <scenario>` — prepare results file only

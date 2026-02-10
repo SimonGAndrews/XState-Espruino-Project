@@ -3,9 +3,9 @@
 'use strict';
 
 var fsm = require('xstate_fsmPlus');
-var machineConfig = require('guarded_multi_parent.machine');
-var events = require('guarded_multi_parent.events');
-var expected = require('guarded_multi_parent.expected');
+var machineConfig = require('gmp.machine');
+var events = require('gmp.events');
+var expected = require('gmp.expected');
 
 function eventType(evt) {
   return typeof evt === 'string' ? evt : evt.type;
