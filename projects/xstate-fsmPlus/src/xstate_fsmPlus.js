@@ -244,6 +244,7 @@ function createMachine(fsmConfig, options) {
   var machine = {
     config: fsmConfig,
     _options: options,
+    _stateLookup: stateLookup,
     initialState: {
       value: initialResolved,
       actions: initialEntryActions,
@@ -354,15 +355,19 @@ function interpret(machine) {
         const resolved = typeof initialState === 'object'
           ? initialState
           : { value: initialState, context: machine.config.context };
+        const resolvedValue = stateLookup[resolved.value]
+          ? stateLookup[resolved.value].initialResolved
+          : resolved.value;
+        const entryActions = collectEntryActions(resolvedValue, null, stateLookup);
 
         state = {
-          value: resolved.value,
-          actions: [],
+          value: resolvedValue,
+          actions: entryActions,
           context: resolved.context,
-          matches: createMatcher(resolved.value)
+          matches: createMatcher(resolvedValue)
         };
 
-        if (!machine.config.states[state.value]) {
+        if (!stateLookup[state.value]) {
           throw new Error(`Cannot start service in state '${state.value}'. The state is not found on machine${machine.config.id ? ` '${machine.config.id}'` : ''}.`);
         }
       }
