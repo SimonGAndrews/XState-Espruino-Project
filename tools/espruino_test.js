@@ -114,16 +114,17 @@ function timestamp() {
 function prepResults(name) {
   var resultsDir = path.join(root, 'projects', 'xstate-fsmPlus', 'tests', 'results', 'espruino');
   var resultsPath = path.join(resultsDir, name + '.trace.txt');
+  var relativeBase = path.relative(root, resultsDir);
   fs.mkdirSync(resultsDir, { recursive: true });
   if (fs.existsSync(resultsPath)) {
     var stamped = path.join(resultsDir, name + '.' + timestamp() + '.trace.txt');
-    console.warn('Warning: results file already exists, creating new file:', stamped);
+    console.warn('Warning: results file already exists, creating new file:');
     fs.writeFileSync(stamped, '# Paste TRACE lines here (between TRACE BEGIN/END)\n');
-    console.log('Prepared:', stamped);
+    console.log('Prepared:', path.join(relativeBase, path.basename(stamped)));
     return stamped;
   }
   fs.writeFileSync(resultsPath, '# Paste TRACE lines here (between TRACE BEGIN/END)\n');
-  console.log('Prepared:', resultsPath);
+  console.log('Prepared:', path.join(relativeBase, path.basename(resultsPath)));
   return resultsPath;
 }
 
