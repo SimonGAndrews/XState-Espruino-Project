@@ -6,6 +6,15 @@ Simple CLI to upload FSMPlus scenario modules and prep a results file for paste.
 
 Install EspruinoTools (CLI). You can set the CLI path with `ESPRUINO_CLI`.
 
+Local clone option:
+
+```
+cd /home/simon/SGAdev
+git clone https://github.com/espruino/EspruinoTools.git
+cd /home/simon/SGAdev/EspruinoTools
+npm install
+```
+
 Example:
 
 ```
@@ -26,6 +35,14 @@ Prepare results file for paste:
 
 ```
 node tools/espruino_test.js prep greenhouse
+```
+
+If a results file already exists, a timestamped file is created instead.
+
+Upload and prepare in one step:
+
+```
+node tools/espruino_test.js run greenhouse --port /dev/ttyACM0
 ```
 
 Then run in Espruino REPL:

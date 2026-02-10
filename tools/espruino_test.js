@@ -2,6 +2,16 @@
 // Usage:
 //   node tools/espruino_test.js upload <scenario> --port /dev/ttyACM0
 //   node tools/espruino_test.js prep <scenario>
+//   node tools/espruino_test.js run <scenario> --port /dev/ttyACM0
+//
+// Uploads to storage:
+//   - xstate_fsmPlus
+//   - <scenario>.machine
+//   - <scenario>.events
+//   - <scenario>.expected
+//   - run_<scenario>
+//
+// Preps a results file for pasting TRACE output from Espruino.
 //
 // Requires EspruinoTools CLI. Set ESPRUINO_CLI to the cli path if needed.
 // Example: ESPRUINO_CLI=../EspruinoTools/bin/espruino-cli.js
@@ -16,10 +26,12 @@ function usage() {
   console.log('Usage:');
   console.log('  node tools/espruino_test.js upload <scenario> --port <serial>');
   console.log('  node tools/espruino_test.js prep <scenario>');
+  console.log('  node tools/espruino_test.js run <scenario> --port <serial>');
   console.log('');
   console.log('Examples:');
   console.log('  node tools/espruino_test.js upload greenhouse --port /dev/ttyACM0');
   console.log('  node tools/espruino_test.js prep greenhouse');
+  console.log('  node tools/espruino_test.js run greenhouse --port /dev/ttyACM0');
 }
 
 function argValue(args, name) {
@@ -77,27 +89,47 @@ function uploadScenario(name) {
     { file: files.runner, name: 'run_' + name }
   ];
 
+  var cliArgs = [toolsCli, '-p', port, '--no-ble'];
   moduleMap.forEach(function (item) {
     console.log('Uploading', item.file, 'as', item.name);
-    var args = [toolsCli, '-p', port, '--storage', item.name, item.file];
-    var result = child.spawnSync('node', args, { stdio: 'inherit' });
-    if (result.status !== 0) process.exit(result.status);
+    cliArgs.push('--storage', item.name + ':' + item.file);
   });
+
+  var result = child.spawnSync('node', cliArgs, { stdio: 'inherit' });
+  if (result.status !== 0) process.exit(result.status);
+}
+
+function timestamp() {
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  var d = new Date();
+  return d.getFullYear() +
+    pad(d.getMonth() + 1) +
+    pad(d.getDate()) + '_' +
+    pad(d.getHours()) +
+    pad(d.getMinutes()) +
+    pad(d.getSeconds());
 }
 
 function prepResults(name) {
   var resultsDir = path.join(root, 'projects', 'xstate-fsmPlus', 'tests', 'results', 'espruino');
   var resultsPath = path.join(resultsDir, name + '.trace.txt');
   fs.mkdirSync(resultsDir, { recursive: true });
-  if (!fs.existsSync(resultsPath)) {
-    fs.writeFileSync(resultsPath, '# Paste TRACE lines here (between TRACE BEGIN/END)\n');
+  if (fs.existsSync(resultsPath)) {
+    var stamped = path.join(resultsDir, name + '.' + timestamp() + '.trace.txt');
+    console.warn('Warning: results file already exists, creating new file:', stamped);
+    fs.writeFileSync(stamped, '# Paste TRACE lines here (between TRACE BEGIN/END)\n');
+    return;
   }
+  fs.writeFileSync(resultsPath, '# Paste TRACE lines here (between TRACE BEGIN/END)\n');
   console.log('Prepared:', resultsPath);
 }
 
 if (cmd === 'upload') {
   uploadScenario(scenario);
 } else if (cmd === 'prep') {
+  prepResults(scenario);
+} else if (cmd === 'run') {
+  uploadScenario(scenario);
   prepResults(scenario);
 } else {
   usage();
