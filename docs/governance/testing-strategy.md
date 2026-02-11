@@ -5,12 +5,12 @@ to validate behaviour and manage defects across multiple FSM implementations.
 
 The emphasis is on **observable behaviour**, not exhaustive unit testing.
 
-Advantages of this approach:
+## Document Roles (to avoid duplication)
 
-- aligns with embedded constraints (small footprint, minimal harness)
-- validates real ordering and side effects rather than internal implementation details
-- enables cross-engine parity checks (FSMPlus vs XFSM) using the same scenarios
-- keeps tests stable across refactors as long as behaviour is preserved
+- Canonical strategy and ownership policy: this document.
+- Canonical command/operator workflow: `tools/README_espruino.md`.
+- Canonical implementation status and TODO backlog: `docs/governance/fsmPlus-status-01.md`.
+- Supporting thread/handover operational notes: `docs/notes/espruino-test-workflow.md`.
 
 ## Testing Approach
 
@@ -32,6 +32,21 @@ This approach is particularly well suited to:
 - finite state machines
 - embedded and constrained runtimes
 - behaviour where ordering matters more than return values
+
+Execution modes used in this repo:
+
+- `Suite test`: run a defined scenario package and compare normalized trace outputs.
+- `Interactive test`: manually execute one or more test scripts in REPL against a flashed engine for rapid debugging/validation.
+
+Concept and policy are defined in this strategy document.
+Command-level execution steps are defined in `tools/README_espruino.md`.
+
+Advantages of this approach:
+
+- aligns with embedded constraints (small footprint, minimal harness)
+- validates real ordering and side effects rather than internal implementation details
+- enables cross-engine parity checks (FSMPlus vs XFSM) using the same scenarios
+- keeps tests stable across refactors as long as behaviour is preserved
 
 ## Where Tests Live
 

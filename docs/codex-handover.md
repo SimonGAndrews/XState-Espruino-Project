@@ -136,7 +136,7 @@ Suggested labels:
 - `docs`
 
 ### Step B — Add test scaffolding
-Prefer scenario-driven tests (as already described in docs/notes/testing-strategy.md):
+Prefer scenario-driven tests (as already described in `docs/governance/testing-strategy.md`):
 - define machine
 - define event sequence
 - define expected trace output
@@ -197,4 +197,3 @@ We have FSMPlus baseline tagged `fsmplus-baseline-v15` with V15/V16 snapshots ar
 Please help scaffold a minimal scenario-driven test harness for `projects/xstate-fsmPlus/src/xstate_fsmPlus.js`,
 starting with one greenhouse control machine that exercises compound state transitions and parent fallback.
 Tests must be deterministic and Espruino-friendly (no modern JS features).”
-

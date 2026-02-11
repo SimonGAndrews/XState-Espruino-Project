@@ -1,38 +1,65 @@
-# Espruino Test Helper
-// tools/README_espruino.md
+# Espruino Test Operations Guide
 
-This document covers two different Espruino test workflows:
+Purpose: provide operational instructions to execute the test methodology
+defined in `docs/governance/testing-strategy.md`.
 
-- `Suite test`: run a defined scenario test with supporting files, then compare trace output.
-- `Interactive test`: manually run one or more files in REPL against `xstate_fsmPlus` stored in flash.
+This guide covers two execution workflows:
 
-Both workflows are used in this repo and share the same shell setup.
+- `Suite test`: run a defined scenario package and compare normalized traces.
+- `Interactive test`: run one or more manual scripts in REPL against flashed FSMPlus.
+
+Related canonical docs:
+
+- Strategy/policy: `docs/governance/testing-strategy.md`
+- FSMPlus status and backlog: `docs/governance/fsmPlus-status-01.md`
+- Supporting handover note: `docs/notes/espruino-test-workflow.md`
 
 ## Prerequisites
 
-Install EspruinoTools (CLI). You can set the CLI path with `ESPRUINO_CLI`.
+Install EspruinoTools CLI:
 
-Local clone option:
-
-```
+```bash
 cd /home/simon/SGAdev
 git clone https://github.com/espruino/EspruinoTools.git
 cd /home/simon/SGAdev/EspruinoTools
 npm install
 ```
 
-Example:
+You can set port via `--port`, `ESPRUINO_PORT`, or `espPort`.
 
-```
-export ESPRUINO_CLI=/path/to/EspruinoTools/bin/espruino-cli.js
-```
+## Tool Functionality (`tools/espruino_test.js`)
 
-Set your port with `--port`, `ESPRUINO_PORT`, or `espPort` (after one-off setup).
+This helper is the suite-test operator tool. It is separate from interactive
+bootcode/module commands and focuses on scenario packages.
+
+Supported modes:
+
+- `upload <scenario>`: uploads required scenario modules to Espruino Storage.
+- `prep <scenario>`: prepares a local results file for trace paste.
+- `run <scenario>`: runs `upload` then `prep` in one command.
+
+What `upload` writes to Storage:
+
+- `xstate_fsmPlus`
+- `<scenario>.machine`
+- `<scenario>.events`
+- `<scenario>.expected`
+- `run_<scenario>`
+
+Additional behavior:
+
+- Scenario folder resolution supports underscore/dash variants (for example
+  scenario `foo_bar` may map to `examples/foo-bar/`).
+- Some scenarios can use short storage prefixes to stay within Espruino
+  Storage filename length limits.
+- `prep` creates `projects/xstate-fsmPlus/tests/results/espruino/<scenario>.trace.txt`.
+- If that file already exists, `prep` creates a timestamped trace file and prints
+  the relative prepared path.
+- Results template text expects trace capture between `TRACE BEGIN` and `TRACE END`.
 
 ## One-Off Shell Setup (WSL / VS Code terminal)
 
-To enable both testing methods: Add Espruino defaults and helper aliases to `~/.bashrc` so every new terminal
-session has the same command set.
+Add helper functions to `~/.bashrc` once:
 
 ```bash
 nano ~/.bashrc
@@ -79,17 +106,13 @@ espPort() { # usage: espPort /dev/ttyACM1
 }
 ```
 
-Reload shell config:
+Reload and verify:
 
 ```bash
 source ~/.bashrc
-```
-
-Verify:
-
-```bash
 echo "$ESPRUINO_CLI"
 echo "$ESPRUINO_PORT"
+echo "$XFSMPLUS_SRC"
 type esprepl
 type espflash
 type espram
@@ -98,207 +121,132 @@ type espboot
 type espbootrepl
 type espFsmPlus
 type espPort
-echo "$XFSMPLUS_SRC"
 ```
 
-## Workflow Types
+## Suite Test Quick Card
 
-### Suite Test (scenario + trace compare)
+Assumes one-off shell setup is complete.
 
-A suite test uses a scenario package and expected output in the repo.
-For example, `greenhouse` includes:
-
-- `examples/<scenario>/<scenario>.machine.js`
-- `examples/<scenario>/<scenario>.events.js`
-- `projects/xstate-fsmPlus/tests/expected/<scenario>.trace.txt`
-- `projects/xstate-fsmPlus/tests/espruino/run_<scenario>.js`
-
-The helper script uploads required modules and prepares a result file for pasting REPL output.
-
-Suite result files are written under:
-- `projects/xstate-fsmPlus/tests/results/espruino/`
-
-When running in REPL, copy only the streamed trace lines between:
-- `TRACE_START`
-- `TRACE_END`
-
-Paste those lines into the prepared results file for diff/compare.
-
-### Interactive Test (manual REPL execution)
-
-An interactive test is a manual experiment, usually under:
-
-- `examples/espruino_interactive/`
-
-You keep `xstate_fsmPlus` in flash, then run test files either:
-
-- from storage via `require("<module_name>")`, or
-- directly to RAM with `espram <file.js>`.
-
-If you want WebIDE-like behavior (flash bootcode + execute), use:
-- `espboot <file.js>` to upload and execute bootcode
-- `espbootrepl <file.js>` to upload, execute, and remain attached in terminal
-
-## Suite Test Commands
-
-If your board path changed, update the default first:
+### 1. Optional: set current board port.
 
 ```bash
 espPort /dev/ttyACM1
 ```
 
-Upload modules for a scenario:
-
-```bash
-node tools/espruino_test.js upload greenhouse --port "$ESPRUINO_PORT"
-```
-
-`greenhouse` is the scenario name. It maps to scenario files under
-`examples/greenhouse/` and runner/expected files that use the same name
-(`run_greenhouse.js`, `greenhouse.trace.txt`).
-
-Prepare results file only:
-
-```bash
-node tools/espruino_test.js prep greenhouse
-```
-
-Upload + prepare results file:
+### 2. Upload scenario modules and prepare a results file.
 
 ```bash
 node tools/espruino_test.js run greenhouse --port "$ESPRUINO_PORT"
 ```
 
-Then in REPL:
+`greenhouse` is the scenario name in:
 
-```js
-var t = require('run_greenhouse');
-t.run();
-```
+- `examples/greenhouse/greenhouse.machine.js`
+- `examples/greenhouse/greenhouse.events.js`
+- `examples/greenhouse/greenhouse.expected.js`
+- `projects/xstate-fsmPlus/tests/espruino/run_greenhouse.js`
 
-Paste trace output into the results path printed by the helper script.
+Results are written under:
 
-## Interactive Test Command List (VS Code WSL)
+- `projects/xstate-fsmPlus/tests/results/espruino/`
 
-### Quick Card: Interactive Mode
-
-Assumes `One-Off Shell Setup` above has already been completed once.
-
-For CLI upload commands (for example `espFsmPlus`, `espflash`, `espboot`),
-wait for `Upload Complete` in terminal output before running the next REPL step.
-
-Upload latest engine to flash:
-
-```bash
-espFsmPlus
-```
-
-Switch default port (if board path changes):
-
-```bash
-espPort /dev/ttyACM1
-espFsmPlus
-```
-
-Or override port for one command only:
-
-```bash
-espFsmPlus /dev/ttyACM1
-```
-
-Upload one interactive test to flash:
-
-```bash
-espflash ImplementAction_inline examples/espruino_interactive/ImplementAction_inline.js
-```
-
-Attach REPL:
+### 3. Attach REPL and run the uploaded test runner.
 
 ```bash
 esprepl
 ```
 
-Run test in REPL:
+```js
+var t = require("run_greenhouse");
+t.run();
+```
+
+### 4. Extract trace from console log
+
+Copy only lines between:
+
+- `TRACE BEGIN`
+- `TRACE END`
+
+Paste into the results file path printed by the helper.
+
+### 5. Diff against expected trace.
+
+```bash
+node projects/xstate-fsmPlus/tests/diff_trace.js greenhouse espruino
+```
+
+Timestamped file diff:
+
+```bash
+node projects/xstate-fsmPlus/tests/diff_trace.js greenhouse espruino --file \
+  projects/xstate-fsmPlus/tests/results/espruino/greenhouse.20260210_120522.trace.txt
+```
+
+## Interactive Test Quick Card
+
+Assumes one-off shell setup is complete.
+
+For CLI upload commands (`espFsmPlus`, `espflash`, `espboot`), wait for
+`Upload Complete` before the next step.
+
+### 1. Ensure current FSMPlus engine is in flash.
+
+```bash
+espFsmPlus
+```
+
+### 2. Test execution (pick one flow)
+
+#### Storage module flow:
+
+This flow uploads a named module to Storage; execution happens on `require()`.
+The shell returns after upload, and REPL is attached explicitly with `esprepl`.
+
+```bash
+espflash ImplementAction_inline examples/espruino_interactive/ImplementAction_inline.js
+esprepl
+```
 
 ```js
 reset();
 require("ImplementAction_inline");
 ```
 
-This `require("<name>")` form is for a module already uploaded to flash
-(`Storage`) with that module name.
-For files not uploaded as storage modules, use RAM execution instead:
+#### RAM execution flow:
+
+This sends the file to RAM and executes immediately.
+Code is not persisted in Storage/bootcode; CLI exits after run.
 
 ```bash
 espram examples/espruino_interactive/ImplementAction_inline.js
 ```
 
-Stop test in REPL (only if the interactive script created `intervalId` via `setInterval` - typically to generate events):
+#### Bootcode execution flow (WebIDE-like):
 
-```js
-clearInterval(intervalId);
-```
-
-List loaded flash modules in REPL:
-
-```js
-require("Storage").list()
-```
-
-Erase all flash storage from REPL:
-
-```js
-require("Storage").eraseAll();
-reset();
-```
-
-Erase all flash storage using CLI shortcut (no REPL needed):
-
-```bash
-espEraseAll
-```
-
-Run a JS file directly in RAM (not saved to flash):
-
-```bash
-espram examples/espruino_interactive/ImplementAction_inline.js
-```
-
-Upload as flash bootcode and execute (no per-module storage name):
+This writes code to flash bootcode (`.bootcde`) and runs it via `load()`.
+Code persists for boot behavior, but terminal is not kept attached.
 
 ```bash
 espboot examples/espruino_interactive/ImplementAction_inline.js
 ```
 
-Upload as flash bootcode, execute, and stay attached to view logs:
+#### Bootcode execution + attached console:
+
+Same bootcode write/run as `espboot`, but stays attached in terminal (`--watch` mode).
+Use this when you want live runtime logs after upload.
 
 ```bash
 espbootrepl examples/espruino_interactive/ImplementAction_inline.js
 ```
 
-### Upload Without Staying in REPL
+### 3. Stop timer-driven tests (if script defines `intervalId`):
 
-Use this when you do not want the terminal to remain in Espruino REPL mode:
-
-```bash
-espFsmPlus
+```js
+clearInterval(intervalId);
 ```
 
-Upload a single interactive script as a storage module:
-
-```bash
-espflash ImplementAction_inline examples/espruino_interactive/ImplementAction_inline.js
-```
-
-### Attach REPL
-
-```bash
-esprepl
-```
-
-Exit REPL and return to shell: `Ctrl+C`
-
-### REPL Checks
+## REPL Reference Commands
 
 List storage modules:
 
@@ -306,7 +254,7 @@ List storage modules:
 require("Storage").list()
 ```
 
-Confirm current FSMPlus source has action runner code:
+Confirm flashed engine contains action runner:
 
 ```js
 var s = require("Storage").read("xstate_fsmPlus");
@@ -319,24 +267,17 @@ Reset runtime:
 reset();
 ```
 
-## Suite Test Compare Commands
-
-Run scenario in REPL:
+Erase storage from REPL:
 
 ```js
-var t = require("run_greenhouse");
-t.run();
+require("Storage").eraseAll();
+reset();
 ```
 
-Diff results offline:
+Erase storage from shell:
 
 ```bash
-node projects/xstate-fsmPlus/tests/diff_trace.js greenhouse espruino
+espEraseAll
 ```
 
-Diff a specific timestamped file:
-
-```bash
-node projects/xstate-fsmPlus/tests/diff_trace.js greenhouse espruino --file \
-  projects/xstate-fsmPlus/tests/results/espruino/greenhouse.20260210_120522.trace.txt
-```
+Exit REPL and return to shell: `Ctrl+C`
