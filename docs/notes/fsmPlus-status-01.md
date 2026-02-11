@@ -1,50 +1,53 @@
 # FSMPlus Status Summary (from Flat FSM baseline)
 
-This note summarises the **functional changes** from the flat Espruino FSM
-(`projects/xstate-fsm-espruino/src/xstate-fsm.js`) to the current FSMPlus engine
-(`projects/xstate-fsmPlus/src/xstate_fsmPlus.js`).
+This note summarises the functional state of FSMPlus versus the flat baseline:
+- Flat baseline: `projects/xstate-fsm-espruino/src/xstate-fsm.js`
+- Current engine: `projects/xstate-fsmPlus/src/xstate_fsmPlus.js`
 
-## What’s working now
+## What is implemented now
 
-- **Hierarchical state support**: compound (nested) states using dot‑path identifiers.
-- **Initial substate resolution**: compound targets resolve to their initial leaf.
-- **Parent fallback lookup**: walk ancestors for event handlers; nearest wins.
-- **Guarded transition arrays**: multiple candidates per event; first passing guard selected.
-- **Preprocessing**: flattened lookup table keyed by dot‑path IDs.
-- **Assign precedence**: `assign` actions run before other transition actions.
-- **Runtime API continuity**: v4‑shaped `createMachine`, `interpret`, `state.value`/`context`.
-- **Runtime configuration overrides**: `withConfig()` and `withContext()` supported.
+- Hierarchical states with dot-path identity.
+- Initial leaf resolution for compound states.
+- Parent-fallback transition lookup (leaf to root).
+- Guard arrays with first-passing-candidate selection.
+- Preprocessed state lookup with parent links and resolved initial leaves.
+- LCCA-based transition pathing for compound transitions.
+- Entry/exit/action ordering for targeted transitions: exit actions -> transition actions -> entry actions.
+- Targetless transitions execute transition actions only (no exit/entry traversal).
+- Self-transition handling with re-entry behavior via LCCA parent adjustment.
+- Assign precedence: assign actions are applied before non-assign transition actions.
+- `matches()` supports exact leaf match and ancestor-prefix match (`state.matches("a.b")` true for `a.b.c`).
+- Runtime option/config support: `createMachine(config, options)`, `machine.withConfig(overrideOptions, contextOverride)`, `machine.withContext(contextOverride)`.
+- Action/guard resolution by name from options maps.
+- Interpreter executes actions at runtime (not just returns action descriptors).
 
-## High‑Level Code Changes (as reflected in source comments)
+## Recent fixes and validation
 
-- **Constants and helpers**: centralized enums and utility helpers for event normalization
-  and state matching.
-- **Transition selection block**: explicit guard handling plus ancestor fallback traversal.
-- **Preprocessing block**: flattening of nested config into a lookup and initial resolution.
-- **Machine creation block**: transition path that applies assigns first, then actions,
-  and resolves compound targets to leaf states.
-- **Interpreter lifecycle block**: `start`/`send`/`subscribe` flow retained for v4‑style API.
+- Fixed missing action execution path in interpreter by adding runtime action runner in `interpret()`.
+- Fixed LCCA membership bug for state names like `"on"` by changing membership check to own-property test.
+- Result of LCCA fix: entry actions now execute correctly for `off -> on` transitions where state id is `"on"`.
+- Hardware validation on ESP32-C3 now confirms all three action implementation patterns toggle LED correctly: inline function actions in machine config, named actions via `withConfig`, named actions via `createMachine(..., options)`.
 
-## What’s still missing for full  Minimum Viable Hierarchical Engine. MVHE semantics
+## High-level engine structure (current)
 
-- **Entry/exit action ordering** for compound transitions (ADR‑0004).
-- **LCCA‑based exit/entry sets** for hierarchical transitions.
-- **Targetless transitions** (actions only, no exit/entry).
-- **Self‑transition semantics** (re‑entry with correct exit/entry ordering).
+- Helpers: event normalization, map merges, action resolution, matcher logic.
+- Transition selection: guard handling and ancestor fallback resolution.
+- Preprocessing: flattened lookup, parent links, resolved initial leaves.
+- Hierarchical traversal: ancestor chains, LCCA discovery, exit/entry action collection.
+- Machine transition: assign-first context update, target resolution, ordered action set assembly.
+- Interpreter: lifecycle (`start/send/stop/subscribe`) and runtime action execution.
+
+## What is still open / deferred
+
+- Export ergonomic `assign()` helper from `xstate_fsmPlus` (currently scenarios use local helper pattern).
+- Add debug flag to gate verbose logging.
+- Relative targets and `#id` targets (likely preprocessing map extension).
+- String target shorthand support (for example `on: { EVT: "next" }`).
+- Wildcard and descriptor-based event matching (for example `*`, `sensor.*`, partial descriptors).
+- Final state semantics and done events.
+- Review/align `state.changed` behavior against XState v4 edge cases.
+- Parameterized guard helper API is not implemented; closures over `(context, event)` are supported.
 
 ## Summary
 
-FSMPlus is now a **hierarchical extension** of the flat Espruino FSM. It adds
-compound states, parent fallback resolution, and guarded transition selection
-while maintaining the same runtime API and Espruino constraints. The remaining
-work is to complete hierarchical action semantics (entry/exit/LCCA and related
-ordering) to reach full MVHE parity.
-
-## Next Steps / TODO
-
-- Export an `assign()` helper from `xstate_fsmPlus` for parity and ergonomic usage.
-- Add a debug flag to toggle verbose engine logging.
-- Consider wildcard (`*`) transitions for per-state fallback.
-- Consider `final` state semantics (done events / completion handling).
-- Note: no built-in parameterized guard helpers; closures over `(context, event)` work.
-- Consider aligning `state.changed` semantics with XState v4.
+FSMPlus has moved beyond baseline MVHE and now includes the core hierarchical transition semantics, ordered action behavior, runtime action execution, and option-driven action/guard resolution. The current gap is mainly API/compatibility enhancements and optional matching semantics, rather than core hierarchical behavior.
