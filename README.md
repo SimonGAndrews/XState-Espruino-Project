@@ -62,13 +62,22 @@ Testing is **scenario-driven** and trace-based:
 
 See:
 
-`docs/notes/testing-strategy.md` (when present) and
+`docs/governance/testing-strategy.md` and
 `projects/xstate-fsmPlus/tests/`.
 
 ## Key Docs
 
 - Background and motivation  
   `docs/governance/background.md`
+
+- Testing strategy and ownership  
+  `docs/governance/testing-strategy.md`
+
+- FSMPlus status and backlog (canonical)  
+  `docs/governance/fsmPlus-status-01.md`
+
+- Espruino CLI test workflow (operator guide)  
+  `tools/README_espruino.md`
 
 - Architectural decisions (ADRs)  
   `docs/decisions/`
@@ -79,7 +88,7 @@ See:
 ## Status
 
 FSMPlus is the active development track. XFSM is planned once MVHE parity is
-stable and well-tested. See `docs/notes/fsmPlus-status-01.md` for current
+stable and well-tested. See `docs/governance/fsmPlus-status-01.md` for current
 status and next steps.
 
 ## Acknowledgements

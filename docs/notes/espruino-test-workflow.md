@@ -1,13 +1,18 @@
-# Espruino Test Workflow
+# Espruino Test Workflow (Notes)
 
-This note documents the **standard Espruino test flow** used in this repo so
-future Codex threads can resume with minimal context loss.
+This note is a **supporting operational note** for thread handover and Codex
+interaction conventions.
+
+Canonical docs for this area are:
+- Strategy and policy: `docs/governance/testing-strategy.md`
+- CLI and terminal commands: `tools/README_espruino.md`
+- Engine status/TODO: `docs/governance/fsmPlus-status-01.md`
 
 ## Summary
 
 - Use the helper tool to **upload modules** and **prepare a results file**.
 - Execute the test in the Espruino REPL.
-- Paste the trace between `TRACE BEGIN/END` into the prepared results file.
+- Paste the trace between `TRACE_START/TRACE_END` into the prepared results file.
 - Run the diff tool offline to compare against expected output.
 
 ## Trace Capabilities (What We Compare)
@@ -73,6 +78,9 @@ When asked to run an Espruino test, Codex should respond with:
 2. **Results file path** to paste TRACE lines into
 3. **REPL command** to execute the test
 4. **Diff command** (optional)
+
+This section defines collaboration convention for Codex sessions; command
+details should remain in `tools/README_espruino.md`.
 
 ## Example (Greenhouse)
 

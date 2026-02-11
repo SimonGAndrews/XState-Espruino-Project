@@ -78,7 +78,7 @@ Once accepted, ADRs should not be modified except to mark them as superseded.
 
 ## Relationship to Other Documentation
 
-- Project background and history: `docs/background.md`
+- Project background and history: `docs/governance/background.md`
 - External standards and links: `docs/references/`
 - Ongoing summaries and working notes: `docs/notes/`
 

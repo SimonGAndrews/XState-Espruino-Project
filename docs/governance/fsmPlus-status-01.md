@@ -43,9 +43,13 @@ This note summarises the functional state of FSMPlus versus the flat baseline:
 - Add debug flag to gate verbose logging.
 - Relative targets and `#id` targets (likely preprocessing map extension).
 - String target shorthand support (for example `on: { EVT: "next" }`).
-- Wildcard and descriptor-based event matching (for example `*`, `sensor.*`, partial descriptors).
+- Eventless transitions (`always`) support and ordering behavior.
+- Wildcard transitions support (`*`) as per-state fallback.
+- Dotted/descriptor event matching (for example `sensor.temp.high` descriptors).
+- Partial/wildcard descriptor matching (for example `sensor.*`, `sensor.temp.*`).
 - Final state semantics and done events.
 - Review/align `state.changed` behavior against XState v4 edge cases.
+- Consider `onTransition` convenience API (currently `subscribe` provides equivalent observer path).
 - Parameterized guard helper API is not implemented; closures over `(context, event)` are supported.
 
 ## Summary
