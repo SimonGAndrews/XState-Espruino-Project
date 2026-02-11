@@ -242,7 +242,7 @@ function findLCCA(sourceValue, targetValue, stateLookup) {
 
   var targetChain = getAncestorChain(targetValue, stateLookup);
   for (i = 0; i < targetChain.length; i++) {
-    if (sourceSet[targetChain[i]]) return targetChain[i];
+    if (Object.prototype.hasOwnProperty.call(sourceSet, targetChain[i])) return targetChain[i];
   }
 
   return null;
@@ -432,11 +432,29 @@ function interpret(machine) {
   var status = InterpreterStatus.NotStarted;
   var listeners = {};
 
+  function runActions(actions, context, eventObject) {
+    if (!actions || !actions.length) return;
+    var i = 0;
+    for (i = 0; i < actions.length; i++) {
+      var action = actions[i];
+      if (!action) continue;
+      if (action.type === ASSIGN_ACTION) continue;
+      var resolved = resolveAction(action, machine._options);
+      if (typeof resolved === 'function') {
+        resolved(context, eventObject);
+      } else if (resolved && typeof resolved.exec === 'function') {
+        resolved.exec(context, eventObject);
+      }
+    }
+  }
+
   var service = {
     _machine: machine,
     send: function (event) {
       if (status !== InterpreterStatus.Running) return;
-      state = machine.transition(state, event);
+      var eventObject = toEventObject(event);
+      state = machine.transition(state, eventObject);
+      runActions(state.actions, state.context, eventObject);
       console.log("New state after transition:", state.value);
       Object.keys(listeners).forEach(key => listeners[key](state));
     },
@@ -471,6 +489,7 @@ function interpret(machine) {
 
       status = InterpreterStatus.Running;
       console.log("FSM started with initial state:", state.value);
+      runActions(state.actions, state.context, INIT_EVENT);
       return service;
     },
     stop: function () {
