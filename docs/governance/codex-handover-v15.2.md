@@ -185,6 +185,8 @@ Primary goal:
 
 Backlog source:
 - `docs/governance/fsmPlus-status-01.md` (`What is still open / deferred`)
+- v15.3 normative implementation baseline:
+  - `docs/governance/v15.3-decision-requests.md`
 
 ## ADR Alignment Gaps (Open)
 
@@ -211,8 +213,12 @@ Likely next technical candidates:
 
 ## Suggested First Prompt for Next Thread
 
-“Open `XState-Espruino-Project` on branch `v15.2-configs`.
-Use `docs/governance/fsmPlus-status-01.md` as the canonical backlog and
-`tools/README_espruino.md` for execution commands.
-Continue FSMPlus development from current stable v15.2 state.
-Preserve branch-first workflow (version branch first, promote stable work to main).”
+“Open `XState-Espruino-Project` on branch `v15.3-dev`.
+Read first:
+1) `docs/governance/codex-handover-v15.2.md`
+2) `docs/governance/fsmPlus-status-01.md`
+3) `docs/governance/v15.3-decision-requests.md`
+4) `docs/governance/testing-strategy.md`
+5) `tools/README_espruino.md`
+Treat `docs/governance/v15.3-decision-requests.md` as the normative v15.3 implementation baseline.
+Preserve branch-first workflow (version branch first, promote stable work to main only after verification).”
