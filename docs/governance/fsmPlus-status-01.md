@@ -52,6 +52,24 @@ This note summarises the functional state of FSMPlus versus the flat baseline:
 - Consider `onTransition` convenience API (currently `subscribe` provides equivalent observer path).
 - Parameterized guard helper API is not implemented; closures over `(context, event)` are supported.
 
+## ADR alignment gaps (must close)
+
+- ADR-0003 preprocessing validation is incomplete:
+  - missing fail-fast validation for invalid `initial` references
+  - missing fail-fast validation for unknown transition targets
+  - duplicate-id validation not explicitly enforced
+- ADR-0001 exclusion of parallel states is not explicitly validated/rejected at preprocess time.
+- ADR traceability gap:
+  - runtime action execution and `withConfig`/`withContext` are implemented and tested,
+    but not yet captured by a dedicated ADR update.
+
+## ADR gap closure actions (next thread)
+
+1. Implement fail-fast preprocessing validation required by ADR-0003.
+2. Add explicit parallel-state rejection during preprocessing per ADR-0001.
+3. Add or update ADR(s) to record v15.2 runtime/API decisions (`withConfig`/`withContext`, runtime action execution).
+4. Add targeted tests for validation paths (invalid `initial`, unknown target, parallel config rejection).
+
 ## Summary
 
 FSMPlus has moved beyond baseline MVHE and now includes the core hierarchical transition semantics, ordered action behavior, runtime action execution, and option-driven action/guard resolution. The current gap is mainly API/compatibility enhancements and optional matching semantics, rather than core hierarchical behavior.

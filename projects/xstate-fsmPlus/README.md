@@ -89,7 +89,7 @@ FSMPlus is tested primarily using **scenario-driven traces**:
 
 See:
 
-- `docs/notes/testing-strategy.md`
+- `docs/governance/testing-strategy.md`
 - `examples/` (once greenhouse scenarios are added)
 
 ## Runtime Configuration (Actions/Guards)
