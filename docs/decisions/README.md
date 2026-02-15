@@ -76,6 +76,17 @@ ADRs are numbered sequentially to provide stable references, for example:
 
 Once accepted, ADRs should not be modified except to mark them as superseded.
 
+## Quick Index
+
+- `ADR-0001-no-parallel-states.md` — Exclude parallel states from initial implementations.
+- `ADR-0002-state-representation.md` — Use dot-path identifiers and `matches()` semantics.
+- `ADR-0003-preprocess-config.md` — Preprocess machine config into lookup tables.
+- `ADR-0004-action-order.md` — Entry/exit/transition action ordering for compound transitions.
+- `ADR-0005-assign-action.md` — `assign` actions execute before other transition actions.
+- `ADR-0006-parent-fallback.md` — Parent fallback transition resolution in compound states.
+- `ADR-0007-Tooling-Compatibility.md` — Tooling-first compatibility and v4-shaped runtime API.
+- `ADR-0008-espruino-performance-strategy.md` — Phased performance strategy for FSMPlus on Espruino (Proposed).
+
 ## Relationship to Other Documentation
 
 - Project background and history: `docs/governance/background.md`

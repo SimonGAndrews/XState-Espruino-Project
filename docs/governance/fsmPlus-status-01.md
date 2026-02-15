@@ -70,6 +70,7 @@ This note summarises the functional state of FSMPlus versus the flat baseline:
 3. Add or update ADR(s) to record v15.2 runtime/API decisions (`withConfig`/`withContext`, runtime action execution).
 4. Add targeted tests for validation paths (invalid `initial`, unknown target, parallel config rejection).
 5. v15.3 normative baseline is in `docs/governance/v15.3-decision-requests.md`.
+6. Performance strategy baseline is in `docs/decisions/ADR-0008-espruino-performance-strategy.md` (Proposed).
 
 ## Summary
 
