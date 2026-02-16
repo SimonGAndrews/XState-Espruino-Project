@@ -86,6 +86,8 @@ Once accepted, ADRs should not be modified except to mark them as superseded.
 - `ADR-0006-parent-fallback.md` — Parent fallback transition resolution in compound states.
 - `ADR-0007-Tooling-Compatibility.md` — Tooling-first compatibility and v4-shaped runtime API.
 - `ADR-0008-espruino-performance-strategy.md` — Phased performance strategy for FSMPlus on Espruino (Proposed).
+- `ADR-0009-relative-target-resolution.md` — Relative target support resolved during preprocessing (Proposed).
+- `ADR-0010-action-contract-and-execution.md` — Action shape normalization and v4-aligned execution/meta contract (Proposed).
 
 ## Relationship to Other Documentation
 

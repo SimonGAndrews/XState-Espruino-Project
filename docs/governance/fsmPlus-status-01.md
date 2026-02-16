@@ -44,6 +44,7 @@ This note summarises the functional state of FSMPlus versus the flat baseline:
 - Relative targets and `#id` targets (likely preprocessing map extension).
 - String target shorthand support (for example `on: { EVT: "next" }`).
 - Eventless transitions (`always`) support and ordering behavior.
+- Delayed transitions (`after`) support and timer semantics/ordering behavior.
 - Wildcard transitions support (`*`) as per-state fallback.
 - Dotted/descriptor event matching (for example `sensor.temp.high` descriptors).
 - Partial/wildcard descriptor matching (for example `sensor.*`, `sensor.temp.*`).

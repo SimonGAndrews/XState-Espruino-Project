@@ -208,6 +208,7 @@ Likely next technical candidates:
 - relative/`#id` targets
 - string target shorthand
 - eventless (`always`) transitions
+- delayed (`after`) transitions
 - wildcard/descriptor event matching
 - final state semantics
 
