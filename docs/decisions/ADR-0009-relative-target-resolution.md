@@ -19,6 +19,8 @@ Without relative target support:
 - users must manually rewrite targets to absolute dot paths
 - runtime may enter invalid states if unknown targets are not resolved and
   validated early
+- error-free use of XState VS Code plugin/Stately-generated nested targets is
+  blocked
 
 At the same time, Espruino runtime constraints favor moving string parsing and
 resolution work out of the event hot path and into one-time preprocessing
@@ -31,6 +33,8 @@ preprocessing into canonical absolute dot-path targets.
 
 Runtime transition execution will only use pre-resolved canonical targets and
 must not perform relative-resolution work per event.
+This ADR is a required compatibility step for error-free usage of VS Code
+XState plugin/Stately nested target output within FSMPlus scope.
 
 ## Resolution Rules
 

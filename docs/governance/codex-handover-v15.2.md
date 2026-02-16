@@ -182,6 +182,7 @@ This pattern should be reused in new threads unless direct bench access is confi
 
 Primary goal:
 - keep FSMPlus stable and well-tested before extending semantics.
+- v15.3 includes explicit Stately/Visualizer compatibility work (relative targets + action contract), tracked by `ADR-0009`, `ADR-0010`, and the `stately_basic_menu_compat` scenario.
 
 Backlog source:
 - `docs/governance/fsmPlus-status-01.md` (`What is still open / deferred`)

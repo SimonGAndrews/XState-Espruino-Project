@@ -42,6 +42,9 @@ This note summarises the functional state of FSMPlus versus the flat baseline:
 - Export ergonomic `assign()` helper from `xstate_fsmPlus` (currently scenarios use local helper pattern).
 - Add debug flag to gate verbose logging.
 - Relative targets and `#id` targets (likely preprocessing map extension).
+- Relative target and action-contract gaps are current blockers for error-free
+  VS Code XState plugin/Stately workflow usage; tracked by `ADR-0009` and
+  `ADR-0010`.
 - String target shorthand support (for example `on: { EVT: "next" }`).
 - Eventless transitions (`always`) support and ordering behavior.
 - Delayed transitions (`after`) support and timer semantics/ordering behavior.
@@ -76,3 +79,4 @@ This note summarises the functional state of FSMPlus versus the flat baseline:
 ## Summary
 
 FSMPlus has moved beyond baseline MVHE and now includes the core hierarchical transition semantics, ordered action behavior, runtime action execution, and option-driven action/guard resolution. The current gap is mainly API/compatibility enhancements and optional matching semantics, rather than core hierarchical behavior.
+v15.3 explicitly includes Stately/Visualizer compatibility work, anchored by `ADR-0009` and `ADR-0010` plus the `stately_basic_menu_compat` scenario.

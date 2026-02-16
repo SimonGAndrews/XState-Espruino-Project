@@ -17,6 +17,8 @@ two practical needs:
 - descriptor actions carrying custom fields (for example `params`)
 - a stable action execution contract that aligns with XState v4-style semantics
   and remains practical on Espruino
+- closing this gap is required for error-free usage of VS Code XState
+  plugin/Stately action descriptors in FSMPlus workflows
 
 XState v4 references indicate:
 
@@ -75,6 +77,9 @@ metadata behavior:
      not crash runtime dispatch by default.
    - behavior is observable in traces/logs; stricter fail-fast policy may be
      introduced separately if needed.
+
+This ADR is a required compatibility step for plugin-generated descriptor action
+usage in v15.3 Stately/Visualizer workflows.
 
 ## Non-Goals
 
