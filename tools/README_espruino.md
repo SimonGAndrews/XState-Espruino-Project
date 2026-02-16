@@ -281,3 +281,68 @@ espEraseAll
 ```
 
 Exit REPL and return to shell: `Ctrl+C`
+
+## Performance Bench (GPIO + Logic Analyzer)
+
+Bench harness:
+
+- `examples/espruino_interactive/perf_gpio_bench.js`
+
+Run quickly (RAM mode):
+
+```bash
+espram examples/espruino_interactive/perf_gpio_bench.js
+```
+
+For repeat runs from storage:
+
+```bash
+espflash perf_gpio_bench examples/espruino_interactive/perf_gpio_bench.js
+esprepl
+```
+
+```js
+require("perf_gpio_bench").run();
+```
+
+Result logging template:
+
+- `projects/xstate-fsmPlus/tests/perf_gpio_results_template.md`
+
+Expected analyzer trace shape:
+
+```text
+Time --->
+
+MARKER_PIN (D7)
+  _|¯|______________________________  Case 1 marker (1 pulse)
+  _|¯|_|¯|__________________________  Case 2 marker (2 pulses)
+  _|¯|_|¯|_|¯|______________________  Case 3 marker (3 pulses)
+  _|¯|_|¯|_|¯|_|¯|__________________  Case 4 marker (4 pulses)
+  _______________________|¯¯¯¯|_____  End marker (~20 ms high)
+
+PULSE_PIN (D8) inside each case
+  __|¯|__|¯|__|¯|__|¯|__...
+     <w>  <w>  <w>
+        <--- g --->
+```
+
+Measurement points:
+
+- `w` (pulse high width on `PULSE_PIN`): per-event processing window around
+  `service.send(...)`; use this as primary external latency metric.
+- `g` (low gap on `PULSE_PIN`): includes configured `GAP_MS` + loop overhead;
+  use as a consistency/sanity check between runs.
+- `MARKER_PIN` pulse count identifies case boundaries:
+  - 1 pulse: `CASE1_NOOP`
+  - 2 pulses: `CASE2_TARGETLESS`
+  - 3 pulses: `CASE3_TARGETED_GO`
+  - 4 pulses: `CASE4_TARGETED_BACK`
+
+Interpretation notes:
+
+- Internal `AVG_US` printed by harness includes GPIO toggle + delay overhead and
+  is useful for quick comparisons.
+- External pulse-width stats (`w`) are the cleaner runtime metric for
+  before/after performance changes.
+- Disable debug logging for meaningful performance captures.
