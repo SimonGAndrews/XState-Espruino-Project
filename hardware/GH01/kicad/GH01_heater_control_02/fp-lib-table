@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "XIAO_ESP32C3")(type "KiCad")(uri "${KIPRJMOD}/XIAO_ESP32C3.pretty")(options "")(descr "Project-local XIAO ESP32C3 footprints"))
+  (lib (name "CX240D5")(type "KiCad")(uri "${KIPRJMOD}/CX240D5.pretty")(options "")(descr "Project-local CX240D5 footprints"))
+)

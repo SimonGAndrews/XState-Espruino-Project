@@ -184,6 +184,27 @@ Target concept: one incoming `240V AC` supply cable feeds both heater control an
 - Apply mains-side protection and termination suitable for enclosure use (fuse/protected entry/strain relief).
 - Follow Seeed guidance when feeding 5V externally: include diode isolation to prevent backfeed.
 
+### Mains Fuse Specification (Preferred)
+
+For GH01 prototype v1, use a replaceable mains fuse on the incoming Live (`L`) conductor:
+- Fuse type: time-delay (`T`, slow-blow)
+- Preferred rating: `T250mA`
+- Alternate rating (if nuisance trips during start-up): `T315mA`
+- Voltage rating: `250VAC`
+- Format: `5x20mm` cartridge
+- Construction: ceramic / high breaking capacity (HBC) preferred
+
+Preferred mechanical implementation:
+- Panel-mount replaceable fuse holder in the enclosure.
+- Wire `L_IN -> fuse holder -> L_FUSED_OUT` before SSR load path.
+- Candidate part reference: Multicomp Pro `CFH05` panel fuse holder, `5x20mm`
+  - CPC: `FF03722`
+  - Link: `https://cpc.farnell.com/multicomp-pro/cfh05/fuse-holder-screw-cap-20x5mm/dp/FF03722`
+
+Schematic/PCB note:
+- For current design stage, model the fuse path in schematic and use connector/wiring points as needed.
+- Final PCB footprint selection can be deferred; if panel mount is retained, PCB fuse footprint is optional.
+
 ### External 5V Diode Isolation (Implementation Instruction)
 
 Required connection (single diode method):
@@ -219,7 +240,7 @@ Decided defaults for GH01 prototype v1:
 Still open before final design freeze:
 - Confirm measured `3.3V` current and regulator temperature at worst-case load.
 - Confirm USB + external 5V coexistence behavior and define final allowed service mode.
-- Confirm final mains protection details (fuse rating/type, MOV/snubber choices, terminals).
+- Confirm final mains suppression details (MOV/snubber choices) and terminal hardware selection.
 - Confirm physical AC/LV partition distances in final enclosure layout.
 
 ### KiCad Connectivity Review, Findings, Advice and Decisions (Draft)
@@ -451,7 +472,7 @@ Current path when ON:
 ### A2) AC Load Side (Mains -> SSR Output -> Warming Cable)
 
 ```text
-240V AC Live (L) ---- Fuse/Protection ---- CX240D5 Output terminal 1
+240V AC Live (L) ---- Panel Fuse Holder (T250mA, 5x20, 250VAC) ---- CX240D5 Output terminal 1
 CX240D5 Output terminal 2 ----------------- Soil warming cable Live
 
 240V AC Neutral (N) ------------------------ Soil warming cable Neutral
