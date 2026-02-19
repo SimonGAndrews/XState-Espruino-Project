@@ -1,0 +1,6 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Device")(type "KiCad")(uri "${KIPRJMOD}/Device.kicad_sym")(options "")(descr "Project-local Device library"))
+  (lib (name "Connector_Generic")(type "KiCad")(uri "${KIPRJMOD}/Connector_Generic.kicad_sym")(options "")(descr "Project-local Connector_Generic library"))
+  (lib (name "power")(type "KiCad")(uri "${KIPRJMOD}/power.kicad_sym")(options "")(descr "Project-local power symbols"))
+)

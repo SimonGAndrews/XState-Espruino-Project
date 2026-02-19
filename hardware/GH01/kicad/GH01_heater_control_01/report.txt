@@ -1,0 +1,13 @@
+Annotated GND as #PWR01.
+Annotated +5V as #PWR02.
+Annotated Mains Fuse as F1.
+Annotated WARMING_CABLE as J_CABLE1.
+Annotated AC_IN L/N/PE as J_MAINS1.
+Annotated CX240D5_IN as J_SSR_IN1.
+Annotated CX240D5_OUT as J_SSR_OUT1.
+Annotated XIAO Pins as J_XIAO1.
+Annotated AO3400A as Q_DRV1.
+Annotated 100R as R_GATE1.
+Annotated 100k as R_PULLDOWN1.
+Annotation complete.
+Annotation complete.
