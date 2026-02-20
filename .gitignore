@@ -8,6 +8,7 @@ misc/
 **/*.bak
 **/*.tmp
 **/*-backups/*.zip
+**/*-backups/manual_rollback_*/
 
 # KiCad local/session state
 **/*.kicad_prl

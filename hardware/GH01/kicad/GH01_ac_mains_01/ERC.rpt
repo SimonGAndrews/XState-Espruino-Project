@@ -1,0 +1,11 @@
+ERC report (2026-02-20T23:52:24+0000, Encoding UTF8)
+
+***** Sheet /
+[lib_symbol_mismatch]: Symbol 'CX240D5' doesn't match copy in library 'CX240D5'
+    ; warning
+    @(5.400 in, 2.500 in): Symbol SSR1 [CX240D5]
+[lib_symbol_mismatch]: Symbol 'Conn_01x03' doesn't match copy in library 'Connector_Generic'
+    ; warning
+    @(6.700 in, 2.700 in): Symbol J_CABLE1 [Conn_01x03]
+
+ ** ERC messages: 2  Errors 0  Warnings 2

@@ -152,6 +152,21 @@ Device and value guidance:
 | Boot strap / recovery | Boot switch | Input | Boot strap | D9 | GPIO9 | Normally HIGH via 10k pull-up; switch to GND for forced download mode |
 | Touch input 3 | TTP223 #3 OUT | Input | Digital GPIO | D10 | GPIO10 | Through-lid capacitive touch input |
 
+### KiCad V2 MCU Wiring Snapshot (Current)
+
+This table records what is currently wired in `GH01_heater_control_02` from exported netlist, so design intent and schematic state can be compared quickly.
+
+| Signal Path | Design Intent (`GH01_hardware.md`) | Current KiCad V2 Netlist | Status |
+|---|---|---|---|
+| Heater control GPIO to gate resistor | `U1:D6 (GPIO21) -> R_GATE1:1` | `U1:D6 -> R_GATE1:1` | Pass |
+| Gate resistor to MOSFET gate | `R_GATE1:2 -> Q1:G` | `R_GATE1:2 -> Q1:2 (G)` | Pass |
+| Gate pulldown | `Q1:G -> R_PULLDOWN1:1 -> GND` | `Q1:2 (G) -> R_PULLDOWN1:1 -> GND` | Pass |
+| MOSFET source reference | `Q1:S -> GND` | `Q1:3 (S) -> GND` | Pass |
+| XIAO 5V input feed | `D1:K -> U1:VUSB` | `D1:K -> U1:14 (VUSB)` | Pass |
+
+Note:
+- Current netlist now aligns with design intent for heater-control GPIO (`D6`).
+
 ### Wiring Notes (Boot Safety)
 
 - `D0/GPIO2` is a strapping pin and must be HIGH at boot.

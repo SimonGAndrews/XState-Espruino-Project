@@ -18,8 +18,12 @@ Open the project from the version folder using `.kicad_pro` (preferred).
 
 | Version Folder | Project Name | Status | Summary |
 |---|---|---|---|
-| `GH01_heater_control_01` | `GH01_heater_control` | Active baseline | Initial heater control documentation schematic: XIAO GPIO control, AO3400A low-side MOSFET driver, CX240D5 SSR input/output blocks, fused AC live path to warming cable, neutral/PE connection blocks. |
+| `GH01_heater_control_01` | `GH01_heater_control` | Active baseline | Initial heater control documentation schematic: XIAO GPIO control, low-side MOSFET driver stage, CX240D5 SSR input/output blocks, fused AC live path to warming cable, neutral/PE connection blocks. |
 | `GH01_heater_control_02` | `GH01_heater_control` | V2 template | Working copy for migration toward KiCad standard symbols/footprints and cleaner library management. Use this folder to replace symbols with preferred library choices, then re-validate against the connection matrix. |
+| `GH01_low_voltage_01` | (to create in KiCad) | Scaffold | Planned low-voltage-only board project workspace (MCU, sensors/UI, driver/control side). |
+| `GH01_ac_mains_01` | (to create in KiCad) | Scaffold | Planned AC/mains-only board project workspace (mains in, fuse, PSU, SSR AC path). |
+| `interfaces` | docs only | Active | Shared contract docs for board-to-board nets during split-board design. |
+| `libs` | shared custom libs | Active | Shared custom symbols/footprints used across GH01 board projects. |
 
 ## Notes
 

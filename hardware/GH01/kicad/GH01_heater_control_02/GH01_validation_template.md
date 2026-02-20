@@ -39,28 +39,28 @@ Connection matrix:
 
 | Check | Expected | Result (Pass/Fail) | Evidence/Notes |
 |---|---|---|---|
-| SSR input + | `+5V -> U2:3 (IN+)` |  |  |
-| SSR input - | `Q1:2 (D) -> U2:4 (IN-)` |  |  |
+| SSR input + | `D1:K net -> SSR1:3 (+DC)` |  |  |
+| SSR input - | `Q1:1 (D) -> SSR1:4 (-DC)` |  |  |
 | MOSFET source ground | `Q1:3 (S) -> GND` |  |  |
-| AC live path | `J_MAINS1:L -> F1 -> U2:1 -> U2:2 -> J_CABLE1:L` |  |  |
+| AC live path | `J_MAINS1:L -> F2 -> SSR1:1 -> SSR1:2 -> J_CABLE1:L` |  |  |
 | PE strategy | `J_MAINS1:PE routed to cable/enclosure PE` |  |  |
 
 ## Matrix Row Check
 
 | Net Name | Matrix Expectation | Schematic Observed | Result (Pass/Fail) | Notes |
 |---|---|---|---|---|
-| GPIO_HEAT_CTRL | `U1:D6 -> R_GATE1:1` |  |  |  |
-| GATE_DRIVE | `R_GATE1:2 -> Q1:1 (G)` |  |  |  |
-| GATE_PULLDOWN | `Q1:1 (G) -> R_PULLDOWN1:1` |  |  |  |
-| GND | `R_PULLDOWN1:2 -> #PWR01:GND` |  |  |  |
-| GND | `Q1:3 (S) -> #PWR01:GND` |  |  |  |
-| SSR_IN_PLUS | `#PWR02:+5V -> U2:3 (IN+)` |  |  |  |
-| SSR_IN_MINUS | `Q1:2 (D) -> U2:4 (IN-)` |  |  |  |
-| AC_L_IN | `J_MAINS1:L -> F1:1` |  |  |  |
-| AC_L_FUSED | `F1:2 -> U2:1` |  |  |  |
-| AC_L_SW | `U2:2 -> J_CABLE1:L` |  |  |  |
-| AC_N | `J_MAINS1:N -> J_CABLE1:N` |  |  |  |
-| AC_PE | `J_MAINS1:PE -> cable/enclosure PE strategy` |  |  |  |
+| HEAT_CTRL_GPIO | `U1:D6 -> R_GATE1:1` |  |  |  |
+| GATE_DRIVE | `R_GATE1:2 -> Q1:2 (G)` |  |  |  |
+| GATE_PULLDOWN | `Q1:2 (G) -> R_PULLDOWN1:1` |  |  |  |
+| MOSFET_SOURCE_GND | `Q1:3 (S) -> GND` |  |  |  |
+| SSR_IN_PLUS | `D1:K net -> SSR1:3 (+DC)` |  |  |  |
+| SSR_IN_MINUS | `Q1:1 (D) -> SSR1:4 (-DC)` |  |  |  |
+| VUSB_FEED | `D1:K net -> U1:VUSB` |  |  |  |
+| AC_L_IN | `J_MAINS1:L -> F2` |  |  |  |
+| AC_L_FUSED_BRANCH | `F2 -> SSR1:1 and J_PSU2:AC_L` |  |  |  |
+| AC_L_SWITCHED_OUT | `SSR1:2 -> J_CABLE1:L` |  |  |  |
+| AC_N | `J_MAINS1:N -> J_PSU2:AC_N and J_CABLE1:N` |  |  |  |
+| AC_PE | `J_MAINS1:PE -> J_CABLE1:Earth` |  |  |  |
 
 ## ERC Summary
 

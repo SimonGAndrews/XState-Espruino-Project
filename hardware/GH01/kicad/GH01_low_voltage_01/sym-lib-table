@@ -1,0 +1,7 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "AZ_Delivery")(type "KiCad")(uri "//wsl.localhost/Ubuntu-22.04/home/simon/SGAdev/XState-Espruino-Project/hardware/GH01/kicad/libs/symbols/AZ_Delivery.kicad_sym")(options "")(descr ""))
+  (lib (name "GH01_custom")(type "KiCad")(uri "//wsl.localhost/Ubuntu-22.04/home/simon/SGAdev/XState-Espruino-Project/hardware/GH01/kicad/libs/symbols/GH01_custom.kicad_sym")(options "")(descr ""))
+  (lib (name "xiao_esp32c3")(type "KiCad")(uri "//wsl.localhost/Ubuntu-22.04/home/simon/SGAdev/XState-Espruino-Project/hardware/GH01/kicad/libs/symbols/xiao_esp32c3.kicad_sym")(options "")(descr ""))
+  (lib (name "CX240D5")(type "KiCad")(uri "//wsl.localhost/Ubuntu-22.04/home/simon/SGAdev/XState-Espruino-Project/hardware/GH01/kicad/libs/symbols/CX240D5/CX240D5.kicad_sym")(options "")(descr ""))
+)

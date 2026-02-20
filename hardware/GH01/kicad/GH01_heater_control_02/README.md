@@ -22,7 +22,13 @@ Use these files for validation:
 
 ## Netlist Export (Current Working Method)
 
-Because KiCad is installed on Windows in this setup, export netlist from Windows terminal:
+Preferred quick method (KiCad UI):
+
+1. In Schematic Editor, use `File -> Export -> Netlist...`
+2. Save as:
+- `hardware/GH01/kicad/GH01_heater_control_02/GH01_heater_control.net`
+
+CLI method (same output format, useful for repeatable scripted checks):
 
 1. Open PowerShell.
 2. Run from repo root:

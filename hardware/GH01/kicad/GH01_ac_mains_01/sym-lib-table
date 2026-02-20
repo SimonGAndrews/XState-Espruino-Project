@@ -1,0 +1,7 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "GH01_custom")(type "KiCad")(uri "${KIPRJMOD}/../libs/symbols/GH01_custom.kicad_sym")(options "")(descr "Shared GH01 project custom symbols"))
+  (lib (name "xiao_esp32c3")(type "KiCad")(uri "${KIPRJMOD}/../libs/symbols/xiao_esp32c3.kicad_sym")(options "")(descr "Shared XIAO ESP32C3 symbols"))
+  (lib (name "CX240D5")(type "KiCad")(uri "${KIPRJMOD}/../libs/symbols/CX240D5/CX240D5.kicad_sym")(options "")(descr "Shared CX240D5 symbols"))
+  (lib (name "AZ_Delivery")(type "KiCad")(uri "${KIPRJMOD}/../libs/symbols/AZ_Delivery.kicad_sym")(options "")(descr "Shared AZ-Delivery symbols"))
+)

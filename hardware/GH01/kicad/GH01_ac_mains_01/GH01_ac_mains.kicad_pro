@@ -406,10 +406,12 @@
   },
   "libraries": {
     "pinned_footprint_libs": [],
-    "pinned_symbol_libs": []
+    "pinned_symbol_libs": [
+      "GH01_custom"
+    ]
   },
   "meta": {
-    "filename": "GH01_heater_control.kicad_pro",
+    "filename": "GH01_ac_mains.kicad_pro",
     "version": 3
   },
   "net_settings": {

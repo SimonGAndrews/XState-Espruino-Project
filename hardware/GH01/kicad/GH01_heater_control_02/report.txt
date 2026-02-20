@@ -1,0 +1,49 @@
+GH01 V2 Validation Snapshot
+Date: 2026-02-20
+Validator: Codex (netlist-first check)
+Files:
+- GH01_heater_control.net
+- ERC.rpt
+- GH01_connection_matrix.md
+
+Summary:
+- Netlist parsed and compared to V2 connection matrix.
+- Core power, SSR input polarity, MOSFET low-side topology, and mains fuse branching: PASS.
+- MCU heater control GPIO mapping now aligns with design intent.
+
+Key Results:
+1) HEAT_CTRL_GPIO
+   Expected: U1:D6 -> R_GATE1:1
+   Observed: U1:D6 -> R_GATE1:1
+   Result: PASS
+
+2) GATE_DRIVE
+   Expected/Observed: R_GATE1:2 -> Q1:2 (G)
+   Result: PASS
+
+3) MOSFET_SOURCE_GND
+   Expected/Observed: Q1:3 (S) -> GND
+   Result: PASS
+
+4) SSR_IN_PLUS
+   Expected/Observed: D1:K net -> SSR1:3 (+DC)
+   Result: PASS
+
+5) SSR_IN_MINUS
+   Expected/Observed: Q1:1 (D) -> SSR1:4 (-DC)
+   Result: PASS
+
+6) AC_L_FUSED_BRANCH
+   Expected/Observed: J_MAINS1:L -> F2 -> (SSR1:1 and J_PSU2:AC_L)
+   Result: PASS
+
+7) AC_N and AC_PE
+   Expected/Observed: N and PE continuity to cable side present
+   Result: PASS
+
+ERC Snapshot:
+- Errors: 0
+- Warnings: 3 (lib_symbol_mismatch only)
+
+Action Needed:
+- None on MCU heater-control GPIO mapping at this revision.
