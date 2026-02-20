@@ -6,4 +6,5 @@
   (lib (name "Connector_Generic")(type "KiCad")(uri "${KIPRJMOD}/Connector_Generic.kicad_sym")(options "")(descr "Project-local Connector_Generic library"))
   (lib (name "power")(type "KiCad")(uri "${KIPRJMOD}/power.kicad_sym")(options "")(descr "Project-local power symbols"))
   (lib (name "CX240D5")(type "KiCad")(uri "${KIPRJMOD}/CX240D5/CX240D5.kicad_sym")(options "")(descr ""))
+  (lib (name "AZ_Delivery")(type "KiCad")(uri "${KIPRJMOD}/AZ_Delivery.kicad_sym")(options "")(descr ""))
 )
