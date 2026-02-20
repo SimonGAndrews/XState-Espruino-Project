@@ -1,0 +1,13 @@
+misc/
+
+# KiCad transient/working files (do not commit)
+**/#auto_saved_files#
+**/_autosave-*.kicad_sch
+**/~*.kicad_sch.lck
+**/*.kicad_sch-bak
+**/*.bak
+**/*.tmp
+**/*-backups/*.zip
+
+# KiCad local/session state
+**/*.kicad_prl

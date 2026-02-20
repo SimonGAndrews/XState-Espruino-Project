@@ -82,35 +82,37 @@ Interim recommendation:
 ### Implementation (Driver Stage)
 
 Preferred control architecture:
-- XIAO GPIO drives an AO3400A MOSFET stage.
+- XIAO GPIO drives a BS170 MOSFET stage.
 - Driver stage switches SSR input current from low-voltage supply.
 - Do not rely on direct GPIO-to-SSR input drive for final build.
 - Note: SSR opto-isolation protects the AC/load side interface; it does not guarantee direct GPIO current-drive margin.
 
-Recommended wiring (AO3400A low-side MOSFET driver):
-- Driver device: `AO3400A` (logic-level N-MOSFET, SOT-23).
+Recommended wiring (BS170 low-side MOSFET driver):
+- Driver device: `BS170` (through-hole N-MOSFET, TO-92).
 - GPIO path:
-  - `XIAO D6 (GPIO21)` -> `R_GATE` (`100R` to `220R`) -> AO3400A Gate.
-  - AO3400A Gate -> `R_PULLDOWN` (`100k`) -> GND (forces OFF during boot/reset).
+  - `XIAO D6 (GPIO21)` -> `R_GATE` (`100R` to `220R`) -> BS170 Gate.
+  - BS170 Gate -> `R_PULLDOWN` (`100k`) -> GND (forces OFF during boot/reset).
 - Load-switch path:
-  - AO3400A Source -> GND.
-  - AO3400A Drain -> SSR input `-` (CX240D5 control negative).
+  - BS170 Source -> GND.
+  - BS170 Drain -> SSR input `-` (CX240D5 control negative).
   - SSR input `+` -> `+5V` low-voltage control rail.
 - Grounding:
-  - XIAO GND, AO3400A Source GND, and SSR control return must be common.
+  - XIAO GND, BS170 Source GND, and SSR control return must be common.
 
 Device and value guidance:
-- AO3400A suitability:
-  - Logic-level gate operation from `3.3V` GPIO.
-  - Large margin for SSR control current (CX240D5 typical input current around `15mA`).
+- BS170 suitability:
+  - Works as a simple low-side switch for the CX240D5 input current class.
+  - Keep gate drive and common-ground routing clean for consistent switching.
 - `R_GATE` (`100R` to `220R`):
   - Limits edge current/noise into gate and protects GPIO pin during transients.
 - `R_PULLDOWN` (`100k`):
   - Keeps gate low if MCU pin is floating at startup.
+- Pinout caution:
+  - Confirm the actual BS170 pin order from your specific datasheet before build/wiring (TO-92 variants can differ by vendor package view).
 - Optional protection (recommended in noisy enclosure):
   - Add small `TVS` or clamp on control rails if switching noise is observed.
 - Layout:
-  - Keep AO3400A and SSR control wiring short.
+  - Keep BS170 and SSR control wiring short.
   - Route MOSFET/SSR control traces away from AC wiring and antenna path.
 
 ## User Interface
@@ -144,7 +146,7 @@ Device and value guidance:
 | Touch input 2 | TTP223 #2 OUT | Input | Digital GPIO | D3 | GPIO5 | Through-lid capacitive touch input |
 | I2C bus SDA | OLED SSD1306 + BMP280 SDA | Bidirectional | I2C | D4 | GPIO6 | Shared I2C data line |
 | I2C bus SCL | OLED SSD1306 + BMP280 SCL | Output/Clock | I2C | D5 | GPIO7 | Shared I2C clock line |
-| Heater control | Driver stage input (to SSR control) | Output | Digital GPIO | D6 | GPIO21 | Drive AO3400A MOSFET stage; keep OFF by default at boot with gate pulldown |
+| Heater control | Driver stage input (to SSR control) | Output | Digital GPIO | D6 | GPIO21 | Drive BS170 MOSFET stage; keep OFF by default at boot with gate pulldown |
 | Logic analyzer ch1 | LA_OUT_1 | Output | Digital GPIO | D7 | GPIO20 | Timing/performance instrumentation |
 | Logic analyzer ch2 | LA_OUT_2 | Output | Digital GPIO | D8 | GPIO8 | Strap-related caution: keep HIGH at boot when D9 is LOW |
 | Boot strap / recovery | Boot switch | Input | Boot strap | D9 | GPIO9 | Normally HIGH via 10k pull-up; switch to GND for forced download mode |
@@ -407,21 +409,16 @@ Use a combined approach: separation + shielding + suppression.
 
 This appendix shows the intended GH01 heater-control wiring using:
 - XIAO `D6` GPIO
-- `AO3400A` low-side MOSFET driver
+- `BS170` low-side MOSFET driver
 - `CX240D5` SSR
 - 240V soil warming cable load
 
-Generated diagram files:
-- `hardware/GH01/diagrams/gh01_heater_control_wiring.svg`
-- `hardware/GH01/diagrams/gh01_heater_control_wiring.png`
-- Source: `hardware/GH01/diagrams/gh01_heater_control_wiring.dot`
+Generated diagram file:
+- `hardware/GH01/diagrams/gh01_heater_control_kicad_v2.png`
 
 Embedded wiring diagram:
 
-![GH01 Heater Control Wiring](diagrams/gh01_heater_control_wiring.svg)
-
-If your Markdown viewer does not render SVG, open:
-- `hardware/GH01/diagrams/gh01_heater_control_wiring.png`
+![GH01 Heater Control Wiring (KiCad v2)](diagrams/gh01_heater_control_kicad_v2.png)
 
 ### A1) Low-Voltage Control Side (MCU -> Driver -> SSR Input)
 
@@ -430,14 +427,14 @@ XIAO D6 (GPIO21)
     |
    [R_GATE 100R..220R]
     |
-AO3400A Gate
+BS170 Gate
     |
    [R_PULLDOWN 100k]
     |
    GND
 
-AO3400A Source ------------------------------ GND (common LV ground)
-AO3400A Drain ------------------------------- CX240D5 Input (-)
+BS170 Source -------------------------------- GND (common LV ground)
+BS170 Drain --------------------------------- CX240D5 Input (-)
 
 +5V control rail ---------------------------- CX240D5 Input (+)
 XIAO GND ------------------------------------ Common LV ground
@@ -448,12 +445,12 @@ Pin-level view (same circuit, explicit pin mapping):
 ```text
 XIAO ESP32C3
 ------------
-D6 / GPIO21 o----[R_GATE 100R..220R]----o AO3400A Gate (G)
-GND        o-----------------------------o AO3400A Source (S)
-GND        o-----------------------------o SSR Input (-) return node via AO3400A drain path
+D6 / GPIO21 o----[R_GATE 100R..220R]----o BS170 Gate (G)
+GND        o-----------------------------o BS170 Source (S)
+GND        o-----------------------------o SSR Input (-) return node via BS170 drain path
 
-AO3400A (SOT-23 N-MOSFET)
--------------------------
+BS170 (TO-92 N-MOSFET)
+----------------------
 Gate (G)   o<--- from XIAO D6 through R_GATE
 Source (S) o---- to common GND
 Drain (D)  o---- to SSR Input (-)
@@ -463,10 +460,10 @@ Drain (D)  o---- to SSR Input (-)
 CX240D5 SSR (control/input side)
 --------------------------------
 Input (+) o---- +5V control rail
-Input (-) o---- AO3400A Drain (D)
+Input (-) o---- BS170 Drain (D)
 
 Current path when ON:
-+5V rail -> SSR Input (+) -> SSR opto input -> SSR Input (-) -> AO3400A D-S -> GND
++5V rail -> SSR Input (+) -> SSR opto input -> SSR Input (-) -> BS170 D-S -> GND
 ```
 
 ### A2) AC Load Side (Mains -> SSR Output -> Warming Cable)
@@ -483,5 +480,5 @@ Protective Earth (PE) ---------------------- Enclosure/earth point as required
 
 - Keep low-voltage control wiring physically separated from AC wiring.
 - Do not connect AC Neutral/Earth directly to low-voltage GND.
-- Keep AO3400A and SSR input wiring short and routed away from antenna/sensor lines.
+- Keep BS170 and SSR input wiring short and routed away from antenna/sensor lines.
 - Use suitable mains terminals, insulation, strain relief, and fuse/protection per local electrical safety requirements.

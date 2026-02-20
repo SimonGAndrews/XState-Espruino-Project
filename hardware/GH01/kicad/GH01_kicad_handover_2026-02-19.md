@@ -1,122 +1,120 @@
-# GH01 KiCad Handover (2026-02-19)
+# GH01 KiCad Handover (Updated 2026-02-20)
 
 ## Purpose
 
-This note captures what was attempted in the first GH01 KiCad schematic work session, what caused repeated iteration, and a tighter process for the next session.
+This document captures the current GH01 KiCad status, what changed since the original 2026-02-19 session, and the validated workflow to continue safely.
 
 Primary hardware source of truth:
 - `hardware/GH01/GH01_hardware.md`
 
-Primary KiCad project folder for this work:
-- `hardware/GH01/kicad/GH01_heater_control_01`
+Primary active KiCad project:
+- `hardware/GH01/kicad/GH01_heater_control_02`
 
-## What Was Attempted
+## Current Project State
 
-Target schematic scope (documentation-level wiring intent):
-- XIAO ESP32C3 control output to heater control driver
-- AO3400A low-side MOSFET driver stage
-- CX240D5 SSR control input and AC load output connectors
-- AC live path via fuse and SSR to warming cable
-- Neutral and PE connection blocks
+Implemented in V2 schematic:
+- XIAO ESP32C3 symbol/footprint integrated.
+- SSR part set to `SSR1` (`CX240D5`).
+- Driver MOSFET set to `Q1` (`BS170`, through-hole).
+- External AC-DC `J_PSU2` added (AZ-Delivery 240VAC to 5V module symbol).
+- Series diode (`D1`, Schottky) added between PSU +5V output and XIAO `VUSB/5V` node.
+- Mains fuse moved so fused live feeds both:
+  - SSR AC live path
+  - AC-DC PSU AC live input
+- Diagram in hardware notes switched to KiCad screenshot:
+  - `hardware/GH01/diagrams/gh01_heater_control_kicad_v2.png`
 
-Related visual reference diagram (generated separately):
-- `hardware/GH01/diagrams/gh01_heater_control_wiring.dot`
-- `hardware/GH01/diagrams/gh01_heater_control_wiring.svg`
-- `hardware/GH01/diagrams/gh01_heater_control_wiring.png`
+## Netlist-Verified Electrical Checks (Current)
 
-## Artifacts Produced
+From `hardware/GH01/kicad/GH01_heater_control_02/GH01_heater_control.net`:
 
-In `hardware/GH01/kicad/GH01_heater_control_01`:
-- `GH01_heater_control.kicad_pro`
-- `GH01_heater_control.kicad_sch`
-- `GH01_heater_control.kicad_prl`
-- local project symbol libs:
-  - `Connector_Generic.kicad_sym`
-  - `Device.kicad_sym`
-  - `power.kicad_sym`
-- `sym-lib-table`
-- `GH01_heater_control-backups/`
-- `report.txt`
+- MOSFET low-side drive is correct:
+  - `Q1 pin 3 (S)` -> `GND`
+  - `Q1 pin 1 (D)` -> `SSR1 pin 4 (-DC)`
+  - `Q1 pin 2 (G)` -> gate network (`R_GATE1`, `R_PULLDOWN1`)
+- SSR control polarity is correct:
+  - `SSR1 pin 3 (+DC)` from diode-fed +5V net (`D1-K` net)
+  - `SSR1 pin 4 (-DC)` from `Q1 drain`
+- Mains fuse placement is correct for board AC live coverage:
+  - `J_MAINS1 pin 1 (L)` -> `F2` -> both `J_PSU2 AC_L` and `SSR1 AC_A`
 
-## Key Wiring Intent That Must Stay True
+## ERC Status (Current Snapshot)
 
-For SSR input control side:
-- `J_SSR_IN1 pin 1` -> `+5V` (SSR IN+)
-- `J_SSR_IN1 pin 2` -> AO3400A drain / `MOSFET_D` (SSR IN-)
+File:
+- `hardware/GH01/kicad/GH01_heater_control_02/ERC.rpt`
 
-For MOSFET stage:
-- AO3400A source -> GND
-- AO3400A gate driven from XIAO D6 through gate resistor
-- gate pulldown to GND
+Current result:
+- `Errors: 0`
+- `Warnings: 3`
+- Warning type: `lib_symbol_mismatch` (Q1, SSR1, J_CABLE1)
 
-## What Caused the Pain (and Why)
+Notes:
+- These are symbol/library copy mismatch warnings, not connectivity errors.
+- They can be resolved later via symbol/library normalization once wiring is frozen.
 
-1. Symbol orientation vs pin numbering mismatch
-- Multiple iterations looked visually close, but pin numbers and labels were swapped.
-- Transform operations (especially mirror) changed pin placement relative to wires.
+## Environment and Tooling Notes
 
-2. Visual interpretation mismatch between tools
-- File edits were correct in text, but user display did not always obviously reflect changes until save/reopen/refresh cycles.
+WSL + Windows KiCad setup:
+- Schematic files are stored in WSL repo.
+- KiCad is installed on Windows and opened via UNC path:
+- `\\wsl.localhost\Ubuntu-22.04\home\simon\SGAdev\XState-Espruino-Project\...`
 
-3. Library and symbol resolution issues
-- Early state showed missing symbols (boxes with question marks).
-- Local project symbol libraries and `sym-lib-table` were needed for stable rendering.
+Netlist export method in this environment:
 
-4. Schematic readability vs electrical correctness were mixed together
-- Layout cleanup and electrical validation were done simultaneously, causing repeated rework.
+```powershell
+& "C:\Program Files\KiCad\9.0\bin\kicad-cli.exe" sch export netlist "\\wsl.localhost\Ubuntu-22.04\home\simon\SGAdev\XState-Espruino-Project\hardware\GH01\kicad\GH01_heater_control_02\GH01_heater_control.kicad_sch" -o "\\wsl.localhost\Ubuntu-22.04\home\simon\SGAdev\XState-Espruino-Project\hardware\GH01\kicad\GH01_heater_control_02\GH01_heater_control.net"
+```
 
-## Confirmed Learning from Session
+## Validated Process (Mandatory)
 
-- Mirroring the connector symbol vertically can swap top/bottom pin mapping while wires stay in place.
-- The same drawing can look "almost right" while still being wrong at pin level.
-- We need to validate by connectivity/net, not by appearance alone.
+1. Make electrical edits in KiCad UI only.
+2. Save schematic.
+3. Export netlist.
+4. Validate touched refs/pins from netlist `nets` section.
+5. Run ERC and ensure no regression.
+6. Use screenshot only for builder readability confirmation.
 
-## Environment / Tooling Subtleties
+Rules:
+- Do not sign off connectivity from `.kicad_sch` geometry/coordinate interpretation.
+- Do not mix AC and low-voltage edits in one iteration.
+- Keep one clear objective per iteration.
 
-### WSL + Windows KiCad file access
-- Windows KiCad can open project files via UNC path, e.g.:
-- `\\wsl.localhost\Ubuntu-22.04\home\simon\SGAdev\XState-Espruino-Project\hardware\GH01\kicad\GH01_heater_control_01`
+## Pain Points and Lessons Learned
 
-### KiCad project behavior
-- Prefer opening `.kicad_pro` instead of raw `.kicad_sch`.
-- After symbol/library changes, save + close/reopen can be needed for display consistency.
-- Annotate+save can clear temporary `?` reference confusion in some cases.
+- Visual symbol placement can look correct while pin mapping is wrong.
+- Geometry-based text inspection of `.kicad_sch` is not reliable for electrical sign-off.
+- Direct multi-objective edits caused rework and confusion.
+- Netlist-first validation is slower per step but reliable.
 
-### Graphviz
-- Graphviz was installed and used successfully for reference wiring diagrams (`.dot` -> `.svg`/`.png`).
-- This is useful for communication but not a replacement for ERC/net validation in KiCad.
+## Repo Hygiene Updates Applied
 
-## New Process for Today (Short and Strict)
+- Old Graphviz wiring artifacts removed from `hardware/GH01/diagrams`.
+- New diagram reference points to KiCad screenshot PNG.
+- `.gitignore` updated for KiCad working/transient files:
+  - `#auto_saved_files#`
+  - `_autosave-*.kicad_sch`
+  - `~*.kicad_sch.lck`
+  - `*.kicad_prl`
+  - `*.bak`, `*.tmp`
+  - `*-backups/*.zip`
 
-1. Freeze matrix first
-- Build a small connection matrix from `hardware/GH01/GH01_hardware.md` for the current schematic scope only.
+## Open Items
 
-2. Separate passes
-- Pass A: electrical connectivity only
-- Pass B: readability/layout only
+1. Recreate or restore `GH01_connection_matrix.md` in V2 folder if matrix-based checks are still required by README/template flow.
+2. Resolve/accept current `lib_symbol_mismatch` warnings.
+3. Continue hardware freeze checks from `hardware/GH01/GH01_hardware.md`:
+- final PE implementation details
+- mains suppression part selection
+- final enclosure AC/LV partitioning distances
 
-3. Validation method (mandatory)
-- Validate from KiCad connectivity outputs (ERC/net-level checks), not from symbol geometry.
-- After each meaningful edit, confirm key nets:
-  - `+5V` reaches `J_SSR_IN1 pin 1`
-  - `MOSFET_D` reaches `J_SSR_IN1 pin 2`
+## Notes for a New Codex Thread
 
-4. Iteration control
-- Keep one visible iteration marker text in schematic for proof of current file state.
-- Limit each iteration to one objective and one verification step.
+Start with:
+- `hardware/GH01/GH01_hardware.md`
+- `hardware/GH01/kicad/GH01_heater_control_02/GH01_heater_control.kicad_sch`
+- `hardware/GH01/kicad/GH01_heater_control_02/GH01_heater_control.net`
+- `hardware/GH01/kicad/GH01_heater_control_02/ERC.rpt`
 
-5. Stop condition
-- Stop once connectivity is proven and only cosmetic layout issues remain.
-
-## Suggested First Task Next Thread
-
-- Create `hardware/GH01/kicad/GH01_heater_control_01/GH01_connection_matrix.md` with only active heater-control nets.
-- Cross-check schematic pin mapping against the matrix.
-- Run ERC/checks and record results in `report.txt`.
-
-## Notes for Any New Codex Thread
-
-- Start from this file and `hardware/GH01/GH01_hardware.md`.
-- Use `hardware/GH01/kicad/GH01_heater_control_01` as the active project root.
-- Do not assume visual alignment implies correct pin mapping.
-- Confirm every critical connection by pin number and net name.
+Working rule:
+- Electrical truth = netlist + ERC.
+- Visual truth = screenshot clarity only.

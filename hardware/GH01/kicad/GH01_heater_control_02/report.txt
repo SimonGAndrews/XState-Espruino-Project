@@ -1,1 +1,0 @@
-Update symbol U1 from 'xiao_esp32c3:XIAO ESP32C3' to 'xiao_esp32c3:XIAO ESP32C3': OK

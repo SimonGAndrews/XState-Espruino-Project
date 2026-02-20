@@ -15,14 +15,25 @@ Connection matrix:
 - Iteration marker text in schematic:
 - Editor/environment (KiCad version + OS):
 - Validator:
+- Objective for this iteration (single sentence):
+- Domain touched (choose one): `AC/mains` or `low-voltage`
 
 ## Method Used
 
-1. Export/read KiCad connectivity (net-level source).
-2. Normalize to `Net -> {Ref:Pin...}`.
-3. Compare against matrix rows.
-4. Run ERC.
+1. Confirm objective is single-scope (one path/net change).
+2. Save schematic and export KiCad netlist (`GH01_heater_control.net`).
+3. Read netlist `nets` section and compare touched rows first, then full critical gates.
+4. Run ERC immediately after netlist pass.
 5. Record only mismatches and unresolved warnings.
+6. If ERC got worse, stop and revert/fix before any additional change.
+7. Capture one screenshot of the edited area and confirm visual intent matches netlist result.
+
+## Connectivity Evidence
+
+- Netlist file used:
+- Net(s) checked:
+- Visual screenshot reference(s):
+- Visual vs netlist agreement: Yes/No
 
 ## Critical Net Gates
 
@@ -54,6 +65,8 @@ Connection matrix:
 ## ERC Summary
 
 - ERC run: Yes/No
+- ERC before change (Errors/Warnings):
+- ERC after change (Errors/Warnings):
 - Errors:
 - Warnings:
 - Waived warnings (if any, with reason):
@@ -69,3 +82,16 @@ Connection matrix:
 - Electrical connectivity pass: Yes/No
 - Ready for layout/visual cleanup only: Yes/No
 - Reviewer:
+
+## Process Gate (Must Pass)
+
+- `PASS` only if:
+1. Exactly one objective was changed.
+2. Only one domain was touched.
+3. ERC count did not regress.
+4. No new unresolved library/symbol warnings were introduced.
+5. Netlist connectivity and visual intent both agree.
+
+## Not Allowed
+
+- Do not accept a connection using `.kicad_sch` coordinate/geometry inference alone.
