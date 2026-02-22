@@ -2,4 +2,5 @@
   (version 7)
   (lib (name "XIAO_ESP32C3")(type "KiCad")(uri "${KIPRJMOD}/../libs/footprints/XIAO_ESP32C3.pretty")(options "")(descr "Shared XIAO ESP32C3 footprints"))
   (lib (name "CX240D5")(type "KiCad")(uri "${KIPRJMOD}/../libs/footprints/CX240D5.pretty")(options "")(descr "Shared CX240D5 footprints"))
+  (lib (name "DM-OLED096-636")(type "KiCad")(uri "${KIPRJMOD}/../libs/footprints/DM-OLED096-636.pretty")(options "")(descr "OLED display module footprints"))
 )

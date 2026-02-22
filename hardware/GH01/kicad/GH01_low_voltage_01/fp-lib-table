@@ -2,4 +2,5 @@
   (version 7)
   (lib (name "CX240D5")(type "KiCad")(uri "//wsl.localhost/Ubuntu-22.04/home/simon/SGAdev/XState-Espruino-Project/hardware/GH01/kicad/libs/footprints/CX240D5.pretty")(options "")(descr ""))
   (lib (name "XIAO_ESP32C3")(type "KiCad")(uri "//wsl.localhost/Ubuntu-22.04/home/simon/SGAdev/XState-Espruino-Project/hardware/GH01/kicad/libs/footprints/XIAO_ESP32C3.pretty")(options "")(descr ""))
+  (lib (name "DM-OLED096-636")(type "KiCad")(uri "//wsl.localhost/Ubuntu-22.04/home/simon/SGAdev/XState-Espruino-Project/hardware/GH01/kicad/libs/footprints/DM-OLED096-636.pretty")(options "")(descr "OLED display module footprints"))
 )

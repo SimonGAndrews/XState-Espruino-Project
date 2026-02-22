@@ -14,9 +14,9 @@ Control soil temperature in a plant tray by switching a 240V AC soil warming cab
 
 ## Main Components
 
-- Soil temperature sensor: DS18B20 (1-Wire interface)
-- Reference air sensor: BMP280 digital sensor module
-  - Used for ambient/reference air temperature and barometric pressure sensing/reporting
+- Soil temperature sensors: DS18B20 (1-Wire interface), dual-probe support
+- Reference air sensor: KeeYees BME280-compatible digital sensor module (BMP280-compatible interface)
+  - Used for ambient/reference air temperature, humidity, and barometric pressure sensing/reporting
   - Connected on the shared I2C bus with the OLED display
 - Load switch (preferred): Crydom `CX240D5` solid state relay
   - Input: `3-15VDC` (typical `15mA` input current at nominal drive)
@@ -127,6 +127,10 @@ Device and value guidance:
 
 - 2 x dedicated GPIO outputs for external logic analyzer connection
 - Intended use: timing/performance testing and trace visibility
+- Provide dedicated test points for analyzer hookup:
+  - `TP_LA1` on `LA_OUT_1` (`D7` / `GPIO20`)
+  - `TP_LA2` on `LA_OUT_2` (`D8` / `GPIO8`)
+  - `TP_GND` on digital ground near `TP_LA1`/`TP_LA2`
 
 ## Enclosure and Mechanical
 
@@ -142,27 +146,31 @@ Device and value guidance:
 |---|---|---|---|---|---|---|
 | Status LED | LED (active-low) | Output | Digital GPIO | D0 | GPIO2 | Strap pin, must be HIGH at boot; wire LED anode to 3.3V and cathode via resistor to D0 |
 | Touch input 1 | TTP223 #1 OUT | Input | Digital GPIO | D1 | GPIO3 | Through-lid capacitive touch input |
-| Soil temperature | DS18B20 DQ | Input | 1-Wire | D2 | GPIO4 | 4.7k pull-up to 3.3V |
+| Soil temperature bus | DS18B20 #1 / DS18B20 #2 DQ | Input | 1-Wire | D2 | GPIO4 | Shared 1-Wire bus, 4.7k pull-up to 3.3V |
 | Touch input 2 | TTP223 #2 OUT | Input | Digital GPIO | D3 | GPIO5 | Through-lid capacitive touch input |
-| I2C bus SDA | OLED SSD1306 + BMP280 SDA | Bidirectional | I2C | D4 | GPIO6 | Shared I2C data line |
-| I2C bus SCL | OLED SSD1306 + BMP280 SCL | Output/Clock | I2C | D5 | GPIO7 | Shared I2C clock line |
+| I2C bus SDA | OLED SSD1306 + BME280 SDA | Bidirectional | I2C | D4 | GPIO6 | Shared I2C data line |
+| I2C bus SCL | OLED SSD1306 + BME280 SCL | Output/Clock | I2C | D5 | GPIO7 | Shared I2C clock line |
 | Heater control | Driver stage input (to SSR control) | Output | Digital GPIO | D6 | GPIO21 | Drive BS170 MOSFET stage; keep OFF by default at boot with gate pulldown |
-| Logic analyzer ch1 | LA_OUT_1 | Output | Digital GPIO | D7 | GPIO20 | Timing/performance instrumentation |
-| Logic analyzer ch2 | LA_OUT_2 | Output | Digital GPIO | D8 | GPIO8 | Strap-related caution: keep HIGH at boot when D9 is LOW |
-| Boot strap / recovery | Boot switch | Input | Boot strap | D9 | GPIO9 | Normally HIGH via 10k pull-up; switch to GND for forced download mode |
+| Logic analyzer ch1 | LA_OUT_1 | Output | Digital GPIO | D7 | GPIO20 | Timing/performance instrumentation (`TP_LA1`) |
+| Logic analyzer ch2 | LA_OUT_2 | Output | Digital GPIO | D8 | GPIO8 | Strap-related caution: keep HIGH at boot when D9 is LOW (`TP_LA2`) |
+| Boot strap / recovery | Boot switch | Input | Boot strap | D9 | GPIO9 | Handled on XIAO module (onboard button/pull-up); no external button or pull-up required |
 | Touch input 3 | TTP223 #3 OUT | Input | Digital GPIO | D10 | GPIO10 | Through-lid capacitive touch input |
 
 ### KiCad V2 MCU Wiring Snapshot (Current)
 
-This table records what is currently wired in `GH01_heater_control_02` from exported netlist, so design intent and schematic state can be compared quickly.
+This table records what is currently wired in `GH01_low_voltage_01` from exported netlist, so design intent and schematic state can be compared quickly.
 
 | Signal Path | Design Intent (`GH01_hardware.md`) | Current KiCad V2 Netlist | Status |
 |---|---|---|---|
 | Heater control GPIO to gate resistor | `U1:D6 (GPIO21) -> R_GATE1:1` | `U1:D6 -> R_GATE1:1` | Pass |
-| Gate resistor to MOSFET gate | `R_GATE1:2 -> Q1:G` | `R_GATE1:2 -> Q1:2 (G)` | Pass |
-| Gate pulldown | `Q1:G -> R_PULLDOWN1:1 -> GND` | `Q1:2 (G) -> R_PULLDOWN1:1 -> GND` | Pass |
-| MOSFET source reference | `Q1:S -> GND` | `Q1:3 (S) -> GND` | Pass |
-| XIAO 5V input feed | `D1:K -> U1:VUSB` | `D1:K -> U1:14 (VUSB)` | Pass |
+| Gate resistor to MOSFET gate | `R_GATE1:2 -> Q2:G` | `R_GATE1:2 -> Q2:2 (G)` | Pass |
+| Gate pulldown | `Q2:G -> R_PULLDOWN1:1 -> GND` | `Q2:2 (G) -> R_PULLDOWN1:1 -> GND` | Pass |
+| MOSFET source reference | `Q2:S -> GND` | `Q2:3 (S) -> GND` | Pass |
+| MOSFET drain to board interface control line | `Q2:D -> J2:SSR_CONTROL` | `Q2:1 (D) -> J2:3 (SSR_CONTROL)` | Pass |
+| XIAO 5V input feed via interface | `J2:+5V_OUT -> U1:VUSB` | `J2:1 (+5V_OUT) -> U1:14 (VUSB)` | Pass |
+| Logic analyzer test point 1 | `U1:D7 (GPIO20) -> TP_LA1` | `U1:8 (D7_GPIO_20) -> TP1` | Pass |
+| Logic analyzer test point 2 | `U1:D8 (GPIO8) -> TP_LA2` | `U1:9 (D8_GPIO_08) -> TP2` | Pass |
+| Logic analyzer ground test point | `GND -> TP_GND` | `/GND -> TP3` | Pass |
 
 Note:
 - Current netlist now aligns with design intent for heater-control GPIO (`D6`).
@@ -171,8 +179,21 @@ Note:
 
 - `D0/GPIO2` is a strapping pin and must be HIGH at boot.
 - `D8/GPIO8` and `D9/GPIO9` are strapping-related pins; avoid external loads that pull them LOW during boot unless intentionally forcing flash mode.
-- Ensure common GND between XIAO and logic analyzer for valid pulse capture.
-- Confirm I2C pull-ups are present on the OLED/BMP280 bus.
+- `D9/GPIO9` boot/recovery components are provided on the XIAO module; do not duplicate with external pull-up/switch unless a specific remote-access requirement is added.
+- Ensure common GND between XIAO and logic analyzer for valid pulse capture (use `TP_GND`).
+- Confirm I2C pull-ups are present on the OLED/BME280 bus.
+
+### DS18B20 Dual-Probe Naming
+
+To support multiple soil probes on one 1-Wire bus, use two connectors and fixed names in both schematic and software mapping:
+
+- `J4` -> `SOIL_TEMP_1` (primary probe, default control probe)
+- `J5` -> `SOIL_TEMP_2` (secondary probe, optional monitor/reference)
+
+Signal naming recommendation:
+
+- Bus net: `ONEWIRE_SOIL`
+- Device IDs in software: `soil_temp_1`, `soil_temp_2`
 
 ## Power Supply Architecture (Draft)
 
@@ -184,7 +205,7 @@ Target concept: one incoming `240V AC` supply cable feeds both heater control an
 - AC branch A: to SSR load side for soil heater cable switching.
 - AC branch B: to isolated AC-DC module providing low-voltage DC for control electronics.
 - Selected low-voltage path: `5V` AC-DC module output to XIAO power input path (`VIN`/5V rail as implemented).
-- XIAO `3.3V` rail powers low-power peripherals (DS18B20, BMP280, OLED, TTP223 modules).
+- XIAO `3.3V` rail powers low-power peripherals (DS18B20, BME280, OLED, TTP223 modules).
 
 ### Candidate AC-DC Module (Current Discussion)
 
@@ -250,7 +271,7 @@ Design note:
 Decided defaults for GH01 prototype v1:
 - `A` External PSU output: use `5V` module (`AC-05-3` candidate).
 - `B` XIAO feed path: use `VUSB/5V` path for first bring-up (not `VIN`) with series Schottky isolation diode per section above.
-- `C` `3.3V` rail usage: low-power peripherals only (DS18B20/BMP280/OLED/TTP223).
+- `C` `3.3V` rail usage: low-power peripherals only (DS18B20/BME280/OLED/TTP223).
 - `D` SSR control drive: prefer transistor/MOSFET driver stage over direct GPIO.
 - `E` Service/debug rule: avoid simultaneous ambiguous dual-power states (`USB + external 5V`) until validated.
 
@@ -497,3 +518,307 @@ Protective Earth (PE) ---------------------- Enclosure/earth point as required
 - Do not connect AC Neutral/Earth directly to low-voltage GND.
 - Keep BS170 and SSR input wiring short and routed away from antenna/sensor lines.
 - Use suitable mains terminals, insulation, strain relief, and fuse/protection per local electrical safety requirements.
+
+
+
+
+## Appendix X — Alternate Heater Switching Architecture (Distributed Wi-Fi Relay Enclosure)
+
+### X.1 Scope and Intent
+
+This appendix documents an alternative heater switching architecture to the current GH01 shared-enclosure SSR implementation.
+
+The alternate approach uses one or more Shelly 1 Mini Gen3 Wi-Fi relay modules installed inside a separate IP-rated enclosure dedicated to mains switching.
+
+The ESP32-C3 remains the low-voltage control authority and communicates with the relay modules over the local Wi-Fi network.
+
+This architecture is proposed for prototype evaluation with two low-power soil heating cables and provides a scalable path for multi-heater and multi-device expansion.
+
+---
+
+### X.2 Architectural Comparison
+
+#### X.2.1 Current Baseline — Shared Enclosure with SSR
+
+Structure:
+
+- ESP32-C3 (3.3 V logic)
+- MOSFET driver stage (e.g. BS170)
+- Crydom CX240D5 SSR
+- AC/LV segregation within same enclosure
+
+Control path:
+
+    ESP32 GPIO → MOSFET → SSR → Heater
+
+Characteristics:
+
+- Direct deterministic switching
+- No network dependency
+- Discrete driver components required
+- Internal AC/LV segregation and RF suppression required
+- Additional PCB space and mounting considerations
+
+---
+
+#### X.2.2 Alternate Architecture — Distributed Wi-Fi Relay Enclosure
+
+Structure:
+
+- ESP32-C3 remains in low-voltage control enclosure
+- Separate IP-rated enclosure containing:
+  - One or more Shelly 1 Mini Gen3 modules
+  - Mains heater wiring
+  - Cable gland entries and strain relief
+
+Control path:
+
+    ESP32 FSM → Wi-Fi (LAN) → Shelly Relay → Heater
+
+In this model, the Shelly module acts solely as a networked actuator. All control logic remains within the ESP32 firmware.
+
+---
+
+### X.3 Cost Considerations
+
+The Shelly 1 Mini Gen3 unit cost is approximately equivalent to the Crydom CX240D5 SSR.
+
+However, the SSR implementation additionally requires:
+
+- MOSFET driver device
+- Gate resistor and pulldown components
+- PCB routing and layout space
+- Mechanical mounting hardware
+- Internal segregation hardware
+- RF suppression considerations
+
+When total build cost and assembly complexity are included, the integrated Wi-Fi relay solution is comparable or potentially lower in overall cost.
+
+The Shelly module integrates:
+
+- Relay driver
+- Internal power supply
+- Isolation
+- Networking stack
+
+into a single device.
+
+---
+
+### X.4 Advantages of the Wi-Fi Relay Architecture
+
+#### X.4.1 Electrical Segregation
+
+- Complete physical separation of low-voltage logic and mains switching
+- Reduced EMI coupling risk into ESP32 circuitry
+- No requirement for AC/LV partitioning within control enclosure
+- Simplified enclosure safety documentation
+
+#### X.4.2 Reduced Hardware Complexity
+
+- No discrete MOSFET stage
+- No SSR input drive design
+- Fewer PCB-level design elements
+- Reduced internal wiring density
+
+#### X.4.3 Scalability (Electrical Channels)
+
+- One relay module per heater channel
+- Straightforward expansion for multi-zone heating
+- Clean one-to-one mapping between heater zone and relay device
+- No redesign of driver circuitry required for expansion
+
+#### X.4.4 Thermal and Mechanical Benefits
+
+- ESP32 enclosure remains low-voltage only
+- No SSR heat dissipation within control enclosure
+- Simplified internal airflow and layout
+
+#### X.4.5 Rapid Prototyping
+
+- Faster installation
+- Reduced hardware iteration time
+- Enables firmware-focused validation of temperature control strategy
+
+---
+
+### X.5 Disadvantages and Trade-Offs
+
+#### X.5.1 Network Dependency
+
+- Heater switching depends on local Wi-Fi availability
+- Control latency introduced compared to direct GPIO switching
+- Requires robust firmware fail-safe logic
+
+Mitigation:
+
+- Local LAN control only (no cloud dependency)
+- Conservative power-restore configuration (default OFF)
+- Watchdog logic within ESP32 firmware
+
+#### X.5.2 Distributed Physical Layout
+
+- Requires additional IP-rated enclosure
+- Additional cable routing and glands
+- Slightly less consolidated hardware footprint
+
+#### X.5.3 Mechanical Relay vs SSR
+
+Relative to the Crydom SSR:
+
+- Mechanical contact wear (low duty cycle expected)
+- Audible switching
+- No zero-cross switching control
+
+For low-power resistive soil heating cables and low switching frequency, relay stress is expected to be minimal.
+
+---
+
+### X.6 High-Level Wi-Fi / Espruino Software Architecture
+
+#### X.6.1 Control Authority
+
+The ESP32-C3 remains the authoritative controller:
+
+- Reads soil temperature sensors
+- Executes FSM-based control logic
+- Determines heater ON/OFF state
+- Issues switching commands to relay module
+
+The Shelly module performs actuation only.
+
+---
+
+#### X.6.2 Communication Modes
+
+##### HTTP (Prototype Phase)
+
+ESP32 performs local HTTP request:
+
+    http://<relay_ip>/relay/0?turn=on
+    http://<relay_ip>/relay/0?turn=off
+
+Characteristics:
+
+- No MQTT broker required
+- Minimal firmware complexity
+- Suitable for initial validation
+
+##### MQTT (Scalable Architecture)
+
+    ESP32 → MQTT Broker → Shelly Relay
+
+Example conceptual topic structure:
+
+    greenhouse/zone1/heater1/set
+    greenhouse/zone1/heater1/status
+
+Benefits:
+
+- Clean multi-zone scalability
+- Centralised logging
+- Consistent integration with broader automation ecosystem
+- Decoupled control and actuation layers
+
+---
+
+### X.7 Scalability Strategy and System Expansion
+
+The distributed Wi-Fi architecture supports structured growth of both the low-voltage sensing layer and the mains switching layer.
+
+#### X.7.1 Low-Voltage (Control Enclosure) Scalability
+
+The ESP32-C3 enclosure can expand independently of mains switching hardware.
+
+Additional capabilities may include:
+
+- Multiple soil temperature sensors via 1-Wire bus
+- Additional environmental sensors via I2C (e.g. RH, ambient temperature)
+- OLED or status display modules
+- Local user interface controls
+- Additional digital inputs for limit or safety interlocks
+
+Because no mains switching components are located inside the LV enclosure:
+
+- Sensor expansion does not require AC redesign
+- PCB revisions remain low-voltage only
+- EMI risk from mains switching is reduced
+
+The LV enclosure becomes a modular sensing and logic hub.
+
+---
+
+#### X.7.2 Mains (AC Enclosure) Scalability
+
+The AC enclosure can scale by simply adding additional Wi-Fi relay modules.
+
+For example:
+
+- Heater 1 → Shelly A
+- Heater 2 → Shelly B
+- Circulation fan → Shelly C
+- Supplemental lighting → Shelly D
+
+Each device remains independently addressable over Wi-Fi.
+
+Advantages:
+
+- No increase in LV enclosure complexity
+- No redesign of MOSFET driver stages
+- Clear physical segregation per switched load
+- Simplified documentation and labelling
+
+This supports zone-based expansion without architectural change.
+
+---
+
+#### X.7.3 Logical Scalability
+
+The ESP32 FSM can scale using a structured zone model:
+
+- Zone 1 → Soil heater 1
+- Zone 2 → Soil heater 2
+- Zone N → Additional controlled loads
+
+Networked switching allows:
+
+- Logical decoupling of control and actuation
+- Future migration to MQTT backbone
+- Optional integration with higher-level monitoring systems
+
+This architecture supports incremental expansion without requiring hardware redesign of the core controller.
+
+---
+
+### X.8 Firmware Safety Requirements
+
+Because switching is network-based, firmware safeguards are mandatory.
+
+The ESP32 FSM implementation shall include:
+
+- Minimum ON time
+- Minimum OFF time
+- Maximum continuous runtime limit
+- Sensor timeout → force heater OFF
+- Wi-Fi failure detection → fail-safe OFF state
+
+Shelly configuration must ensure:
+
+- Heater defaults to OFF on power restoration
+
+---
+
+### X.9 Summary
+
+The distributed Wi-Fi relay architecture provides:
+
+- Cleaner electrical segregation
+- Reduced discrete hardware complexity
+- Comparable or lower total system cost
+- Improved scalability for multi-heater expansion
+- Independent scaling of sensing and actuation layers
+- Faster prototype validation cycle
+
+The principal trade-off is the introduction of network dependency, which must be mitigated through conservative firmware safety design and local-only control strategy.
+
+For prototype evaluation using two low-power soil heating cables, the Shelly 1 Mini Gen3 provides a practical and scalable method of validating the distributed switching approach prior to committing to a final GH01 production architecture.
