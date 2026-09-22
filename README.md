@@ -44,13 +44,13 @@ Location:
 
 `projects/xstate-fsmPlus/`
 
-### Stage 3: XFSM (Native C Engine)
+### Stage 3: Xstate-fsm-c (Native C Engine)
 
-Planned C implementation for tighter integration and performance.
+Specification-led development of a native C state-machine engine.
 
 Location:
 
-`projects/xfsm/` (future)
+`projects/Xstate-fsm-c/`
 
 ## Testing Approach
 
@@ -87,9 +87,9 @@ See:
 
 ## Status
 
-FSMPlus is the active development track. XFSM is planned once MVHE parity is
-stable and well-tested. See `docs/governance/fsmPlus-status-01.md` for current
-status and next steps.
+FSMPlus is the current working hierarchical engine. Xstate-fsm-c is in the
+specification and design phase. See `docs/governance/fsmPlus-status-01.md` for
+the FSMPlus status and `projects/Xstate-fsm-c/` for Stage 3 work.
 
 ## Acknowledgements
 
