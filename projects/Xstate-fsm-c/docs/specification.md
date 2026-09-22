@@ -3,7 +3,7 @@
 ## Document Status
 
 - Status: Initial design decisions in progress
-- Version: 0.12
+- Version: 0.14
 - Implementation status: Not started
 
 This document is the future normative specification for Xstate-fsm-c. Only
@@ -21,6 +21,11 @@ compound states. Each running machine instance has exactly one active atomic
 leaf state. Its active ancestors are derived by following the compiled parent
 indexes.
 
+Version 1 supports atomic final states and completion transitions declared as
+`onDone` on their compound parent states. Completion MUST be processed to a
+stable state before a lifecycle or event-dispatch operation returns. Final-state
+and machine output values are outside the version 1 scope.
+
 XState parallel state nodes and simultaneous activation of multiple state
 regions are outside the version 1 scope. Construction MUST reject a machine
 definition containing a parallel state rather than silently changing its
@@ -31,7 +36,9 @@ The inclusion or exclusion of other XState features remains to be specified.
 A previously compiled machine object is not a state-node configuration and
 MUST NOT be accepted as a nested state. Running one machine from another would
 require machine invocation or actor composition, which is outside the version
-1 scope.
+1 scope. In particular, version 1 state `onDone` support does not imply support
+for `invoke.onDone`; invoked actors and services remain outside the version 1
+scope.
 
 ## Terminology
 
@@ -118,7 +125,7 @@ the exception to escape without establishing the same fail-stop lifecycle.
 Xstate-fsm-c combines synchronous propagation with a mandatory faulted runtime:
 the calling operation throws, the incomplete result is not published, and the
 runtime cannot continue. A failed startup publishes no active snapshot. See
-Action exceptions and fault handling.
+Action and guard exceptions and fault handling.
 
 This difference avoids requiring an actor error-observer framework in version 1
 and makes failures immediately visible to simple Espruino applications.
@@ -163,6 +170,62 @@ version 1.
 Creating a machine with different implementations requires another
 `createMachine(...)` call. This preserves the fixed-definition guarantee and
 keeps rebinding and structural-sharing machinery out of the initial engine.
+
+### XFC-CD-006: Completion-event type
+
+XState v4 supplied `done.state.<state-id>` to callbacks in a state-completion
+transition. Profile 1 follows XState v5 and supplies
+`xstate.done.state.<state-id>`. See Final states and completion transitions.
+
+This affects actions and guards that inspect `event.type` while processing
+`onDone`. It does not change the generated `type: "final"` or `onDone`
+configuration syntax, which is stable across the examined v4 and v5 exports.
+
+### XFC-CD-007: Embedded event ingress
+
+XState v5 requires event objects and uses an actor mailbox to defer events sent
+while another event is being processed. Profile 1 additionally accepts a
+string as shorthand for `{ type: string }`, preserving the compact event style
+used by existing Espruino applications.
+
+Profile 1 does not provide a version 1 application-event mailbox. A re-entrant
+`send(...)` is rejected instead of being queued, an event sent before startup
+is rejected instead of being held until `start()`, and engine-owned `xstate.`
+and `@xstate.` event namespaces cannot be supplied through public `send(...)`.
+These restrictions avoid an unbounded GC-visible event queue and prevent an
+application event from impersonating an internal completion event. See Event
+input and dispatch.
+
+### XFC-CD-008: Exit actions on explicit stop
+
+XState v5 stops a root actor without executing the exit actions of the active
+machine states. Profile 1 instead follows the SCXML interpreter-termination
+model: explicitly stopping an active actor executes the exit actions of its
+complete active state chain in leaf-to-root order.
+
+This difference gives embedded applications a deterministic place to turn off
+hardware and release application resources. See Actor lifecycle and Action
+locations and ordering.
+
+### XFC-CD-009: Initialization begins at start
+
+XState v5 calculates a machine actor's initial snapshot during
+`createActor(...)`, while deferring ordinary initial effects until `start()`.
+Profile 1 creates an uninitialised actor and performs context-factory
+evaluation, initial-state resolution, initial actions, and completion
+processing together in the first `start()` operation.
+
+This means `createActor(...)` cannot invoke application code, and an actor that
+is stopped without being started consumes no runtime-specific context-factory
+allocation. See Actor lifecycle and Stable snapshots.
+
+### XFC-CD-010: Subscriber exceptions
+
+XState reports exceptions thrown by observer callbacks outside the machine's
+transition failure path. Profile 1 reports such exceptions synchronously to
+the lifecycle or dispatch caller after notifying the remaining subscribers.
+Because notification occurs after publication, a subscriber exception does
+not roll back or fault the actor. See Snapshot subscriptions.
 
 ## Machine Model
 
@@ -238,6 +301,7 @@ hierarchy into fixed execution lookup structures. This preprocessing MUST:
 - enumerate the states while retaining their hierarchical relationships;
 - record each state's parent relationship;
 - resolve the initial descendant of each compound state;
+- validate final states and compile compound-state completion transitions;
 - resolve transition targets to known states;
 - preserve the defined ordering of transition candidates; and
 - reject invalid initial-state and transition-target references.
@@ -250,6 +314,14 @@ This requirement defines the logical information and behaviour expected of the
 lookup structures. Their storage and lookup requirements are specified below.
 
 ### Transition target grammar and resolution
+
+Every state node MUST have one effective ID. The root effective ID is its
+explicit `id`, or `(machine)` when the root `id` is omitted. A non-root state's
+effective ID is its explicit `id` when supplied; otherwise it is the root
+effective ID followed by the exact state-key path from the root. An explicit ID
+on an ancestor names only that ancestor and MUST NOT replace the root-and-key
+prefix used by its descendants' implicit IDs. Effective IDs MUST be built and
+validated during construction.
 
 Version 1 MUST accept the following XState target-string forms:
 
@@ -269,6 +341,8 @@ Construction MUST build the state-ID information needed by ID-based targets and
 MUST reject duplicate IDs, an empty path segment, an unknown ID, an unknown
 state key, or a target that does not resolve unambiguously to exactly one state.
 The root machine's `id` participates in the same ID lookup as state-node IDs.
+The root's default effective ID `(machine)` participates when no explicit root
+ID was supplied.
 
 Every accepted target MUST be resolved to its native state index during
 `createMachine`. The target string, its period-delimited path, and the state-ID
@@ -285,6 +359,7 @@ runtime parsing of state paths. The native representation MUST include at
 least:
 
 - state records with parent and resolved initial-state relationships;
+- final-state flags and compound-state completion-transition ranges;
 - transition records owned by their declaring states;
 - transition targets resolved to state indexes;
 - ordered guard-candidate information; and
@@ -366,8 +441,9 @@ table. Table starts MUST be naturally aligned for their record type.
 Version 1 of the internal representation consists of the following contiguous
 record tables and a byte-string pool:
 
-- **State records** contain parent and resolved-initial-state indexes, handler
-  range, entry-action range, exit-action range, and state flags.
+- **State records** contain parent and resolved-initial-state indexes, normal
+  handler range, completion-transition range, entry-action range, exit-action
+  range, and state flags including whether the state is final.
 - **Symbol records** contain a 32-bit hash, string-pool offset, byte length, and
   symbol flags. Repeated state and event names MUST be interned where practical.
 - **Handler records** contain an event-symbol index and the ordered range of
@@ -427,6 +503,184 @@ of JavaScript options into native records, and a native execution path that
 returns to JavaScript only when JavaScript behaviour must be invoked.
 
 ## Runtime Semantics
+
+### Actor lifecycle
+
+`createActor(machine)` MUST accept a successfully compiled Profile 1 machine
+and return a distinct actor in the `notStarted` lifecycle state. Version 1 MUST
+NOT accept a second actor-options argument. Restored snapshots, actor input,
+actor-system membership, and child actors are outside the version 1 scope.
+
+An actor MUST retain its compiled machine for the actor's lifetime. Multiple
+actors MAY share one compiled machine, its native arena, and its retained
+implementation slots. Each actor MUST separately own its lifecycle status,
+active leaf index, current context, last snapshot, retained fault, and bounded
+execution bookkeeping.
+
+`createActor(...)` MUST NOT call an initial-context factory, execute an action,
+evaluate a guard, or resolve completion transitions. It MUST NOT allocate an
+event mailbox. A newly created actor has no active state configuration.
+
+The first `start()` call on a `notStarted` actor MUST synchronously:
+
+1. obtain the actor's initial context;
+2. resolve the root and nested initial states;
+3. execute initial entry actions in their specified order using the
+   `xstate.init` event;
+4. process generated completion transitions to stability; and
+5. publish one stable `active` or `done` snapshot.
+
+`start()` MUST return the actor. Calling it again while the actor is `active`
+MUST be an idempotent no-op. A `done`, `stopped`, or faulted actor MUST NOT be
+restartable; attempting to start one MUST fail synchronously. Applications
+requiring another execution MUST create another actor.
+
+The internal lifecycle states MUST be representable without JavaScript string
+comparison and MUST distinguish `notStarted`, `active`, `done`, `stopped`, and
+faulted. Their public snapshot spelling is specified under Stable snapshots.
+
+Public `send(...)` is valid only while the actor is `active`. Sending before
+startup MUST fail synchronously and MUST NOT queue the event. Sending after
+normal completion or explicit stop MUST be an ignored no-op. Sending to a
+faulted actor MUST fail synchronously under the fault-handling requirements.
+`send(...)` MUST return `undefined` after any normally returning operation.
+
+Calling `stop()` on a `notStarted` actor MUST move it directly to `stopped` and
+publish and notify a stopped snapshot with undefined state and context, without
+obtaining initial context or executing actions. Calling `stop()` on an `active`
+actor MUST synchronously execute the exit actions of its complete active state
+chain in leaf-to-root order using `{ type: "xstate.stop" }`, then publish and
+notify a `stopped` snapshot. The retained state value and context are diagnostic
+after stop and MUST NOT represent an active configuration.
+
+Calling `stop()` on an actor already in `done` or `stopped` MUST be an
+idempotent no-op. Calling it on a faulted actor MUST fail synchronously.
+`stop()` MUST return the actor after a normally returning operation.
+
+An actor MUST reject a public `start()`, `send(...)`, or `stop()` begun while
+another lifecycle, dispatch, or subscriber-notification operation on that
+actor is still in progress. Engine-generated completion processing is part of
+the current operation and is not a re-entrant public call.
+
+Stopping an actor MUST release transient operation references and its retained
+subscriptions, but MUST retain the last snapshot while the actor remains
+reachable. No separate public `dispose()` method is required. The actor's
+native runtime storage is released when the actor becomes unreachable through
+the normal Espruino garbage-collection integration.
+
+### Stable snapshots
+
+`getSnapshot()` MUST synchronously return the actor's current stable snapshot.
+The snapshot MUST expose at least:
+
+- `value`, containing the current hierarchical state value or `undefined`
+  before startup;
+- `context`, containing the current context or `undefined` before startup;
+- `status`, whose value is `notStarted`, `active`, `done`, `stopped`, or
+  `error`; and
+- `matches(value)`, which tests the supplied state value against the snapshot's
+  current state configuration.
+
+The public `error` status corresponds to the specification's term *faulted
+runtime*. An error snapshot MUST retain the exact thrown JavaScript value in an
+`error` property. Its state value and context MUST be the last successfully
+published values, or `undefined` if startup failed before any active snapshot
+was published.
+
+A snapshot MUST describe only a stable, published result. It MUST NOT expose
+an intermediate configuration from within completion processing. A snapshot
+MUST NOT expose an `actions` array or any native execution-plan records.
+Application data that must remain observable after actions finish MUST be
+placed in context through `assign(...)`.
+
+Published snapshot and context values MUST be treated as read-only by the
+application. The engine is not required to freeze them or detect unsupported
+mutation.
+
+### Snapshot subscriptions
+
+`subscribe(listener)` MUST accept a JavaScript function and retain it as a
+garbage-collector-visible value owned by the actor. It MUST return an object
+with an idempotent `unsubscribe()` method. Multiple listeners MUST be supported
+and notified in subscription order.
+
+Subscribing before startup MUST register the listener without calling it. A
+successful `start()` MUST notify every current listener exactly once with the
+first stable snapshot. Subscribing after startup MUST NOT immediately call the
+listener; the application MUST use `getSnapshot()` when it needs the current
+value immediately. Subscribing to a `done`, `stopped`, or faulted actor MUST
+retain nothing and return an already inactive subscription whose
+`unsubscribe()` method is a no-op.
+
+Every valid `send(...)` that returns normally MUST notify every current
+listener exactly once after the complete run-to-completion operation. This
+includes an unhandled event and a targetless transition whose stable snapshot
+object is unchanged. No listener may observe an intermediate completion
+configuration.
+
+Each listener MUST receive as its sole argument the exact snapshot object that
+`getSnapshot()` returns for that published result. Subscriber notification is
+observation after publication; it is not an action and cannot change the
+machine's pending state or action sequence.
+
+If a listener throws, the engine MUST retain the first thrown value, continue
+notifying the listeners that remain in the current notification sequence, and
+then propagate the first thrown value synchronously to the caller. The actor's
+already-published snapshot and lifecycle status MUST remain committed, and the
+actor MUST NOT become faulted solely because a listener threw.
+
+After publishing and notifying a `done` or `stopped` snapshot, the actor MUST
+remove all subscriptions. A faulted actor MUST remove all subscriptions
+without notifying them of an incomplete operation. Calling `unsubscribe()`
+after automatic removal MUST remain a no-op.
+
+### Event input and dispatch
+
+The canonical Profile 1 event is a non-null JavaScript object whose `type`
+property is a non-empty string. Other properties are application payload and
+MUST remain available to guards and actions through the supplied event object.
+The engine MUST NOT clone, freeze, or retain that object after the synchronous
+dispatch operation completes.
+
+As an embedded convenience, public `send(...)` MUST also accept a non-empty
+event-type string. A string event is logically equivalent to an object
+containing only that `type`. If a JavaScript guard or action requires the event
+value, the wrapper MUST materialize one object and reuse it for every callback
+in that event's microstep. It SHOULD create no JavaScript event object when a
+string event completes without invoking a JavaScript callback.
+
+Any other input, an object without a string `type`, or an empty event type MUST
+be rejected synchronously before transition selection, guard evaluation, or
+action execution begins. Event types beginning with `xstate.` or `@xstate.` are
+reserved for engine use and MUST be rejected at the public `send(...)`
+boundary.
+
+For an object event, every guard and action in the external-event microstep
+MUST receive the exact supplied object. The engine MUST read and validate its
+type and calculate the event hash once when dispatch begins. Later mutation of
+the event object MUST NOT change the handler being processed or redirect the
+current dispatch. Applications SHOULD treat a supplied event object as
+read-only until `send(...)` returns.
+
+Dispatch MUST be synchronous and run to completion. After the selected
+external-event transition, the same operation MUST process generated state
+completion events and any consequent completion transitions until the machine
+reaches a stable state or faults.
+
+A valid event for which no transition candidate is enabled MUST be an
+unhandled no-op. It MUST NOT change the active state or context, execute an
+action, or fault the runtime. It MUST return and notify subscribers as
+specified under Actor lifecycle and Snapshot subscriptions.
+
+An actor MUST NOT begin another public `send(...)` while one of its lifecycle,
+dispatch, or subscriber-notification operations is in progress. A re-entrant
+call MUST throw synchronously without selecting a transition for the new event.
+If it escapes from an action, the existing action-exception rule faults the
+in-progress operation; an action MAY catch the rejection itself and return
+normally. If it escapes from a subscriber, the subscriber-exception rule
+applies because the snapshot is already committed. Engine-generated completion
+processing is part of the current operation and is not a re-entrant public
+send.
 
 ### Action definition and resolution
 
@@ -493,9 +747,9 @@ function guard(context, event) {
 
 The engine MUST invoke a guard synchronously with the runtime's currently
 committed context and the event being considered. Its result MUST be converted
-to a boolean using normal JavaScript truthiness. A guard's thrown exception and
-the resulting runtime behaviour remain to be specified under validation and
-fault handling.
+to a boolean using normal JavaScript truthiness. A guard exception MUST use the
+same synchronous fail-stop behaviour specified for an escaping action
+exception.
 
 ### Literal initial context ownership
 
@@ -526,17 +780,18 @@ The `context` property of a machine definition MAY be a zero-argument
 JavaScript factory function. The compiled machine MUST retain that function in
 its garbage-collector-visible reference container.
 
-The factory MUST be called exactly once for each new runtime instance, before
-any initial entry action executes. Its returned value becomes that instance's
-initial context. The engine MUST NOT call the factory during `createMachine`
-and MUST NOT copy its result.
+The factory MUST be called exactly once when each new actor first attempts
+`start()`, before any initial entry action executes. Its returned value becomes
+that actor's initial context. The engine MUST NOT call the factory during
+`createMachine(...)` or `createActor(...)` and MUST NOT copy its result. An
+actor stopped before startup MUST never call the factory.
 
 The factory is responsible for returning a fresh object graph when independent
 context ownership is required. If application code deliberately returns an
 object also returned for another runtime, those runtimes share that object; the
 engine does not add automatic isolation. If the factory throws, runtime
-initialisation MUST fail, no initial entry action may execute, and no partially
-started runtime may be published.
+initialisation MUST fail, no initial entry action may execute, the actor MUST
+become faulted, and no active snapshot may be published.
 
 ### Action callback contract
 
@@ -562,6 +817,12 @@ Exit, transition, and entry actions caused by an event MUST receive the same
 event object. Initial entry actions MUST receive `{ type: "xstate.init" }`.
 Exit actions caused by explicitly stopping a runtime MUST receive
 `{ type: "xstate.stop" }`.
+
+Actions in the external-event microstep that enters a final state, including
+that final state's entry actions, MUST receive the original event object.
+Actions in a consequent completion microstep MUST receive that completed
+state's generated completion-event object as specified under Final states and
+completion transitions.
 
 ### Context assignment and visibility
 
@@ -619,12 +880,13 @@ A targetless transition MUST execute only its transition actions. The
 transition re-entry rules below determine which entry and exit actions surround
 the transition actions of a targeted transition.
 
-### Action exceptions and fault handling
+### Action and guard exceptions and fault handling
 
-An exception that escapes from a user action or from an expression evaluated by
-`assign(...)` MUST immediately abort the complete action sequence. No remaining
-exit, transition, entry, or assignment action belonging to that operation may
-execute.
+An exception that escapes from a guard, a user action, or an expression
+evaluated by `assign(...)` MUST immediately abort the operation. No transition
+may be selected after an escaping guard exception, and no remaining exit,
+transition, entry, or assignment action belonging to an aborted action sequence
+may execute.
 
 The engine MUST discard the pending state configuration and pending context of
 the incomplete operation, mark the runtime as faulted, retain the exact thrown
@@ -640,7 +902,7 @@ exception during startup, no active snapshot may be published.
 A faulted runtime MUST NOT evaluate another guard or execute another action.
 Any subsequent attempt to dispatch an event or perform a lifecycle operation
 MUST fail synchronously and report that the runtime is faulted. The exact public
-error-access and status API remains to be specified.
+status and retained-error access are specified under Stable snapshots.
 
 The engine cannot roll back external side effects completed before the
 exception, nor can it reliably reverse unsupported direct mutation of context
@@ -690,6 +952,74 @@ are re-entered, preserved, or the transition is targetless. Exit actions,
 transition actions, and entry actions MUST retain their separately specified
 ordering.
 
+### Final states and completion transitions
+
+An atomic state MAY declare `type: "final"`. A final state MUST NOT declare
+child `states`, `initial`, event handlers, or `onDone`. Construction MUST reject
+such a combination. Entry and exit actions remain valid on a final state.
+Version 1 MUST reject a final-state or root-machine `output` property because
+completion output values are outside its scope.
+
+A compound state MAY declare `onDone` using the same single-transition or
+ordered transition-candidate-array forms supported for an event handler.
+Targets, guards, and actions in those candidates MUST be validated, resolved,
+and compiled by the same construction-time rules as their normal-transition
+counterparts. `onDone` belongs to state completion; an `onDone` nested inside
+an `invoke` definition is outside the version 1 scope.
+
+A compound state becomes complete when its active atomic child is final. On
+first becoming complete during a startup or event-dispatch operation, the
+engine MUST create the logical internal event:
+
+```javascript
+{ type: "xstate.done.state.<effective-state-id>" }
+```
+
+The suffix MUST be the completed compound state's effective ID. The event type
+string MUST be constructed or interned during `createMachine`; completion
+processing MUST NOT build state paths or concatenate strings at runtime.
+
+The engine MUST evaluate the completed state's ordered `onDone` candidates
+against the context produced by preceding actions in the operation. Guards and
+actions belonging to that completion transition MUST receive the generated
+completion event. A candidate selected for the completion event MUST use the
+normal exit, transition-action, entry, assignment, target, and re-entry rules.
+
+Entering a final child and taking its parent's enabled `onDone` transition are
+separate microsteps within one run-to-completion operation. After each
+microstep, the engine MUST detect newly completed ancestors and process their
+completion transitions until no new completion is pending. Cascaded completion
+of multiple ancestors MUST finish before the public operation returns.
+
+A completed state MUST offer its completion event at most once for each time
+it newly becomes complete. A targetless `onDone` transition or a candidate set
+with no enabled transition MUST NOT cause the same completion event to be
+repeated continuously. Leaving and subsequently completing the state again
+creates a new completion occurrence.
+
+If a top-level final state is reached, its entry actions MUST run and the actor
+MUST enter the `done` status. The engine MUST then execute the exit actions of
+that final state and all remaining entered ancestors in descendant-to-ancestor
+order, using the event that caused top-level completion. The terminal snapshot
+MUST retain the reached final state as its state value even though the actor no
+longer has an active configuration. An implementation MAY retain the terminal
+leaf index to represent that snapshot value, but MUST NOT treat it as active
+for subsequent dispatch. Subsequent sent events MUST NOT select transitions,
+evaluate guards, or execute actions. Such sends MUST be ignored as specified
+under Actor lifecycle.
+
+The runtime MUST publish only the stable result of a successful
+run-to-completion operation. If entering a nested final state immediately
+enables a completion transition out of its parent, that final child is an
+intermediate configuration and MUST NOT be published as a separate stable
+snapshot. For the compatibility example, `send("finish")` therefore returns
+with `Success`, not `Workflow.Completed`, as the stable state.
+
+The engine MUST protect the device from an unbounded internal completion
+sequence. Exceeding the completion-processing limit MUST fault the operation
+rather than hang indefinitely or publish an intermediate configuration. The
+exact limit and public fault value remain to be specified.
+
 ### Native execution boundary
 
 One public event-dispatch operation MUST enter the native coordinator once and
@@ -697,10 +1027,30 @@ perform the complete native portion of that event's processing before it
 returns. State and handler lookup, candidate selection, hierarchy traversal,
 and state update MUST NOT be split into repeated JavaScript-to-C wrapper calls.
 
-The coordinator MAY invoke JavaScript guards and actions when required by the
-machine definition. Such callbacks do not end the enclosing dispatch
-operation; control returns to the native coordinator so it can continue that
-operation.
+When the compiled sequence requires a user guard or action, the native
+coordinator MUST identify its retained-value slot and request its invocation
+through the Espruino wrapper. The wrapper MUST obtain and lock the current
+callable value from the machine's garbage-collector-visible container, invoke
+it synchronously using Espruino's normal callable mechanism, and return its
+result or exception to the coordinator. A callable may itself be implemented
+in JavaScript, backed by flash-resident source, or exposed as a native Espruino
+function; the coordinator treats all of these as JavaScript callable values.
+
+Invoking a callback does not end the enclosing lifecycle or dispatch
+operation. The native coordinator remains responsible for the action position,
+pending context and state, and remaining macrostep work when control returns.
+User action bodies MUST NOT be copied into or interpreted by the native arena,
+and the version 1 public API MUST NOT expose or require a JavaScript effect
+list. The coordinator MAY stream actions directly from compiled records or use
+a bounded native scratch plan if measurements justify it. Either strategy MUST
+preserve the specified ordering, context visibility, publication, and exception
+semantics and MUST NOT construct a JavaScript action array during dispatch.
+
+The supported `assign(...)` action is an engine-recognized built-in. The
+coordinator MUST invoke any JavaScript assignment expressions at their ordered
+positions, construct the required pending shallow context through the wrapper,
+and continue with that pending context. It MUST NOT invoke `assign(...)` as an
+ordinary side-effect callback.
 
 Native lookup and traversal MUST NOT allocate JavaScript arrays, objects, or
 temporary property names during event processing. Allocations explicitly
@@ -720,8 +1070,13 @@ Machine implementations MUST be supplied as the second argument to
 `createMachine(config, options)`. Version 1 MUST NOT expose
 `machine.provide(...)` or `machine.withConfig(...)`.
 
-The exact actor lifecycle methods, snapshot shape, subscription behaviour, and
-remaining helper signatures are still to be defined.
+An actor MUST expose `start()`, `send(event)`, `stop()`, `getSnapshot()`, and
+`subscribe(listener)` with the behaviour specified under Runtime Semantics.
+The XState v4 `onTransition(...)` observer name MUST NOT be provided; Profile 1
+uses the current `subscribe(...)` name. A snapshot MUST NOT expose the legacy
+`state.actions` execution list.
+
+Remaining helper signatures are still to be defined.
 
 ## Host Integration
 
@@ -813,10 +1168,13 @@ notes above but is not itself normative for Xstate-fsm-c.
 
 - [XState: Migrating from v4 to
   v5](https://stately.ai/docs/migration)
+- [XState: Actors](https://stately.ai/docs/actors)
+- [XState v5.33.2: Actor implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/createActor.ts)
 - [XState: Migrating from v5 to v6
   alpha](https://dev.stately.ai/docs/xstate/v6/xstate-v5-to-v6)
 - [Stately: Predictable events and actions in
   XState v5](https://dev.stately.ai/blog/2023-05-25-announcing-xstate-v5-beta)
+- [Stately: XState for .NET](https://github.com/statelyai/xstate-csharp)
 - [XState: Context and lazy initial
   context](https://stately.ai/docs/context)
 - [XState: Action errors and actor

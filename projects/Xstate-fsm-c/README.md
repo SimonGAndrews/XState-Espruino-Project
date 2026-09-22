@@ -10,9 +10,10 @@ have been selected for the compiled machine representation. The index widths,
 arena ownership, record organisation, event lookup, and Espruino integration
 pattern are now specified. Profile 1 also defines its compatibility direction,
 context ownership, action and assignment ordering, exception policy, transition
-re-entry model, and initial target grammar. The remaining public lifecycle
-details, validation rules, conformance requirements, feature scope, and build
-system are still under discussion.
+re-entry model, initial target grammar, final-state completion semantics, actor
+lifecycle, stable snapshots, and subscriptions. The remaining validation rules,
+conformance requirements, feature scope, and build system are still under
+discussion.
 
 Development will be specification-led: observable requirements and
 conformance criteria should be agreed before implementation begins.
