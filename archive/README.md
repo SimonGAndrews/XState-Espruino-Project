@@ -1,29 +1,26 @@
 # Source Archive
 
-This directory preserves upstream source snapshots used as historical reference
-for the XState Espruino projects. Archived sources are reference material and
-are not active project implementations.
+This directory preserves an upstream source snapshot used as a reference for
+the XState Espruino projects. The archived source is reference material and is
+not an active project implementation.
 
-## `xstate-fsm`
+## XState 4.38.3
 
-- **Local path:** `archive/xstate-fsm/`
+- **Local path:** `archive/xstate-xstate-4.38.3/`
 - **Upstream project:** `statelyai/xstate`
 - **Source release:**
-  [XState 4.37.2](https://github.com/statelyai/xstate/releases/tag/xstate%404.37.2)
-- **Archived package:** `@xstate/fsm`
-- **Package version:** `2.0.0`
+  [XState 4.38.3](https://github.com/statelyai/xstate/releases/tag/xstate%404.38.3)
+- **Release commit:** `e87600e`
+- **Core package:** `xstate` 4.38.3
+- **Included FSM package:** `@xstate/fsm` 2.1.0
 - **Archived:** 2026-09-22
-- **Licence:** MIT; see `archive/xstate-fsm/LICENSE`
+- **Licence:** MIT; see `archive/xstate-xstate-4.38.3/LICENSE`
 
-The package version differs from the enclosing XState monorepo release version.
-This snapshot is the small, flat `@xstate/fsm` implementation from the XState
-4.37.2 release, not the full hierarchical XState core package.
+This is a full source snapshot of the XState monorepo. It includes the core
+hierarchical XState implementation, the `@xstate/fsm` package, tests,
+documentation, examples, supporting packages, and build configuration. It is
+the primary historical source reference for the version 4 compatibility work.
 
-The snapshot is retained to document the upstream implementation from which the
-Espruino FSM work developed. In particular, it provides reference source for
-machine creation, transition handling, actions, guards, context assignment, and
-the interpreter lifecycle.
-
-Files beneath `archive/xstate-fsm/` should remain unchanged so that they continue
-to represent the upstream snapshot. Project-specific analysis or adaptations
-belong elsewhere in this repository.
+Files within the snapshot should remain unchanged so that they continue to
+represent the upstream source. Project-specific analysis or adaptations belong
+elsewhere in this repository.
