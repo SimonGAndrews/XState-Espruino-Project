@@ -3,7 +3,7 @@
 ## Document Status
 
 - Status: Initial design decisions in progress
-- Version: 0.14
+- Version: 0.21
 - Implementation status: Not started
 
 This document is the future normative specification for Xstate-fsm-c. Only
@@ -44,6 +44,8 @@ scope.
 
 - **Machine definition**: The JavaScript object supplied to `createMachine`
   that describes states, transitions, guards, actions, and initial context.
+- **Compiled arena**: The single contiguous compiled-machine data block that
+  stores the fixed native representation of a machine definition.
 - **State configuration**: The state or set of states that is currently active.
   This follows the meaning of "configuration" in SCXML and does not refer to
   the machine-definition object.
@@ -69,6 +71,15 @@ interface because it is compact and directly usable in Espruino. Named
 implementations are bound by `createMachine(config, options)` and fixed when
 the native representation is compiled. Version 1 does not implement
 `machine.provide(...)` or `machine.withConfig(...)`.
+
+For each semantic or public-interface decision, the documented behaviour and,
+where necessary, source behaviour of the current stable XState release MUST be
+examined as the compatibility baseline. Compatibility evidence MUST identify
+the examined release or source revision. A deliberate difference within an
+otherwise supported feature MUST be recorded under Intentional Compatibility
+Differences with its behavioural consequence and embedded-system rationale.
+Permissive handling of inputs outside XState's documented contract need not be
+replicated, but stricter Profile 1 validation MUST be stated explicitly.
 
 The compiled native representation is version-independent internal machinery.
 It MUST encode the Profile 1 semantics established during construction and
@@ -151,13 +162,14 @@ source.
 ### XFC-CD-004: Positional implementation arguments
 
 XState v5 passes one object containing `context`, `event`, and other actor data
-to action and guard implementations. Profile 1 instead calls these functions
-with positional `(context, event)` arguments.
+to action, guard, and assignment implementations. Profile 1 instead calls
+these functions with positional `(context, event)` arguments.
 
 The smaller interface avoids constructing an argument object for every
 callback, requires fewer property lookups, and does not require JavaScript
-destructuring support. XState v5 callbacks must therefore be adapted before
-they can be used as Profile 1 callbacks.
+destructuring support. XState v5 callbacks, including property expressions
+supplied to `assign(...)`, must therefore be adapted before they can be used as
+Profile 1 callbacks.
 
 ### XFC-CD-005: Construction-time implementation binding
 
@@ -226,6 +238,43 @@ transition failure path. Profile 1 reports such exceptions synchronously to
 the lifecycle or dispatch caller after notifying the remaining subscribers.
 Because notification occurs after publication, a subscriber exception does
 not roll back or fault the actor. See Snapshot subscriptions.
+
+### XFC-CD-011: Initial-context factory boundary
+
+Current XState v5 calls a lazy context initializer with an argument object that
+can expose actor input, `self`, and spawning facilities, and materialises the
+result through its context-assignment machinery. Profile 1 calls a
+zero-argument factory and uses its returned object directly.
+
+Actor input, child actors, and spawning are outside the Version 1 scope. The
+smaller boundary avoids constructing an argument object and avoids an
+additional shallow context copy on startup. Consequently, a Profile 1 factory
+that needs external values must close over them, and the identity of its valid
+returned object becomes the actor's initial context identity. See Initial
+context factory.
+
+### XFC-CD-012: Event wildcard scope
+
+Current XState supports both the full `*` event wildcard and partial prefix
+wildcards such as `sensor.*`. Profile 1 supports the full wildcard but rejects
+partial wildcards and any other event descriptor containing `*`.
+
+The full wildcard compiles to one distinguished fallback handler and requires
+only one bounded check after exact candidates reject. Partial wildcards would
+require prefix matching and additional specificity ordering during dispatch.
+Applications requiring that grouping in Version 1 must declare the exact event
+types or perform routing in an ordinary guard or action. See Event lookup.
+
+### XFC-CD-013: Parameterless guard references
+
+Current XState supports parameterised guard descriptors and built-in composite
+guards including `and`, `or`, `not`, and `stateIn`. Profile 1 accepts direct
+guard functions and parameterless named references, but does not expose guard
+parameters or composite-guard helpers.
+
+Equivalent application logic can be placed in one direct or named guard. This
+avoids compiled parameter values, parameter-mapper callbacks, and a family of
+built-in guard record types in Version 1. See Guard implementation binding.
 
 ## Machine Model
 
@@ -348,6 +397,63 @@ Every accepted target MUST be resolved to its native state index during
 `createMachine`. The target string, its period-delimited path, and the state-ID
 map MUST NOT be searched or parsed during event dispatch.
 
+### Event-handler and transition grammar
+
+The root machine and every non-final state MAY declare an `on` object. Each own
+enumerable property key in that object is an event descriptor and each value is
+one transition definition or a non-empty array of ordered transition
+candidates. An event descriptor MUST be a non-empty string within the symbol
+length limit.
+
+Version 1 MUST accept exact event descriptors and the full wildcard descriptor
+`*`. The wildcard has the lowest priority at its declaring state. A descriptor
+containing `*` in any other form, including `sensor.*`, MUST be rejected with
+`E_UNSUPPORTED_FEATURE`; it MUST NOT be treated as an exact event type.
+
+One transition candidate MUST use one of these forms:
+
+- a target string shorthand, equivalent to `{ target: "target" }`;
+- a transition descriptor object; or
+- `undefined`, equivalent to an empty transition descriptor.
+
+A transition descriptor MAY contain `target`, `actions`, `guard`, `reenter`,
+`description`, and an empty `meta` object. The already specified `cond` and
+`internal` migration aliases MAY replace `guard` and `reenter` respectively,
+subject to their mutual-exclusion rules. `description` MUST be a string and
+MUST be discarded during construction; it has no native record or runtime
+cost. Unknown fields and non-empty `meta` MUST be rejected under the strict
+schema rules.
+
+`target` MUST be one target string, `undefined`, or omitted. An explicit
+`target: undefined` MUST normalize to an omitted target. Target arrays,
+including an array containing one string, MUST be rejected with
+`E_UNSUPPORTED_FEATURE`; multi-target transitions belong to parallel state
+configurations outside the Version 1 scope. `null` is not a targetless
+shorthand and MUST be rejected as `E_CONFIG_TYPE`.
+
+The `actions` field uses the action grammar specified under Action definition
+and resolution. The `guard` field uses the guard grammar specified under Guard
+implementation binding. A candidate array MUST contain at least one candidate;
+an empty array or a candidate of any other type MUST be rejected as
+`E_CONFIG_TYPE`. A single candidate and a one-element candidate array have
+identical runtime meaning after construction.
+
+Candidates MUST retain definition order. The first candidate whose guard is
+absent or returns truthy is selected. An unguarded candidate therefore makes
+later candidates unreachable, but construction MUST accept that ordering to
+match XState. If every exact candidate rejects, the state's wildcard candidates
+MUST be considered in their defined order. Only when neither exact nor wildcard
+candidates select a transition may lookup continue at the parent state.
+
+A selected candidate with no target preserves the active state configuration
+and follows the targetless-transition action rules. A selected candidate with
+no target or actions is a forbidden transition: it performs no action but MUST
+stop wildcard and parent fallback. A guard on that candidate controls whether
+it is selected and does not change the consequence once selected.
+Consequently, `EVENT: {}`, `EVENT: { target: undefined }`, and a present
+`EVENT: undefined` handler have the same forbidden-transition behaviour. An
+omitted event property declares no handler and does not block fallback.
+
 ### Native indexed representation
 
 After validation and preprocessing, the engine MUST store the fixed structural
@@ -390,13 +496,49 @@ Indexes between native record tables MUST use `uint16_t`. Index value `0xFFFF`
 is reserved as `XFSM_INDEX_NONE`; valid table indexes therefore range from zero
 through 65534 inclusive.
 
-Construction MUST fail before publishing a machine if any table would require
-more than 65535 records or if a relationship cannot be represented without the
-reserved value.
+Each indexed native table or retained-JavaScript-value slot collection MUST
+contain at most 65535 records. This limit applies independently to states,
+symbols, handlers, transitions, guards, actions, assignments, retained values,
+and any later indexed record kind. Construction MUST fail before publishing a
+machine if a collection would require more than 65535 records or if a
+relationship cannot be represented without the reserved value.
+
+A record range MAY contain all 65535 records. An empty range MUST use
+`first = XFSM_INDEX_NONE` and `count = 0`. Range validation and the calculation
+of `first + count` MUST use checked arithmetic at least 32 bits wide; the sum
+MUST NOT wrap through a 16-bit field. Version 1 MUST NOT impose a smaller
+per-state, per-handler, or per-transition record limit merely for validation
+convenience.
 
 Arena sizes, byte offsets, string-pool offsets, and event hashes MUST use
 `uint32_t`. All size calculations MUST be checked for overflow before the arena
 is allocated.
+
+Symbol byte lengths MUST use `uint16_t`; an individual state key, ID, action or
+guard name, event type, or other interned symbol is therefore limited to 65535
+bytes. The same byte-length limit applies to an event type supplied to public
+`send(...)`.
+
+The complete arena size MUST fit `uint32_t`, the target's maximum Espruino flat
+string length, and the argument type accepted by its flat-string allocator.
+Exceeding a representational or configured target limit MUST report
+`E_LIMIT_EXCEEDED`. Failure to obtain a representable contiguous allocation
+MUST instead report `E_NO_MEMORY`.
+
+### Hierarchy depth
+
+The root machine has hierarchy depth zero and each top-level state has depth
+one. Version 1 provisionally supports state depths through 32 inclusive;
+construction MUST reject a state at depth 33 or greater with
+`E_LIMIT_EXCEEDED` at that state's configuration path.
+
+Runtime hierarchy algorithms MUST use bounded native storage. An implementation
+MAY, for example, use a fixed `uint16_t ancestry[33]` work area covering the
+root and the maximum state depth. It MUST NOT allocate a JavaScript ancestry
+array or recurse without a verified bound during dispatch.
+
+The depth limit is fixed for all machines in a Version 1 build and MUST NOT
+have a per-machine override.
 
 ### Compiled arena and ownership
 
@@ -446,8 +588,9 @@ record tables and a byte-string pool:
   range, and state flags including whether the state is final.
 - **Symbol records** contain a 32-bit hash, string-pool offset, byte length, and
   symbol flags. Repeated state and event names MUST be interned where practical.
-- **Handler records** contain an event-symbol index and the ordered range of
-  candidate transitions declared for that event by one state.
+- **Handler records** contain an event-symbol index or full-wildcard marker and
+  the ordered range of candidate transitions declared for that event by one
+  state.
 - **Transition records** contain the resolved target-state index, guard-record
   index, transition-action range, and transition flags.
 - **Guard records** contain a retained-JavaScript-value slot index and guard
@@ -474,15 +617,18 @@ Event types MUST be interned as symbols during construction. The engine MUST
 use 32-bit FNV-1a over the event type's Espruino string bytes. At runtime the
 event hash MUST be calculated once per event.
 
-For each active state considered by the transition-selection algorithm, the
-engine MUST linearly scan that state's contiguous handler range. A hash match
-MUST be confirmed by byte length and exact string comparison, so hash
-collisions cannot select an incorrect handler.
+For each state considered by the transition-selection algorithm, beginning at
+the active leaf and ending at the root, the engine MUST linearly scan that
+state's contiguous handler range. A hash match MUST be confirmed by byte length
+and exact string comparison, so hash collisions cannot select an incorrect
+handler.
 
-Candidates belonging to a matching handler MUST be evaluated in their stored
-order. If no candidate is selected, hierarchical fallback MUST continue by
-following the state's numeric parent index; it MUST NOT search the source
-machine definition or parse a state path.
+Candidates belonging to the exact matching handler MUST be evaluated in their
+stored order. If none is selected and that state declares a full-wildcard
+handler, its candidates MUST then be evaluated in stored order without a
+prefix or pattern search. If neither handler selects a candidate, hierarchical
+fallback MUST continue by following the state's numeric parent index; it MUST
+NOT search the source machine definition or parse a state path.
 
 Version 1 MUST NOT allocate a per-machine hash table or allocate memory while
 performing event lookup. A later implementation MAY introduce an alternative
@@ -587,6 +733,30 @@ runtime*. An error snapshot MUST retain the exact thrown JavaScript value in an
 published values, or `undefined` if startup failed before any active snapshot
 was published.
 
+For an active top-level atomic state, `value` MUST be that state's exact key as
+a string. For an active nested state, `value` MUST use the XState hierarchical
+state-value shape: each active compound state contributes an object property
+whose key is that state's exact key and whose value represents its active child.
+The final child is represented by its key as a string. For example:
+
+```javascript
+"Outside"
+{ Parent: "ChildA" }
+{ Parent: { ChildA: "Grandchild" } }
+```
+
+Because Profile 1 excludes parallel states, each object level contains exactly
+one active branch. State keys MUST NOT be split, trimmed, or otherwise
+interpreted while constructing this value.
+
+`matches(value)` MUST accept either a top-level state-key string or the same
+nested object grammar. A string MUST match that exact active top-level key and,
+when the key names a compound state, MUST match regardless of which descendant
+is active. An object MUST perform a partial hierarchical match: every state key
+and child value supplied by the caller must be active, while deeper active
+descendants omitted by the caller are ignored. A string MUST NOT be parsed as a
+period-delimited path.
+
 A snapshot MUST describe only a stable, published result. It MUST NOT expose
 an intermediate configuration from within completion processing. A snapshot
 MUST NOT expose an `actions` array or any native execution-plan records.
@@ -596,6 +766,26 @@ placed in context through `assign(...)`.
 Published snapshot and context values MUST be treated as read-only by the
 application. The engine is not required to freeze them or detect unsupported
 mutation.
+
+The actor's persistent native runtime representation MUST store the active leaf
+index, context reference, and lifecycle status; it MUST NOT maintain a parallel
+JavaScript object tree for the active hierarchy. Snapshot publication is a
+semantic boundary and does not by itself require eager construction of a
+JavaScript snapshot object.
+
+The wrapper MUST materialize and cache a JavaScript snapshot only when
+`getSnapshot()` or a current subscriber requires one. It MUST derive the
+hierarchical `value` from the active leaf and its compiled ancestor indexes.
+Calling `matches(...)` MUST compare against the stored leaf and compiled
+ancestry without constructing another state-value object.
+
+When state, context, or lifecycle status changes, the actor MUST invalidate its
+current snapshot cache. A later observation MUST produce a different snapshot
+object, and any previously returned snapshot MUST remain unchanged. When all
+three remain unchanged, including after an unhandled event or an action-only
+targetless transition, the actor MUST reuse the cached snapshot object if one
+exists. An actor that is never observed MUST NOT allocate a JavaScript snapshot
+object solely because it starts or processes events.
 
 ### Snapshot subscriptions
 
@@ -651,9 +841,10 @@ string event completes without invoking a JavaScript callback.
 
 Any other input, an object without a string `type`, or an empty event type MUST
 be rejected synchronously before transition selection, guard evaluation, or
-action execution begins. Event types beginning with `xstate.` or `@xstate.` are
-reserved for engine use and MUST be rejected at the public `send(...)`
-boundary.
+action execution begins. An event type longer than 65535 bytes MUST be rejected
+synchronously with `E_LIMIT_EXCEEDED` at the public boundary. Event types
+beginning with `xstate.` or `@xstate.` are reserved for engine use and MUST be
+rejected at the public `send(...)` boundary.
 
 For an object event, every guard and action in the external-event microstep
 MUST receive the exact supplied object. The engine MUST read and validate its
@@ -723,13 +914,20 @@ descriptor of the form `{ type: "name" }` requires a corresponding function in
 
 ### Guard implementation binding
 
-A guard implementation MAY be supplied directly as a JavaScript function or
-by a string name explicitly bound to a function in `options.guards`. A direct
-function requires no `options.guards` entry. Construction MUST resolve, validate,
-and retain each guard function and MUST reject an unresolved or non-function
-guard implementation. Runtime transition selection MUST use the retained slot
-and MUST NOT search the source definition, surrounding JavaScript scope, or
-`options.guards`.
+A guard MAY be supplied directly as a JavaScript function, by a string name, or
+by a parameterless object descriptor of the form `{ type: "name" }`. The two
+named forms MUST resolve identically to a function explicitly bound in
+`options.guards`; a direct function requires no `options.guards` entry.
+Construction MUST resolve, validate, and retain each guard function and MUST
+reject an unresolved or non-function implementation. Runtime transition
+selection MUST use the retained slot and MUST NOT search the source definition,
+surrounding JavaScript scope, or `options.guards`.
+
+A guard object MUST contain exactly the string `type` field. Version 1 MUST
+reject `params` and any other guard-descriptor field, and MUST NOT export or
+recognise composite-guard helpers such as `and`, `or`, `not`, or `stateIn`.
+Applications MAY express equivalent logic inside an ordinary direct or named
+guard function.
 
 The canonical transition property is `guard`. For construction-time migration
 of XState v4 definitions, Profile 1 MUST also accept `cond` as an alias for
@@ -751,6 +949,22 @@ to a boolean using normal JavaScript truthiness. A guard exception MUST use the
 same synchronous fail-stop behaviour specified for an escaping action
 exception.
 
+### Omitted initial context
+
+When the machine definition omits the `context` property, each actor's first
+`start()` MUST create a distinct empty JavaScript object as that actor's initial
+context. Initial actions and guards MUST receive that object, the active
+snapshot MUST expose it, and `assign(...)` MAY add the first context properties
+to it. Omission MUST NOT be represented to running application callbacks as
+`undefined`.
+
+The compiled machine need not retain a context template for this case, and
+`createActor(...)` MUST NOT allocate the empty object before startup. An actor
+stopped before startup therefore retains undefined context as already
+specified. If the empty object cannot be allocated during startup, the actor
+MUST fault with runtime category `E_NO_MEMORY`, execute no entry action, and
+publish no active snapshot.
+
 ### Literal initial context ownership
 
 When the machine definition supplies a literal JavaScript object as `context`,
@@ -758,6 +972,13 @@ the compiled machine MUST retain that exact object through its
 garbage-collector-visible reference container. It MUST use the object as a
 shared initial context template and MUST NOT make a per-runtime copy during
 startup.
+
+The literal MUST be a non-null, non-array JavaScript object. Construction MUST
+reject `null`, an array, a primitive, or any other non-function value as
+`E_CONFIG_TYPE` at `config.context`. This is strict enforcement of XState's
+documented object-shaped context contract; Profile 1 does not preserve
+permissive results from malformed JavaScript configurations. Nested property
+values are application data and MAY themselves have any JavaScript type.
 
 Every runtime created from the compiled machine therefore initially refers to
 the same literal context object, including the same nested object and array
@@ -785,6 +1006,12 @@ The factory MUST be called exactly once when each new actor first attempts
 that actor's initial context. The engine MUST NOT call the factory during
 `createMachine(...)` or `createActor(...)` and MUST NOT copy its result. An
 actor stopped before startup MUST never call the factory.
+
+The factory MUST return a non-null, non-array JavaScript object. An invalid
+return MUST cause the engine to create a `TypeError`, fault that actor, execute
+no initial entry action, and publish no active snapshot. This runtime check is
+required because construction validates the factory's callability but cannot
+validate its eventual result.
 
 The factory is responsible for returning a fresh object graph when independent
 context ownership is required. If application code deliberately returns an
@@ -826,6 +1053,48 @@ completion transitions.
 
 ### Context assignment and visibility
 
+The public `assign(assignment)` helper MUST produce an engine-recognised action
+descriptor. `assignment` MUST use one of these two forms:
+
+```javascript
+assign(function (context, event) {
+  return { count: context.count + 1 };
+})
+
+assign({
+  count: function (context, event) {
+    return context.count + 1;
+  },
+  mode: "active"
+})
+```
+
+The first form is a partial assigner function. It MUST be invoked with the
+context and event visible at the assignment's action position and MUST return a
+non-null, non-array JavaScript object. The returned object's own enumerable
+string-keyed properties form the partial update. Values in that returned object
+are update values, including values that are themselves functions.
+
+The second form is a property-assignment map. It MUST be a non-null, non-array
+object whose assignment entries are own enumerable string-keyed data
+properties. A function-valued entry is a property expression and MUST be
+invoked with positional `(context, event)` arguments; any other entry is a
+fixed update value. Assigning a function itself as context data therefore
+requires the partial-assigner form. Accessor properties are unsupported under
+the general structural-configuration rule.
+
+Construction MUST enumerate a property-assignment map once, retain its property
+order, and compile its property names, expressions, and fixed values. Later
+mutation of that map MUST NOT alter the compiled assignment. Fixed object and
+array values MUST be retained as garbage-collector-visible values and assigned
+by reference; the engine MUST NOT deep-copy them. An empty property-assignment
+map is valid.
+
+An `assign(...)` descriptor MUST occur directly in an entry, exit, or
+transition action position. It MUST NOT be registered as an ordinary named
+function in `options.actions`. `createMachine(...)` MUST reject an assignment
+argument of any other form as a malformed action definition.
+
 Every guard used to select a transition MUST be evaluated before any action of
 that transition executes and MUST see the runtime's currently committed
 context.
@@ -844,13 +1113,31 @@ their declared execution order.
 For an object-form assignment, every property expression MUST be evaluated
 against the same context that entered that single `assign(...)` action. A
 property expression MUST NOT observe the result calculated for another property
-in the same assignment. After all property expressions have completed, their
-partial update MUST be applied together.
+in the same assignment. Expressions MUST be evaluated in their compiled
+property order. After all property expressions have completed, their partial
+update MUST be applied together.
 
 Each successful `assign(...)` MUST produce a new shallow context object
-containing the preceding context properties and that assignment's partial
-update. It MUST NOT mutate a previously published context object. The new object
-MUST remain pending until the complete action sequence succeeds.
+containing the preceding context's own enumerable string-keyed properties and
+then that assignment's partial update. Update properties replace preceding
+properties with the same key. It MUST NOT mutate a previously published context
+object. Even an empty partial update MUST produce the new shallow object. The
+new object MUST remain pending until the complete action sequence succeeds.
+
+For property-assignment form, the engine SHOULD write evaluated results
+directly into that pending shallow copy and MUST NOT create a temporary
+JavaScript partial-update object. The expressions nevertheless receive the
+unchanged context that entered the assignment. A partial-assigner function
+supplies its own returned partial-update object, which the engine MUST merge
+into the pending shallow copy.
+
+If a partial assigner returns `null`, an array, or any other non-object value,
+the engine MUST create a `TypeError` and apply the normal escaping-assignment
+fault behaviour. If a property expression, property read, or merge operation
+throws, the same behaviour applies. If the engine cannot allocate the pending
+context, it MUST fault the actor with runtime category `E_NO_MEMORY`. In every
+case, a previously published context MUST remain unchanged and external side
+effects already completed cannot be reversed.
 
 After the complete sequence succeeds, the engine MUST publish the resulting
 context and target state configuration as the completed operation. Context
@@ -1015,10 +1302,33 @@ intermediate configuration and MUST NOT be published as a separate stable
 snapshot. For the compatibility example, `send("finish")` therefore returns
 with `Success`, not `Workflow.Completed`, as the stable state.
 
-The engine MUST protect the device from an unbounded internal completion
-sequence. Exceeding the completion-processing limit MUST fault the operation
-rather than hang indefinitely or publish an intermediate configuration. The
-exact limit and public fault value remain to be specified.
+The engine MUST protect the device from an unbounded run-to-completion sequence.
+One public `start()` or `send(...)` operation MAY execute at most 256
+microsteps. The startup entry sequence counts as one microstep. A selected
+external-event transition and each selected completion transition each count
+as one further microstep. Rejected guard candidates, an offered completion
+event for which no candidate is selected, an unhandled external event, and
+individual actions do not count as microsteps.
+
+Before beginning a 257th microstep, the engine MUST fault the operation without
+executing any action belonging to that microstep. It MUST throw and retain a
+JavaScript `Error` using the runtime diagnostic category
+`E_MICROSTEP_LIMIT`. Its compact message MUST identify the public operation,
+for example:
+
+```text
+XFC E_MICROSTEP_LIMIT @ actor.send: max=256
+```
+
+The pending state and context for the entire incomplete operation MUST be
+discarded and the last stable snapshot retained. Startup failure before a
+snapshot has been published retains undefined state and context. Actions and
+other external side effects completed during earlier microsteps cannot be
+reversed. These publication, rollback, and faulted-actor consequences are the
+same as for an escaping action exception.
+
+The 256-microstep limit is fixed for Version 1 machines and MUST NOT have a
+per-machine override.
 
 ### Native execution boundary
 
@@ -1113,7 +1423,148 @@ Additional host-integration requirements remain to be defined.
 
 ## Validation and Error Behavior
 
-To be defined.
+### Construction transaction
+
+`createMachine(...)` MUST be synchronous and transactional. It MUST either
+return one completely validated and populated compiled machine or throw a
+JavaScript `Error`. On failure it MUST release every temporary allocation,
+native arena, and retained JavaScript reference acquired by that construction
+attempt. No partially usable machine may be returned or published.
+
+Machine-definition errors MUST be detected during `createMachine(...)`; they
+MUST NOT be deferred until actor startup or until an event happens to select an
+invalid record. Construction MUST resolve and validate at least all initial
+states, target references, effective IDs, action and guard bindings, supported
+descriptor shapes, state relationships, record counts, index values, and
+string-pool ranges.
+
+Construction MUST validate all counts, byte lengths, indexes, offsets, and
+alignment calculations before writing them to their native fields. A value that
+does not fit the specified representation MUST cause construction to fail; it
+MUST NOT be truncated or wrapped. Cycles in the structural object graph and
+nesting beyond the supported implementation limit MUST also be rejected. Reuse
+of one acyclic configuration fragment in separate branches is composition, not
+a cycle, and MAY be compiled independently at each position.
+
+The engine MAY perform the already specified single defragment-and-retry
+attempt after a native arena allocation failure. If that attempt fails,
+construction MUST release its temporary resources and report a memory error.
+
+### Definition strictness
+
+The supported configuration is a strict schema. A malformed supported field,
+an unknown structural property, or a recognised but unsupported semantic
+feature MUST cause construction to fail. In particular, construction MUST NOT
+silently reinterpret a misspelled property such as `intial` or `gaurd`, and
+MUST explicitly reject version 1 exclusions including parallel states,
+history states, invocation, delayed transitions, eventless transitions,
+activities, and output values.
+
+Profile 1 defines the following narrow exceptions for inert output generated
+by the examined Stately v4 and v5 exporters or accepted current XState
+transition schema:
+
+- root `predictableActionArguments: true` and `preserveActionOrder: true`;
+- empty `services`, `actors`, and `delays` implementation maps; and
+- empty `meta` objects in generated descriptors; and
+- string `description` fields on transition descriptors.
+
+Construction MUST accept and discard those exact inert forms. It MUST reject a
+different value, a non-empty unsupported implementation map, or non-empty
+metadata whose observable semantics Profile 1 does not implement. Additional
+ignored fields MUST NOT be introduced without an explicit specification
+change.
+
+Structural configuration MUST use ordinary data properties containing the
+accepted objects, arrays, primitive values, and callback values. Property
+accessors and other definitions that can produce different structural values
+between validation and arena-population passes are unsupported and MUST be
+rejected. Configuration-producing application code remains free to run before
+`createMachine(...)` and pass its completed stable object graph.
+
+Construction MUST validate that callback positions contain callable values but
+MUST NOT invoke an initial-context factory, guard, action, assignment
+expression, or other application callback. Callback execution belongs to the
+actor lifecycle and dispatch rules.
+
+### Construction diagnostics
+
+A construction failure MUST throw one normal JavaScript `Error` containing a
+stable diagnostic category and the position of the failure in the supplied
+object graph. The position MUST be expressed as an unambiguous JavaScript-like
+property path rooted at `config` or `options`. Identifier-like keys SHOULD use
+dot notation; other keys MUST use quoted bracket notation. Array positions MUST
+use zero-based bracket indexes. For example:
+
+```text
+config.states.Parent.states.Child.on.NEXT[0].target
+config.states["Parent state"].initial
+options.actions.reset
+```
+
+The path identifies the object property, not a source-file line or column;
+`createMachine(...)` receives an object graph and has no reliable source-map
+information.
+
+At minimum, stable categories MUST distinguish configuration type, unknown
+property, unsupported feature, invalid initial state, invalid target, duplicate
+ID, unresolved action, unresolved guard, representation limit, and allocation
+failure. Their symbolic codes are:
+
+```text
+E_CONFIG_TYPE
+E_UNKNOWN_PROPERTY
+E_UNSUPPORTED_FEATURE
+E_INITIAL_UNKNOWN
+E_TARGET_UNKNOWN
+E_ID_DUPLICATE
+E_ACTION_UNRESOLVED
+E_GUARD_UNRESOLVED
+E_LIMIT_EXCEEDED
+E_NO_MEMORY
+```
+
+Construction MUST report the first error encountered in deterministic
+definition order. It MUST NOT allocate an array of every detected error. The
+diagnostic MAY include a bounded offending value or other short detail when it
+materially helps identify the problem. Static explanatory prose SHOULD remain
+brief; the documentation and conformance suite MUST provide the expanded
+meaning of every stable category.
+
+Version 1 construction messages MUST use this single compact grammar:
+
+```text
+XFC <CATEGORY> @ <OBJECT_PATH>[: <SHORT_DETAIL>]
+```
+
+`XFC`, the category, and the separators are fixed library text. Category names
+SHOULD be stored once in a shared flash-resident table rather than duplicated in
+individual message templates. The object path and optional detail MUST be
+formed only on failure and MUST NOT add storage to a successfully compiled
+machine.
+
+The object path MUST normally be complete. The optional detail MUST be limited
+to 48 bytes, with any truncation occurring at a valid character boundary.
+User-supplied string details MUST be quoted and escaped. For example:
+
+```text
+XFC E_TARGET_UNKNOWN @ config.states.Parent.on.NEXT[0].target: "Missing"
+XFC E_UNKNOWN_PROPERTY @ config.states.Idle.entyr
+XFC E_LIMIT_EXCEEDED @ config.states: states=65536 max=65535
+```
+
+If allocation failure prevents construction of the normal diagnostic, the
+implementation MUST be able to throw the fixed fallback message without
+attempting to build an object path:
+
+```text
+XFC E_NO_MEMORY @ createMachine
+```
+
+Version 1 MUST NOT provide separate compact and verbose diagnostic builds.
+Expanded category explanations belong in project documentation and conformance
+tests. A later version MAY revise the diagnostic detail only after measurements
+show the flash and failure-path RAM consequences on representative targets.
 
 ## Resource and Performance Requirements
 
@@ -1125,11 +1576,19 @@ JavaScript collection construction.
 
 Resource measurements MUST report at least:
 
+- firmware binary-size increase with Xstate-fsm-c enabled, measured against the
+  same Espruino build configuration without the library;
+- the diagnostic category table and formatting code contribution when a linker
+  map or equivalent tool can identify it;
 - final compiled-arena bytes;
 - retained JavaScript value count;
 - total Espruino variable-block change caused by machine construction;
 - peak variable-block usage during construction;
-- per-runtime-instance variable-block change; and
+- peak variable-block and native-memory use while formatting a representative
+  construction error with a deeply nested object path;
+- per-runtime-instance variable-block change;
+- the additional cost of materialising the first snapshot and registering the
+  first subscriber; and
 - event-dispatch time for a local hit, parent fallback, guarded candidates,
   and an unhandled event.
 
@@ -1137,6 +1596,21 @@ Measurements MUST record `process.memory().blocksize`, because the size of an
 Espruino variable-storage block varies between targets. Representative tests
 MUST include a constrained target and MUST distinguish native structural cost
 from time spent inside application-supplied JavaScript guards and actions.
+
+The first executable vertical slice MUST produce this resource baseline early
+enough for record layout, diagnostics, snapshot materialisation, and retained
+JavaScript ownership to be revised before the full Profile 1 implementation is
+committed to those mechanisms.
+
+The hierarchy-depth limit of 32 and the run-to-completion budget of 256
+microsteps are provisional design values for the first vertical slice. That
+slice MUST measure native and Espruino variable-block use attributable to the
+bounded hierarchy work area, hierarchy traversal time at representative depths,
+and execution time for completion chains approaching the microstep limit. The
+results MUST be documented and both values explicitly retained or revised
+before the full Profile 1 implementation proceeds. Any revision MUST preserve
+a fixed, statically bounded runtime cost; Version 1 MUST NOT introduce
+per-machine limit settings as a substitute for that review.
 
 The version 1 implementation MUST allocate the compiled arena once and retain
 it for the machine lifetime. It MUST NOT repeatedly create typed arrays, flat
@@ -1169,7 +1643,11 @@ notes above but is not itself normative for Xstate-fsm-c.
 - [XState: Migrating from v4 to
   v5](https://stately.ai/docs/migration)
 - [XState: Actors](https://stately.ai/docs/actors)
+- [XState: Events and transitions](https://stately.ai/docs/transitions)
+- [XState: Guards](https://stately.ai/docs/guards)
 - [XState v5.33.2: Actor implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/createActor.ts)
+- [XState v5.33.2: Machine initial-context implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/StateMachine.ts)
+- [XState v5.33.2: Context-assignment implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/actions/assign.ts)
 - [XState: Migrating from v5 to v6
   alpha](https://dev.stately.ai/docs/xstate/v6/xstate-v5-to-v6)
 - [Stately: Predictable events and actions in
