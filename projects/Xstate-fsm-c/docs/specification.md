@@ -3,7 +3,7 @@
 ## Document Status
 
 - Status: Initial design decisions in progress
-- Version: 0.21
+- Version: 0.35
 - Implementation status: Not started
 
 This document is the future normative specification for Xstate-fsm-c. Only
@@ -31,7 +31,13 @@ regions are outside the version 1 scope. Construction MUST reject a machine
 definition containing a parallel state rather than silently changing its
 meaning.
 
-The inclusion or exclusion of other XState features remains to be specified.
+Version 1 excludes eventless and delayed transitions, invocation, activities,
+history, tags, output values, actor definitions and spawning, persistence and
+restored state, and custom state-path delimiters. Construction MUST reject
+configuration requesting one of these recognised features as
+`E_UNSUPPORTED_FEATURE`; it MUST NOT silently discard or reinterpret it. The
+exact accepted root and state-node properties are specified under State node
+and initial-transition grammar.
 
 A previously compiled machine object is not a state-node configuration and
 MUST NOT be accepted as a nested state. Running one machine from another would
@@ -276,6 +282,83 @@ Equivalent application logic can be placed in one direct or named guard. This
 avoids compiled parameter values, parameter-mapper callbacks, and a family of
 built-in guard record types in Version 1. See Guard implementation binding.
 
+### XFC-CD-014: Strict state-node and initial-transition shape
+
+Current XState infers atomic and compound nodes but can accept some explicit
+node-type combinations that contradict their child structure. Its initial
+transition type also inherits general transition fields that are not all used
+by initial-transition execution. Profile 1 rejects contradictory node types
+and rejects ineffective fields on an initial-transition descriptor.
+
+This stricter construction rule prevents a definition from appearing to request
+behaviour that the runtime would silently ignore, and lets every compiled node
+have one unambiguous native shape. Profile 1 still supports XState's effective
+initial-transition target, actions, description, and empty metadata. See State
+node and initial-transition grammar.
+
+### XFC-CD-015: Exact-key-first target resolution
+
+Current XState treats unescaped periods in a bare or dot-prefixed target as
+hierarchical path separators. Profile 1 additionally considers the complete
+unescaped text as one direct state key. When only one interpretation resolves,
+that state is selected; when both interpretations resolve to different states,
+construction rejects the target as ambiguous.
+
+Hierarchy continues to be defined only by nested `states` objects, not by
+punctuation in a state key. This extension lets common punctuated state names be
+targeted without escapes, while preventing a model from silently changing
+meaning when a conflicting nested path is later added. XState-compatible
+backslash escaping remains available for explicit path segmentation, and a
+simple explicit state ID provides the preferred ambiguity-free reference. The
+additional resolution work occurs only during construction and adds no arena,
+actor, or dispatch cost.
+
+To keep implicit effective IDs unique, Profile 1 escapes period and backslash
+bytes within their state-key segments. Current XState joins the raw keys, so a
+completion event's `type` can differ when a completed state's implicit path
+contains either character; compiled `onDone` behaviour is unaffected. See
+Transition target grammar and resolution.
+
+### XFC-CD-016: Opaque compiled machine
+
+Current XState exposes a rich actor-logic object and utilities for calculating
+transitions outside a running actor. Profile 1 exposes its compiled machine only
+as an opaque handle accepted by `createActor(...)`; Version 1 does not expose a
+pure-transition route, a JavaScript state-node graph, or an action-description
+result.
+
+This preserves one native execution path and avoids retaining or recreating
+JavaScript representations of compiled structure. The restriction applies only
+to the Version 1 surface: the machine object's public namespace and the
+versioned arena format deliberately permit later properties, methods, or
+inspection facilities. See Public Interfaces and Record organisation.
+
+### XFC-CD-017: Function-only subscriptions
+
+Current XState accepts either a snapshot-listener function or an observer
+object with `next`, `error`, and `complete` callbacks. Profile 1 accepts only
+the listener-function form and does not provide separate error or completion
+callbacks.
+
+Stable `done` and `stopped` snapshots are delivered through the ordinary
+listener before automatic unsubscription. Actor faults follow Profile 1's
+synchronous exception contract and remain inspectable through `getSnapshot()`.
+This smaller interface avoids observer-shape validation, three optional
+callback references per registration, and a second error-reporting route. See
+Snapshot subscriptions.
+
+### XFC-CD-018: Categorised synchronous runtime diagnostics
+
+Current XState does not specify Profile 1's stable compact runtime categories
+and can report actor failures through observer error handling. Profile 1 reports
+engine-detected runtime failures synchronously using the `XFC` diagnostic
+grammar and its documented categories. Application values thrown by callbacks
+remain unwrapped under the separately recorded fail-stop rule.
+
+The fixed category vocabulary and bounded detail provide actionable embedded
+diagnostics without retaining configuration paths or implementing an actor
+error-observer channel. See Runtime diagnostics.
+
 ## Machine Model
 
 ### Machine-definition lifetime
@@ -362,15 +445,109 @@ resolve states, parent relationships, initial states, or transition targets.
 This requirement defines the logical information and behaviour expected of the
 lookup structures. Their storage and lookup requirements are specified below.
 
+### State node and initial-transition grammar
+
+The root configuration MAY contain only `id`, `type`, `context`, `initial`,
+`states`, `on`, `entry`, `exit`, `description`, `meta`, and the two accepted v4
+compatibility flags `predictableActionArguments` and `preserveActionOrder`.
+Subject to the node-type restrictions below, a non-root state-node
+configuration MAY contain only `id`, `type`, `initial`, `states`, `on`,
+`onDone`, `entry`, `exit`, `description`, and `meta`. Any other own enumerable
+property MUST be rejected as either a recognised `E_UNSUPPORTED_FEATURE` or an
+`E_UNKNOWN_PROPERTY`.
+
+When present at either location, `description` MUST be a string and `meta` MUST
+be an empty non-null, non-array object. Construction MUST validate and discard
+both fields; neither receives an arena record or appears in a Version 1
+snapshot. A non-empty `meta` object is unsupported because Profile 1 does not
+expose XState's active-state metadata facilities.
+
+The root MAY declare `context`, but a non-root state MUST NOT. `entry` and
+`exit` use the common action grammar and are valid on root, atomic, compound,
+and final nodes. `on` is valid on the root and every non-final state. `onDone`
+is valid only on a non-root compound state. `initial` and a non-empty `states`
+object are valid only on a compound node, subject to the inference and
+validation rules below.
+
+A state node with a non-empty `states` object is compound when `type` is
+omitted. A node with no `states` property or an empty `states` object is atomic
+when `type` is omitted. Construction MUST accept and discard an empty `states`
+object on an atomic node.
+
+Version 1 MUST accept explicit `type: "atomic"`, `type: "compound"`, and
+`type: "final"`. An atomic node MUST NOT contain child states or `initial`. A
+compound node MUST contain at least one child state and MUST declare `initial`.
+A final node follows the additional restrictions under Final states and
+completion transitions. The root machine MAY be atomic or compound but MUST
+NOT be final. Explicit or inferred node type and structure MUST agree;
+construction MUST reject a contradictory combination as `E_CONFIG_TYPE`.
+Parallel and history node types remain unsupported and MUST be rejected as
+`E_UNSUPPORTED_FEATURE`.
+
+Every own enumerable property of a `states` object MUST have a non-empty state
+key and a non-null, non-array state-node configuration object as its value.
+Construction MUST recurse through those objects subject to the hierarchy-depth
+limit and strict schema rules. A period or other punctuation in a state key is
+part of that one exact key and MUST NOT create hierarchy; only nesting through
+a child `states` object establishes a parent-child relationship.
+
+A compound node's `initial` MUST use either a direct-child key string or this
+object form:
+
+```javascript
+initial: {
+  target: "ChildA",
+  actions: ["prepareChild"],
+  description: "Begin in Child A",
+  meta: {}
+}
+```
+
+The object form MUST contain `target`, which MUST be one exact direct-child key.
+It MAY contain `actions` using the standard action grammar, a string
+`description`, and an empty `meta` object. `description` and `meta` MUST be
+validated and discarded during construction. Guards, `reenter`, general target
+paths, target arrays, and every other field MUST be rejected; an initial
+transition is unconditional and selects one direct child.
+
+Construction MUST report a missing compound initial state as
+`E_INITIAL_REQUIRED` at that node's `initial` path and an unknown initial child
+as `E_INITIAL_UNKNOWN`. It MUST resolve a valid initial child to a native state
+index and compile the object form's actions into their declared order. Runtime
+entry MUST NOT look up the child key or inspect the source initial descriptor.
+
+When entry into a compound node requires resolution through its initial child,
+the action order MUST be:
+
+1. that compound node's entry actions;
+2. that compound node's initial-transition actions;
+3. the initial child's entry actions; and
+4. the same initial-transition and entry sequence recursively for each initial
+   compound descendant.
+
+The initial-transition actions MUST receive the event responsible for the
+entry: `xstate.init` during startup, or the current external or completion event
+during later entry. They participate in normal ordered `assign(...)` context
+visibility and exception handling. Initial descent is part of the enclosing
+startup or selected-transition microstep and MUST NOT increment the microstep
+count independently.
+
 ### Transition target grammar and resolution
 
 Every state node MUST have one effective ID. The root effective ID is its
 explicit `id`, or `(machine)` when the root `id` is omitted. A non-root state's
 effective ID is its explicit `id` when supplied; otherwise it is the root
-effective ID followed by the exact state-key path from the root. An explicit ID
-on an ancestor names only that ancestor and MUST NOT replace the root-and-key
-prefix used by its descendants' implicit IDs. Effective IDs MUST be built and
-validated during construction.
+effective ID followed by the state-key path from the root. In that implicit
+path, construction MUST escape each backslash and period within a state-key
+segment with a preceding backslash before joining segments with periods. Thus
+the literal sibling key `Heating.Mode` and the nested path `Heating` then
+`Mode` have different implicit effective IDs.
+
+An explicit ID on an ancestor names only that ancestor and MUST NOT replace the
+root-and-key prefix used by its descendants' implicit IDs. Effective IDs MUST
+be built and validated during construction. An explicit ID MUST be a non-empty
+string within the symbol length limit; an explicitly supplied empty ID MUST NOT
+be treated as if the property were omitted.
 
 Version 1 MUST accept the following XState target-string forms:
 
@@ -381,17 +558,51 @@ Version 1 MUST accept the following XState target-string forms:
 - An ID-based path such as `#machineId.Outside` identifies a state by its ID and
   then follows any remaining descendant path from that state.
 
-A path MAY contain multiple period-delimited state-key segments. State keys and
-IDs are case-sensitive strings. Spaces and other valid Espruino string bytes
-are significant and MUST be preserved exactly; implementations MUST NOT trim,
-case-fold, or otherwise normalize them.
+A path MAY contain multiple period-delimited state-key segments. An unescaped
+backslash MUST escape the next character, which becomes part of the current
+segment without syntactic meaning. A trailing unpaired backslash is invalid.
+In JavaScript source, the backslash itself normally requires string-literal
+escaping; for example, `target: "Heating\\.Mode"` represents one path segment
+whose key is `Heating.Mode`.
+
+For a bare target containing no backslash, construction MUST attempt both of
+these interpretations relative to the source state's parent:
+
+1. the complete target text as one exact sibling key; and
+2. the target text as a period-delimited hierarchical path.
+
+For a dot-prefixed target containing no backslash, construction MUST remove the
+leading descendant marker and attempt the same two interpretations relative to
+the source state: one exact direct-child key and one hierarchical descendant
+path. The leading unescaped `.` and `#` characters remain reserved syntax. A
+state key beginning with either character can be targeted through an escaped
+path segment or, preferably, a simple explicit ID.
+
+If only one interpretation resolves, construction MUST select it. If both
+resolve to the same state, construction MUST select that state. If both resolve
+to different states, construction MUST reject the target as
+`E_TARGET_AMBIGUOUS`; it MUST NOT apply a precedence rule. A target containing
+a backslash is an explicitly segmented path and MUST use only the escaped-path
+interpretation.
+
+ID-based targets retain XState path semantics: the first unescaped segment
+after `#` is the explicit or root ID and any remaining segments are descendants
+of that state. Periods or backslashes within an ID MUST be escaped. Applications
+SHOULD use short punctuation-free explicit IDs when disambiguating a punctuated
+state key.
+
+State keys and IDs are case-sensitive strings. Spaces and other valid Espruino
+string bytes are significant and MUST be preserved exactly; implementations
+MUST NOT trim, case-fold, or otherwise normalize them. Empty segments make a
+hierarchical interpretation invalid but do not invalidate a separately
+resolved exact-key interpretation.
 
 Construction MUST build the state-ID information needed by ID-based targets and
-MUST reject duplicate IDs, an empty path segment, an unknown ID, an unknown
-state key, or a target that does not resolve unambiguously to exactly one state.
-The root machine's `id` participates in the same ID lookup as state-node IDs.
-The root's default effective ID `(machine)` participates when no explicit root
-ID was supplied.
+MUST reject duplicate effective IDs, a malformed explicitly escaped path, an
+unknown ID, an unknown state key, or a target that does not resolve
+unambiguously to exactly one state. The root machine's `id` participates in the
+same ID lookup as state-node IDs. The root's default effective ID `(machine)`
+participates when no explicit root ID was supplied.
 
 Every accepted target MUST be resolved to its native state index during
 `createMachine`. The target string, its period-delimited path, and the state-ID
@@ -493,7 +704,7 @@ part of the public JavaScript API.
 ### Index and offset widths
 
 Indexes between native record tables MUST use `uint16_t`. Index value `0xFFFF`
-is reserved as `XFSM_INDEX_NONE`; valid table indexes therefore range from zero
+is reserved as `XFC_INDEX_NONE`; valid table indexes therefore range from zero
 through 65534 inclusive.
 
 Each indexed native table or retained-JavaScript-value slot collection MUST
@@ -504,7 +715,7 @@ machine if a collection would require more than 65535 records or if a
 relationship cannot be represented without the reserved value.
 
 A record range MAY contain all 65535 records. An empty range MUST use
-`first = XFSM_INDEX_NONE` and `count = 0`. Range validation and the calculation
+`first = XFC_INDEX_NONE` and `count = 0`. Range validation and the calculation
 of `first + count` MUST use checked arithmetic at least 32 bits wide; the sum
 MUST NOT wrap through a 16-bit field. Version 1 MUST NOT impose a smaller
 per-state, per-handler, or per-transition record limit merely for validation
@@ -580,12 +791,18 @@ The arena MUST begin with a header containing a format identifier, internal
 format version, total byte size, flags, and an offset and count for each native
 table. Table starts MUST be naturally aligned for their record type.
 
+[Native Format Version 1](native-format-v1.md) defines the normative
+provisional physical layout, record sizes, flag meanings, actor native block,
+and validation invariants. The first vertical-slice measurements MUST review
+that layout before it is declared frozen.
+
 Version 1 of the internal representation consists of the following contiguous
 record tables and a byte-string pool:
 
 - **State records** contain parent and resolved-initial-state indexes, normal
-  handler range, completion-transition range, entry-action range, exit-action
-  range, and state flags including whether the state is final.
+  handler range, completion-transition range, initial-transition-action range,
+  entry-action range, exit-action range, and state flags including whether the
+  state is final.
 - **Symbol records** contain a 32-bit hash, string-pool offset, byte length, and
   symbol flags. Repeated state and event names MUST be interned where practical.
 - **Handler records** contain an event-symbol index or full-wildcard marker and
@@ -599,6 +816,9 @@ record tables and a byte-string pool:
   assignment-record index, and action flags.
 - **Assignment records** contain the indexes and flags required by the context
   assignment semantics specified later.
+- **Assignment-entry records** contain a context-key symbol, retained fixed
+  value or expression slot, and flags distinguishing literals from callable
+  expressions.
 
 Ranges MUST be represented by a first-record index and record count. Records
 owned by a state, handler, or transition MUST be contiguous and stored in their
@@ -606,10 +826,10 @@ defined execution order. Record fields MUST use fixed-width integer types and
 MUST NOT depend on compiler pointer size. The C implementation MUST use
 compile-time size assertions for every arena record type.
 
-The exact meanings of action, guard, assignment, and transition flags will be
-specified with their runtime semantics. New semantics MAY add record kinds or
-fields by incrementing the private arena format version; they MUST NOT change
-the public JavaScript API merely to expose this representation.
+Unknown or reserved record flags MUST be rejected as specified by the native
+format appendix. New semantics MAY add record kinds, flags, or fields by
+incrementing the private arena format version; they MUST NOT change the public
+JavaScript API merely to expose this representation.
 
 ### Event lookup
 
@@ -654,8 +874,23 @@ returns to JavaScript only when JavaScript behaviour must be invoked.
 
 `createActor(machine)` MUST accept a successfully compiled Profile 1 machine
 and return a distinct actor in the `notStarted` lifecycle state. Version 1 MUST
-NOT accept a second actor-options argument. Restored snapshots, actor input,
-actor-system membership, and child actors are outside the version 1 scope.
+NOT accept a second actor-options argument other than explicit `undefined`.
+Restored snapshots, actor input, actor-system membership, and child actors are
+outside the version 1 scope. A non-`undefined` second argument MUST fail as
+`E_UNSUPPORTED_FEATURE` at `createActor.options` before actor allocation.
+
+Each actor MUST be a JavaScript object with stable identity, a private engine
+brand, and hidden runtime storage. Version 1 guarantees only the public methods
+`start`, `send`, `stop`, `getSnapshot`, and `subscribe`; state and context MUST
+be observed through snapshots rather than direct actor properties. The
+remaining public property namespace is reserved for later versions, and
+applications MUST NOT add properties or depend on property enumeration.
+
+Every actor method MUST validate that its receiver is a live compatible actor.
+A detached or borrowed method invoked without its originating actor as receiver
+MUST fail synchronously as `E_ACTOR_INVALID`. Extra arguments to the
+zero-argument `start()`, `stop()`, and `getSnapshot()` methods MUST be ignored
+in normal JavaScript fashion.
 
 An actor MUST retain its compiled machine for the actor's lifetime. Multiple
 actors MAY share one compiled machine, its native arena, and its retained
@@ -670,26 +905,29 @@ event mailbox. A newly created actor has no active state configuration.
 The first `start()` call on a `notStarted` actor MUST synchronously:
 
 1. obtain the actor's initial context;
-2. resolve the root and nested initial states;
-3. execute initial entry actions in their specified order using the
-   `xstate.init` event;
+2. enter the root and resolve its nested initial states;
+3. execute root, state-entry, and initial-transition actions in their specified
+   interleaved order using the `xstate.init` event;
 4. process generated completion transitions to stability; and
 5. publish one stable `active` or `done` snapshot.
 
 `start()` MUST return the actor. Calling it again while the actor is `active`
 MUST be an idempotent no-op. A `done`, `stopped`, or faulted actor MUST NOT be
-restartable; attempting to start one MUST fail synchronously. Applications
-requiring another execution MUST create another actor.
+restartable; attempting to start a `done` or `stopped` actor MUST fail
+synchronously as `E_ACTOR_STATE`, and attempting to start a faulted actor MUST
+fail as `E_ACTOR_FAULTED`. Applications requiring another execution MUST create
+another actor.
 
 The internal lifecycle states MUST be representable without JavaScript string
 comparison and MUST distinguish `notStarted`, `active`, `done`, `stopped`, and
 faulted. Their public snapshot spelling is specified under Stable snapshots.
 
 Public `send(...)` is valid only while the actor is `active`. Sending before
-startup MUST fail synchronously and MUST NOT queue the event. Sending after
-normal completion or explicit stop MUST be an ignored no-op. Sending to a
-faulted actor MUST fail synchronously under the fault-handling requirements.
-`send(...)` MUST return `undefined` after any normally returning operation.
+startup MUST fail synchronously as `E_ACTOR_STATE` and MUST NOT queue the
+event. Sending after normal completion or explicit stop MUST be an ignored
+no-op. Sending to a faulted actor MUST fail synchronously as
+`E_ACTOR_FAULTED`. `send(...)` MUST return `undefined` after any normally
+returning operation.
 
 Calling `stop()` on a `notStarted` actor MUST move it directly to `stopped` and
 publish and notify a stopped snapshot with undefined state and context, without
@@ -700,13 +938,15 @@ notify a `stopped` snapshot. The retained state value and context are diagnostic
 after stop and MUST NOT represent an active configuration.
 
 Calling `stop()` on an actor already in `done` or `stopped` MUST be an
-idempotent no-op. Calling it on a faulted actor MUST fail synchronously.
-`stop()` MUST return the actor after a normally returning operation.
+idempotent no-op. Calling it on a faulted actor MUST fail synchronously as
+`E_ACTOR_FAULTED`. `stop()` MUST return the actor after a normally returning
+operation.
 
 An actor MUST reject a public `start()`, `send(...)`, or `stop()` begun while
 another lifecycle, dispatch, or subscriber-notification operation on that
-actor is still in progress. Engine-generated completion processing is part of
-the current operation and is not a re-entrant public call.
+actor is still in progress as `E_ACTOR_BUSY`. Engine-generated completion
+processing is part of the current operation and is not a re-entrant public
+call.
 
 Stopping an actor MUST release transient operation references and its retained
 subscriptions, but MUST retain the last snapshot while the actor remains
@@ -733,11 +973,14 @@ runtime*. An error snapshot MUST retain the exact thrown JavaScript value in an
 published values, or `undefined` if startup failed before any active snapshot
 was published.
 
-For an active top-level atomic state, `value` MUST be that state's exact key as
-a string. For an active nested state, `value` MUST use the XState hierarchical
-state-value shape: each active compound state contributes an object property
-whose key is that state's exact key and whose value represents its active child.
-The final child is represented by its key as a string. For example:
+For an atomic root machine with no child states, `value` MUST be the empty
+object `{}`, matching current XState's state-value representation for that
+shape. For an active top-level atomic child, `value` MUST be that state's exact
+key as a string. For an active nested state, `value` MUST use the XState
+hierarchical state-value shape: each active compound state contributes an
+object property whose key is that state's exact key and whose value represents
+its active child. The final child is represented by its key as a string. For
+example:
 
 ```javascript
 "Outside"
@@ -745,9 +988,9 @@ The final child is represented by its key as a string. For example:
 { Parent: { ChildA: "Grandchild" } }
 ```
 
-Because Profile 1 excludes parallel states, each object level contains exactly
-one active branch. State keys MUST NOT be split, trimmed, or otherwise
-interpreted while constructing this value.
+Except for the atomic-root empty object, each object level contains exactly one
+active branch because Profile 1 excludes parallel states. State keys MUST NOT
+be split, trimmed, or otherwise interpreted while constructing this value.
 
 `matches(value)` MUST accept either a top-level state-key string or the same
 nested object grammar. A string MUST match that exact active top-level key and,
@@ -755,7 +998,8 @@ when the key names a compound state, MUST match regardless of which descendant
 is active. An object MUST perform a partial hierarchical match: every state key
 and child value supplied by the caller must be active, while deeper active
 descendants omitted by the caller are ignored. A string MUST NOT be parsed as a
-period-delimited path.
+period-delimited path. For an atomic root, `matches({})` MUST return `true` and
+a non-empty state-value object or string MUST return `false`.
 
 A snapshot MUST describe only a stable, published result. It MUST NOT expose
 an intermediate configuration from within completion processing. A snapshot
@@ -767,11 +1011,13 @@ Published snapshot and context values MUST be treated as read-only by the
 application. The engine is not required to freeze them or detect unsupported
 mutation.
 
-The actor's persistent native runtime representation MUST store the active leaf
-index, context reference, and lifecycle status; it MUST NOT maintain a parallel
-JavaScript object tree for the active hierarchy. Snapshot publication is a
-semantic boundary and does not by itself require eager construction of a
-JavaScript snapshot object.
+The actor's persistent runtime representation MUST store the active leaf index
+and lifecycle status in its native block and retain the current context as a
+GC-visible hidden child. It MUST NOT maintain a parallel JavaScript object tree
+for the active hierarchy. Snapshot publication is a semantic boundary and does
+not by itself require eager construction of a JavaScript snapshot object. The
+native block's exact Version 1 layout is specified by the native-format
+appendix.
 
 The wrapper MUST materialize and cache a JavaScript snapshot only when
 `getSnapshot()` or a current subscriber requires one. It MUST derive the
@@ -789,10 +1035,25 @@ object solely because it starts or processes events.
 
 ### Snapshot subscriptions
 
+Listener execution is triggered only after the actor successfully completes
+and publishes the stable result of its first `start()`, a valid `send(...)`
+while active, or a `stop()` that changes the actor to `stopped`. Calling
+`subscribe(...)` or `getSnapshot()` does not itself execute a listener.
+Idempotent lifecycle calls, rejected operations, and operations that fault
+before publication MUST NOT notify listeners.
+
 `subscribe(listener)` MUST accept a JavaScript function and retain it as a
 garbage-collector-visible value owned by the actor. It MUST return an object
 with an idempotent `unsubscribe()` method. Multiple listeners MUST be supported
 and notified in subscription order.
+
+`subscribe(...)` MUST receive exactly one callable listener. Observer objects,
+omitted or non-callable listeners, and separate error or completion callback
+arguments MUST be rejected synchronously as `E_LISTENER_INVALID`. A listener is
+invoked as a function without a meaningful `this` value. Each successful call
+creates an independent registration even when the same function is already
+subscribed. The returned subscription object MUST have stable identity, and
+`unsubscribe()` MUST return `undefined`.
 
 Subscribing before startup MUST register the listener without calling it. A
 successful `start()` MUST notify every current listener exactly once with the
@@ -812,6 +1073,16 @@ Each listener MUST receive as its sole argument the exact snapshot object that
 `getSnapshot()` returns for that published result. Subscriber notification is
 observation after publication; it is not an action and cannot change the
 machine's pending state or action sequence.
+
+Subscription changes during notification MUST be deterministic. A listener
+unsubscribed before its turn MUST be skipped, including when another listener
+performs the unsubscription. A listener added after notification begins MUST
+not receive that publication and becomes eligible for the next one. A listener
+MAY unsubscribe itself. `getSnapshot()`, `subscribe(...)`, and
+`unsubscribe()` MAY be called from a listener; the existing re-entrancy rule
+continues to reject `start()`, `send(...)`, and `stop()` until notification
+finishes. The implementation MUST provide these semantics without allocating a
+temporary JavaScript listener array for each publication.
 
 If a listener throws, the engine MUST retain the first thrown value, continue
 notifying the listeners that remain in the current notification sequence, and
@@ -840,11 +1111,12 @@ in that event's microstep. It SHOULD create no JavaScript event object when a
 string event completes without invoking a JavaScript callback.
 
 Any other input, an object without a string `type`, or an empty event type MUST
-be rejected synchronously before transition selection, guard evaluation, or
-action execution begins. An event type longer than 65535 bytes MUST be rejected
-synchronously with `E_LIMIT_EXCEEDED` at the public boundary. Event types
-beginning with `xstate.` or `@xstate.` are reserved for engine use and MUST be
-rejected at the public `send(...)` boundary.
+be rejected synchronously as `E_EVENT_INVALID` before transition selection,
+guard evaluation, or action execution begins. An event type longer than 65535
+bytes MUST be rejected synchronously with `E_LIMIT_EXCEEDED` at the public
+boundary. Event types beginning with `xstate.` or `@xstate.` are reserved for
+engine use and MUST be rejected as `E_EVENT_INVALID` at the public
+`send(...)` boundary.
 
 For an object event, every guard and action in the external-event microstep
 MUST receive the exact supplied object. The engine MUST read and validate its
@@ -875,10 +1147,10 @@ send.
 
 ### Action definition and resolution
 
-Entry, exit, and transition actions are three locations for the same action
-definition grammar. In each location the machine definition MAY supply either
-one action or an array of actions. Construction MUST normalise both forms to an
-ordered native action range.
+Entry, exit, event/completion-transition, and initial-transition actions are
+locations for the same action definition grammar. In each location the machine
+definition MAY supply either one action or an array of actions. Construction
+MUST normalise both forms to an ordered native action range.
 
 Version 1 MUST accept the following action forms in every action location:
 
@@ -1008,10 +1280,10 @@ that actor's initial context. The engine MUST NOT call the factory during
 actor stopped before startup MUST never call the factory.
 
 The factory MUST return a non-null, non-array JavaScript object. An invalid
-return MUST cause the engine to create a `TypeError`, fault that actor, execute
-no initial entry action, and publish no active snapshot. This runtime check is
-required because construction validates the factory's callability but cannot
-validate its eventual result.
+return MUST cause the engine to create an `E_CONTEXT_INVALID` `TypeError` at
+`actor.start.context`, fault that actor, execute no initial entry action, and
+publish no active snapshot. This runtime check is required because construction
+validates the factory's callability but cannot validate its eventual result.
 
 The factory is responsible for returning a fresh object graph when independent
 context ownership is required. If application code deliberately returns an
@@ -1041,9 +1313,9 @@ ordinary user action's return value MUST NOT replace or update context. Direct
 mutation of the supplied context by an ordinary action is unsupported.
 
 Exit, transition, and entry actions caused by an event MUST receive the same
-event object. Initial entry actions MUST receive `{ type: "xstate.init" }`.
-Exit actions caused by explicitly stopping a runtime MUST receive
-`{ type: "xstate.stop" }`.
+event object. Startup entry and initial-transition actions MUST receive
+`{ type: "xstate.init" }`. Exit actions caused by explicitly stopping a runtime
+MUST receive `{ type: "xstate.stop" }`.
 
 Actions in the external-event microstep that enters a final state, including
 that final state's entry actions, MUST receive the original event object.
@@ -1090,10 +1362,11 @@ array values MUST be retained as garbage-collector-visible values and assigned
 by reference; the engine MUST NOT deep-copy them. An empty property-assignment
 map is valid.
 
-An `assign(...)` descriptor MUST occur directly in an entry, exit, or
-transition action position. It MUST NOT be registered as an ordinary named
-function in `options.actions`. `createMachine(...)` MUST reject an assignment
-argument of any other form as a malformed action definition.
+An `assign(...)` descriptor MUST occur directly in an entry, exit,
+event/completion-transition, or initial-transition action position. It MUST NOT
+be registered as an ordinary named function in `options.actions`.
+`createMachine(...)` MUST reject an assignment argument of any other form as a
+malformed action definition.
 
 Every guard used to select a transition MUST be evaluated before any action of
 that transition executes and MUST see the runtime's currently committed
@@ -1132,12 +1405,13 @@ supplies its own returned partial-update object, which the engine MUST merge
 into the pending shallow copy.
 
 If a partial assigner returns `null`, an array, or any other non-object value,
-the engine MUST create a `TypeError` and apply the normal escaping-assignment
-fault behaviour. If a property expression, property read, or merge operation
-throws, the same behaviour applies. If the engine cannot allocate the pending
-context, it MUST fault the actor with runtime category `E_NO_MEMORY`. In every
-case, a previously published context MUST remain unchanged and external side
-effects already completed cannot be reversed.
+the engine MUST create an `E_CONTEXT_INVALID` `TypeError` at the current
+operation's `assign` stage and apply the normal escaping-assignment fault
+behaviour. If a property expression, property read, or merge operation throws,
+the same behaviour applies. If the engine cannot allocate the pending context,
+it MUST fault the actor with runtime category `E_NO_MEMORY`. In every case, a
+previously published context MUST remain unchanged and external side effects
+already completed cannot be reversed.
 
 After the complete sequence succeeds, the engine MUST publish the resulting
 context and target state configuration as the completed operation. Context
@@ -1147,10 +1421,12 @@ successfully published context.
 ### Action locations and ordering
 
 Entry actions MUST execute whenever their state is actually entered. Initial
-startup MUST execute entry actions from the highest entered state down to the
-resolved initial leaf state. For later transitions, entered states MUST execute
-their entry actions in ancestor-to-descendant order. Actions declared together
-on one state MUST retain their declared order.
+startup MUST execute entry actions and intervening initial-transition actions
+from the root down to the resolved initial leaf state. For later transitions,
+entered states MUST execute their entry actions in ancestor-to-descendant order,
+with an initial-transition action range immediately after its owning compound
+state's entry actions whenever initial descent is required. Actions declared
+together on one state or initial transition MUST retain their declared order.
 
 Exit actions MUST execute whenever their state is actually exited. Exited
 states MUST execute their exit actions from the active leaf towards the
@@ -1188,8 +1464,8 @@ exception during startup, no active snapshot may be published.
 
 A faulted runtime MUST NOT evaluate another guard or execute another action.
 Any subsequent attempt to dispatch an event or perform a lifecycle operation
-MUST fail synchronously and report that the runtime is faulted. The exact public
-status and retained-error access are specified under Stable snapshots.
+MUST fail synchronously as `E_ACTOR_FAULTED`. The exact public status and
+retained-error access are specified under Stable snapshots.
 
 The engine cannot roll back external side effects completed before the
 exception, nor can it reliably reverse unsupported direct mutation of context
@@ -1371,6 +1647,16 @@ Further runtime semantics remain to be defined.
 
 ## Public Interfaces
 
+The Espruino module name MUST be `XState`. Application code MUST load the
+engine with `require("XState")`; `Xstate-fsm-c` remains the project,
+implementation, and specification name and is not a second module alias.
+
+```javascript
+var XState = require("XState");
+var machine = XState.createMachine(config, options);
+var actor = XState.createActor(machine);
+```
+
 The version 1 public naming surface MUST include `createMachine(...)`,
 `createActor(...)`, and the supported `assign(...)` helper. `createActor(...)`
 is the only version 1 name for creating a running instance; the XState v4
@@ -1380,15 +1666,228 @@ Machine implementations MUST be supplied as the second argument to
 `createMachine(config, options)`. Version 1 MUST NOT expose
 `machine.provide(...)` or `machine.withConfig(...)`.
 
+`config` is required and MUST be a non-null, non-array configuration object.
+`options` MAY be omitted or `undefined`, in which case it is equivalent to an
+empty object. Any other supplied value MUST be a non-null, non-array object.
+
+Version 1 accepts `actions` and `guards` implementation maps in `options`.
+Either map MAY be omitted or `undefined`; any other supplied value MUST be a
+non-null, non-array object. Each implementation-map entry MUST be an own
+enumerable string-keyed data property whose value is callable. Accessor,
+symbol-keyed, inherited, and non-enumerable properties do not define
+implementations. Action and guard names are matched as exact, case-sensitive
+strings and MUST NOT be interpreted as paths.
+
+Every referenced named action or guard MUST resolve to the applicable map as
+specified under Action definition and resolution and Guard implementation
+binding. A valid implementation that is not referenced by the machine MUST be
+accepted but MUST NOT be placed in the compiled machine's retained-value
+container. This permits shared implementation maps without imposing persistent
+RAM cost for unused entries. The source `options` object and its maps MUST NOT
+be retained after successful construction.
+
+Except for the accepted empty exporter maps specified under Definition
+strictness, an unknown own enumerable property of `options` MUST be rejected as
+`E_UNKNOWN_PROPERTY`. Invalid option or map shapes and non-callable map values
+MUST be rejected as `E_CONFIG_TYPE` at their exact `options` object path.
+
+`createMachine(...)` MUST return a JavaScript object with stable identity and a
+private engine brand identifying a live Xstate-fsm-c compiled machine. The
+object MUST own its compiled arena and retained callback container and MAY be
+shared by any number of actors. `createActor(...)` MUST verify the private brand
+and reject an ordinary, forged, incompatible-format, or otherwise invalid
+object synchronously as `E_MACHINE_INVALID` before allocating actor state.
+
+Version 1 defines no public properties or methods on the compiled machine
+object. In particular, it MUST NOT expose its source configuration, state-node
+graph, native records, `transition(...)`, `getInitialSnapshot(...)`,
+`getStateNodeById(...)`, serialization, or cloning. Applications MUST treat the
+object only as an opaque machine argument: adding application properties,
+depending on property enumeration, modifying hidden representation, and
+serializing or cloning it are unsupported.
+
+The absence of Version 1 members MUST NOT reserve a permanently empty surface.
+The public property namespace is reserved for future Xstate-fsm-c versions,
+which MAY add properties, methods, transition results, or inspection features
+without changing machine identity or the ability for actors to share one
+compiled machine. Such additions MAY require a later arena format version and
+MUST NOT cause a Version 1 implementation to retain otherwise unused source
+configuration speculatively.
+
 An actor MUST expose `start()`, `send(event)`, `stop()`, `getSnapshot()`, and
 `subscribe(listener)` with the behaviour specified under Runtime Semantics.
 The XState v4 `onTransition(...)` observer name MUST NOT be provided; Profile 1
 uses the current `subscribe(...)` name. A snapshot MUST NOT expose the legacy
 `state.actions` execution list.
 
-Remaining helper signatures are still to be defined.
-
 ## Host Integration
+
+### Firmware build integration
+
+Xstate-fsm-c MUST use Espruino's existing native-library build mechanism. Its
+firmware build-library identifier is `XSTATE`, and its JavaScript library class
+and module name is `XState`.
+
+The implementation MUST reside under Espruino's `libs` structure and provide
+the normal JSON-formatted wrapper declarations, including a library declaration
+whose class is `XState`. The Espruino build files MUST recognise
+`USE_XSTATE=1` and add the Xstate-fsm-c wrapper, engine sources, include path,
+and any required compile definition through the same conditional mechanisms as
+other optional native libraries. Xstate-fsm-c MUST NOT require a separate
+post-link step or a project-specific replacement for Espruino's wrapper
+generation.
+
+A board includes Xstate-fsm-c by listing `XSTATE` in the `libraries` collection
+of its `boards/<BOARD>.py` build definition, for example:
+
+```python
+info = {
+  "build": {
+    "libraries": [
+      "XSTATE"
+    ]
+  }
+}
+```
+
+The standard Espruino board-processing script then emits the corresponding
+`USE_XSTATE` make variable. Board definitions that do not list `XSTATE` MUST
+not include the engine or its public `require("XState")` module in their
+firmware. Selection is therefore a firmware-build decision rather than a
+runtime installation or dynamic-loading decision.
+
+The core engine and wrapper MUST remain board-independent. A board file MAY
+select the library and the board's ordinary resource settings, but MUST NOT
+contain Xstate-fsm-c execution semantics or duplicate its source-file list.
+
+### Host object representation and branding
+
+The generated Version 1 API of the `XState` library object MUST consist of
+`createMachine(...)`, `createActor(...)`, and `assign(...)`. Objects produced
+by those functions MUST use Espruino's generated class and method mechanisms so
+that native methods are shared rather than stored as separately allocated
+function properties on every instance.
+
+The wrapper MUST define private library-scoped host classes for compiled
+machines, actors, snapshots, subscriptions, and assignment descriptors as
+needed. It MUST NOT export their constructors as module properties or global
+names. Applications obtain instances only through the public factory and actor
+methods and MUST NOT depend on private class names, constructor identity,
+`instanceof` results, prototype identity, or hidden-property names.
+
+A compiled-machine object MUST expose no Version 1 public own data properties
+or methods. Its arena and retained-value container MUST be hidden GC-visible
+children. An actor's five public methods MUST be shared native methods supplied
+by its private class; they MUST NOT be five own function values allocated for
+each actor. Its machine, native block, context, snapshot cache, retained fault,
+and subscription storage MUST likewise use hidden GC-visible children.
+
+A snapshot MUST contain its specified public snapshot properties as own data
+properties and obtain `matches(...)` as one shared native method. A
+subscription object MUST obtain `unsubscribe()` as a shared native method and
+retain only the hidden registration state required while that registration is
+active. Unsubscribing or automatic removal MUST release any hidden actor or
+listener references no longer required by the inactive subscription.
+
+`assign(...)` MUST return an opaque, privately branded assignment descriptor.
+The descriptor MUST retain its assignment function or property map through a
+hidden GC-visible child until a `createMachine(...)` call consumes it. Machine
+construction MUST recognise only a live compatible descriptor, compile its
+contents as specified, and MUST NOT retain the descriptor itself merely to
+execute the resulting assignment.
+
+Machine and actor validation MUST use wrapper-controlled host branding together
+with the applicable native magic and format-version fields. A writable
+JavaScript property, constructor name, or prototype identity alone MUST NOT be
+sufficient to forge a valid native-backed object. Snapshot and subscription
+methods MUST likewise reject a receiver that lacks their wrapper-owned private
+state before accessing it. Exact host-class and hidden-child names are private
+implementation details and MUST NOT become serialized or documented API.
+
+### Save, restoration, and reset lifecycle
+
+Version 1 supports both ordinary source boot and Espruino whole-interpreter
+hibernation. When JavaScript source is stored in flash and executed at boot, it
+MUST construct fresh machines and actors in the normal way. This is the
+recommended deployment model when startup actions are required to establish
+physical hardware state.
+
+When the host provides `save()`, a saved interpreter image MAY contain compiled
+machines and actors. Restoration is supported only when Espruino accepts that
+image for the identical firmware build. The restored JavaScript object graph,
+hidden flat strings, retained callbacks, actor state, context, snapshots, and
+subscriptions MUST remain usable subject to the normal private-brand, native
+magic, and format-version checks.
+
+Espruino defers `save()` until the interpreter returns to idle. Consequently,
+a save requested by an action, guard, assignment expression, or listener MUST
+capture the actor only after the enclosing synchronous operation and its error
+handling have finished. It MUST NOT capture a pending state, pending context,
+non-idle operation marker, or partially completed notification sequence.
+
+Restoration MUST NOT itself call `start()`, execute entry or exit actions,
+process completion transitions, or notify subscribers. An actor resumes with
+the stable lifecycle status, active leaf, context, and registrations contained
+in the saved interpreter image. Calling `start()` on a restored active actor
+remains the specified idempotent no-op; it MUST NOT be a mechanism for replaying
+hardware initialisation. Applications MAY inspect the restored state with
+`getSnapshot()` and SHOULD use `E.on("init", ...)` for any physical-device
+initialisation that must occur after power is restored.
+
+Xstate-fsm-c MUST NOT maintain a global actor registry or automatically stop
+actors during `save()`, `load()`, `reset()`, interpreter shutdown, or power
+loss. Those host operations MUST NOT cause actor exit actions to run merely
+because the JavaScript environment is being suspended or discarded. An
+application remains free to call `stop()` explicitly before requesting such an
+operation when its own hardware requires orderly shutdown.
+
+An Espruino saved interpreter image is a host-specific hibernation mechanism,
+not an XState persisted snapshot. Version 1 continues to exclude public actor
+persistence, snapshot serialization, rehydration into a new actor, and
+cross-firmware or cross-device restoration APIs.
+
+### Interpreter and interrupt boundary
+
+All Version 1 public functions and actor methods MUST be entered through
+Espruino's normal JavaScript interpreter context. Xstate-fsm-c provides no
+interrupt-safe, thread-safe, or direct native event-ingress API. Its private
+coordinator MUST NOT be called from an interrupt service routine or another
+native task concurrently with interpreter execution.
+
+JavaScript callbacks dispatched normally by Espruino for timers, watches,
+serial data, networking, or other hardware events MAY call `actor.send(...)`.
+An interrupt that occurs while an actor operation is running may enqueue such
+host work, but the associated JavaScript callback and actor call MUST wait
+until the current synchronous interpreter operation has returned.
+
+One lifecycle or dispatch operation MUST run to completion without yielding
+between transition selection, actions, completion transitions, publication,
+and subscriber notification. A public lifecycle or dispatch call made
+synchronously by a guard, action, assignment expression, or listener on the
+same actor remains a prohibited re-entrant call and MUST report
+`E_ACTOR_BUSY`. Application code requiring a later event MAY schedule a timer
+or use another ordinary Espruino event facility and call `send(...)` from that
+later JavaScript callback.
+
+A native Espruino library that needs to stimulate a Version 1 actor MUST arrange
+normal interpreter-context JavaScript delivery; it MUST NOT call the private
+coordinator directly from an ISR. Xstate-fsm-c MUST NOT add per-actor mutexes,
+atomic state fields, or interrupt masking merely to protect actor execution.
+The Espruino interpreter boundary and the existing busy-state check provide the
+Version 1 serialization contract.
+
+User callbacks and completion chains execute synchronously and can delay the
+rest of the Espruino event loop. Xstate-fsm-c cannot pre-empt an application
+callback; application code remains responsible for callback duration and the
+target's watchdog requirements. The microstep budget provides a bound on
+engine-controlled completion processing but not on time spent inside user
+code.
+
+Loss of a hardware or communication event before its JavaScript callback runs,
+including loss caused by exhaustion of an Espruino host event queue, is a host
+condition rather than an Xstate-fsm-c actor fault. Any host diagnostic remains
+the responsibility of Espruino and MUST NOT be translated into a fabricated
+actor event or transition.
 
 ### Wrapper and variable ownership
 
@@ -1458,7 +1957,8 @@ feature MUST cause construction to fail. In particular, construction MUST NOT
 silently reinterpret a misspelled property such as `intial` or `gaurd`, and
 MUST explicitly reject version 1 exclusions including parallel states,
 history states, invocation, delayed transitions, eventless transitions,
-activities, and output values.
+activities, output values, tags, actor definitions, persistence and restored
+state, and custom state-path delimiters.
 
 Profile 1 defines the following narrow exceptions for inert output generated
 by the examined Stately v4 and v5 exporters or accepted current XState
@@ -1466,8 +1966,8 @@ transition schema:
 
 - root `predictableActionArguments: true` and `preserveActionOrder: true`;
 - empty `services`, `actors`, and `delays` implementation maps; and
-- empty `meta` objects in generated descriptors; and
-- string `description` fields on transition descriptors.
+- empty `meta` objects and string `description` fields in the state-node,
+  initial-transition, and transition locations specified above.
 
 Construction MUST accept and discard those exact inert forms. It MUST reject a
 different value, a non-empty unsupported implementation map, or non-empty
@@ -1507,16 +2007,18 @@ The path identifies the object property, not a source-file line or column;
 information.
 
 At minimum, stable categories MUST distinguish configuration type, unknown
-property, unsupported feature, invalid initial state, invalid target, duplicate
-ID, unresolved action, unresolved guard, representation limit, and allocation
-failure. Their symbolic codes are:
+property, unsupported feature, missing initial state, invalid initial state,
+unknown target, ambiguous target, duplicate ID, unresolved action, unresolved
+guard, representation limit, and allocation failure. Their symbolic codes are:
 
 ```text
 E_CONFIG_TYPE
 E_UNKNOWN_PROPERTY
 E_UNSUPPORTED_FEATURE
+E_INITIAL_REQUIRED
 E_INITIAL_UNKNOWN
 E_TARGET_UNKNOWN
+E_TARGET_AMBIGUOUS
 E_ID_DUPLICATE
 E_ACTION_UNRESOLVED
 E_GUARD_UNRESOLVED
@@ -1549,6 +2051,7 @@ User-supplied string details MUST be quoted and escaped. For example:
 
 ```text
 XFC E_TARGET_UNKNOWN @ config.states.Parent.on.NEXT[0].target: "Missing"
+XFC E_TARGET_AMBIGUOUS @ config.states.Parent.on.NEXT[0].target: "Heating.Mode"
 XFC E_UNKNOWN_PROPERTY @ config.states.Idle.entyr
 XFC E_LIMIT_EXCEEDED @ config.states: states=65536 max=65535
 ```
@@ -1565,6 +2068,128 @@ Version 1 MUST NOT provide separate compact and verbose diagnostic builds.
 Expanded category explanations belong in project documentation and conformance
 tests. A later version MAY revise the diagnostic detail only after measurements
 show the flash and failure-path RAM consequences on representative targets.
+
+### Runtime diagnostics
+
+An engine-created runtime failure MUST use the same bounded message grammar as
+a construction failure:
+
+```text
+XFC <CATEGORY> @ <RUNTIME_POSITION>[: <SHORT_DETAIL>]
+```
+
+A runtime position identifies the public API operation or execution stage; the
+compiled machine MUST NOT retain source-object paths solely for runtime error
+formatting. Defined positions include `createActor.machine`,
+`createActor.options`, `actor.<method>.this`, `actor.start`,
+`actor.start.context`, `actor.send`, `actor.send.event`,
+`actor.send.event.type`, `actor.<operation>.assign`, `actor.stop`,
+`actor.getSnapshot`, and `actor.subscribe.listener`. The position and optional
+detail follow the same bounded construction and 48-byte detail limit specified
+above.
+
+Version 1 defines these runtime categories:
+
+```text
+E_MACHINE_INVALID
+E_ACTOR_INVALID
+E_ACTOR_STATE
+E_ACTOR_BUSY
+E_ACTOR_FAULTED
+E_EVENT_INVALID
+E_LISTENER_INVALID
+E_CONTEXT_INVALID
+E_MICROSTEP_LIMIT
+E_LIMIT_EXCEEDED
+E_NO_MEMORY
+E_INTERNAL
+```
+
+The already defined `E_UNSUPPORTED_FEATURE` category also applies at the
+runtime API boundary when `createActor.options` is supplied; it is an ordinary
+JavaScript `Error` and does not fault or create an actor.
+
+Their meanings are:
+
+- `E_MACHINE_INVALID`: the value supplied to `createActor(...)` is not a live,
+  compatible Xstate-fsm-c compiled machine;
+- `E_ACTOR_INVALID`: an actor method's receiver is not its live compatible
+  actor;
+- `E_ACTOR_STATE`: the requested operation is invalid in the actor's current
+  non-faulted lifecycle state;
+- `E_ACTOR_BUSY`: a prohibited re-entrant lifecycle or dispatch call was made;
+- `E_ACTOR_FAULTED`: a lifecycle or dispatch operation was attempted on an
+  actor that had already faulted;
+- `E_EVENT_INVALID`: an event has an invalid shape or type, including an empty
+  or reserved event type;
+- `E_LISTENER_INVALID`: a subscription listener is missing, non-callable, or
+  uses an unsupported observer or additional-callback form;
+- `E_CONTEXT_INVALID`: an initial-context factory or `assign(...)` partial
+  assigner produced a value outside the required object shape;
+- `E_MICROSTEP_LIMIT`: another microstep would exceed the fixed operation
+  budget;
+- `E_LIMIT_EXCEEDED`: a runtime value exceeds a fixed representational limit;
+- `E_NO_MEMORY`: a required Espruino allocation failed; and
+- `E_INTERNAL`: the engine detected an invalid arena header, corrupt record, or
+  impossible internal invariant before unsafe execution.
+
+Invalid arguments, invalid receivers, invalid event or listener values, and
+invalid context-return shapes MUST create a JavaScript `TypeError`. Lifecycle,
+busy, faulted-actor, limit, allocation, and internal failures MUST create a
+normal JavaScript `Error`. Representative messages are:
+
+```text
+XFC E_MACHINE_INVALID @ createActor.machine
+XFC E_ACTOR_INVALID @ actor.send.this
+XFC E_ACTOR_STATE @ actor.send: status=notStarted
+XFC E_ACTOR_BUSY @ actor.send: operation=send
+XFC E_ACTOR_FAULTED @ actor.start
+XFC E_EVENT_INVALID @ actor.send.event.type: reserved
+XFC E_LISTENER_INVALID @ actor.subscribe.listener
+XFC E_CONTEXT_INVALID @ actor.start.context: expected=object
+XFC E_MICROSTEP_LIMIT @ actor.send: max=256
+XFC E_NO_MEMORY @ actor.send
+```
+
+An exception or other JavaScript value thrown by an application context
+factory, guard, action, assignment expression, property access, or listener is
+not an engine-created diagnostic. The engine MUST propagate that exact value
+without wrapping it, replacing its message, or adding an `XFC` category. When
+the applicable rule faults the actor, the error snapshot MUST retain that same
+value by identity.
+
+An error detected completely at the public boundary MUST NOT fault an otherwise
+usable actor. This includes an invalid machine or actor handle, unsupported
+actor options, invalid event input, invalid listener input, lifecycle-state
+misuse, a rejected re-entrant call, failure to allocate a subscription
+registration, and failure to materialise a snapshot requested only by
+`getSnapshot()`. The failing call throws, but no pending machine operation has
+begun. An `E_ACTOR_BUSY` rejection does not itself fault the actor; if that
+rejection escapes from an action or other application callback in the operation
+already in progress, the separately specified callback-exception rule still
+applies to that enclosing operation.
+
+An engine-created failure after a lifecycle or dispatch operation has begun
+MUST abort that operation and fault the actor. This includes an invalid runtime
+context result, microstep exhaustion, failure to allocate pending context,
+event, state, or publication data, and a detected internal inconsistency. The
+pending state and context MUST be discarded according to the existing
+transactional fault rules.
+
+When current subscribers require a JavaScript snapshot for a pending
+publication, the engine MUST materialise that snapshot before committing the
+publication or invoking any listener. Failure to materialise it MUST fault the
+operation as `E_NO_MEMORY`; no listener may observe the incomplete result. A
+later standalone `getSnapshot()` allocation failure instead follows the
+non-faulting public-boundary rule above.
+
+Formatting `E_NO_MEMORY` MUST NOT depend on another successful dynamic
+allocation. When the normal operation-specific message cannot be built, the
+implementation MUST throw the fixed fallback:
+
+```text
+XFC E_NO_MEMORY @ runtime
+```
 
 ## Resource and Performance Requirements
 
@@ -1637,6 +2262,8 @@ notes above but is not itself normative for Xstate-fsm-c.
 - [Espruino Modules](https://www.espruino.com/Modules)
 - [Espruino Feature List](https://www.espruino.com/Features)
 - [Saving Code on Espruino](https://www.espruino.com/Saving)
+- [Espruino native-library guide](https://github.com/espruino/Espruino/blob/master/libs/README.md)
+- [Espruino firmware build guide](https://github.com/espruino/Espruino/blob/master/README_Building.md)
 
 ### XState and SCXML
 
@@ -1648,6 +2275,8 @@ notes above but is not itself normative for Xstate-fsm-c.
 - [XState v5.33.2: Actor implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/createActor.ts)
 - [XState v5.33.2: Machine initial-context implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/StateMachine.ts)
 - [XState v5.33.2: Context-assignment implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/actions/assign.ts)
+- [XState v5.33.2: State-node and initial-transition implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/StateNode.ts)
+- [XState v5.33.2: Target-path parsing implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/utils.ts)
 - [XState: Migrating from v5 to v6
   alpha](https://dev.stately.ai/docs/xstate/v6/xstate-v5-to-v6)
 - [Stately: Predictable events and actions in
