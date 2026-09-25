@@ -24,3 +24,5 @@ Upstream-suitable C unit tests and tests coupled to Espruino's build tree live
 with the canonical implementation under `libs/xfsm/` in the Espruino feature
 branch. The conformance matrix links those tests to umbrella-owned cases and
 results; implementation source and build-local tests are not duplicated here.
+The M2 native-format suite is recorded in the
+[Linux result](results/linux/2026-09-25-native-format.json).

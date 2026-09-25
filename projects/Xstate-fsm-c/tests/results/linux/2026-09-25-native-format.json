@@ -1,0 +1,70 @@
+{
+  "kind": "xfsm-native-format-linux-test",
+  "date": "2026-09-25",
+  "caseIds": [
+    "XFC-CF-FORMAT-001",
+    "XFC-CF-FORMAT-002"
+  ],
+  "xstateEspruinoProjectRevision": "4751c8f",
+  "specificationVersion": "0.48",
+  "espruinoRevision": "d4860d07a93a725176f6216321b3d47f2d0a14cf",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Linux",
+  "board": "LINUX",
+  "host": {
+    "architecture": "x86_64",
+    "pointerBits": 64,
+    "byteOrder": "little-endian"
+  },
+  "toolchain": {
+    "cc": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "language": "C99",
+    "sanitizers": [
+      "address",
+      "undefined-behaviour"
+    ]
+  },
+  "nativeSuite": {
+    "command": "make -C libs/xfsm/tests/native clean test",
+    "compileFlags": "-std=c99 -O1 -g3 -Wall -Wextra -Werror -Wconversion -Wsign-conversion -Wshadow -Wstrict-prototypes -pedantic -fsanitize=address,undefined -fno-omit-frame-pointer",
+    "strictWarnings": [
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wconversion",
+      "-Wsign-conversion",
+      "-Wshadow",
+      "-Wstrict-prototypes",
+      "-pedantic"
+    ],
+    "expected": "All native-format checks pass with no AddressSanitizer or UndefinedBehaviorSanitizer finding",
+    "observed": "PASS 66 XFSM native checks",
+    "sanitizerFindings": 0,
+    "result": "pass"
+  },
+  "goldenArena": {
+    "bytes": 458,
+    "states": 5,
+    "symbols": 7,
+    "handlers": 1,
+    "transitions": 2,
+    "guards": 1,
+    "actions": 2,
+    "assignments": 1,
+    "assignmentEntries": 1,
+    "stringBytes": 46
+  },
+  "integrationRegression": {
+    "enabledBuildCommand": "make clean && make USE_XFSM=1",
+    "enabledBuildResult": "pass",
+    "shellCommand": "bin/espruino --test libs/xfsm/tests/test_shell.js",
+    "shellResult": "pass; zero retained memory records after GC",
+    "disabledBuildCommand": "make clean && make",
+    "disabledBuildResult": "pass"
+  },
+  "implementationTest": "libs/xfsm/tests/native/test_xfsm_native.c",
+  "report": "docs/reports/2026-09-25-linux-native-format.md",
+  "result": "pass",
+  "scope": "Portable Version 1 structures, helpers, hashing, arena validation, actor-block validation, and corruption safety only; JavaScript construction and state-machine execution are not implemented or claimed."
+}

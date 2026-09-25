@@ -2,10 +2,11 @@
 
 ## Status
 
-- Build-document status: Linux disabled and XFSM-enabled shell builds verified
+- Build-document status: Linux firmware and native-format sanitizer builds
+  verified
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `225e55fba32b7a859a30ae5ba5db0c8e4f9f4ff6`
+- Current implementation revision: `d4860d07a93a725176f6216321b3d47f2d0a14cf`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -108,10 +109,22 @@ The shell-size comparison and its limitations are explained in the
 
 ## Sanitizer Build
 
-Linux native-format and portable-engine tests must run with address and
-undefined-behaviour sanitizers. The compiler and exact command will be added
-after the standalone test target exists. Sanitizer findings are failures and
-must be linked from the conformance result.
+Linux native-format and portable-engine tests run independently of the
+Espruino JavaScript wrapper with address and undefined-behaviour sanitizers.
+The verified native-format command is:
+
+```bash
+cd "$ESPRUINO_XFSM_ROOT"
+make -C libs/xfsm/tests/native clean test
+```
+
+At revision `d4860d07a`, GCC 13.3.0 compiled the C99 suite with strict warnings
+promoted to errors and all 66 checks passed without a sanitizer finding. The
+result is recorded in the
+[native-format result](../tests/results/linux/2026-09-25-native-format.json)
+and interpreted in the
+[native-format report](reports/2026-09-25-linux-native-format.md).
+Sanitizer findings are failures and must be linked from the conformance result.
 
 ## Physical Builds
 

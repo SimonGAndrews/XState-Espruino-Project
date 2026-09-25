@@ -7,7 +7,8 @@ The canonical native engine, Espruino wrapper, and build integration are
 developed under `libs/xfsm/` in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
 The current local implementation clone is `/home/simon/Espruino-XFSM-Profile1`;
-the initial optional-library shell is committed there.
+the optional-library shell and portable native-format foundation are committed
+there.
 
 This umbrella repository retains the
 [Profile 1 specification](../docs/specification.md),

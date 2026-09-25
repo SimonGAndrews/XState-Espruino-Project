@@ -1,10 +1,11 @@
 # Xstate-fsm-c Implementation Status
 
 - Last reviewed: 2026-09-25
-- Overall status: M1 optional-library shell verified on Linux
-- Current milestone: M0 evidence completion and M2 preparation
-- Implementation code status: Build integration and controlled API stubs only
-- Next gate: Native-format structures, assertions, and sanitizer test harness
+- Overall status: M2 native-format foundation verified on Linux
+- Current milestone: M0 evidence completion and M3 construction
+- Implementation code status: Build integration, controlled API stubs, and
+  portable native-format foundation
+- Next gate: Transactional construction vertical slice
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md).
@@ -21,12 +22,11 @@ criteria are in the [Implementation Plan](implementation-plan.md).
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `225e55fba32b7a859a30ae5ba5db0c8e4f9f4ff6` |
+| Current implementation HEAD | `d4860d07a93a725176f6216321b3d47f2d0a14cf` |
 | Canonical source path | `libs/xfsm/` |
 
-The branch is one local commit ahead of its tracked remote. A dry-run push on
-2026-09-25 confirmed that `origin/feature/xfsm-profile1` can accept the commit;
-the push has not been performed.
+The branch is one local commit ahead of its tracked remote. The M1 branch push
+was confirmed on 2026-09-25; the M2 implementation commit has not been pushed.
 
 ## Completed Foundation Work
 
@@ -47,21 +47,29 @@ the push has not been performed.
 - Disabled and enabled Linux builds and JavaScript module smoke tests passed.
 - Initial library-shell size delta recorded without treating it as a completed
   engine estimate.
+- Version 1 structures, compile-time layout assertions, checked arithmetic,
+  FNV-1a lookup support, and arena and actor-block validators implemented.
+- Sixty-six portable native-format checks passed with address and
+  undefined-behaviour sanitizers.
+- Native-format coverage includes all context kinds, handler forms, required
+  transition-domain shapes, action-range forms, and corrupt-record rejection.
 
 ## Current Work
 
-The M1 library-shell exit gate is satisfied on Linux. M0's full normative
-requirement inventory remains documentation work; the next code work is the M2
-native-format foundation.
+The M2 native-format exit gate is satisfied on Linux. M0's full normative
+requirement inventory remains documentation work; the next code work is the M3
+transactional machine-construction vertical slice.
 
 Immediate tasks:
 
 1. expand the conformance matrix into the initial normative requirement
    inventory;
-2. add Version 1 native-format structures and compile-time assertions;
-3. establish the standalone address/undefined-behaviour sanitizer target;
-4. implement checked arithmetic, range, alignment, and string-pool helpers;
-5. add native-format validation and corruption cases; and
+2. define the M3 representative hierarchical fixture and expected decoded
+   records;
+3. implement the two-pass `createMachine` compiler and exact arena allocation;
+4. add the GC-visible retained-value container and transactional cleanup;
+5. implement the M3 supported grammar, resolution, and construction
+   diagnostics; and
 6. push the reviewed Espruino and umbrella commits when requested.
 
 ## Open Issues And Blockers
@@ -92,7 +100,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 
 | Target | Current status | Latest evidence |
 | --- | --- | --- |
-| Linux Espruino | Build verified | [M1 library-shell report](reports/2026-09-25-linux-library-shell.md) |
+| Linux Espruino | Build verified | [M2 native-format report](reports/2026-09-25-linux-native-format.md) |
 | Espruino Pico | Not yet verified | None |
 | MDBT42Q | Not yet verified | None |
 | ESP32-C3 | Not yet verified | None |
@@ -105,5 +113,6 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-25 | M2 native-format foundation committed at `d4860d07a`; 66 strict sanitizer checks and enabled/disabled Linux regression builds passed |
 | 2026-09-25 | M1 optional-library shell committed at `225e55fba`; Linux disabled/enabled builds and module smoke tests passed |
 | 2026-09-25 | Implementation preparation started; clean Espruino fork branch and documentation scaffolds established |
