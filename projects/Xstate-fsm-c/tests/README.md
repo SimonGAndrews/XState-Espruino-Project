@@ -32,3 +32,6 @@ and cleanup checks are recorded in the
 The M4 hierarchical actor trace, runtime fault paths, subscription ordering,
 snapshot behaviour, and cleanup checks are recorded in the
 [Linux actor-runtime result](results/linux/2026-09-25-actor-runtime.json).
+The first M5 Linux measurements and MDBT42Q build attempt are recorded in the
+[Linux resource result](results/linux/2026-09-25-m5-resource-evidence.json) and
+[MDBT42Q build result](results/mdbt42q/2026-09-25-m5-build-attempt.json).

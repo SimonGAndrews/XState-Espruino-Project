@@ -4,7 +4,7 @@
 
 - Matrix status: Scaffolded
 - Requirement inventory: Not yet complete
-- Implemented cases: M1-M4 foundation, construction, and actor cases below
+- Implemented cases: M1-M4 cases plus partial M5 resource evidence below
 - Normative authority: [Profile 1 specification](../docs/specification.md)
 
 The specification requires every normative `MUST` and `MUST NOT` to link to an
@@ -74,9 +74,12 @@ requirement inventory before Profile 1 completion can be claimed.
 | `XFC-CF-SUB-001` | Snapshot Subscriptions: ordered notification, unhandled events, mutation during notification, listener exceptions, and automatic stop removal | Profile 1 normative slice | [Subscription tests](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
 | `XFC-CF-DIAG-002` | Runtime diagnostics: invalid events and receivers, busy/state/fault categories, callback exception identity, and contextual paths for tested M4 operations | Profile 1 normative slice | [Runtime negative-path tests](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
 | `XFC-CF-HOST-002` | Host representation: shared native methods, private GC-visible actor graph, and zero retained test records after runtime cleanup | Profile 1 normative slice | [M4 runtime and cleanup record](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
-| `XFC-CF-RESOURCE-001` | Resource Requirements: enabled firmware-size increase is recorded against an identical disabled build | Resource measurement | Build artifacts and linker-map report | Linux, each physical target | Planned |
-| `XFC-CF-LIMIT-001` | Resource Requirements: hierarchy depth 32 and rejection at 33 are measured and tested | Profile-specific limit | Generated boundary cases and stack report | Linux, MDBT42Q | Planned |
+| `XFC-CF-RESOURCE-001` | Resource Requirements: enabled firmware-size increase is recorded against an identical disabled build | Resource measurement | [M5 Linux and MDBT42Q report](../docs/reports/2026-09-25-m5-first-evidence.md) | Linux, each physical target | Linux: Pass; MDBT42Q: Fail at baseline link; others: Planned |
+| `XFC-CF-BUILD-003` | Host Integration: MDBT42Q build compiles and links with XFSM selected through the normal library mechanism | Profile 1 normative | [MDBT42Q build attempt](results/mdbt42q/2026-09-25-m5-build-attempt.json) | MDBT42Q | Fail: stock disabled and enabled links overflow |
+| `XFC-CF-LIMIT-001` | Resource Requirements: hierarchy depth 32 and rejection at 33 are measured and tested | Profile-specific limit | [Linux depth, construction, traversal, snapshot, and stack measurements](results/linux/2026-09-25-m5-resource-evidence.json) | Linux, MDBT42Q | Linux depth measurement: Pass; rejection and MDBT42Q: Planned |
 | `XFC-CF-LIMIT-002` | Resource Requirements: microstep budget 256 is measured and enforced | Profile-specific limit | Completion-chain boundary cases and timing report | Linux, MDBT42Q | Planned |
+| `XFC-CF-LIMIT-003` | Host Integration: coordinator stack is measured and insufficient reserve rejects before actor mutation | Profile-specific limit | [Linux stack measurement and oversized-reserve negative test](results/linux/2026-09-25-m5-resource-evidence.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-HOST-003` | Ownership: compiled machines and actors survive GC and relocation and release all records after the harness | Profile 1 normative | [M5 GC and defragmentation result](results/linux/2026-09-25-m5-resource-evidence.json) | Linux, physical targets | Linux: Pass; physical: Planned |
 
 ## Requirement Inventory Procedure
 

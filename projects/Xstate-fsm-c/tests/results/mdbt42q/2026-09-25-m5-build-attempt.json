@@ -1,0 +1,38 @@
+{
+  "kind": "xfsm-m5-mdbt42q-build-attempt",
+  "date": "2026-09-25",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-BUILD-003"
+  ],
+  "xstateEspruinoProjectRevision": "02bf91b",
+  "specificationVersion": "0.48",
+  "espruinoRevision": "de251bd97",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "MDBT42Q",
+  "board": "MDBT42Q",
+  "cpu": "Nordic nRF52832 ARM Cortex-M4F",
+  "pointerBits": 32,
+  "byteOrder": "little-endian",
+  "toolchain": {
+    "cc": "arm-none-eabi-gcc 13.2.1",
+    "source": "local pinned EspruinoBuildTools archive"
+  },
+  "build": {
+    "commonFlags": "BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 -j2",
+    "disabledCommand": "make clean && make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=0 -j2",
+    "disabledResult": "link failed: FLASH overflowed by 176576 bytes",
+    "enabledCommand": "make clean && make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 -j2",
+    "enabledCompileResult": "all XFSM and wrapper C sources compiled successfully for 32-bit ARM",
+    "enabledResult": "link failed: FLASH overflowed by 215016 bytes",
+    "attributedOverflowDeltaBytes": 38440
+  },
+  "boardIntegration": {
+    "stockBoardFileModified": false,
+    "reason": "XFSM is not selected by the stock MDBT42Q board while the baseline and enabled images do not link; target packaging remains an explicit open decision."
+  },
+  "targetStatus": "Not yet verified",
+  "result": "fail",
+  "scope": "Compile and link evidence only. No firmware artifact, on-device measurement, or physical conformance is claimed."
+}

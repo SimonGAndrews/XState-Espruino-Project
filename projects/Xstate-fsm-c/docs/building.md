@@ -2,11 +2,11 @@
 
 ## Status
 
-- Build-document status: Linux construction, actor runtime, firmware, and
-  native-format sanitizer builds verified
+- Build-document status: Linux runtime and M5 measurements verified;
+  MDBT42Q compile verified but link blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `c6505437a`
+- Current implementation revision: `de251bd97`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -147,13 +147,38 @@ cd "$ESPRUINO_XFSM_ROOT"
 make -C libs/xfsm/tests/native clean test
 ```
 
-At revisions `d4860d07a`, `80d424772`, and `c6505437a`, GCC 13.3.0 compiled the C99 suite
-with strict warnings promoted to errors and all 66 checks passed without a
-sanitizer finding. The result is recorded in the
+At revisions `d4860d07a`, `80d424772`, `c6505437a`, and `de251bd97`, GCC
+13.3.0 compiled the C99 suite with strict warnings promoted to errors and all
+66 checks passed without a sanitizer finding. The result is recorded in the
 [native-format result](../tests/results/linux/2026-09-25-native-format.json)
 and interpreted in the
 [native-format report](reports/2026-09-25-linux-native-format.md).
 Sanitizer findings are failures and must be linked from the conformance result.
+
+## M5 Measurement Builds
+
+The verified Linux measurement command is:
+
+```bash
+make clean
+make USE_XFSM=1 XFC_MEASURE=1 -j2
+bin/espruino --test libs/xfsm/tests/measure_m5.js
+```
+
+`XFC_MEASURE=1` adds two private measurement methods and native counters. They
+are absent from normal builds and are not XFSM API. The stack-reserve negative
+path was verified separately:
+
+```bash
+make clean
+make USE_XFSM=1 XFC_STACK_RESERVE=2000000 -j2
+bin/espruino --test libs/xfsm/tests/test_stack_reserve.js
+```
+
+Normal builds default to a 512-byte XFSM coordinator reserve plus Espruino's
+512-byte safety allowance. See the [M5
+report](reports/2026-09-25-m5-first-evidence.md) and [Linux
+result](../tests/results/linux/2026-09-25-m5-resource-evidence.json).
 
 ## Physical Builds
 
@@ -162,13 +187,27 @@ Commands and required toolchain revisions will be recorded separately for:
 | Target | Board/build definition | Command status |
 | --- | --- | --- |
 | Espruino Pico | STM32F401 | Not established |
-| MDBT42Q | nRF52832 | Not established |
+| MDBT42Q | nRF52832 | Compile established; stock baseline link overflow blocks verification |
 | ESP32-C3 | ESP-IDF, 32-bit RISC-V | Not established |
 | Xtensa target | Original ESP32 or ESP32-S3, to be selected | Not established |
 
 The library must be selected through Espruino's normal optional-library
 mechanism. Target-specific board files may select `XFSM`, but must not contain
 engine semantics or duplicate its source list.
+
+The 2026-09-25 MDBT42Q attempt used the pinned local EspruinoBuildTools ARM GCC
+13.2.1 archive and the existing nRF5 SDK 12 tree:
+
+```bash
+make clean
+make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=0 -j2
+make clean
+make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 -j2
+```
+
+Both links failed because even the disabled baseline overflowed its flash
+region. XFSM was therefore not added to the stock board definition. Exact
+results are in the [MDBT42Q build record](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json).
 
 ## Required Build Record
 

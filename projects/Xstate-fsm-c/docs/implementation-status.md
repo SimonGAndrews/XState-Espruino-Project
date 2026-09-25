@@ -1,11 +1,11 @@
 # Xstate-fsm-c Implementation Status
 
 - Last reviewed: 2026-09-25
-- Overall status: M4 actor execution vertical slice verified on Linux
+- Overall status: M5 Linux evidence recorded; M5 exit gate remains open
 - Current milestone: M0 evidence completion and M5 resource evaluation
-- Implementation code status: Transactional machine compiler and native actor
-  runtime for the M4 hierarchical slice
-- Next gate: First vertical-slice resource and timing evidence
+- Implementation code status: M4 runtime plus build-only M5 instrumentation
+  and enforced coordinator stack reserve
+- Next gate: MDBT42Q link/runtime evidence and completion-chain measurement
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md).
@@ -22,11 +22,11 @@ criteria are in the [Implementation Plan](implementation-plan.md).
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `c6505437a` |
+| Current implementation HEAD | `de251bd97` |
 | Canonical source path | `libs/xfsm/` |
 
-The branch is one local M4 commit ahead of its tracked remote. The M3 revision
-was confirmed pushed before M4 work began.
+The branch is one local M5 evidence commit ahead of its tracked remote. The M4
+revision was confirmed pushed before M5 work began.
 
 ## Completed Foundation Work
 
@@ -78,34 +78,41 @@ was confirmed pushed before M4 work began.
 - Six Espruino tests pass with zero retained memory records after cleanup and
   garbage collection; the disabled build and 66-check sanitizer suite remain
   green.
+- Build-only M5 instrumentation measures construction block high-water and
+  synchronous coordinator stack without changing normal firmware API or cost.
+- Linux firmware size, arena, retained values, construction, actor, snapshot,
+  subscription, dispatch, hierarchy, diagnostics, GC, and relocation evidence
+  is recorded in the [M5 report](reports/2026-09-25-m5-first-evidence.md).
+- A 512-byte coordinator reserve plus Espruino's 512-byte safety allowance is
+  enforced before an actor operation marks the actor busy.
+- All XFSM sources compile for 32-bit ARM with the pinned MDBT42Q toolchain.
 
 ## Current Work
 
-The M4 actor-execution exit gate is satisfied on Linux. M0's full normative
-requirement inventory remains documentation work; the next implementation
-gate is M5 measurement of the combined construction and execution slice.
+The Linux part of M5 is measured, but the M5 exit gate is not satisfied. The
+MDBT42Q baseline and enabled images currently fail to link, and the M4 slice
+cannot yet supply completion-chain timing. M0's full normative requirement
+inventory also remains documentation work.
 
 Immediate tasks:
 
-1. expand the conformance matrix into the initial normative requirement
-   inventory;
-2. measure enabled/disabled flash size and representative arena, actor,
-   snapshot, and subscription costs;
-3. measure local, guarded, parent-fallback, and unhandled dispatch timing;
-4. measure coordinator stack and hierarchy traversal at representative depths;
-5. use the results to re-evaluate the provisional arena, depth 32, and the
-   256-microstep budget; and
-6. push the reviewed Espruino and umbrella commits.
+1. determine why the stock MDBT42Q release/DFU baseline overflows its link
+   region in this checkout/toolchain combination;
+2. establish a target-specific `Board.py` selection and flash budget that can
+   include `XFSM` without breaking the stock board build;
+3. run the M5 harness or an equivalent serial harness on MDBT42Q;
+4. implement the minimum final-state/`onDone` slice needed to measure
+   completion chains approaching 256 microsteps;
+5. close the native-layout, depth, microstep, stack, snapshot, and diagnostic
+   review decisions; and
+6. expand the M0 normative requirement inventory.
 
 ## Open Issues And Blockers
 
-No implementation blocker is currently recorded. Detailed work items and bugs
-should live in the relevant GitHub repository and be linked here when they
-affect the current milestone or a review gate.
-
 | Issue | Repository | Effect | Status |
 | --- | --- | --- | --- |
-| None recorded | - | - | - |
+| Stock MDBT42Q release/DFU baseline overflows flash by 176,576 bytes before XFSM is selected | Espruino implementation | Prevents constrained-target M5 link and runtime measurement | Investigate baseline/toolchain/board configuration |
+| M4 does not implement final-state completion cascades | Espruino implementation | Prevents the required near-256-microstep timing measurement | Implement bounded measurement slice before closing M5 |
 
 ## Evidence-Dependent Decisions
 
@@ -113,21 +120,21 @@ These are specified review gates, not unresolved Profile 1 semantics:
 
 | Decision | Required evidence | Review milestone |
 | --- | --- | --- |
-| Freeze or revise native record layout | Arena decoding, memory, alignment, and target builds | M5 |
-| Retain or revise hierarchy depth 32 | Stack, RAM, and traversal timing at representative depths | M5 |
+| Freeze or revise native record layout | Linux evidence supports provisional retention; constrained target still required | M5 open |
+| Retain or revise hierarchy depth 32 | Linux retains provisionally; constrained construction RAM still required | M5 open |
 | Retain or revise microstep budget 256 | Completion-chain time and watchdog impact | M5 |
-| Select per-target stack reserve | Maximum coordinator-frame measurement | M5/M7 |
-| Retain or revise snapshot materialization | Variable-block and timing measurements | M5 |
-| Retain or revise diagnostic detail | Flash, RAM, and deep-path formatting measurements | M5 |
+| Select per-target stack reserve | Linux selected 512 bytes plus host safety; physical targets pending | M5/M7 |
+| Retain or revise snapshot materialization | Lazy snapshots retained provisionally; target RAM pending | M5 open |
+| Retain or revise diagnostic detail | Current detail retained provisionally; target flash/RAM pending | M5 open |
 | Select Xtensa qualification target | Hardware and supported build availability | Before M7 |
 
 ## Target Status
 
 | Target | Current status | Latest evidence |
 | --- | --- | --- |
-| Linux Espruino | Build verified | [M4 actor-runtime report](reports/2026-09-25-linux-actor-runtime.md) |
+| Linux Espruino | Build verified | [M5 first-evidence report](reports/2026-09-25-m5-first-evidence.md) |
 | Espruino Pico | Not yet verified | None |
-| MDBT42Q | Not yet verified | None |
+| MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
 | ESP32-C3 | Not yet verified | None |
 | Xtensa ESP32 target | Not yet verified | Target not yet selected |
 
@@ -138,6 +145,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-25 | Partial M5 evidence committed in implementation revision `de251bd97`; Linux resource/timing/stack/GC measurements passed, 32-bit ARM compiled, MDBT42Q linking and completion-chain evidence remain open |
 | 2026-09-25 | M4 actor execution vertical slice committed at `c6505437a`; hierarchical runtime, actions, assignments, stable snapshots, subscriptions, fault paths, enabled/disabled builds, GC cleanup, and native sanitizer regression passed |
 | 2026-09-25 | M3 construction vertical slice committed at `80d424772`; clean enabled/disabled builds, three Espruino tests, decoded records, diagnostics, source independence, GC cleanup, and the native sanitizer regression passed |
 | 2026-09-25 | M2 native-format foundation committed at `d4860d07a`; 66 strict sanitizer checks and enabled/disabled Linux regression builds passed |

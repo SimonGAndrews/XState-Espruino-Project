@@ -1,0 +1,151 @@
+{
+  "kind": "xfsm-m5-linux-resource-evidence",
+  "date": "2026-09-25",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-LIMIT-001",
+    "XFC-CF-LIMIT-003",
+    "XFC-CF-HOST-003"
+  ],
+  "xstateEspruinoProjectRevision": "02bf91b",
+  "specificationVersion": "0.48",
+  "espruinoRevision": "de251bd97",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Linux",
+  "board": "LINUX",
+  "host": {
+    "architecture": "x86_64",
+    "pointerBits": 64,
+    "byteOrder": "little-endian"
+  },
+  "toolchain": {
+    "cc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "language": "C99"
+  },
+  "firmwareSize": {
+    "disabledCommand": "make clean && make -j2",
+    "enabledCommand": "make clean && make USE_XFSM=1 -j2",
+    "disabled": {
+      "text": 1195542,
+      "data": 20048,
+      "bss": 4704,
+      "dec": 1220294,
+      "fileBytes": 4852832
+    },
+    "enabled": {
+      "text": 1264038,
+      "data": 20976,
+      "bss": 4704,
+      "dec": 1289718,
+      "fileBytes": 5006688
+    },
+    "delta": {
+      "text": 68496,
+      "data": 928,
+      "bss": 0,
+      "dec": 69424,
+      "fileBytes": 153856
+    }
+  },
+  "measurementBuild": {
+    "command": "make clean && make USE_XFSM=1 XFC_MEASURE=1 -j2 && bin/espruino --test libs/xfsm/tests/measure_m5.js",
+    "result": "pass",
+    "blockSize": 27,
+    "allocationCalibrationBlocks": 0,
+    "representative": {
+      "arenaBytes": 400,
+      "retainedValues": 2,
+      "machinePersistentBlocks": 25,
+      "constructionPeakBlocks": 107,
+      "actorBlocks": 23,
+      "firstSnapshotBlocks": 16,
+      "firstSubscriptionBlocks": 17
+    },
+    "dispatch": {
+      "iterationsPerTrial": 5000,
+      "trials": 5,
+      "statistic": "median microseconds per synchronous send",
+      "localHit": 43.25957298278,
+      "parentFallback": 44.7063922882,
+      "guarded": 54.84342575073,
+      "unhandled": 43.43881607055
+    },
+    "hierarchy": [
+      {
+        "depth": 1,
+        "arenaBytes": 211,
+        "constructionPeakBlocks": 56,
+        "startStackBytes": 224,
+        "firstSnapshotBlocks": 11,
+        "parentFallbackMicroseconds": 42.35463142395,
+        "sendStackBytes": 288,
+        "maximumStackBytes": 288
+      },
+      {
+        "depth": 8,
+        "arenaBytes": 841,
+        "constructionPeakBlocks": 269,
+        "startStackBytes": 224,
+        "firstSnapshotBlocks": 25,
+        "parentFallbackMicroseconds": 43.4895992279,
+        "sendStackBytes": 288,
+        "maximumStackBytes": 288
+      },
+      {
+        "depth": 16,
+        "arenaBytes": 1769,
+        "constructionPeakBlocks": 569,
+        "startStackBytes": 224,
+        "firstSnapshotBlocks": 41,
+        "parentFallbackMicroseconds": 45.0297832489,
+        "sendStackBytes": 288,
+        "maximumStackBytes": 288
+      },
+      {
+        "depth": 32,
+        "arenaBytes": 4393,
+        "constructionPeakBlocks": 1368,
+        "startStackBytes": 224,
+        "firstSnapshotBlocks": 73,
+        "parentFallbackMicroseconds": 47.91097640991,
+        "sendStackBytes": 288,
+        "maximumStackBytes": 288
+      }
+    ],
+    "diagnostic": {
+      "text": "Error: XFC E_TARGET_UNKNOWN @ config.states.Parent.states.Child.on.GO.target: \"Missing\"",
+      "characters": 87,
+      "peakBlocks": 93,
+      "endBlocks": 21
+    },
+    "gcRelocation": {
+      "garbageCollectionCompleted": true,
+      "defragmentationCompleted": true,
+      "dispatchAndSnapshotValid": true,
+      "retainedRecordsAfterHarnessGc": 0
+    }
+  },
+  "stackReserve": {
+    "measuredMaximumCoordinatorBytes": 288,
+    "selectedCoordinatorReserveBytes": 512,
+    "espruinoSafetyAllowanceBytes": 512,
+    "minimumFreeStackBeforeOperationBytes": 1024,
+    "negativeTestCommand": "make clean && make USE_XFSM=1 XFC_STACK_RESERVE=2000000 -j2 && bin/espruino --test libs/xfsm/tests/test_stack_reserve.js",
+    "negativeTestResult": "pass"
+  },
+  "regressions": {
+    "enabledBuildCommand": "make clean && make USE_XFSM=1 -j2",
+    "javascriptTests": 6,
+    "javascriptResult": "pass; every test returned zero retained records after GC",
+    "nativeCommand": "make -C libs/xfsm/tests/native clean test",
+    "nativeObserved": "PASS 66 XFSM native checks; no sanitizer finding"
+  },
+  "unmeasured": [
+    "completion chains approaching 256 microsteps because final-state and onDone execution is not implemented in the M4 slice",
+    "physical-target runtime RAM, timing, and stack because no target firmware linked or ran"
+  ],
+  "report": "docs/reports/2026-09-25-m5-first-evidence.md",
+  "result": "partial-pass",
+  "scope": "Linux M5 resource evidence for the M4 vertical slice; not an M5 exit-gate completion or physical-target qualification."
+}

@@ -8,7 +8,8 @@ developed under `libs/xfsm/` in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
 The current local implementation clone is `/home/simon/Espruino-XFSM-Profile1`;
 the optional-library shell and portable native-format foundation are committed
-there.
+there together with the M3 compiler, M4 actor runtime, and M5 measurement
+instrumentation.
 
 This umbrella repository retains the
 [Profile 1 specification](../docs/specification.md),

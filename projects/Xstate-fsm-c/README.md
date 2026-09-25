@@ -13,7 +13,8 @@ direction relates to the Stage 1 and FSMPlus projects.
 
 The Profile 1 specification is an implementation candidate. The M3
 construction and M4 actor-execution vertical slices are implemented and
-verified on Linux. The supported hierarchical subset compiles transactionally
+verified on Linux, and the first Linux M5 resource evidence is recorded. The
+supported hierarchical subset compiles transactionally
 into the native arena and executes through the actor lifecycle, dispatch,
 actions, ordered assignment, stable snapshots, subscriptions, controlled
 stop, and callback-fault paths. The specification defines the
@@ -22,11 +23,10 @@ actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
 conformance strategy.
 
-The next milestone is the M5 resource and timing evidence gate. The completed
-construction and execution slices must now measure the provisional native
-layout, hierarchy-depth and microstep limits, stack reserve,
-flash, RAM, and timing before the physical format is frozen or the full
-implementation proceeds.
+M5 remains the current gate. Linux sizing, memory, timing, stack, hierarchy,
+diagnostic, GC, and relocation measurements are complete. MDBT42Q linking and
+runtime measurement and the completion-chain/microstep evidence remain open,
+so the physical format and provisional limits are not frozen.
 
 Current work, revisions, and next tasks are recorded in the
 [implementation status](docs/implementation-status.md). The
