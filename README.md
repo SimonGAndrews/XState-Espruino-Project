@@ -84,10 +84,10 @@ its own compatibility authority and decides which shared cases it adopts.
 
 FSMPlus is the current working JavaScript hierarchical engine. Xstate-fsm-c is
 the active development focus: its Profile 1 specification is an implementation
-candidate, milestone M0 preparation is in progress, and its implementation
-code has not started. Its next gate is a reproducible baseline Linux Espruino
-build before the specified vertical slice. Stage 1 remains the flat embedded
-baseline.
+candidate, its M1 optional-library shell is build-verified on Linux, and its
+machine engine is not yet implemented. Native-format foundations and their
+sanitizer tests are the next code milestone before the specified vertical
+slice. Stage 1 remains the flat embedded baseline.
 
 The [current project context](docs/project-context.md) identifies the authority
 and compatibility references for each direction.

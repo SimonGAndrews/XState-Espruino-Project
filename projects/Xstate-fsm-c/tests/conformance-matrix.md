@@ -56,9 +56,9 @@ requirement inventory before Profile 1 completion can be claimed.
 
 | Case ID | Specification section and requirement | Classification | Evidence | Targets | Result |
 | --- | --- | --- | --- | --- | --- |
-| `XFC-CF-BUILD-001` | Host Integration: firmware builds without XFSM when not selected | Profile 1 normative | Disabled Linux build record | Linux | Planned |
-| `XFC-CF-BUILD-002` | Host Integration: `XFSM`/`USE_XFSM` optional-library selection | Profile 1 normative | Enabled Linux build and wrapper smoke test | Linux | Planned |
-| `XFC-CF-API-001` | Public Interfaces: `require("XFSM")` exposes `createMachine`, `createActor`, and `assign` | Profile 1 normative | JavaScript public-behaviour trace | Linux, physical targets | Planned |
+| `XFC-CF-BUILD-001` | Host Integration: firmware builds without XFSM when not selected | Profile 1 normative | [Disabled Linux build record](results/linux/2026-09-25-library-shell-build.json) | Linux | Pass |
+| `XFC-CF-BUILD-002` | Host Integration: `XFSM`/`USE_XFSM` optional-library selection | Profile 1 normative | [Enabled Linux build and wrapper smoke test](results/linux/2026-09-25-library-shell-build.json) | Linux | Pass |
+| `XFC-CF-API-001` | Public Interfaces: `require("XFSM")` exposes `createMachine`, `createActor`, and `assign` | Profile 1 normative | [JavaScript shell test](results/linux/2026-09-25-library-shell-build.json) | Linux, physical targets | Linux: Pass; physical: Planned |
 | `XFC-CF-FORMAT-001` | Native Format: normative structure sizes and table offset | Native implementation | Compile-time assertions | All builds | Planned |
 | `XFC-CF-FORMAT-002` | Native Format: malformed arena data rejected before unsafe access | Native implementation | Corruption test under sanitizers | Linux | Planned |
 | `XFC-CF-TRANS-001` | Construction and Runtime: hierarchical initial descent and indexed transition execution | XState differential | Profile 1 trace plus `xstate@5.33.2` reference | Linux, physical targets | Planned |

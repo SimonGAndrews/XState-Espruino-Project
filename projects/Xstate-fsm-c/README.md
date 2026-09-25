@@ -11,16 +11,17 @@ direction relates to the Stage 1 and FSMPlus projects.
 
 ## Status
 
-The Profile 1 specification is an implementation candidate. Milestone M0,
-repository and evidence preparation, is in progress; implementation code has
-not started. The specification defines the
-supported feature scope, XState compatibility direction, native indexed arena,
-actor and context ownership, transition and action semantics, diagnostics,
-Espruino build integration, target matrix, resource measurements, and
-conformance strategy.
+The Profile 1 specification is an implementation candidate. The M1
+optional-library shell is implemented and build-verified on Linux; machine
+construction and runtime behaviour have not started. The specification defines
+the supported feature scope, XState compatibility direction, native indexed
+arena, actor and context ownership, transition and action semantics,
+diagnostics, Espruino build integration, target matrix, resource measurements,
+and conformance strategy.
 
-The first implementation step is a vertical slice on Linux Espruino followed
-by representative physical targets. That slice must measure the provisional
+The next code milestone establishes the native format and sanitizer tests,
+followed by the construction and execution vertical slice on Linux Espruino.
+That slice must measure the provisional
 native layout, hierarchy-depth and microstep limits, stack reserve, flash, RAM,
 and timing before the physical format is frozen or the full implementation
 proceeds.
@@ -35,8 +36,8 @@ commands and development locations.
 
 Canonical implementation code is developed in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
-The current local clone is `/home/simon/Espruino-XFSM-Profile1`, and the planned
-library location is `libs/xfsm/`.
+The current local clone is `/home/simon/Espruino-XFSM-Profile1`, and the
+canonical library location is `libs/xfsm/`.
 
 This umbrella repository owns the specification, planning, conformance cases,
 differential tooling, results, and reports. It does not keep a second copy of

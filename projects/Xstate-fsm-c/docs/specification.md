@@ -4,7 +4,7 @@
 
 - Status: Profile 1 implementation candidate
 - Version: 0.48
-- Implementation status: Not started
+- Implementation status: M1 optional-library shell; engine behaviour not started
 
 This document is the normative implementation candidate for Xstate-fsm-c
 Profile 1. Only requirements stated explicitly in this document are accepted.

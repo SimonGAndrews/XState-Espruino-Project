@@ -1,0 +1,65 @@
+{
+  "kind": "xfsm-library-shell-linux-build",
+  "date": "2026-09-25",
+  "caseIds": [
+    "XFC-CF-BUILD-001",
+    "XFC-CF-BUILD-002",
+    "XFC-CF-API-001"
+  ],
+  "xstateEspruinoProjectRevision": "fefe391",
+  "specificationVersion": "0.48",
+  "espruinoRevision": "225e55fba32b7a859a30ae5ba5db0c8e4f9f4ff6",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Linux",
+  "board": "LINUX",
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "make": "GNU Make 4.3",
+    "python": "Python 3.12.3"
+  },
+  "disabled": {
+    "command": "make clean && make",
+    "artifact": "bin/espruino",
+    "artifactBytes": 4852832,
+    "artifactSha256": "5f9d2f9b8902ffac47d0c6fa6fb34715cec840e5618385d0886a87d41e61c367",
+    "size": {
+      "text": 1195542,
+      "data": 20048,
+      "bss": 4704,
+      "decimal": 1220294
+    },
+    "elapsedSeconds": 47.38,
+    "maximumResidentSetKilobytes": 222276,
+    "compilerWarningCount": 544,
+    "xfsmGeneratedSymbols": 0,
+    "moduleSmokeResult": "pass: require(\"XFSM\") reported module not found"
+  },
+  "enabled": {
+    "command": "make clean && make USE_XFSM=1",
+    "artifact": "bin/espruino",
+    "artifactBytes": 4856808,
+    "artifactSha256": "0759b6dea14c54dad4c52d3ac37b4ca9377e42219a87e58e8abb52053563ca7a",
+    "size": {
+      "text": 1196502,
+      "data": 20144,
+      "bss": 4704,
+      "decimal": 1221350
+    },
+    "elapsedSeconds": 52.2,
+    "maximumResidentSetKilobytes": 222276,
+    "compilerWarningCount": 544,
+    "xfsmCompilerWarningCount": 0,
+    "moduleSmokeCommand": "bin/espruino --test libs/xfsm/tests/test_shell.js",
+    "moduleSmokeResult": "pass"
+  },
+  "enabledMinusDisabled": {
+    "artifactBytes": 3976,
+    "text": 960,
+    "data": 96,
+    "bss": 0,
+    "decimal": 1056
+  },
+  "result": "pass",
+  "scope": "Optional-library integration and controlled API stubs only; no state-machine behaviour is implemented or claimed."
+}

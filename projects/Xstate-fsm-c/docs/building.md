@@ -2,9 +2,10 @@
 
 ## Status
 
-- Build-document status: Linux baseline verified; XFSM-enabled build pending
+- Build-document status: Linux disabled and XFSM-enabled shell builds verified
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
+- Current implementation revision: `225e55fba32b7a859a30ae5ba5db0c8e4f9f4ff6`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -25,7 +26,7 @@ revision.
 - Official upstream: `https://github.com/espruino/Espruino.git`
 - Branch: `feature/xfsm-profile1`
 - Current local clone: `/home/simon/Espruino-XFSM-Profile1`
-- Planned canonical library directory: `libs/xfsm/`
+- Canonical library directory: `libs/xfsm/`
 
 The C engine and wrapper are edited only in the implementation repository. Do
 not copy them into `projects/Xstate-fsm-c/src/`.
@@ -68,9 +69,10 @@ explicit path; they must not require these machine-specific absolute paths.
 
 ## Linux Reference Build
 
-The baseline command was verified on 2026-09-25. It produces
-`bin/espruino`; the complete metadata is recorded in the
-[baseline result](../tests/results/linux/2026-09-25-baseline-build.json).
+The pristine baseline and committed disabled/enabled commands were verified on
+2026-09-25. They produce `bin/espruino`; complete metadata is recorded in the
+[baseline result](../tests/results/linux/2026-09-25-baseline-build.json) and
+[library-shell result](../tests/results/linux/2026-09-25-library-shell-build.json).
 The sequence is:
 
 1. build clean Linux Espruino at the recorded base with XFSM absent;
@@ -79,7 +81,7 @@ The sequence is:
 4. build the identical configuration with `USE_XFSM=1`; and
 5. record the attributable size difference and linker-map evidence.
 
-Verified baseline command:
+Verified disabled command:
 
 ```bash
 cd "$ESPRUINO_XFSM_ROOT"
@@ -87,15 +89,22 @@ make clean
 make
 ```
 
+Verified enabled command:
+
 ```bash
 cd "$ESPRUINO_XFSM_ROOT"
 make clean
-USE_XFSM=1 make
+make USE_XFSM=1
 ```
 
-The `USE_XFSM=1` command remains provisional until the optional-library shell
-has been added and the enabled build has passed. Unverified commands are
-examples, not build evidence.
+Verify the enabled module surface with:
+
+```bash
+bin/espruino --test libs/xfsm/tests/test_shell.js
+```
+
+The shell-size comparison and its limitations are explained in the
+[Linux library-shell report](reports/2026-09-25-linux-library-shell.md).
 
 ## Sanitizer Build
 

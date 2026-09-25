@@ -1,10 +1,10 @@
 # Xstate-fsm-c Implementation Status
 
 - Last reviewed: 2026-09-25
-- Overall status: Implementation preparation
-- Current milestone: M0 - repository and evidence foundation
-- Implementation code status: Not started
-- Next gate: Reproducible Linux Espruino baseline build
+- Overall status: M1 optional-library shell verified on Linux
+- Current milestone: M0 evidence completion and M2 preparation
+- Implementation code status: Build integration and controlled API stubs only
+- Next gate: Native-format structures, assertions, and sanitizer test harness
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md).
@@ -21,11 +21,12 @@ criteria are in the [Implementation Plan](implementation-plan.md).
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Planned canonical source path | `libs/xfsm/` |
+| Current implementation HEAD | `225e55fba32b7a859a30ae5ba5db0c8e4f9f4ff6` |
+| Canonical source path | `libs/xfsm/` |
 
-The branch currently equals its upstream base and contains no XFSM
-implementation files.
+The branch is one local commit ahead of its tracked remote. A dry-run push on
+2026-09-25 confirmed that `origin/feature/xfsm-profile1` can accept the commit;
+the push has not been performed.
 
 ## Completed Foundation Work
 
@@ -40,20 +41,28 @@ implementation files.
   the same initial commit.
 - Implementation plan, build-guide, status, report, result, and conformance
   scaffolds created.
+- Clean Linux Espruino baseline built and recorded.
+- Node differential environment pinned and verified at `xstate@5.33.2`.
+- `libs/xfsm/` library shell, `USE_XFSM` selection, and generated wrapper added.
+- Disabled and enabled Linux builds and JavaScript module smoke tests passed.
+- Initial library-shell size delta recorded without treating it as a completed
+  engine estimate.
 
 ## Current Work
 
-Milestone M0 is establishing reproducible build and evidence mechanics before
-native implementation begins.
+The M1 library-shell exit gate is satisfied on Linux. M0's full normative
+requirement inventory remains documentation work; the next code work is the M2
+native-format foundation.
 
 Immediate tasks:
 
-1. verify and record the clean Linux Espruino baseline build;
-2. create the initial requirement inventory in the conformance matrix;
-3. pin and scaffold the Node XState v5.33.2 differential runner;
-4. create the `libs/xfsm/` library shell on the Espruino feature branch;
-5. add generated-wrapper and `USE_XFSM` build selection stubs; and
-6. capture the first enabled-versus-disabled build record.
+1. expand the conformance matrix into the initial normative requirement
+   inventory;
+2. add Version 1 native-format structures and compile-time assertions;
+3. establish the standalone address/undefined-behaviour sanitizer target;
+4. implement checked arithmetic, range, alignment, and string-pool helpers;
+5. add native-format validation and corruption cases; and
+6. push the reviewed Espruino and umbrella commits when requested.
 
 ## Open Issues And Blockers
 
@@ -83,7 +92,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 
 | Target | Current status | Latest evidence |
 | --- | --- | --- |
-| Linux Espruino | Not yet verified | Baseline build pending |
+| Linux Espruino | Build verified | [M1 library-shell report](reports/2026-09-25-linux-library-shell.md) |
 | Espruino Pico | Not yet verified | None |
 | MDBT42Q | Not yet verified | None |
 | ESP32-C3 | Not yet verified | None |
@@ -96,4 +105,5 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-25 | M1 optional-library shell committed at `225e55fba`; Linux disabled/enabled builds and module smoke tests passed |
 | 2026-09-25 | Implementation preparation started; clean Espruino fork branch and documentation scaffolds established |
