@@ -1,0 +1,16 @@
+{
+  "name": "xfsm-xstate-v5-reference",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pinned XState v5 differential reference for XFSM Profile 1",
+  "type": "module",
+  "scripts": {
+    "test": "node verify-reference.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "xstate": "5.33.2"
+  }
+}

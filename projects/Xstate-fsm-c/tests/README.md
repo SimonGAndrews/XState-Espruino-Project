@@ -6,6 +6,9 @@ runners, expected traces, and reviewed result records defined by the
 [conformance matrix](conformance-matrix.md); recorded evidence is indexed under
 [`results/`](results/).
 
+The primary differential environment is pinned under
+[`reference/xstate-v5/`](reference/xstate-v5/).
+
 The suite will distinguish normative Profile 1 cases, pinned Node XState
 differential cases, intentional compatibility differences, native-format and
 fault-injection cases, and legacy evidence. Portable behaviour cases emit the

@@ -1,0 +1,34 @@
+{
+  "kind": "pre-integration-linux-baseline",
+  "date": "2026-09-25",
+  "xstateEspruinoProjectRevision": "5893553",
+  "specificationVersion": "0.48",
+  "espruinoRevision": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Linux",
+  "board": "LINUX",
+  "command": "make clean && make",
+  "artifact": "bin/espruino",
+  "artifactBytes": 4852832,
+  "artifactSha256": "be920a63e0bf5aab16ff802baa747f1ee091d1f76bf627070284a3ea38c1fcad",
+  "size": {
+    "text": 1195542,
+    "data": 20048,
+    "bss": 4704,
+    "decimal": 1220294
+  },
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "make": "GNU Make 4.3",
+    "python": "Python 3.12.3",
+    "node": "v20.15.0",
+    "npm": "10.7.0"
+  },
+  "elapsedSeconds": 51.97,
+  "maximumResidentSetKilobytes": 222312,
+  "compilerWarningCount": 544,
+  "smokeResult": "process.version returned 2v29.426",
+  "result": "pass",
+  "notes": "Pristine pre-XFSM build. Existing upstream warnings were retained as baseline information. This does not yet satisfy XFC-CF-BUILD-001."
+}

@@ -2,8 +2,7 @@
 
 ## Status
 
-- Build-document status: Scaffolded; baseline build commands still to be
-  verified
+- Build-document status: Linux baseline verified; XFSM-enabled build pending
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
 - Base source: official `espruino/Espruino` `master`
@@ -69,9 +68,10 @@ explicit path; they must not require these machine-specific absolute paths.
 
 ## Linux Reference Build
 
-The exact baseline and XFSM-enabled commands must be verified during milestone
-M0 and then recorded here with their expected output artifact. The intended
-sequence is:
+The baseline command was verified on 2026-09-25. It produces
+`bin/espruino`; the complete metadata is recorded in the
+[baseline result](../tests/results/linux/2026-09-25-baseline-build.json).
+The sequence is:
 
 1. build clean Linux Espruino at the recorded base with XFSM absent;
 2. record compiler, version, flags, binary size, and build artifact;
@@ -79,7 +79,7 @@ sequence is:
 4. build the identical configuration with `USE_XFSM=1`; and
 5. record the attributable size difference and linker-map evidence.
 
-Expected command forms, subject to M0 verification:
+Verified baseline command:
 
 ```bash
 cd "$ESPRUINO_XFSM_ROOT"
@@ -93,7 +93,9 @@ make clean
 USE_XFSM=1 make
 ```
 
-Unverified commands are examples, not build evidence.
+The `USE_XFSM=1` command remains provisional until the optional-library shell
+has been added and the enabled build has passed. Unverified commands are
+examples, not build evidence.
 
 ## Sanitizer Build
 
