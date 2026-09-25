@@ -1,5 +1,10 @@
 # FSMPlus Status Summary (from Flat FSM baseline)
 
+This is the project-specific status authority for FSMPlus. It does not define
+Xstate-fsm-c Profile 1; see the
+[current project context](../project-context.md) for cross-project authority and
+the active development focus.
+
 This note summarises the functional state of FSMPlus versus the flat baseline:
 - Flat baseline: `projects/xstate-fsm-espruino/src/xstate-fsm.js`
 - Current engine: `projects/xstate-fsmPlus/src/xstate_fsmPlus.js`

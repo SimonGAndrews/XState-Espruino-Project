@@ -1,12 +1,14 @@
 # XState v4 Truth Runner
 
-This project provides a reference runner using **XState v4** to validate
-scenario behaviour against the shared examples in the repo root.
+This project provides a reference runner using **XState v4** to validate Stage
+1 and FSMPlus scenario behaviour against the shared examples in the repo root.
 
 ## Purpose
 
-- Provide a v4-aligned truth source for FSMPlus/XFSM parity testing.
+- Provide a v4-aligned truth source for Stage 1 and FSMPlus testing.
 - Emit the same normalized trace format as FSMPlus.
+- Provide secondary compatibility evidence for Xstate-fsm-c only when a case is
+  reviewed and adopted under the Profile 1 specification.
 
 ## Install
 

@@ -2,7 +2,11 @@
 
 ## Overview
 
-This repository contains a structured exploration, implementation, and evaluation of **[XState](https://xstate.js.org/)-style finite state machines (FSMs)** for use on **[Espruino](https://www.espruino.com/)-based microcontroller systems**, with a particular focus on **hierarchical (compound) states** suitable for real-world control and UI problems.
+This repository contains a structured exploration, implementation, and
+evaluation of finite state machines and statecharts for
+[Espruino](https://www.espruino.com/), informed by
+[XState](https://xstate.js.org/). It focuses particularly on hierarchical
+(compound) states suitable for real-world control and UI problems.
 
 The work began with a practical requirement: to express **non-trivial control logic** (menus, modes, automation flows) on constrained embedded hardware in a way that is:
 
@@ -12,7 +16,10 @@ The work began with a practical requirement: to express **non-trivial control lo
 - small enough to run on microcontrollers
 - extensible to model-driven tooling and AI-assisted development
 
-This document provides the **background, motivation, and evolution** of the project, and explains why the repository is structured into multiple implementation paths.
+This document provides the **background, motivation, and evolution** of the
+project and explains why the repository contains multiple parallel
+implementation directions. Current status and document authority are recorded
+in the [project context](../project-context.md).
 
 ---
 
@@ -125,27 +132,42 @@ The native engine aims to:
 - offer faster event handling and lower overhead
 - provide stronger guarantees around memory and execution order
 
-XFSM follows a phased implementation plan, beginning with flat FSM parity and progressing towards hierarchical support once the core engine is proven stable.
+XFSM Profile 1 begins with hierarchical machines composed of atomic and
+compound states. Its first implementation step is a vertical slice on Linux
+Espruino that exercises the native engine and wrapper, measures the provisional
+physical design, and establishes evidence before full implementation. The
+[Profile 1 specification](../../projects/Xstate-fsm-c/docs/specification.md)
+defines the current plan.
 
 ---
 
 ## Parallel Paths and Evaluation Strategy
 
-This repository intentionally maintains **two active implementation paths**:
+This repository intentionally maintains **three parallel implementation
+directions**. They arose in sequence but have independent scopes, compatibility
+references, and development lifecycles:
 
-1. **FSMPlus (JavaScript module)**
+1. **Flat FSM Espruino port**
+   - compact baseline derived from `@xstate/fsm`
+   - suitable for simpler flat machines
+   - maintained as a separate Git submodule
+
+2. **FSMPlus (JavaScript module)**
    - fast to deploy
    - optional at runtime
    - no custom firmware required
    - ideal for rapid development and experimentation
 
-2. **XFSM (native C engine)**
+3. **XFSM (native C engine)**
    - higher performance and determinism
    - tighter integration with Espruino internals
    - higher development and maintenance cost
    - suited to demanding or large-scale deployments
 
-Both paths are evaluated using shared **greenhouse automation scenarios**, allowing direct behavioural and performance comparison.
+Shared scenarios can provide behavioural and performance evidence across these
+directions, but each project decides which cases it adopts and which external
+reference defines the expected result. Xstate-fsm-c is the current active
+development focus.
 
 ---
 
@@ -171,10 +193,11 @@ These examples serve simultaneously as:
 Documentation is structured to separate **intent**, **decisions**, and **external references**:
 ```
 docs/
-background.md # this document
-decisions/ # architectural decision records (ADRs)
-notes/ # development notes and summaries
-references/ # standards, links, and external material
+  project-context.md # current direction and document authority
+  governance/ # this background, status, and testing strategy
+  decisions/ # architectural decision records (ADRs)
+  notes/ # development notes and historical discussions
+  references/ # standards, links, and external material
 ```
 ---
 

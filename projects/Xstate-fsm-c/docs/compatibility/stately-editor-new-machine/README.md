@@ -34,9 +34,9 @@ supports trailing commas in object and array literals, but not in function-call
 argument lists. Arrow functions, quoted property names, spaces in names, and
 the other object/array trailing commas are supported Espruino syntax.
 
-## Preliminary Profile 1 Assessment
+## Profile 1 Assessment
 
-Status: **design decisions required**.
+Status: **assessed; decisions incorporated into Profile 1**.
 
 The executable machine structure can fit Profile 1. The following existing
 requirements already cover it:
@@ -58,26 +58,33 @@ positional `(context, event)` callback contract.
 
 ## Decisions Exposed By This Example
 
-The following recommendations are not yet normative:
+Profile 1 resolves the questions exposed by this example as follows. The linked
+specification sections are normative:
 
 1. Accept transition `meta` as non-executable authoring metadata and discard it
-   during construction. It must consume no compiled-arena or retained-value
-   storage.
+   during construction when it is empty. It consumes no compiled-arena or
+   retained-value storage. See
+   [State node and initial-transition grammar](../../specification.md#state-node-and-initial-transition-grammar).
 2. Accept unsupported implementation maps such as `services`, `actors`, and
    `delays` only when they are empty. Reject a non-empty map so unsupported
-   behavior cannot silently disappear.
+   behavior cannot silently disappear. See
+   [Definition strictness](../../specification.md#definition-strictness).
 3. Accept `predictableActionArguments: true` and `preserveActionOrder: true` as
    compatibility assertions and discard them during construction. Reject
-   `false`, because it requests ordering contrary to Profile 1.
-4. Support exact state and implementation names containing spaces.
+   `false`, because it requests ordering contrary to Profile 1. See
+   [Definition strictness](../../specification.md#definition-strictness).
+4. Preserve exact state and implementation names containing spaces. See
+   [Transition target grammar and resolution](../../specification.md#transition-target-grammar-and-resolution).
 5. Resolve a bare transition target as a sibling of the state on which the
    transition is declared. This resolves every target in this template,
-   including the nested sibling target `Another child state`.
-6. Accept a root `id` as machine metadata. Whether it is retained or used for
-   ID-based target resolution remains a separate decision.
+   including the nested sibling target `Another child state`. See
+   [Transition target grammar and resolution](../../specification.md#transition-target-grammar-and-resolution).
+6. Accept a root `id`, compile it into the effective-ID lookup, and use it for
+   ID-based target resolution. See
+   [Transition target grammar and resolution](../../specification.md#transition-target-grammar-and-resolution).
 
-Subject to those decisions and the documented host/binding adaptation, both
-exports should be classified as **accepted after documented construction-time
+Subject to the documented host and binding adaptation, both exports are
+classified as **accepted after documented construction-time
 normalization**.
 
 ## Re-entry Round-trip Observation

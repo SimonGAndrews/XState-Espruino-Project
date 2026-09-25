@@ -5,11 +5,26 @@ to validate behaviour and manage defects across multiple FSM implementations.
 
 The emphasis is on **observable behaviour**, not exhaustive unit testing.
 
+## Scope And Authority
+
+This document defines shared scenario, trace, and issue-ownership principles.
+Its XState v4 truth-runner guidance was developed for Stage 1 and FSMPlus and
+does not define Xstate-fsm-c semantics or expected results.
+
+Xstate-fsm-c test authority, pinned reference versions, trace contract, and
+conformance layers are defined by its
+[Profile 1 specification](../../projects/Xstate-fsm-c/docs/specification.md).
+Shared scenarios become Profile 1 cases only after explicit review and
+adoption.
+
 ## Document Roles (to avoid duplication)
 
 - Canonical strategy and ownership policy: this document.
+- Current cross-project status and authority: `docs/project-context.md`.
 - Canonical command/operator workflow: `tools/README_espruino.md`.
-- Canonical implementation status and TODO backlog: `docs/governance/fsmPlus-status-01.md`.
+- Canonical FSMPlus status and TODO backlog: `docs/governance/fsmPlus-status-01.md`.
+- Canonical Xstate-fsm-c behaviour and conformance:
+  `projects/Xstate-fsm-c/docs/specification.md`.
 - Supporting thread/handover operational notes: `docs/notes/espruino-test-workflow.md`.
 
 ## Testing Approach
@@ -45,7 +60,7 @@ Advantages of this approach:
 
 - aligns with embedded constraints (small footprint, minimal harness)
 - validates real ordering and side effects rather than internal implementation details
-- enables cross-engine parity checks (FSMPlus vs XFSM) using the same scenarios
+- enables reviewed cross-engine comparisons using shared scenarios
 - keeps tests stable across refactors as long as behaviour is preserved
 
 ## Where Tests Live
@@ -58,13 +73,13 @@ Advantages of this approach:
   - `projects/<engine>/tests/results/<runtime>/`
 - Test run logs are stored per engine:
   - `projects/<engine>/tests/test_log.md`
-- Tests are intended to run against:
-  - FSMPlus (JavaScript module)
-  - XFSM (native C engine)
-  - XState v4 truth runner (reference)
-  using the same inputs where possible
+- Stage 1 and FSMPlus tests may run against the XState v4 truth runner using the
+  same inputs where possible.
+- Xstate-fsm-c maintains its Profile 1 suite under
+  `projects/Xstate-fsm-c/tests/` and may adopt a shared scenario after review
+  against the Profile 1 specification.
 
-## Truth Runner (XState v4)
+## Truth Runner For Stage 1 And FSMPlus (XState v4)
 
 ### Motivation
 
@@ -82,12 +97,15 @@ best bridge between existing flat semantics and the richer FSMPlus surface.
 
 ### Direction
 
-- The truth runner will live as a **subfolder under the umbrella repo**.
+- The truth runner lives under `projects/xstate-v4-truth/` in the umbrella
+  repository.
 - It will consume the same shared scenarios under `examples/`.
 - It will emit the **same normalized trace format** used by FSMPlus.
 - Node-based FSMPlus runs are used as **rapid feedback** and a **sanity check**
-  for anomalies, but **XState v4 remains the reference truth** for expected
-  behaviour in this phase.
+  for anomalies, but **XState v4 remains the reference truth** for the Stage 1
+  and FSMPlus work covered by this section.
+- Xstate-fsm-c instead uses the pinned v5 primary and v4 secondary differential
+  references required by Profile 1.
 
 ## Issue Tracking: Ownership Model
 
@@ -212,7 +230,7 @@ What stays fixed across scenarios:
 Framework location:
 - Node harness: `projects/xstate-fsmPlus/tests/node/run_<scenario>.js`
 - Espruino harness: `projects/xstate-fsmPlus/tests/espruino/run_<scenario>.js`
-- XState v4 truth runner: `projects/xstate-v4-truth/runner/run_<scenario>.js` (planned)
+- XState v4 truth runner: `projects/xstate-v4-truth/runner/run_<scenario>.js`
 
 Shared framework responsibilities:
 - Create machine from scenario definition.

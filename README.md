@@ -24,34 +24,34 @@ Statecharts provide a compact, explicit model of system behaviour:
 That clarity is ideal for embedded systems where correctness, traceability,
 and limited resources matter.
 
-See `docs/governance/background.md` for the full motivation and background.
+See the [project context](docs/project-context.md) for the current direction and
+the [background](docs/governance/background.md) for its evolution.
 
-## Project Stages
+## Parallel Project Directions
 
-### Stage 1: Flat FSM (Espruino port)
+The three directions arose in sequence but remain parallel projects. Their
+stage numbers describe that evolution; they do not mean that a later project
+replaces an earlier one.
+
+### Stage 1: Flat FSM (Espruino Port)
 
 Baseline port of `@xstate/fsm`, adapted to Espruino constraints.
 
-Location:
-
-`projects/xstate-fsm-espruino/`
+Project: [`projects/xstate-fsm-espruino/`](projects/xstate-fsm-espruino/)
 
 ### Stage 2: FSMPlus (Hierarchical JS Engine)
 
-Canonical JavaScript hierarchical FSM engine for Espruino, matching a
-Minimum Viable Hierarchical Engine (MVHE) scope.
+Working JavaScript hierarchical FSM engine for Espruino and a parallel
+deployable direction that does not require custom firmware.
 
-Location:
-
-`projects/xstate-fsmPlus/`
+Project: [`projects/xstate-fsmPlus/`](projects/xstate-fsmPlus/)
 
 ### Stage 3: Xstate-fsm-c (Native C Engine)
 
-Specification-led development of a native C state-machine engine.
+Specification-led native C hierarchical engine, exposed to Espruino JavaScript
+as the `XFSM` module. This is the current active development focus.
 
-Location:
-
-`projects/Xstate-fsm-c/`
+Project: [`projects/Xstate-fsm-c/`](projects/Xstate-fsm-c/)
 
 ## Testing Approach
 
@@ -61,36 +61,32 @@ Testing is **scenario-driven** and trace-based:
 - deterministic event sequences
 - expected trace outputs for comparison
 
-See:
-
-`docs/governance/testing-strategy.md` and
-`projects/xstate-fsmPlus/tests/`.
+The shared approach is described in the
+[testing strategy](docs/governance/testing-strategy.md). Each project retains
+its own compatibility authority and decides which shared cases it adopts.
 
 ## Key Docs
 
-- Background and motivation  
-  `docs/governance/background.md`
-
-- Testing strategy and ownership  
-  `docs/governance/testing-strategy.md`
-
-- FSMPlus status and backlog (canonical)  
-  `docs/governance/fsmPlus-status-01.md`
-
-- Espruino CLI test workflow (operator guide)  
-  `tools/README_espruino.md`
-
-- Architectural decisions (ADRs)  
-  `docs/decisions/`
-
-- References  
-  `docs/references/links.md`
+- [Current project context and authority](docs/project-context.md)
+- [Background and evolution](docs/governance/background.md)
+- [Testing strategy and ownership](docs/governance/testing-strategy.md)
+- [FSMPlus status and backlog](docs/governance/fsmPlus-status-01.md)
+- [Xstate-fsm-c Profile 1 specification](projects/Xstate-fsm-c/docs/specification.md)
+- [Xstate-fsm-c provisional native format](projects/Xstate-fsm-c/docs/native-format-v1.md)
+- [Espruino CLI test workflow](tools/README_espruino.md)
+- [Architectural decisions](docs/decisions/)
+- [References](docs/references/links.md)
 
 ## Status
 
-FSMPlus is the current working hierarchical engine. Xstate-fsm-c is in the
-specification and design phase. See `docs/governance/fsmPlus-status-01.md` for
-the FSMPlus status and `projects/Xstate-fsm-c/` for Stage 3 work.
+FSMPlus is the current working JavaScript hierarchical engine. Xstate-fsm-c is
+the active development focus: its Profile 1 specification is an implementation
+candidate, its implementation has not started, and its next step is the
+specified Linux Espruino vertical slice. Stage 1 remains the flat embedded
+baseline.
+
+The [current project context](docs/project-context.md) identifies the authority
+and compatibility references for each direction.
 
 ## Licensing
 
@@ -101,11 +97,8 @@ MPL-2.0.
 
 ## Acknowledgements
 
-- **Espruino** — the open-source JavaScript runtime and community that make
-  embedded JS development possible.  
-  https://www.espruino.com/
-
-- **XState / Stately** — the statechart model, tooling, and API patterns that
-  inspire FSMPlus.  
-  https://xstate.js.org/  
-  https://stately.ai/
+- **Espruino** — the [open-source JavaScript runtime](https://www.espruino.com/)
+  and community that make embedded JS development possible.
+- **XState / Stately** — the statechart model, tooling, and API patterns from
+  [XState](https://xstate.js.org/) and [Stately](https://stately.ai/) that
+  inform the three project directions.

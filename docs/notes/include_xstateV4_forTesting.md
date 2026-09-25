@@ -1,5 +1,14 @@
 
-# Question: 
+# XState Reference-Runner Discussion
+
+> **Historical scope:** This note records the reasoning that selected XState v4
+> as the closest reference for the Stage 1 and FSMPlus models then under test.
+> It is not authoritative for Xstate-fsm-c. Profile 1 now uses pinned XState
+> v5.33.2 as its primary differential reference and XState v4.38.3 as its
+> secondary reference; see the
+> [Xstate-fsm-c specification](../../projects/Xstate-fsm-c/docs/specification.md#node-xstate-differential-execution).
+
+## Original Question
 I’m considering setting up another project to enable the official X state V5 to be run on the test cases which we are generating as a ultimate truth set:
 
 ## Response:
@@ -140,13 +149,13 @@ For “truth runner” purposes you don’t need model-based testing, but it’s
 ## Why you might still want v5 later
 
 * v5 is the maintained path going forward, and it supports state values as strings *or* nested objects. ([stately.ai][4])
-* If you eventually want FSMPlus/XFSM to align to v5 semantics (actors, reenter options, etc.), having a v5 truth runner becomes valuable — but it’s a *second phase*, after your v4-aligned engines are stable.
+* If you eventually want FSMPlus to align to v5 semantics (actors, reenter options, etc.), having a v5 truth runner becomes valuable — but it’s a *second phase*, after the v4-aligned engine is stable.
 
 ## Recommendation
 
 ### Do truth testing in v4 now, add v5 later as a “compatibility runner”
 
-* **Truth Runner v4**: authoritative for current FSMPlus / XFSM semantics and test cases.
+* **Truth Runner v4**: authoritative for the FSMPlus semantics and test cases discussed in this historical note.
 * **Truth Runner v5** (later): used to check future parity or migration behaviour once you decide what subset of v5 you care about.
 
 This keeps your “ultimate truth” honest and avoids spending weeks building a translation layer.

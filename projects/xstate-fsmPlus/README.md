@@ -7,16 +7,32 @@ a JavaScript-based hierarchical finite state machine engine for **Espruino**, in
 - SCXML compound state behaviour (hierarchical/compound states and ordered entry/exit)
 - practical constraints of embedded Espruino runtimes
 
-The goal of FSMPlus is to deliver a **usable hierarchical FSM engine quickly** (days / small number of weeks),
-suitable for real embedded applications (initially greenhouse automation), without requiring custom firmware.
+The goal of FSMPlus is to provide a usable hierarchical FSM engine for real
+embedded applications, including greenhouse automation, without requiring
+custom firmware.
 
 ## Status
 
-FSMPlus is an active development track in this umbrella repository.
+FSMPlus is a parallel development track in this umbrella repository. The
+umbrella project's current active development focus is Xstate-fsm-c; this does
+not replace or deprecate FSMPlus.
 
-- It is expected to evolve rapidly during early consolidation and testing.
 - Scope is intentionally limited to deliver a working subset quickly.
 - Parallel state support is explicitly excluded (see ADR-0001).
+
+## Espruino Implementation Constraints
+
+The canonical JavaScript engine must remain compatible with the supported
+Espruino language subset. In particular:
+
+- avoid optional chaining and destructuring assignments;
+- avoid default function parameters and reliance on `function.name`;
+- prefer `var` and classic functions where target support for newer syntax is
+  uncertain; and
+- avoid unsupported collections such as ES6 `Set`.
+
+Changes to these constraints require validation on the applicable Espruino
+targets rather than an assumption based on Node.js behaviour.
 
 ## Scope: Minimum Viable Hierarchical Engine (MVHE)
 
@@ -74,10 +90,12 @@ It is not the canonical implementation and should not be treated as current.
 
 A native C FSM engine is being developed in parallel under the umbrella repository:
 
-- `projects/xfsm/` (to be created / populated)
+- `projects/Xstate-fsm-c/`
 
-FSMPlus provides the fast path to a working hierarchical engine. XFSM is expected to provide improved
-performance and determinism once parity with the MVHE subset is achieved.
+FSMPlus provides the working JavaScript hierarchical engine. Xstate-fsm-c has
+its own Profile 1 contract and is expected to provide improved performance and
+determinism; FSMPlus behaviour is evidence for that project rather than an
+automatic parity requirement.
 
 ## Testing Strategy
 
@@ -87,10 +105,8 @@ FSMPlus is tested primarily using **scenario-driven traces**:
 - deterministic event sequences
 - expected trace outputs
 
-See:
-
-- `docs/notes/testing-strategy.md`
-- `examples/` (once greenhouse scenarios are added)
+See the shared [testing strategy](../../docs/governance/testing-strategy.md) and
+the repository-root [`examples/`](../../examples/) corpus.
 
 ## Runtime Configuration (Actions/Guards)
 
@@ -109,12 +125,9 @@ var tuned = machine.withConfig({
 }, { count: 1 });
 ```
 
-## Next Steps
+## Current Work
 
-Initial work in this subproject typically proceeds in this order:
-
-1. Consolidate an initial working FSMPlus implementation into `src/`
-2. Add one greenhouse scenario machine and expected trace output
-3. Verify behaviour on Espruino hardware
-4. Iterate until MVHE scope is stable
-5. Compare parity against the native XFSM engine
+The canonical capability summary and backlog are maintained in the
+[FSMPlus status](../../docs/governance/fsmPlus-status-01.md). Shared scenarios
+may be compared with Xstate-fsm-c after they are reviewed against both projects'
+contracts; exact parity is not assumed where the documented semantics differ.

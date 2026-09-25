@@ -6,9 +6,13 @@ XState-Espruino-Project umbrella repository.
 Its public Espruino module is `XFSM`, loaded by application JavaScript with
 `require("XFSM")`.
 
+The umbrella [project context](../../docs/project-context.md) records how this
+direction relates to the Stage 1 and FSMPlus projects.
+
 ## Status
 
-The Profile 1 specification is an implementation candidate. It defines the
+The Profile 1 specification is an implementation candidate and implementation
+has not started. It defines the
 supported feature scope, XState compatibility direction, native indexed arena,
 actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
@@ -27,7 +31,8 @@ design discussion:
 
 - `projects/xstate-fsm-espruino/` provides the flat FSM baseline.
 - `projects/xstate-fsmPlus/` provides the hierarchical JavaScript engine.
-- `projects/xstate-v4-truth/` provides the current XState v4 reference runner.
+- `projects/xstate-v4-truth/` provides the secondary XState v4 reference runner
+  and legacy evidence.
 - `examples/` contains shared behavioral scenarios and expected traces.
 - `docs/decisions/` records earlier umbrella-project decisions.
 
@@ -37,9 +42,12 @@ relevant behavior and constraints.
 
 ## Project Layout
 
-- `docs/specification.md` - Profile 1 normative implementation candidate
-- `docs/native-format-v1.md` - provisional native arena and actor layout
-- `docs/compatibility/` - raw Stately v4/v5 exports and their assessments
+- [docs/specification.md](docs/specification.md) - Profile 1 normative
+  implementation candidate
+- [docs/native-format-v1.md](docs/native-format-v1.md) - provisional native
+  arena and actor layout
+- [docs/compatibility/](docs/compatibility/) - raw Stately v4/v5 exports and
+  their assessments
 - `src/` - native engine and Espruino wrapper implementation area
 - `tests/` - conformance, differential, native-format, and resource tests
 

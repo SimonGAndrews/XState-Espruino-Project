@@ -9,6 +9,25 @@ the **context** in which it was made, and the **consequences** of that decision.
 The purpose of ADRs in this repository is to preserve *why* certain design
 choices were made, not to restate specifications or implementation details.
 
+## Scope And Authority
+
+The existing ADR series arose principally during development of FSMPlus. An
+`Accepted` status means accepted within the ADR's project scope; it does not
+make that decision normative for every implementation direction in the
+umbrella repository.
+
+| ADRs | Primary scope |
+| --- | --- |
+| ADR-0001 | Early umbrella scope decision and FSMPlus; Xstate-fsm-c independently records the same Version 1 exclusion in Profile 1 |
+| ADR-0002 through ADR-0007 | FSMPlus architecture, behaviour, or tooling compatibility |
+
+For Xstate-fsm-c, the
+[Profile 1 specification](../../projects/Xstate-fsm-c/docs/specification.md)
+is authoritative. ADRs, FSMPlus behaviour, and shared traces are design
+evidence only unless that specification explicitly adopts them. See the
+[current project context](../project-context.md) for the complete authority
+map.
+
 ## Why ADRs Are Used Here
 
 This project explores multiple implementation paths for state machines on
