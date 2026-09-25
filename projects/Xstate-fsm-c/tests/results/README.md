@@ -9,10 +9,7 @@ Create target-specific result directories as evidence becomes available:
 - `pico/`
 - `mdbt42q/`
 - `esp32-c3/`
-- `esp32-xtensa/`
-
-The Xtensa directory name may be refined when the exact qualification target
-is selected.
+- `esp32-xtensa/` (original ESP32 with ESP-IDF 5)
 
 ## Result Records
 

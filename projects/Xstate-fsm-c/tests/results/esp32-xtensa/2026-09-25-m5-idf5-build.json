@@ -1,0 +1,79 @@
+{
+  "kind": "xfsm-m5-esp32-idf5-build",
+  "date": "2026-09-25",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-BUILD-004"
+  ],
+  "xstateEspruinoProjectRevision": "2c0d26f",
+  "specificationVersion": "0.49",
+  "espruinoRevision": "de251bd977cc5b6bdccd83f72b872a0911fd6866",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "cpu": "Espressif ESP32 Xtensa LX6",
+  "pointerBits": 32,
+  "byteOrder": "little-endian",
+  "toolchain": {
+    "sdk": "ESP-IDF 5.5.3",
+    "cc": "xtensa-esp-elf-gcc 14.2.0",
+    "source": "scripts/provision.sh ESP32_IDF5"
+  },
+  "build": {
+    "commonFlags": "BOARD=ESP32_IDF5 RELEASE=1 -j2",
+    "optimization": "ESP32_IDF5 applies -Og to Espruino component sources; ESP-IDF sdkconfig has CONFIG_COMPILER_OPTIMIZATION_SIZE=y",
+    "environmentControl": "DEBUG was removed from the command environment to match the release workflow",
+    "xfsmCoordinatorStackReserveBytes": 512,
+    "espruinoStackSafetyBytes": 512,
+    "processMemoryBlockSize": null,
+    "processMemoryBlockSizeReason": "Build-only evidence; no physical runtime was executed",
+    "disabledCommand": "env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=0 clean && env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=0 -j2",
+    "disabledResult": "pass: Xtensa compile, link, app image, and partition-size check completed",
+    "disabledSize": {
+      "appImageBytes": 1491968,
+      "elfFileBytes": 15360900,
+      "text": 1312223,
+      "data": 202860,
+      "bss": 40849,
+      "decimal": 1555932,
+      "appPartitionBytes": 2048000,
+      "appPartitionFreeBytes": 556032
+    },
+    "enabledCommand": "env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 clean && env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2",
+    "enabledResult": "pass: XFSM and wrapper sources compiled, linked, and passed the app-partition size check",
+    "enabledSize": {
+      "appImageBytes": 1519872,
+      "elfFileBytes": 15594792,
+      "text": 1337403,
+      "data": 205596,
+      "bss": 40849,
+      "decimal": 1583848,
+      "appPartitionBytes": 2048000,
+      "appPartitionFreeBytes": 528128,
+      "appPartitionUsedPercent": 74.2125
+    },
+    "delta": {
+      "appImageBytes": 27904,
+      "appImagePercentOfBaseline": 1.8703,
+      "elfFileBytes": 233892,
+      "text": 25180,
+      "data": 2736,
+      "bss": 0,
+      "decimal": 27916
+    }
+  },
+  "boardIntegration": {
+    "stockBoardFileModified": false,
+    "selection": "USE_XFSM=1 used Espruino's normal optional-library mechanism",
+    "nextStep": "Create the product board configuration before physical-device qualification"
+  },
+  "artifacts": {
+    "appImage": "bin/build/espruino.bin (transient local build artifact; not committed)",
+    "elf": "bin/build/espruino.elf (transient local build artifact; not committed)",
+    "report": "projects/Xstate-fsm-c/docs/reports/2026-09-25-esp32-idf5-build.md"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass",
+  "scope": "Build evidence only. No physical-device runtime, RAM, timing, stack, GC, or behavioural-conformance claim is made."
+}

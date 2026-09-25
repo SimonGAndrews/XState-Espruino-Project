@@ -176,8 +176,13 @@ Qualify, separately:
 
 - Espruino Pico;
 - MDBT42Q;
-- ESP32-C3; and
-- one identified Xtensa ESP32 or ESP32-S3 target.
+- ESP32-C3 with ESP-IDF 5; and
+- original ESP32 with ESP-IDF 5 as the primary Xtensa and high-resource
+  physical target.
+
+ESP32-S3 with ESP-IDF 5 is a later expansion target once its Espruino test
+maturity is sufficient; it is not required to close the Version 1 target
+matrix.
 
 Each target must be reported only as `Not yet verified`, `Build verified`, or
 `Conformance verified` under the specification's criteria. Shared CPU families

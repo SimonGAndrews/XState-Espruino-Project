@@ -3,9 +3,10 @@
 ## Document Status
 
 - Status: Profile 1 implementation candidate
-- Version: 0.48
-- Implementation status: M5 Linux resource evidence recorded; constrained
-  target and completion-chain evidence remain required
+- Version: 0.49
+- Implementation status: M5 Linux and original ESP32 IDF5 build evidence
+  recorded; constrained-target runtime and completion-chain evidence remain
+  required
 
 This document is the normative implementation candidate for Xstate-fsm-c
 Profile 1. Only requirements stated explicitly in this document are accepted.
@@ -2290,16 +2291,19 @@ The initial candidate product targets are:
 
 - **Espruino Pico**, using its STM32F401 ARM Cortex-M4F build;
 - **MDBT42Q**, using its nRF52832 ARM Cortex-M4F build;
-- **ESP32-C3**, representing the 32-bit RISC-V ESP-IDF build; and
-- **one Xtensa ESP32 target**, selected from the original ESP32 or ESP32-S3 and
-  identified in the test report.
+- **ESP32-C3 with ESP-IDF 5**, representing the 32-bit RISC-V build; and
+- **the original ESP32 with ESP-IDF 5**, representing the 32-bit Xtensa build
+  and serving as the primary high-resource physical development target.
 
 The Pico and MDBT42Q MUST be assessed separately despite sharing the ARM
 instruction set. They exercise different vendor integration, linker and memory
 layouts, Espruino configurations, and available resource envelopes. The
 MDBT42Q is the primary constrained-RAM target; the Pico additionally provides
-the constrained-flash STM32 build. ESP32-C3 and the selected Xtensa target are
+the constrained-flash STM32 build. ESP32-C3 IDF5 and original ESP32 IDF5 are
 separate architecture qualifications and MUST NOT substitute for one another.
+ESP32-S3 IDF5 MAY be added as a later high-resource target after its Espruino
+port reaches the project's required test maturity, but it does not replace the
+original ESP32 IDF5 qualification.
 
 Each candidate product target MUST at least pass the common machine-behaviour
 and native-format suite, callback integration using JavaScript and native

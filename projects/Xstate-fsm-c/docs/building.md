@@ -2,11 +2,11 @@
 
 ## Status
 
-- Build-document status: Linux runtime and M5 measurements verified;
-  MDBT42Q compile verified but link blocked
+- Build-document status: Linux runtime and M5 measurements verified; original
+  ESP32 IDF5 build verified; MDBT42Q enabled size check blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `de251bd97`
+- Current implementation revision: `8794dc1d7`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -147,11 +147,11 @@ cd "$ESPRUINO_XFSM_ROOT"
 make -C libs/xfsm/tests/native clean test
 ```
 
-At revisions `d4860d07a`, `80d424772`, `c6505437a`, and `de251bd97`, GCC
-13.3.0 compiled the C99 suite with strict warnings promoted to errors and all
-66 checks passed without a sanitizer finding. The result is recorded in the
-[native-format result](../tests/results/linux/2026-09-25-native-format.json)
-and interpreted in the
+At revisions `d4860d07a`, `80d424772`, `c6505437a`, `de251bd97`, and
+`8794dc1d7`, GCC 13.3.0 compiled the C99 suite with strict warnings promoted to
+errors and all 66 checks passed without a sanitizer finding. The result is
+recorded in the [native-format
+result](../tests/results/linux/2026-09-25-native-format.json) and interpreted in the
 [native-format report](reports/2026-09-25-linux-native-format.md).
 Sanitizer findings are failures and must be linked from the conformance result.
 
@@ -187,27 +187,65 @@ Commands and required toolchain revisions will be recorded separately for:
 | Target | Board/build definition | Command status |
 | --- | --- | --- |
 | Espruino Pico | STM32F401 | Not established |
-| MDBT42Q | nRF52832 | Compile established; stock baseline link overflow blocks verification |
-| ESP32-C3 | ESP-IDF, 32-bit RISC-V | Not established |
-| Xtensa target | Original ESP32 or ESP32-S3, to be selected | Not established |
+| MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; XFSM image leaves 528,128 bytes in the app partition |
+| ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Secondary architecture qualification; stock capacity established |
+| ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
 The library must be selected through Espruino's normal optional-library
 mechanism. Target-specific board files may select `XFSM`, but must not contain
 engine semantics or duplicate its source list.
 
-The 2026-09-25 MDBT42Q attempt used the pinned local EspruinoBuildTools ARM GCC
-13.2.1 archive and the existing nRF5 SDK 12 tree:
+The 2026-09-25 MDBT42Q attempt used the target provisioning script, its pinned
+EspruinoBuildTools ARM GCC 13.2.1 archive, and the existing nRF5 SDK 12 tree.
+`DEBUG` is removed because the Codex host exports `DEBUG=release`, which GNU
+Make otherwise treats as enabled and uses to replace `-Os` with `-g`:
 
 ```bash
-make clean
-make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=0 -j2
-make clean
-make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 -j2
+source scripts/provision.sh MDBT42Q
+env -u DEBUG make clean
+env -u DEBUG make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=0 -j2
+env -u DEBUG make clean
+env -u DEBUG make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 -j2
 ```
 
-Both links failed because even the disabled baseline overflowed its flash
-region. XFSM was therefore not added to the stock board definition. Exact
-results are in the [MDBT42Q build record](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json).
+The stock build passed and created its DFU ZIP with 112 bytes before reserved
+Storage. The XFSM-enabled ELF linked, adding 22,288 flash bytes (7.07%), but
+failed Espruino's size check because it overlapped Storage by 22,176 bytes.
+XFSM was therefore not added to the stock board definition. Exact results are
+in the [MDBT42Q build record](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json).
+
+The original ESP32 comparison uses ESP-IDF 5.5.3 and the provisioned Xtensa
+GCC 14.2.0 toolchain. Both builds use the same implementation revision and
+remove the inherited `DEBUG` setting:
+
+```bash
+source scripts/provision.sh ESP32_IDF5
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=0 clean
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=0 -j2
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 clean
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
+```
+
+The disabled app image was 1,491,968 bytes. The enabled image was 1,519,872
+bytes, a 27,904-byte or 1.87% increase, and passed the partition-size check
+with 528,128 bytes free. See the [ESP32 IDF5 build
+report](reports/2026-09-25-esp32-idf5-build.md) and [result
+record](../tests/results/esp32-xtensa/2026-09-25-m5-idf5-build.json).
+
+## Development CI
+
+The implementation branch contains a dedicated `.github/workflows/xfsm.yml`
+development workflow. It verifies the disabled and enabled Linux builds, all
+current XFSM JavaScript suites, the native-format sanitizer suite, and an
+XFSM-enabled `ESP32_IDF5` build. It selects `USE_XFSM=1` explicitly and does
+not add XFSM to a stock board definition. The ordinary firmware workflow uses
+the `**` branch pattern so pushes to slash-named branches such as
+`feature/xfsm-profile1` are not silently omitted.
+
+This workflow is branch-development infrastructure. It can remain fork-local
+or be excluded from a future upstream implementation pull request without
+changing the XFSM library or its optional build mechanism.
 
 ## Required Build Record
 

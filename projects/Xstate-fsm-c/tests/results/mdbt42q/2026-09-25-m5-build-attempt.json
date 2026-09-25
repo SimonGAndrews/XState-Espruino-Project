@@ -17,22 +17,56 @@
   "byteOrder": "little-endian",
   "toolchain": {
     "cc": "arm-none-eabi-gcc 13.2.1",
-    "source": "local pinned EspruinoBuildTools archive"
+    "source": "scripts/provision.sh MDBT42Q selected the local pinned EspruinoBuildTools archive"
   },
   "build": {
     "commonFlags": "BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 -j2",
-    "disabledCommand": "make clean && make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=0 -j2",
-    "disabledResult": "link failed: FLASH overflowed by 176576 bytes",
-    "enabledCommand": "make clean && make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 -j2",
+    "environmentControl": "DEBUG was removed from the command environment to match the official release workflow",
+    "disabledCommand": "env -u DEBUG make clean && env -u DEBUG make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=0 -j2",
+    "disabledResult": "pass: ELF linked, target size check passed, and DFU ZIP was created",
+    "disabledSize": {
+      "text": 314904,
+      "data": 376,
+      "bss": 44520,
+      "decimal": 359800,
+      "codeBytesBeforeStorage": 314896,
+      "headroomBeforeStorageBytes": 112
+    },
+    "enabledCommand": "env -u DEBUG make clean && env -u DEBUG make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 -j2",
     "enabledCompileResult": "all XFSM and wrapper C sources compiled successfully for 32-bit ARM",
-    "enabledResult": "link failed: FLASH overflowed by 215016 bytes",
-    "attributedOverflowDeltaBytes": 38440
+    "enabledResult": "ELF linked; target size check failed because code overlapped reserved Storage by 22176 bytes",
+    "enabledSize": {
+      "text": 337192,
+      "data": 376,
+      "bss": 44500,
+      "decimal": 382068,
+      "codeBytesBeforeStorage": 337184,
+      "storageOverlapBytes": 22176
+    },
+    "delta": {
+      "text": 22288,
+      "data": 0,
+      "bss": -20,
+      "decimal": 22268,
+      "flashBytes": 22288,
+      "flashPercentOfBaseline": 7.069272,
+      "decimalPercentOfBaseline": 6.188994
+    }
+  },
+  "upstreamContinuousIntegration": {
+    "workflow": "Firmware build",
+    "runId": 36115500476,
+    "runUrl": "https://github.com/espruino/Espruino/actions/runs/36115500476",
+    "job": "build_dfu (MDBT42Q)",
+    "jobId": 108008524514,
+    "conclusion": "success",
+    "headSha": "84c190da7feb10a976d7ca422be39adaa10fb3c2"
   },
   "boardIntegration": {
     "stockBoardFileModified": false,
-    "reason": "XFSM is not selected by the stock MDBT42Q board while the baseline and enabled images do not link; target packaging remains an explicit open decision."
+    "reason": "XFSM is not selected by the stock MDBT42Q board because it exceeds the code budget before reserved Storage; target packaging remains an explicit open decision."
   },
   "targetStatus": "Not yet verified",
   "result": "fail",
-  "scope": "Compile and link evidence only. No firmware artifact, on-device measurement, or physical conformance is claimed."
+  "scope": "The stock baseline build and XFSM-enabled link are verified. The enabled target size gate failed, so no XFSM DFU artifact, on-device measurement, or physical conformance is claimed."
 }
