@@ -11,8 +11,9 @@ direction relates to the Stage 1 and FSMPlus projects.
 
 ## Status
 
-The Profile 1 specification is an implementation candidate and implementation
-has not started. It defines the
+The Profile 1 specification is an implementation candidate. Milestone M0,
+repository and evidence preparation, is in progress; implementation code has
+not started. The specification defines the
 supported feature scope, XState compatibility direction, native indexed arena,
 actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
@@ -23,6 +24,23 @@ by representative physical targets. That slice must measure the provisional
 native layout, hierarchy-depth and microstep limits, stack reserve, flash, RAM,
 and timing before the physical format is frozen or the full implementation
 proceeds.
+
+Current work, revisions, and next tasks are recorded in the
+[implementation status](docs/implementation-status.md). The
+[implementation plan](docs/implementation-plan.md) defines the milestone and
+review gates, and the [build guide](docs/building.md) records reproducible
+commands and development locations.
+
+## Code Development
+
+Canonical implementation code is developed in the
+[`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
+The current local clone is `/home/simon/Espruino-XFSM-Profile1`, and the planned
+library location is `libs/xfsm/`.
+
+This umbrella repository owns the specification, planning, conformance cases,
+differential tooling, results, and reports. It does not keep a second copy of
+the C engine or Espruino wrapper.
 
 ## Relationship to Existing Work
 
@@ -46,10 +64,18 @@ relevant behavior and constraints.
   implementation candidate
 - [docs/native-format-v1.md](docs/native-format-v1.md) - provisional native
   arena and actor layout
+- [docs/implementation-plan.md](docs/implementation-plan.md) - implementation
+  milestones and evidence gates
+- [docs/implementation-status.md](docs/implementation-status.md) - current
+  revisions, progress, and next work
+- [docs/building.md](docs/building.md) - two-repository build and target guide
 - [docs/compatibility/](docs/compatibility/) - raw Stately v4/v5 exports and
   their assessments
-- `src/` - native engine and Espruino wrapper implementation area
-- `tests/` - conformance, differential, native-format, and resource tests
+- [docs/reports/](docs/reports/) - reviewed measurements and qualification
+  reports
+- [src/](src/) - implementation ownership and source-location note
+- [tests/](tests/) - conformance definitions, differential tooling, results,
+  and evidence indexes
 
 ## Licensing And Contributions
 

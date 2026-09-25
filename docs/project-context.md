@@ -29,7 +29,9 @@ only after review against the receiving project's contract.
 
 Xstate-fsm-c Profile 1 is the active specification-led development effort. Its
 design is an implementation candidate, no unresolved Profile 1 design questions
-are recorded, and implementation has not started.
+are recorded, and implementation code has not started. Current revisions,
+progress, and next tasks are recorded in its
+[implementation status](../projects/Xstate-fsm-c/docs/implementation-status.md).
 
 The next implementation step is the specified vertical slice on Linux
 Espruino. It must exercise construction and execution through the native C
@@ -37,6 +39,11 @@ engine and Espruino wrapper, then produce the required resource, layout, stack,
 limit, and timing evidence before the native physical format is frozen or the
 full implementation proceeds. Espruino Pico, MDBT42Q, ESP32-C3, and an Xtensa
 ESP32 provide the initial physical qualification matrix after the Linux host.
+
+Canonical implementation code is developed under `libs/xfsm/` in the
+[`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
+The umbrella repository owns the specification, conformance definitions, and
+reviewed evidence rather than a duplicate implementation tree.
 
 The Xstate-fsm-c project name, public module name, and implementation identifiers
 are distinct:

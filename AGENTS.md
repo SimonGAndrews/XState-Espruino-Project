@@ -13,7 +13,15 @@ that project, read these documents in order:
 2. `projects/Xstate-fsm-c/docs/specification.md`
 3. `projects/Xstate-fsm-c/docs/native-format-v1.md` when physical layout is
    relevant
-4. `projects/Xstate-fsm-c/CONTRIBUTING.md` before adding implementation source
+4. `projects/Xstate-fsm-c/docs/implementation-status.md` and
+   `projects/Xstate-fsm-c/docs/building.md` before implementation work
+5. `projects/Xstate-fsm-c/CONTRIBUTING.md` before adding implementation source
+
+Canonical Xstate-fsm-c implementation code is developed under `libs/xfsm/` in
+the `feature/xfsm-profile1` branch of `SimonGAndrews/Espruino`. The current
+local implementation clone is `/home/simon/Espruino-XFSM-Profile1`. Do not add
+a duplicate C engine or Espruino wrapper under
+`projects/Xstate-fsm-c/src/`; that directory is a source-location marker.
 
 The Profile 1 specification is authoritative for Xstate-fsm-c behaviour. Older
 ADRs, FSMPlus behaviour, shared examples, archived sources, and XState reference

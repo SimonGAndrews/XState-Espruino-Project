@@ -1,11 +1,18 @@
 # Source
 
-The Xstate-fsm-c native engine and Espruino wrapper will live in this directory.
-Profile 1 requirements are defined by `../docs/specification.md`, with the
-provisional physical representation in `../docs/native-format-v1.md`.
+This directory is an ownership and navigation marker. It does not contain a
+second copy of the Xstate-fsm-c implementation.
 
-Implementation begins with the specified vertical slice. The portable C99
-engine must remain separate from Espruino-specific wrapper operations, and the
-library must use Espruino's existing `libs` and generated-wrapper build
-mechanisms. The wrapper registers the public `XFSM` module, selected by the
-`XFSM` build-library identifier and corresponding `USE_XFSM` build variable.
+The canonical native engine, Espruino wrapper, and build integration are
+developed under `libs/xfsm/` in the
+[`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
+The current local implementation clone is
+`/home/simon/Espruino-XFSM-Profile1`.
+
+This umbrella repository retains the
+[Profile 1 specification](../docs/specification.md),
+[native format](../docs/native-format-v1.md),
+[implementation plan](../docs/implementation-plan.md), conformance definitions,
+and reviewed evidence. Do not copy implementation source back into this
+directory; link compatible revisions of the two repositories in result
+records instead.

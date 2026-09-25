@@ -73,6 +73,9 @@ its own compatibility authority and decides which shared cases it adopts.
 - [FSMPlus status and backlog](docs/governance/fsmPlus-status-01.md)
 - [Xstate-fsm-c Profile 1 specification](projects/Xstate-fsm-c/docs/specification.md)
 - [Xstate-fsm-c provisional native format](projects/Xstate-fsm-c/docs/native-format-v1.md)
+- [Xstate-fsm-c implementation status](projects/Xstate-fsm-c/docs/implementation-status.md)
+- [Xstate-fsm-c implementation plan](projects/Xstate-fsm-c/docs/implementation-plan.md)
+- [Xstate-fsm-c build guide](projects/Xstate-fsm-c/docs/building.md)
 - [Espruino CLI test workflow](tools/README_espruino.md)
 - [Architectural decisions](docs/decisions/)
 - [References](docs/references/links.md)
@@ -81,8 +84,9 @@ its own compatibility authority and decides which shared cases it adopts.
 
 FSMPlus is the current working JavaScript hierarchical engine. Xstate-fsm-c is
 the active development focus: its Profile 1 specification is an implementation
-candidate, its implementation has not started, and its next step is the
-specified Linux Espruino vertical slice. Stage 1 remains the flat embedded
+candidate, milestone M0 preparation is in progress, and its implementation
+code has not started. Its next gate is a reproducible baseline Linux Espruino
+build before the specified vertical slice. Stage 1 remains the flat embedded
 baseline.
 
 The [current project context](docs/project-context.md) identifies the authority

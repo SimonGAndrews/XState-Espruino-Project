@@ -45,3 +45,16 @@ the XState source archive, the Stage 1 Git submodule, sibling projects, or the
 Espruino host project. Consult the repository-level
 [LICENSING.md](../../LICENSING.md) and the licence within each external project
 or archive.
+
+Specification, planning, conformance definitions, differential tooling, and
+reviewed evidence are contributed to this umbrella repository. Canonical C
+engine, wrapper, Espruino build integration, and build-local test changes are
+contributed to the
+[`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1)
+under `libs/xfsm/` and the necessary host build files.
+
+Implementation contributions must also follow Espruino's repository
+conventions and MPL-2.0 requirements. The umbrella project's licence and
+notices do not replace the notices required in the Espruino repository. Link
+the exact revisions of both repositories when recording conformance or
+resource evidence.
