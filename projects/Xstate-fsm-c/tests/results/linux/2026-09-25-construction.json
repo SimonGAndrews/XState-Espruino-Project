@@ -1,0 +1,79 @@
+{
+  "kind": "xfsm-construction-linux-test",
+  "date": "2026-09-25",
+  "caseIds": [
+    "XFC-CF-CONFIG-001",
+    "XFC-CF-CONFIG-002",
+    "XFC-CF-CONTEXT-002",
+    "XFC-CF-DIAG-001",
+    "XFC-CF-HOST-001"
+  ],
+  "xstateEspruinoProjectRevision": "4a68106",
+  "specificationVersion": "0.48",
+  "espruinoRevision": "80d424772d08bbeb713288b1b1cad5b262cdfe9a",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Linux",
+  "board": "LINUX",
+  "host": {
+    "architecture": "x86_64",
+    "pointerBits": 64,
+    "byteOrder": "little-endian"
+  },
+  "toolchain": {
+    "cc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "language": "C99"
+  },
+  "constructionSuite": {
+    "buildCommand": "make clean && make USE_XFSM=1",
+    "tests": [
+      {
+        "command": "bin/espruino --test libs/xfsm/tests/test_shell.js",
+        "observed": "pass; zero retained memory records after GC"
+      },
+      {
+        "command": "bin/espruino --test libs/xfsm/tests/test_compile.js",
+        "observed": "pass; zero retained memory records after GC"
+      },
+      {
+        "command": "bin/espruino --test libs/xfsm/tests/test_diagnostics.js",
+        "observed": "pass; zero retained memory records after GC"
+      }
+    ],
+    "result": "pass"
+  },
+  "representativeArena": {
+    "bytes": 543,
+    "states": 5,
+    "symbols": 11,
+    "handlers": 1,
+    "transitions": 1,
+    "guards": 1,
+    "actions": 3,
+    "assignments": 1,
+    "assignmentEntries": 2,
+    "stringBytes": 79,
+    "retainedValues": 6
+  },
+  "diagnosticCases": [
+    "E_INITIAL_REQUIRED",
+    "E_INITIAL_UNKNOWN",
+    "E_TARGET_UNKNOWN",
+    "E_ACTION_UNRESOLVED",
+    "E_CONFIG_TYPE"
+  ],
+  "regressions": {
+    "nativeCommand": "make -C libs/xfsm/tests/native clean test",
+    "nativeObserved": "PASS 66 XFSM native checks; no sanitizer finding",
+    "disabledBuildCommand": "make clean && make",
+    "disabledBuildResult": "pass"
+  },
+  "implementationTests": [
+    "libs/xfsm/tests/test_shell.js",
+    "libs/xfsm/tests/test_compile.js",
+    "libs/xfsm/tests/test_diagnostics.js"
+  ],
+  "report": "docs/reports/2026-09-25-linux-construction.md",
+  "result": "pass",
+  "scope": "Transactional M3 construction, resolved native records, retained JavaScript values, diagnostic categories and paths, source independence, and tested cleanup only. Actor execution and runtime semantic conformance are not implemented or claimed."
+}

@@ -4,7 +4,7 @@
 
 - Matrix status: Scaffolded
 - Requirement inventory: Not yet complete
-- Implemented cases: None
+- Implemented cases: M1-M3 foundation and construction cases listed below
 - Normative authority: [Profile 1 specification](../docs/specification.md)
 
 The specification requires every normative `MUST` and `MUST NOT` to link to an
@@ -61,6 +61,11 @@ requirement inventory before Profile 1 completion can be claimed.
 | `XFC-CF-API-001` | Public Interfaces: `require("XFSM")` exposes `createMachine`, `createActor`, and `assign` | Profile 1 normative | [JavaScript shell test](results/linux/2026-09-25-library-shell-build.json) | Linux, physical targets | Linux: Pass; physical: Planned |
 | `XFC-CF-FORMAT-001` | Native Format: normative structure sizes and table offset | Native implementation | [Compile-time assertions and decoded golden arena](results/linux/2026-09-25-native-format.json) | All builds | Linux: Pass; physical: Planned |
 | `XFC-CF-FORMAT-002` | Native Format: malformed arena data rejected before unsafe access | Native implementation | [66-check corruption suite under sanitizers](results/linux/2026-09-25-native-format.json) | Linux | Pass |
+| `XFC-CF-CONFIG-001` | Machine Model and Construction: the M3 atomic/compound hierarchical subset compiles to resolved Version 1 records | Profile 1 normative slice | [Decoded construction fixture](results/linux/2026-09-25-construction.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-CONFIG-002` | Construction: structural records are independent of later source-configuration mutation | Profile 1 normative | [Source-isolation check](results/linux/2026-09-25-construction.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-CONTEXT-002` | Construction: literal context and property-map `assign` retain the required JavaScript values and resolved indexes | Profile 1 normative slice | [Decoded retained values and assignment records](results/linux/2026-09-25-construction.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-DIAG-001` | Validation and Error Behavior: construction failures expose a stable category and object-graph path | Profile 1 normative slice | [Construction diagnostic cases](results/linux/2026-09-25-construction.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-HOST-001` | Ownership: compiled-machine values remain GC-visible and temporary construction values are released on success and tested failures | Profile 1 normative slice | [Espruino memory cleanup checks](results/linux/2026-09-25-construction.json) | Linux, physical targets | Linux: Pass; physical: Planned |
 | `XFC-CF-TRANS-001` | Construction and Runtime: hierarchical initial descent and indexed transition execution | XState differential | Profile 1 trace plus `xstate@5.33.2` reference | Linux, physical targets | Planned |
 | `XFC-CF-ACTION-001` | Runtime Semantics: exit, transition, and entry actions execute in specified order | XState differential | Ordered action trace | Linux, physical targets | Planned |
 | `XFC-CF-CONTEXT-001` | Runtime Semantics: `assign` executes at its declared position with ordered visibility | Intentional difference/compatibility | Profile 1, v5, and applicable v4 reference traces | Linux, physical targets | Planned |

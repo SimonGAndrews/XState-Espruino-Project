@@ -26,3 +26,6 @@ branch. The conformance matrix links those tests to umbrella-owned cases and
 results; implementation source and build-local tests are not duplicated here.
 The M2 native-format suite is recorded in the
 [Linux result](results/linux/2026-09-25-native-format.json).
+The M3 machine-construction, arena-decoding, diagnostic-path, source-isolation,
+and cleanup checks are recorded in the
+[Linux construction result](results/linux/2026-09-25-construction.json).

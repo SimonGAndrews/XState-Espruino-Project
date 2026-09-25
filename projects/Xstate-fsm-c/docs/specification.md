@@ -4,8 +4,8 @@
 
 - Status: Profile 1 implementation candidate
 - Version: 0.48
-- Implementation status: M2 native-format foundation; construction and runtime
-  behaviour not started
+- Implementation status: M3 construction vertical slice complete; actor
+  execution and runtime behaviour not started
 
 This document is the normative implementation candidate for Xstate-fsm-c
 Profile 1. Only requirements stated explicitly in this document are accepted.

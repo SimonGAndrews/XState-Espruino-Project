@@ -2,11 +2,11 @@
 
 ## Status
 
-- Build-document status: Linux firmware and native-format sanitizer builds
-  verified
+- Build-document status: Linux construction, firmware, and native-format
+  sanitizer builds verified
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `d4860d07a93a725176f6216321b3d47f2d0a14cf`
+- Current implementation revision: `80d424772d08bbeb713288b1b1cad5b262cdfe9a`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -98,11 +98,29 @@ make clean
 make USE_XFSM=1
 ```
 
+Run `make clean` when switching between enabled and disabled configurations;
+the generated wrapper source set is configuration-dependent and an incremental
+switch does not reliably regenerate it.
+
 Verify the enabled module surface with:
 
 ```bash
 bin/espruino --test libs/xfsm/tests/test_shell.js
 ```
+
+Verify the M3 construction slice with:
+
+```bash
+bin/espruino --test libs/xfsm/tests/test_compile.js
+bin/espruino --test libs/xfsm/tests/test_diagnostics.js
+```
+
+At revision `80d424772`, all three JavaScript tests passed and each returned
+to zero retained memory records after garbage collection. The construction
+result is recorded in
+[the Linux construction result](../tests/results/linux/2026-09-25-construction.json)
+and interpreted in the
+[construction report](reports/2026-09-25-linux-construction.md).
 
 The shell-size comparison and its limitations are explained in the
 [Linux library-shell report](reports/2026-09-25-linux-library-shell.md).
@@ -118,9 +136,9 @@ cd "$ESPRUINO_XFSM_ROOT"
 make -C libs/xfsm/tests/native clean test
 ```
 
-At revision `d4860d07a`, GCC 13.3.0 compiled the C99 suite with strict warnings
-promoted to errors and all 66 checks passed without a sanitizer finding. The
-result is recorded in the
+At revisions `d4860d07a` and `80d424772`, GCC 13.3.0 compiled the C99 suite
+with strict warnings promoted to errors and all 66 checks passed without a
+sanitizer finding. The result is recorded in the
 [native-format result](../tests/results/linux/2026-09-25-native-format.json)
 and interpreted in the
 [native-format report](reports/2026-09-25-linux-native-format.md).
