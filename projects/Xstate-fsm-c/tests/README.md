@@ -35,3 +35,6 @@ snapshot behaviour, and cleanup checks are recorded in the
 The first M5 Linux measurements and MDBT42Q build attempt are recorded in the
 [Linux resource result](results/linux/2026-09-25-m5-resource-evidence.json) and
 [MDBT42Q build result](results/mdbt42q/2026-09-25-m5-build-attempt.json).
+Original ESP32 IDF5 build and device measurements are recorded in the
+[ESP32 build result](results/esp32-xtensa/2026-09-25-m5-idf5-build.json) and
+[physical result](results/esp32-xtensa/2026-09-25-m5-physical-evidence.json).

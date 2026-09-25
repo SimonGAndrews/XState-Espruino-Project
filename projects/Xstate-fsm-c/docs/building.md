@@ -3,10 +3,11 @@
 ## Status
 
 - Build-document status: Linux runtime and M5 measurements verified; original
-  ESP32 IDF5 build verified; MDBT42Q enabled size check blocked
+  ESP32 IDF5 build and implemented physical slice verified; MDBT42Q enabled
+  size check blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `8794dc1d7`
+- Current implementation revision: `4d4ef00b9`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -188,7 +189,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | --- | --- | --- |
 | Espruino Pico | STM32F401 | Not established |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
-| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; XFSM image leaves 528,128 bytes in the app partition |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; implemented M4/M5 physical slice passed |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Secondary architecture qualification; stock capacity established |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
@@ -232,6 +233,51 @@ bytes, a 27,904-byte or 1.87% increase, and passed the partition-size check
 with 528,128 bytes free. See the [ESP32 IDF5 build
 report](reports/2026-09-25-esp32-idf5-build.md) and [result
 record](../tests/results/esp32-xtensa/2026-09-25-m5-idf5-build.json).
+
+### Original ESP32 device workflow
+
+Use the persistent USB-UART link and confirm that it resolves to the expected
+device before opening it:
+
+```bash
+export ESP32_PORT=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
+readlink -f "$ESP32_PORT"
+fuser "$ESP32_PORT" || true
+```
+
+Provision, build, and flash from the same shell. Use Espruino's board-aware
+Make target so the bootloader, partition table, and application are written at
+the matching offsets:
+
+```bash
+cd "$ESPRUINO_XFSM_ROOT"
+source scripts/provision.sh ESP32_IDF5
+make BOARD=ESP32_IDF5 clean
+make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
+make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 flash PORT="$ESP32_PORT"
+```
+
+Do not use the EspruinoTools `-f` option as the normal ESP32 flashing path.
+After flashing, query the running `process.env.BOARD`, `process.version`, and
+`process.env.GIT_COMMIT`; build output alone does not prove which image is on
+the attached board.
+
+Routine automated tests should use paced direct serial transport. On the
+current development machine the shared runner is invoked from
+`/home/simon/MaBecker/ESP32_SGATest`:
+
+```bash
+python3 tools/repl/run_test.py \
+  "$ESPRUINO_XFSM_ROOT/libs/xfsm/tests/measure_m5_gc_relocation.js" \
+  --port "$ESP32_PORT" --baud 115200 --timeout 30 --show-raw
+```
+
+Device tests must emit a `TEST=` marker, assertion-level `PASS` or `FAIL`
+lines, and exactly one final `DONE=` marker. Preserve the raw transcript for a
+new failure, rerun unchanged from the same reset level, and distinguish a
+JavaScript `reset()` from a true `ESP32.reboot()` when the tested subsystem
+requires driver reinitialization. The measured commands and results are in the
+[physical evidence record](../tests/results/esp32-xtensa/2026-09-25-m5-physical-evidence.json).
 
 ## Development CI
 

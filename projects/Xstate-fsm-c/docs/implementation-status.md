@@ -1,13 +1,12 @@
 # Xstate-fsm-c Implementation Status
 
 - Last reviewed: 2026-09-25
-- Overall status: M5 Linux and original ESP32 IDF5 build evidence recorded;
+- Overall status: M5 Linux and original ESP32 IDF5 physical evidence recorded;
   M5 exit gate remains open
 - Current milestone: M0 evidence completion and M5 resource evaluation
-- Implementation code status: M4 runtime plus build-only M5 instrumentation
-  and enforced coordinator stack reserve
-- Next gate: original ESP32 IDF5 physical runtime evidence and completion-chain
-  measurement
+- Implementation code status: M4 runtime plus build-only M5 instrumentation,
+  direct on-device measurement harnesses, and enforced coordinator stack reserve
+- Next gate: constrained-target evidence and completion-chain measurement
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md).
@@ -24,12 +23,12 @@ criteria are in the [Implementation Plan](implementation-plan.md).
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `8794dc1d7` |
+| Current implementation HEAD | `4d4ef00b9` |
 | Canonical source path | `libs/xfsm/` |
 
-The branch is two local commits ahead of its tracked remote: the M5 evidence
-instrumentation and fork-development CI. The M4 revision was confirmed pushed
-before M5 work began.
+The branch is three local commits ahead of its tracked remote: the M5 evidence
+instrumentation, fork-development CI, and ESP32 measurement harness. The M4
+revision was confirmed pushed before M5 work began.
 
 ## Completed Foundation Work
 
@@ -94,6 +93,13 @@ before M5 work began.
 - Fork-local XFSM CI covers disabled/enabled Linux builds, six JavaScript test
   suites, 66 native sanitizer checks, and the enabled original ESP32 IDF5
   build without changing any stock board definition.
+- A physical ESP32-D0WD-V3 running the `ESP32_IDF5` build passed all six M4
+  JavaScript suites, the M5 resource and timing harness, and a dedicated GC and
+  `E.defrag()` relocation check.
+- Physical depth-32 construction passed from a clean runtime with a 4,393-byte
+  arena, a 2,062-block construction peak, and 224 bytes of maximum measured
+  coordinator stack; a later depth-32 construction after smaller measurements
+  exposed the documented contiguous-allocation and application-headroom limit.
 
 ## Current Work
 
@@ -101,21 +107,20 @@ The Linux part of M5 is measured, but the M5 exit gate is not satisfied. The
 stock MDBT42Q release/DFU image passes, while the XFSM-enabled ELF links but
 overlaps reserved Storage by 22,176 bytes and fails the target size check. The
 original ESP32 IDF5 image now builds with XFSM and has ample flash headroom,
-but has not yet run on physical hardware. The M4 slice cannot yet supply
-completion-chain timing. M0's full normative requirement inventory also
-remains documentation work.
+and its implemented M4 and M5 slices now run on physical hardware. The M4
+slice cannot yet supply completion-chain timing. M0's full normative
+requirement inventory also remains documentation work.
 
 Immediate tasks:
 
 1. establish the product `Board.py` selection for original ESP32 IDF5 without
    changing the stock board definition;
-2. run the M5 harness or an equivalent serial harness on original ESP32 IDF5;
-3. decide whether a reduced MDBT42Q product configuration is worthwhile;
-4. implement the minimum final-state/`onDone` slice needed to measure
+2. decide whether a reduced MDBT42Q product configuration is worthwhile;
+3. implement the minimum final-state/`onDone` slice needed to measure
    completion chains approaching 256 microsteps;
-5. close the native-layout, depth, microstep, stack, snapshot, and diagnostic
+4. close the native-layout, depth, microstep, stack, snapshot, and diagnostic
    review decisions; and
-6. expand the M0 normative requirement inventory.
+5. expand the M0 normative requirement inventory.
 
 ## Open Issues And Blockers
 
@@ -131,12 +136,12 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Decision | Required evidence | Review milestone |
 | --- | --- | --- |
 | Freeze or revise native record layout | Linux evidence supports provisional retention; constrained target still required | M5 open |
-| Retain or revise hierarchy depth 32 | Linux retains provisionally; constrained construction RAM still required | M5 open |
+| Retain or revise hierarchy depth 32 | ESP32 passes from a clean runtime but uses 2,062 of 2,800 blocks and is allocation-order sensitive; constrained evidence remains required | M5 open |
 | Retain or revise microstep budget 256 | Completion-chain time and watchdog impact | M5 |
-| Select per-target stack reserve | Linux selected 512 bytes plus host safety; physical targets pending | M5/M7 |
-| Retain or revise snapshot materialization | Lazy snapshots retained provisionally; target RAM pending | M5 open |
-| Retain or revise diagnostic detail | Current detail retained provisionally; target flash/RAM pending | M5 open |
-| Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected and build verified; physical evidence pending | M5/M7 |
+| Select per-target stack reserve | Linux and original ESP32 support 512 bytes plus host safety; remaining physical families pending | M5/M7 |
+| Retain or revise snapshot materialization | Lazy snapshots retained provisionally; ESP32 measured and constrained-target RAM pending | M5 open |
+| Retain or revise diagnostic detail | Current detail retained provisionally; ESP32 measured and constrained-target RAM pending | M5 open |
+| Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected, build verified, and physically exercised for the implemented M4/M5 slice | M5/M7 |
 
 ## Target Status
 
@@ -145,7 +150,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Linux Espruino | Build verified | [M5 first-evidence report](reports/2026-09-25-m5-first-evidence.md) |
 | Espruino Pico | Not yet verified | None |
 | MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
-| Original ESP32 IDF5 | Build verified | [Local IDF5 build report](reports/2026-09-25-esp32-idf5-build.md) |
+| Original ESP32 IDF5 | Build verified; M4/M5 physical slice passed | [M5 physical evidence](../tests/results/esp32-xtensa/2026-09-25-m5-physical-evidence.json) |
 | ESP32-C3 IDF5 | Not yet verified | Stock-build capacity established from upstream Actions; XFSM build pending |
 | ESP32-S3 IDF5 | Not yet verified | Later expansion target; not required for Version 1 qualification |
 
@@ -156,6 +161,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-25 | Physical original ESP32 IDF5 passed the six M4 JavaScript suites, M5 runtime measurements, depth-32 construction from a clean runtime, stack instrumentation, and GC relocation; allocation-order sensitivity was recorded |
 | 2026-09-25 | Added fork-development XFSM CI in implementation revision `8794dc1d7` and corrected workflow branch matching from `*` to `**`; local Linux-equivalent build and test commands passed |
 | 2026-09-25 | Original ESP32 IDF5 disabled and XFSM-enabled builds passed with Xtensa GCC 14.2.0; XFSM added 27,904 app-image bytes (1.87%) and left 528,128 bytes free |
 | 2026-09-25 | Selected original ESP32 IDF5 as the primary high-resource and Xtensa target; ESP32-C3 qualification also standardized on IDF5 and ESP32-S3 IDF5 deferred |

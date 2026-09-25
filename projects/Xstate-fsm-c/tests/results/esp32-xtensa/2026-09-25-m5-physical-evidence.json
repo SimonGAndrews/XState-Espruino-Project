@@ -1,0 +1,126 @@
+{
+  "kind": "xfsm-m5-esp32-idf5-physical-evidence",
+  "date": "2026-09-25",
+  "caseIds": [
+    "XFC-CF-LIMIT-001",
+    "XFC-CF-LIMIT-003",
+    "XFC-CF-HOST-003"
+  ],
+  "xstateEspruinoProjectRevision": "c609775f3e55e51a86e901dedddc8310ec8f1351",
+  "specificationVersion": "0.49",
+  "firmwareRevision": "8794dc1d789f87cb57fcb6b460ef1d89c3f5bc06",
+  "measurementHarnessRevision": "4d4ef00b9",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": {
+    "chip": "ESP32-D0WD-V3 revision 3.1",
+    "cpu": "dual-core Xtensa LX6 at 240 MHz",
+    "crystalMHz": 40,
+    "flashBytes": 4194304,
+    "serialPath": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+    "serialPathResolvedTo": "/dev/ttyUSB0",
+    "runtimeVersion": "2v29.432",
+    "runtimeGitCommit": "8794dc1d7"
+  },
+  "build": {
+    "provisionCommand": "source scripts/provision.sh ESP32_IDF5",
+    "measurementCommand": "make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 XFC_MEASURE=1 -j2",
+    "measurementAppImageBytes": 1520640,
+    "measurementAppPartitionBytes": 2048000,
+    "measurementAppPartitionFreeBytes": 527360,
+    "normalRestoreCommand": "make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2 && make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 flash PORT=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+    "normalInstrumentationApiAbsent": true
+  },
+  "runner": {
+    "repository": "/home/simon/MaBecker/ESP32_SGATest",
+    "revision": "1b740f5e3cb2a0ace6c57bd729a24c9c71b875d3",
+    "transport": "direct paced serial",
+    "resourceCommand": "python3 tools/repl/run_test.py /home/simon/Espruino-XFSM-Profile1/libs/xfsm/tests/measure_m5.js --port /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 --baud 115200 --timeout 180 --show-raw",
+    "relocationCommand": "python3 tools/repl/run_test.py /home/simon/Espruino-XFSM-Profile1/libs/xfsm/tests/measure_m5_gc_relocation.js --port /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 --baud 115200 --timeout 30 --show-raw"
+  },
+  "memory": {
+    "variableBlockBytes": 14,
+    "runtimeVariableBlocks": 2800,
+    "representative": {
+      "arenaBytes": 400,
+      "retainedValues": 2,
+      "machinePersistentBlocks": 40,
+      "machinePersistentBytes": 560,
+      "constructionPeakBlocks": 129,
+      "constructionPeakBytes": 1806,
+      "actorBlocks": 11,
+      "actorBytes": 154,
+      "firstSnapshotBlocks": 19,
+      "firstSnapshotBytes": 266,
+      "firstSubscriptionBlocks": 25,
+      "firstSubscriptionBytes": 350
+    },
+    "depth32": {
+      "measurementOrder": "first hierarchy measurement after reset",
+      "arenaBytes": 4393,
+      "constructionPeakBlocks": 2062,
+      "constructionPeakBytes": 28868,
+      "constructionPeakPercentOfRuntimeBlocks": 73.6429,
+      "firstSnapshotBlocks": 89,
+      "firstSnapshotBytes": 1246
+    },
+    "allocationOrderObservation": "Depth 32 passed when measured first. Repeating it after depths 1, 8, and 16 failed with E_NO_MEMORY despite garbage collection, demonstrating allocation-history and contiguous-arena sensitivity on the 2800-block runtime."
+  },
+  "dispatchMicroseconds": {
+    "iterationsPerTrial": 500,
+    "trialCount": 5,
+    "statistic": "median",
+    "localHit": 1603.454,
+    "parentFallback": 1612.518,
+    "guardedIncludingJavaScriptCallback": 2177.192,
+    "unhandled": 1565.414,
+    "parentFallbackByDepth": {
+      "1": 1583.072,
+      "8": 1599.25,
+      "16": 1618.6,
+      "32": 1657.96
+    }
+  },
+  "coordinatorStackBytes": {
+    "start": 128,
+    "send": 224,
+    "maximum": 224,
+    "configuredReserve": 512,
+    "espruinoSafetyAllowance": 512
+  },
+  "diagnostics": {
+    "example": "Error: XFC E_TARGET_UNKNOWN @ config.states.Parent.states.Child.on.GO.target: \"Missing\"",
+    "characters": 87,
+    "peakBlocks": 113,
+    "peakBytes": 1582,
+    "observableEndBlocks": 32,
+    "observableEndBytes": 448
+  },
+  "gcRelocation": {
+    "garbageCollectionCompleted": true,
+    "defragmentationCompleted": true,
+    "dispatchActionAndSnapshotValidAfterDefragmentation": true,
+    "result": "pass"
+  },
+  "m4PhysicalRegression": {
+    "method": "Each existing Espruino JavaScript test was uploaded and its global result queried in a separate serial invocation.",
+    "tests": {
+      "test_shell.js": "pass",
+      "test_compile.js": "pass",
+      "test_diagnostics.js": "pass",
+      "test_runtime.js": "pass",
+      "test_runtime_errors.js": "pass",
+      "test_subscriptions.js": "pass"
+    }
+  },
+  "postTestState": {
+    "normalFirmwareRestored": true,
+    "flashHashesVerified": true,
+    "postFlashGcRelocationSmoke": "pass"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass with recorded depth-32 operational constraint",
+  "scope": "Physical M4 regression and M5 resource evidence for the implemented slice. This is not full Profile 1 target conformance, and no near-256-microstep completion-chain result is claimed."
+}

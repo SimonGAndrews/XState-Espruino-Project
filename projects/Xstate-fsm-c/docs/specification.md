@@ -4,7 +4,7 @@
 
 - Status: Profile 1 implementation candidate
 - Version: 0.49
-- Implementation status: M5 Linux and original ESP32 IDF5 build evidence
+- Implementation status: M5 Linux and original ESP32 IDF5 physical evidence
   recorded; constrained-target runtime and completion-chain evidence remain
   required
 
