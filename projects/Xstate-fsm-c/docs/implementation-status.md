@@ -25,6 +25,7 @@ criteria are in the [Implementation Plan](implementation-plan.md).
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
 | Current implementation HEAD | `4d4ef00b9` |
 | Canonical source path | `libs/xfsm/` |
+| Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
 The branch is three local commits ahead of its tracked remote: the M5 evidence
 instrumentation, fork-development CI, and ESP32 measurement harness. The M4
@@ -100,6 +101,9 @@ revision was confirmed pushed before M5 work began.
   arena, a 2,062-block construction peak, and 224 bytes of maximum measured
   coordinator stack; a later depth-32 construction after smaller measurements
   exposed the documented contiguous-allocation and application-headroom limit.
+- The original ESP32 USB-UART, Make flashing, direct-runner, reset, evidence,
+  and recovery procedure is retained in the project-local
+  [device-testing guide](esp32-device-testing.md).
 
 ## Current Work
 
@@ -161,6 +165,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-25 | Added the project-local original ESP32 device-testing procedure derived from the successful physical M5 workflow |
 | 2026-09-25 | Physical original ESP32 IDF5 passed the six M4 JavaScript suites, M5 runtime measurements, depth-32 construction from a clean runtime, stack instrumentation, and GC relocation; allocation-order sensitivity was recorded |
 | 2026-09-25 | Added fork-development XFSM CI in implementation revision `8794dc1d7` and corrected workflow branch matching from `*` to `**`; local Linux-equivalent build and test commands passed |
 | 2026-09-25 | Original ESP32 IDF5 disabled and XFSM-enabled builds passed with Xtensa GCC 14.2.0; XFSM added 27,904 app-image bytes (1.87%) and left 528,128 bytes free |

@@ -74,6 +74,8 @@ relevant behavior and constraints.
 - [docs/implementation-status.md](docs/implementation-status.md) - current
   revisions, progress, and next work
 - [docs/building.md](docs/building.md) - two-repository build and target guide
+- [docs/esp32-device-testing.md](docs/esp32-device-testing.md) - original ESP32
+  USB-UART flashing, execution, and evidence procedure
 - [docs/compatibility/](docs/compatibility/) - raw Stately v4/v5 exports and
   their assessments
 - [docs/reports/](docs/reports/) - reviewed measurements and qualification

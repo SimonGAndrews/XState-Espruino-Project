@@ -76,6 +76,7 @@ its own compatibility authority and decides which shared cases it adopts.
 - [Xstate-fsm-c implementation status](projects/Xstate-fsm-c/docs/implementation-status.md)
 - [Xstate-fsm-c implementation plan](projects/Xstate-fsm-c/docs/implementation-plan.md)
 - [Xstate-fsm-c build guide](projects/Xstate-fsm-c/docs/building.md)
+- [Xstate-fsm-c ESP32 device testing](projects/Xstate-fsm-c/docs/esp32-device-testing.md)
 - [Espruino CLI test workflow](tools/README_espruino.md)
 - [Architectural decisions](docs/decisions/)
 - [References](docs/references/links.md)
@@ -85,9 +86,10 @@ its own compatibility authority and decides which shared cases it adopts.
 FSMPlus is the current working JavaScript hierarchical engine. Xstate-fsm-c is
 the active development focus: its Profile 1 specification is an implementation
 candidate, its M3 construction slice and M4 actor runtime are verified on
-Linux, its native-format regression remains sanitizer-clean, and initial M5
-Linux resource evidence is recorded. M5 remains open for MDBT42Q runtime and
-completion-chain evidence. Stage 1 remains the flat embedded baseline.
+Linux, its native-format regression remains sanitizer-clean, and the
+implemented M4/M5 slice has run on a physical original ESP32 IDF5 target. M5
+remains open for constrained-target runtime and completion-chain evidence.
+Stage 1 remains the flat embedded baseline.
 
 The [current project context](docs/project-context.md) identifies the authority
 and compatibility references for each direction.

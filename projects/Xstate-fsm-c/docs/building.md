@@ -236,6 +236,11 @@ record](../tests/results/esp32-xtensa/2026-09-25-m5-idf5-build.json).
 
 ### Original ESP32 device workflow
 
+The complete USB-UART, provenance, flashing, reset, direct-runner, evidence,
+and recovery procedure is maintained in the
+[Original ESP32 Device Testing guide](esp32-device-testing.md). The commands
+below are the build-guide summary.
+
 Use the persistent USB-UART link and confirm that it resolves to the expected
 device before opening it:
 

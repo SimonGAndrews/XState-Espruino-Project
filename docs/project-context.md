@@ -30,17 +30,19 @@ only after review against the receiving project's contract.
 Xstate-fsm-c Profile 1 is the active specification-led development effort. Its
 design is an implementation candidate, no unresolved Profile 1 design questions
 are recorded, and its M3 construction and M4 actor-execution slices are
-verified on Linux. Initial M5 Linux resource evidence is recorded, while the
-constrained-target build/runtime and completion-chain gates remain open.
+verified on Linux. M5 Linux evidence and original ESP32 IDF5 physical evidence
+are recorded, while the constrained-target runtime and completion-chain gates
+remain open.
 Current revisions, progress, and next tasks are recorded in its
 [implementation status](../projects/Xstate-fsm-c/docs/implementation-status.md).
 
-The current implementation step is completion of the M5 evidence gate. The
-Linux host has measured the M4 slice, but MDBT42Q linking/runtime evidence and
-near-limit completion-chain timing are still required before the native
-physical format is frozen or the full implementation proceeds. Espruino Pico,
-MDBT42Q, ESP32-C3, and an Xtensa ESP32 provide the initial physical
-qualification matrix.
+The current implementation step is completion of the M5 evidence gate. Linux
+and an original Xtensa ESP32 have measured the implemented M4/M5 slice. A
+constrained target and near-limit completion-chain timing are still required
+before the native physical format is frozen or the full implementation
+proceeds. Espruino Pico, MDBT42Q, ESP32-C3, and an original ESP32 provide the
+initial physical qualification matrix. The repeatable original-ESP32 procedure
+is recorded in the [device-testing guide](../projects/Xstate-fsm-c/docs/esp32-device-testing.md).
 
 Canonical implementation code is developed under `libs/xfsm/` in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
