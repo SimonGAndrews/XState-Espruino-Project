@@ -94,7 +94,8 @@ See:
 
 ## Runtime Configuration (Actions/Guards)
 
-FSMPlus supports a small subset of XState-style configuration overrides:
+FSMPlus supports a small subset of the configuration-override forms used by
+XState v4:
 
 ```
 var machine = fsm.createMachine(config, {

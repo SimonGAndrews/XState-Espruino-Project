@@ -6,9 +6,9 @@ Accepted
 
 ## Context
 
-FSMPlus supports transition actions, including `assign`-style actions that update machine context.
-In XState-style semantics, `assign` is special because it updates context and subsequent actions
-often depend on the updated values.
+FSMPlus supports transition actions, including `assign` actions that update machine context.
+Under the XState v4 ordering used by FSMPlus, `assign` is special because it
+updates context and subsequent actions often depend on the updated values.
 
 In embedded control flows (e.g. greenhouse automation), deterministic ordering is critical.
 If context updates occur after other actions, the actions may observe stale values and produce
@@ -72,4 +72,3 @@ predictable.
 - Exit and entry ordering remain defined by ADR-0004.
 - Any change to assign detection or ordering should be captured in a new ADR as it can affect
   application behaviour and tests.
-

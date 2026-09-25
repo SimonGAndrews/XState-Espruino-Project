@@ -1,9 +1,10 @@
 # XState-Espruino-Project
 
-This umbrella repository explores **[XState](https://xstate.js.org/)-style state machines on
-[Espruino](https://www.espruino.com/)**,
-with a focus on **hierarchical statecharts** that are practical for real
-microcontroller workloads (automation, UI flows, fault handling).
+This umbrella repository explores state-machine and statechart engines for
+[Espruino](https://www.espruino.com/), informed by
+[XState](https://xstate.js.org/), with a focus on hierarchical statecharts
+that are practical for real microcontroller workloads (automation, UI flows,
+fault handling).
 
 The core goal is to establish a **statechart-driven framework** on Espruino
 that remains small, testable, and deterministic, while enabling:
@@ -90,6 +91,13 @@ See:
 FSMPlus is the current working hierarchical engine. Xstate-fsm-c is in the
 specification and design phase. See `docs/governance/fsmPlus-status-01.md` for
 the FSMPlus status and `projects/Xstate-fsm-c/` for Stage 3 work.
+
+## Licensing
+
+This umbrella repository contains projects, an upstream source archive, and a
+Git submodule with distinct licensing boundaries. See [LICENSING.md](LICENSING.md)
+for the path-to-licence map. Xstate-fsm-c is licensed separately under
+MPL-2.0.
 
 ## Acknowledgements
 

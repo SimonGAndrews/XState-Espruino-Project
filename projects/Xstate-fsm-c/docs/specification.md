@@ -3,7 +3,7 @@
 ## Document Status
 
 - Status: Profile 1 implementation candidate
-- Version: 0.41
+- Version: 0.48
 - Implementation status: Not started
 
 This document is the normative implementation candidate for Xstate-fsm-c
@@ -11,13 +11,48 @@ Profile 1. Only requirements stated explicitly in this document are accepted.
 The hierarchy and microstep limits and the native physical layout remain
 subject to their explicitly identified first-vertical-slice review gates.
 
+## Contents
+
+- [Purpose](#purpose)
+- [Architecture Summary](#architecture-summary)
+- [Scope](#scope)
+- [Terminology](#terminology)
+- [Compatibility Target](#compatibility-target)
+- [Intentional Compatibility Differences](#intentional-compatibility-differences)
+- [Machine Model](#machine-model)
+- [Runtime Semantics](#runtime-semantics)
+- [Public Interfaces](#public-interfaces)
+- [Host Integration](#host-integration)
+- [Validation and Error Behavior](#validation-and-error-behavior)
+- [Resource and Performance Requirements](#resource-and-performance-requirements)
+- [Conformance Requirements](#conformance-requirements)
+- [Licensing and Provenance](#licensing-and-provenance)
+- [Design References](#design-references)
+- [Open Questions](#open-questions)
+
 ## Purpose
 
+[XState](https://github.com/statelyai/xstate) is an open-source JavaScript and
+TypeScript library for managing complex application logic using finite state
+machines, statecharts, and the actor model.
+[Espruino](https://github.com/espruino/Espruino) is an open-source JavaScript
+interpreter and runtime environment designed to run directly on small,
+low-power microcontroller boards.
+
 Xstate-fsm-c provides a compact native C state-machine engine for Espruino. It
-accepts the supported Profile 1 subset of XState-style JavaScript machine
-configuration, validates and compiles the fixed machine definition once into
-an indexed native arena, and executes separately owned actor instances through
-the `XState` JavaScript module.
+accepts the subset of XState JavaScript machine-configuration syntax defined by
+Profile 1 and implements the profile's documented XState-compatible semantics.
+It validates and compiles the fixed machine definition once into an indexed
+native arena and executes separately owned actor instances through the `XFSM`
+JavaScript module.
+
+Xstate-fsm-c integrates with Espruino as an optional native library selected
+when firmware is built. When included, its generated wrapper registers the
+built-in `XFSM` module with the Espruino interpreter, exposing
+`createMachine`, `createActor`, and `assign` to application JavaScript while
+the compiled machine representation and execution coordinator run in native C.
+Firmware builds that do not select the library contain neither the module nor
+its associated code.
 
 The engine is intended for reliable control applications in which state
 transitions coordinate JavaScript or native actions that interact with
@@ -31,6 +66,41 @@ Profile 1 prioritises deterministic behaviour, actionable failure information,
 bounded RAM use, and measurable flash and execution costs on representative
 Espruino microcontrollers. It is an intentionally limited compatibility
 profile, not a claim to implement every XState, actor-model, or SCXML feature.
+
+## Architecture Summary
+
+The detailed normative requirements in the sections that follow take
+precedence if a summary phrase is incomplete or ambiguous.
+
+| Concern | Profile 1 position |
+| --- | --- |
+| Integration | Xstate-fsm-c is an optional Espruino native library selected at firmware build time and exposed to application JavaScript through `require("XFSM")`. |
+| Compatibility | Profile 1 is an explicitly limited XState compatibility profile. It primarily follows XState v5 semantics, accepts selected v4 migration aliases, and records deliberate differences. |
+| Construction | `createMachine()` validates and compiles the supported JavaScript definition once into a fixed indexed native arena. The source definition is not searched during execution. |
+| Ownership | Actors may share one compiled machine, while each actor separately owns its lifecycle state, active leaf, context, snapshot, retained fault, subscriptions, and execution bookkeeping. |
+| Execution | One synchronous native coordinator performs each lifecycle or dispatch operation and returns to the interpreter only when an application callback or required JavaScript operation must run. |
+| Actions | JavaScript functions, flash-backed functions, and native Espruino functions use the same callback boundary. Actions are the application's principal boundary for hardware effects. |
+| Memory | Arenas, actor blocks, and retained JavaScript values remain Espruino GC-owned. The engine uses no persistent native JavaScript pointers, native heap allocation, global actor registry, or structural JavaScript collection allocation during dispatch. |
+| Failure model | State and context publication is transactional across an operation. Application or hardware side effects from actions that already ran cannot be reversed if a later callback or engine operation fails. |
+| Concurrency | A public operation cannot re-enter the same actor. A callback may synchronously operate a different idle actor, and Version 1 provides no application-event mailbox or cross-actor transaction. |
+| Limits and evidence | Hierarchy depth, microsteps, stack, flash, RAM, and representative timings are bounded or measured through the first vertical slice and target qualification matrix. |
+| Evolution | The public machine is opaque and the private arena is versioned, allowing later profiles and implementation revisions without exposing the physical record layout as API. |
+
+The intended Espruino integration is a self-contained optional `libs`
+component using the existing generated-wrapper, garbage-collection,
+flat-string, board-build, and whole-interpreter `save()` mechanisms. Profile 1
+does not require a new JavaScript execution model, event loop, garbage
+collector model, or permanent VM-global state. Any Espruino core change found
+necessary during implementation requires separate architectural review rather
+than becoming an implicit library dependency.
+
+The `XFSM` module implements the Profile 1 public interface. Profile 1 is an
+independent, limited XState-compatible implementation and not the complete
+XState JavaScript package.
+Architectural review of that compatibility claim should consider the supported
+and excluded feature boundary, v5 semantic baseline, positional callback
+arguments, synchronous execution without an application-event mailbox,
+intentional compatibility-difference register, and pinned differential tests.
 
 ## Scope
 
@@ -50,14 +120,14 @@ definition containing a parallel state rather than silently changing its
 meaning.
 
 Version 1 excludes eventless and delayed transitions, invocation, activities,
-history, tags, output values, actor definitions and spawning, XState-style
-actor persistence or restored-snapshot input, and custom state-path
+history, tags, output values, actor definitions and spawning, XState actor
+persistence or restored-snapshot input, and custom state-path
 delimiters. Construction MUST reject configuration requesting one of these
 recognised features as `E_UNSUPPORTED_FEATURE`; it MUST NOT silently discard
 or reinterpret it. This exclusion does not prohibit the separately specified
 whole-interpreter Espruino `save()` mechanism. The exact accepted root and
-state-node properties are specified under State node and initial-transition
-grammar.
+state-node properties are specified under
+[State node and initial-transition grammar](#state-node-and-initial-transition-grammar).
 
 A previously compiled machine object is not a state-node configuration and
 MUST NOT be accepted as a nested state. Running one machine from another would
@@ -68,6 +138,9 @@ scope.
 
 ## Terminology
 
+- **Profile 1**: The Version 1 compatibility and execution contract defined by
+  this specification, rather than a claim of complete compatibility with an
+  XState release or the complete SCXML standard.
 - **Machine definition**: The JavaScript object supplied to `createMachine`
   that describes states, transitions, guards, actions, and initial context.
 - **Compiled arena**: The single contiguous compiled-machine data block that
@@ -77,6 +150,26 @@ scope.
   the machine-definition object.
 - **Context**: Application data belonging to a running machine instance and
   available to guards and actions.
+- **Run-to-completion operation**: One synchronous public `start()` or
+  `send(...)` operation, including every consequent completion transition,
+  which ends only when the actor reaches a stable state or the operation
+  faults.
+- **Microstep**: One startup entry sequence, selected external-event
+  transition, or selected completion transition within a run-to-completion
+  operation. Guard candidates that reject and individual actions are not
+  separate microsteps.
+- **Transition domain**: The exclusive hierarchy boundary used to derive the
+  states exited and entered by a targeted transition.
+- **Native coordinator**: The per-call C execution frame that performs lookup,
+  traversal, sequencing, and pending-state bookkeeping for one lifecycle or
+  dispatch operation, invoking the Espruino wrapper when JavaScript work is
+  required.
+- **Retained-value container**: A garbage-collector-visible JavaScript owner
+  holding the functions and other JavaScript values referenced by indexes in a
+  compiled machine arena.
+- **Stable snapshot**: The public actor observation published only after a
+  successful run-to-completion operation, or retained as diagnostic state when
+  a later operation faults.
 - **Faulted runtime**: A runtime that encountered an escaping application
   exception and cannot process further events or lifecycle actions.
 
@@ -102,8 +195,9 @@ For each semantic or public-interface decision, the documented behaviour and,
 where necessary, source behaviour of the current stable XState release MUST be
 examined as the compatibility baseline. Compatibility evidence MUST identify
 the examined release or source revision. A deliberate difference within an
-otherwise supported feature MUST be recorded under Intentional Compatibility
-Differences with its behavioural consequence and embedded-system rationale.
+otherwise supported feature MUST be recorded under
+[Intentional Compatibility Differences](#intentional-compatibility-differences)
+with its behavioural consequence and embedded-system rationale.
 Permissive handling of inputs outside XState's documented contract need not be
 replicated, but stricter Profile 1 validation MUST be stated explicitly.
 
@@ -139,7 +233,7 @@ unchanged; any such adaptation MUST be recorded with the example.
 This section is an informative register of deliberate behavioural differences
 within otherwise supported features. The normative requirements are stated in
 the referenced sections. Features excluded from version 1 are recorded in
-Scope rather than repeated here.
+[Scope](#scope) rather than repeated here.
 
 ### XFC-CD-001: Ordered context assignment
 
@@ -147,7 +241,8 @@ The XState v4 default promoted `assign(...)` actions ahead of ordinary actions.
 Xstate-fsm-c instead always processes assignments at their declared positions,
 equivalent to XState v4 with `predictableActionArguments: true` and to the
 ordering adopted by XState v5. Xstate-fsm-c does not provide a flag for the
-legacy ordering. See Context assignment and visibility.
+legacy ordering. See
+[Context assignment and visibility](#context-assignment-and-visibility).
 
 This difference makes the context received by an action depend only on actions
 that precede it in the specified execution sequence.
@@ -162,7 +257,7 @@ the exception to escape without establishing the same fail-stop lifecycle.
 Xstate-fsm-c combines synchronous propagation with a mandatory faulted runtime:
 the calling operation throws, the incomplete result is not published, and the
 runtime cannot continue. A failed startup publishes no active snapshot. See
-Action and guard exceptions and fault handling.
+[Action and guard exceptions and fault handling](#action-and-guard-exceptions-and-fault-handling).
 
 This difference avoids requiring an actor error-observer framework in version 1
 and makes failures immediately visible to simple Espruino applications.
@@ -172,7 +267,8 @@ and makes failures immediately visible to simple Espruino applications.
 XState v4 self-transitions and some descendant transitions re-entered their
 source by default. Profile 1 follows the XState v5 model: a transition preserves
 its source state unless leaving it is required by the target, or `reenter: true`
-explicitly requests source re-entry. See Transition re-entry.
+explicitly requests source re-entry. See
+[Transition re-entry](#transition-re-entry).
 
 This avoids unintended repetition of hardware-facing exit and entry actions.
 An unannotated XState v4 transition that depended on source re-entry therefore
@@ -213,7 +309,8 @@ keeps rebinding and structural-sharing machinery out of the initial engine.
 
 XState v4 supplied `done.state.<state-id>` to callbacks in a state-completion
 transition. Profile 1 follows XState v5 and supplies
-`xstate.done.state.<state-id>`. See Final states and completion transitions.
+`xstate.done.state.<state-id>`. See
+[Final states and completion transitions](#final-states-and-completion-transitions).
 
 This affects actions and guards that inspect `event.type` while processing
 `onDone`. It does not change the generated `type: "final"` or `onDone`
@@ -231,14 +328,15 @@ Profile 1 does not provide a version 1 application-event mailbox. A re-entrant
 is rejected instead of being held until `start()`, and engine-owned `xstate.`
 and `@xstate.` event namespaces cannot be supplied through public `send(...)`.
 These restrictions avoid an unbounded GC-visible event queue and prevent an
-application event from impersonating an internal completion event. See Event
-input and dispatch.
+application event from impersonating an internal completion event. See
+[Event input and dispatch](#event-input-and-dispatch).
 
 A callback executing for one Profile 1 actor may call an otherwise idle second
 actor, whose operation runs synchronously in a nested coordinator frame. XState
 instead routes actor messages through the target actor's mailbox. A completed
 nested Profile 1 operation is independently committed and is not rolled back if
-the outer actor later faults. See Wrapper lifecycle and global state.
+the outer actor later faults. See
+[Wrapper lifecycle and global state](#wrapper-lifecycle-and-global-state).
 
 ### XFC-CD-008: Exit actions on explicit stop
 
@@ -248,8 +346,9 @@ model: explicitly stopping an active actor executes the exit actions of its
 complete active state chain in leaf-to-root order.
 
 This difference gives embedded applications a deterministic place to turn off
-hardware and release application resources. See Actor lifecycle and Action
-locations and ordering.
+hardware and release application resources. See
+[Actor lifecycle](#actor-lifecycle) and
+[Action locations and ordering](#action-locations-and-ordering).
 
 ### XFC-CD-009: Initialization begins at start
 
@@ -261,7 +360,8 @@ processing together in the first `start()` operation.
 
 This means `createActor(...)` cannot invoke application code, and an actor that
 is stopped without being started consumes no runtime-specific context-factory
-allocation. See Actor lifecycle and Stable snapshots.
+allocation. See [Actor lifecycle](#actor-lifecycle) and
+[Stable snapshots](#stable-snapshots).
 
 ### XFC-CD-010: Subscriber exceptions
 
@@ -269,7 +369,8 @@ XState reports exceptions thrown by observer callbacks outside the machine's
 transition failure path. Profile 1 reports such exceptions synchronously to
 the lifecycle or dispatch caller after notifying the remaining subscribers.
 Because notification occurs after publication, a subscriber exception does
-not roll back or fault the actor. See Snapshot subscriptions.
+not roll back or fault the actor. See
+[Snapshot subscriptions](#snapshot-subscriptions).
 
 ### XFC-CD-011: Initial-context factory boundary
 
@@ -282,8 +383,8 @@ Actor input, child actors, and spawning are outside the Version 1 scope. The
 smaller boundary avoids constructing an argument object and avoids an
 additional shallow context copy on startup. Consequently, a Profile 1 factory
 that needs external values must close over them, and the identity of its valid
-returned object becomes the actor's initial context identity. See Initial
-context factory.
+returned object becomes the actor's initial context identity. See
+[Initial context factory](#initial-context-factory).
 
 ### XFC-CD-012: Event wildcard scope
 
@@ -295,7 +396,8 @@ The full wildcard compiles to one distinguished fallback handler and requires
 only one bounded check after exact candidates reject. Partial wildcards would
 require prefix matching and additional specificity ordering during dispatch.
 Applications requiring that grouping in Version 1 must declare the exact event
-types or perform routing in an ordinary guard or action. See Event lookup.
+types or perform routing in an ordinary guard or action. See
+[Event lookup](#event-lookup).
 
 ### XFC-CD-013: Parameterless guard references
 
@@ -306,7 +408,8 @@ parameters or composite-guard helpers.
 
 Equivalent application logic can be placed in one direct or named guard. This
 avoids compiled parameter values, parameter-mapper callbacks, and a family of
-built-in guard record types in Version 1. See Guard implementation binding.
+built-in guard record types in Version 1. See
+[Guard implementation binding](#guard-implementation-binding).
 
 ### XFC-CD-014: Strict state-node and initial-transition shape
 
@@ -319,8 +422,8 @@ and rejects ineffective fields on an initial-transition descriptor.
 This stricter construction rule prevents a definition from appearing to request
 behaviour that the runtime would silently ignore, and lets every compiled node
 have one unambiguous native shape. Profile 1 still supports XState's effective
-initial-transition target, actions, description, and empty metadata. See State
-node and initial-transition grammar.
+initial-transition target, actions, description, and empty metadata. See
+[State node and initial-transition grammar](#state-node-and-initial-transition-grammar).
 
 ### XFC-CD-015: Exact-key-first target resolution
 
@@ -343,7 +446,7 @@ To keep implicit effective IDs unique, Profile 1 escapes period and backslash
 bytes within their state-key segments. Current XState joins the raw keys, so a
 completion event's `type` can differ when a completed state's implicit path
 contains either character; compiled `onDone` behaviour is unaffected. See
-Transition target grammar and resolution.
+[Transition target grammar and resolution](#transition-target-grammar-and-resolution).
 
 ### XFC-CD-016: Opaque compiled machine
 
@@ -357,7 +460,8 @@ This preserves one native execution path and avoids retaining or recreating
 JavaScript representations of compiled structure. The restriction applies only
 to the Version 1 surface: the machine object's public namespace and the
 versioned arena format deliberately permit later properties, methods, or
-inspection facilities. See Public Interfaces and Record organisation.
+inspection facilities. See [Public Interfaces](#public-interfaces) and
+[Record organisation](#record-organisation).
 
 ### XFC-CD-017: Function-only subscriptions
 
@@ -371,7 +475,7 @@ listener before automatic unsubscription. Actor faults follow Profile 1's
 synchronous exception contract and remain inspectable through `getSnapshot()`.
 This smaller interface avoids observer-shape validation, three optional
 callback references per registration, and a second error-reporting route. See
-Snapshot subscriptions.
+[Snapshot subscriptions](#snapshot-subscriptions).
 
 ### XFC-CD-018: Categorised synchronous runtime diagnostics
 
@@ -383,7 +487,7 @@ remain unwrapped under the separately recorded fail-stop rule.
 
 The fixed category vocabulary and bounded detail provide actionable embedded
 diagnostics without retaining configuration paths or implementing an actor
-error-observer channel. See Runtime diagnostics.
+error-observer channel. See [Runtime diagnostics](#runtime-diagnostics).
 
 ### XFC-CD-019: Subscription method receiver
 
@@ -396,8 +500,9 @@ receiver. A borrowed, forged, or detached call is rejected as
 This permits all subscription objects to use one shared native method instead
 of allocating a bound function or closure for each registration. Normal
 `subscription.unsubscribe()` use is unchanged, remains idempotent, and
-continues to work after automatic subscription removal. See Snapshot
-subscriptions and Runtime diagnostics.
+continues to work after automatic subscription removal. See
+[Snapshot subscriptions](#snapshot-subscriptions) and
+[Runtime diagnostics](#runtime-diagnostics).
 
 ## Machine Model
 
@@ -521,8 +626,9 @@ object on an atomic node.
 Version 1 MUST accept explicit `type: "atomic"`, `type: "compound"`, and
 `type: "final"`. An atomic node MUST NOT contain child states or `initial`. A
 compound node MUST contain at least one child state and MUST declare `initial`.
-A final node follows the additional restrictions under Final states and
-completion transitions. The root machine MAY be atomic or compound but MUST
+A final node follows the additional restrictions under
+[Final states and completion transitions](#final-states-and-completion-transitions).
+The root machine MAY be atomic or compound but MUST
 NOT be final. Explicit or inferred node type and structure MUST agree;
 construction MUST reject a contradictory combination as `E_CONFIG_TYPE`.
 Parallel and history node types remain unsupported and MUST be rejected as
@@ -686,9 +792,11 @@ including an array containing one string, MUST be rejected with
 configurations outside the Version 1 scope. `null` is not a targetless
 shorthand and MUST be rejected as `E_CONFIG_TYPE`.
 
-The `actions` field uses the action grammar specified under Action definition
-and resolution. The `guard` field uses the guard grammar specified under Guard
-implementation binding. A candidate array MUST contain at least one candidate;
+The `actions` field uses the grammar specified under
+[Action definition and resolution](#action-definition-and-resolution). The
+`guard` field uses the grammar specified under
+[Guard implementation binding](#guard-implementation-binding). A candidate
+array MUST contain at least one candidate;
 an empty array or a candidate of any other type MUST be rejected as
 `E_CONFIG_TYPE`. A single candidate and a one-element candidate array have
 identical runtime meaning after construction.
@@ -912,6 +1020,9 @@ This integration deliberately follows established Espruino mechanisms: a
 JavaScript wrapper owning hidden native storage, construction-time conversion
 of JavaScript options into native records, and a native execution path that
 returns to JavaScript only when JavaScript behaviour must be invoked.
+The principal host references are the
+[Espruino native-library guide](https://github.com/espruino/Espruino/blob/master/libs/README.md)
+and [Espruino Interpreter Internals](https://www.espruino.com/Internals).
 
 ## Runtime Semantics
 
@@ -966,7 +1077,8 @@ another actor.
 
 The internal lifecycle states MUST be representable without JavaScript string
 comparison and MUST distinguish `notStarted`, `active`, `done`, `stopped`, and
-faulted. Their public snapshot spelling is specified under Stable snapshots.
+faulted. Their public snapshot spelling is specified under
+[Stable snapshots](#stable-snapshots).
 
 Public `send(...)` is valid only while the actor is `active`. Sending before
 startup MUST fail synchronously as `E_ACTOR_STATE` and MUST NOT queue the
@@ -1211,7 +1323,8 @@ reaches a stable state or faults.
 A valid event for which no transition candidate is enabled MUST be an
 unhandled no-op. It MUST NOT change the active state or context, execute an
 action, or fault the runtime. It MUST return and notify subscribers as
-specified under Actor lifecycle and Snapshot subscriptions.
+specified under [Actor lifecycle](#actor-lifecycle) and
+[Snapshot subscriptions](#snapshot-subscriptions).
 
 An actor MUST NOT begin another public `send(...)` while one of its lifecycle,
 dispatch, or subscriber-notification operations is in progress. A re-entrant
@@ -1398,8 +1511,8 @@ MUST receive `{ type: "xstate.stop" }`.
 Actions in the external-event microstep that enters a final state, including
 that final state's entry actions, MUST receive the original event object.
 Actions in a consequent completion microstep MUST receive that completed
-state's generated completion-event object as specified under Final states and
-completion transitions.
+state's generated completion-event object as specified under
+[Final states and completion transitions](#final-states-and-completion-transitions).
 
 ### Context assignment and visibility
 
@@ -1450,8 +1563,9 @@ Every guard used to select a transition MUST be evaluated before any action of
 that transition executes and MUST see the runtime's currently committed
 context.
 
-The engine MUST form the complete action sequence specified under Action
-locations and ordering and process that sequence in order. An `assign(...)`
+The engine MUST form the complete action sequence specified under
+[Action locations and ordering](#action-locations-and-ordering) and process
+that sequence in order. An `assign(...)`
 action MUST execute at its declared position; it MUST NOT be promoted ahead of
 an earlier ordinary action.
 
@@ -1495,6 +1609,9 @@ After the complete sequence succeeds, the engine MUST publish the resulting
 context and target state configuration as the completed operation. Context
 objects created during an incomplete operation MUST NOT replace the last
 successfully published context.
+
+Compatibility evidence for these rules includes the pinned
+[XState context-assignment implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/actions/assign.ts).
 
 ### Action locations and ordering
 
@@ -1543,7 +1660,8 @@ exception during startup, no active snapshot may be published.
 A faulted runtime MUST NOT evaluate another guard or execute another action.
 Any subsequent attempt to dispatch an event or perform a lifecycle operation
 MUST fail synchronously as `E_ACTOR_FAULTED`. The exact public status and
-retained-error access are specified under Stable snapshots.
+retained-error access are specified under
+[Stable snapshots](#stable-snapshots).
 
 The engine cannot roll back external side effects completed before the
 exception, nor can it reliably reverse unsupported direct mutation of context
@@ -1614,8 +1732,9 @@ path to `T` is empty and `S` itself is not re-entered.
 
 After reaching `T`, a compound target MUST resolve through its initial child
 and continue to one atomic or final leaf. Entry and initial-transition actions
-MUST use the interleaving specified under State node and initial-transition
-grammar. This initial descent is required even when `T` or the same descendant
+MUST use the interleaving specified under
+[State node and initial-transition grammar](#state-node-and-initial-transition-grammar).
+This initial descent is required even when `T` or the same descendant
 path was active before the transition.
 
 These rules have the following required consequences:
@@ -1649,6 +1768,12 @@ domain, exit sequence, transition actions, target-entry sequence, and initial
 descent MUST be covered by pinned XState v5 differential tests, including root,
 self, active-ancestor, active-descendant, sibling, cross-branch, and
 maximum-depth cases.
+
+Compatibility evidence for these rules includes the
+[XState transition documentation](https://stately.ai/docs/transitions), the
+pinned
+[XState state-node implementation](https://github.com/statelyai/xstate/blob/xstate%405.33.2/packages/core/src/StateNode.ts),
+and the [W3C SCXML 1.0 Recommendation](https://www.w3.org/TR/scxml/).
 
 ### Final states and completion transitions
 
@@ -1704,7 +1829,7 @@ longer has an active configuration. An implementation MAY retain the terminal
 leaf index to represent that snapshot value, but MUST NOT treat it as active
 for subsequent dispatch. Subsequent sent events MUST NOT select transitions,
 evaluate guards, or execute actions. Such sends MUST be ignored as specified
-under Actor lifecycle.
+under [Actor lifecycle](#actor-lifecycle).
 
 The runtime MUST publish only the stable result of a successful
 run-to-completion operation. If entering a nested final state immediately
@@ -1780,14 +1905,14 @@ structural requirement and MUST be specified separately.
 
 ## Public Interfaces
 
-The Espruino module name MUST be `XState`. Application code MUST load the
-engine with `require("XState")`; `Xstate-fsm-c` remains the project,
-implementation, and specification name and is not a second module alias.
+The Espruino module name MUST be `XFSM`. Application code MUST load the
+engine with `require("XFSM")`. The project, implementation, and specification
+name is `Xstate-fsm-c`.
 
 ```javascript
-var XState = require("XState");
-var machine = XState.createMachine(config, options);
-var actor = XState.createActor(machine);
+var XFSM = require("XFSM");
+var machine = XFSM.createMachine(config, options);
+var actor = XFSM.createActor(machine);
 ```
 
 The version 1 public naming surface MUST include `createMachine(...)`,
@@ -1812,15 +1937,18 @@ implementations. Action and guard names are matched as exact, case-sensitive
 strings and MUST NOT be interpreted as paths.
 
 Every referenced named action or guard MUST resolve to the applicable map as
-specified under Action definition and resolution and Guard implementation
-binding. A valid implementation that is not referenced by the machine MUST be
+specified under
+[Action definition and resolution](#action-definition-and-resolution) and
+[Guard implementation binding](#guard-implementation-binding). A valid
+implementation that is not referenced by the machine MUST be
 accepted but MUST NOT be placed in the compiled machine's retained-value
 container. This permits shared implementation maps without imposing persistent
 RAM cost for unused entries. The source `options` object and its maps MUST NOT
 be retained after successful construction.
 
-Except for the accepted empty exporter maps specified under Definition
-strictness, an unknown own enumerable property of `options` MUST be rejected as
+Except for the accepted empty exporter maps specified under
+[Definition strictness](#definition-strictness), an unknown own enumerable
+property of `options` MUST be rejected as
 `E_UNKNOWN_PROPERTY`. Invalid option or map shapes and non-callable map values
 MUST be rejected as `E_CONFIG_TYPE` at their exact `options` object path.
 
@@ -1848,7 +1976,8 @@ MUST NOT cause a Version 1 implementation to retain otherwise unused source
 configuration speculatively.
 
 An actor MUST expose `start()`, `send(event)`, `stop()`, `getSnapshot()`, and
-`subscribe(listener)` with the behaviour specified under Runtime Semantics.
+`subscribe(listener)` with the behaviour specified under
+[Runtime Semantics](#runtime-semantics).
 The XState v4 `onTransition(...)` observer name MUST NOT be provided; Profile 1
 uses the current `subscribe(...)` name. A snapshot MUST NOT expose the legacy
 `state.actions` execution list.
@@ -1858,34 +1987,34 @@ uses the current `subscribe(...)` name. A snapshot MUST NOT expose the legacy
 ### Firmware build integration
 
 Xstate-fsm-c MUST use Espruino's existing native-library build mechanism. Its
-firmware build-library identifier is `XSTATE`, and its JavaScript library class
-and module name is `XState`.
+firmware build-library identifier is `XFSM`, and its JavaScript library class
+and module name is `XFSM`.
 
 The implementation MUST reside under Espruino's `libs` structure and provide
 the normal JSON-formatted wrapper declarations, including a library declaration
-whose class is `XState`. The Espruino build files MUST recognise
-`USE_XSTATE=1` and add the Xstate-fsm-c wrapper, engine sources, include path,
+whose class is `XFSM`. The Espruino build files MUST recognise
+`USE_XFSM=1` and add the Xstate-fsm-c wrapper, engine sources, include path,
 and any required compile definition through the same conditional mechanisms as
 other optional native libraries. Xstate-fsm-c MUST NOT require a separate
 post-link step or a project-specific replacement for Espruino's wrapper
 generation.
 
-A board includes Xstate-fsm-c by listing `XSTATE` in the `libraries` collection
+A board includes Xstate-fsm-c by listing `XFSM` in the `libraries` collection
 of its `boards/<BOARD>.py` build definition, for example:
 
 ```python
 info = {
   "build": {
     "libraries": [
-      "XSTATE"
+      "XFSM"
     ]
   }
 }
 ```
 
 The standard Espruino board-processing script then emits the corresponding
-`USE_XSTATE` make variable. Board definitions that do not list `XSTATE` MUST
-not include the engine or its public `require("XState")` module in their
+`USE_XFSM` make variable. Board definitions that do not list `XFSM` MUST
+not include the engine or its public `require("XFSM")` module in their
 firmware. Selection is therefore a firmware-build decision rather than a
 runtime installation or dynamic-loading decision.
 
@@ -1895,7 +2024,7 @@ contain Xstate-fsm-c execution semantics or duplicate its source-file list.
 
 ### Host object representation and branding
 
-The generated Version 1 API of the `XState` library object MUST consist of
+The generated Version 1 API of the `XFSM` library object MUST consist of
 `createMachine(...)`, `createActor(...)`, and `assign(...)`. Objects produced
 by those functions MUST use Espruino's generated class and method mechanisms so
 that native methods are shared rather than stored as separately allocated
@@ -2222,7 +2351,7 @@ feature MUST cause construction to fail. In particular, construction MUST NOT
 silently reinterpret a misspelled property such as `intial` or `gaurd`, and
 MUST explicitly reject version 1 exclusions including parallel states,
 history states, invocation, delayed transitions, eventless transitions,
-activities, output values, tags, actor definitions, XState-style actor
+activities, output values, tags, actor definitions, XState actor
 persistence and restored-snapshot input, and custom state-path delimiters.
 
 Profile 1 defines the following narrow exceptions for inert output generated
@@ -2680,9 +2809,10 @@ as the canonical Profile 1 trace format without reviewed conversion.
 ### Conformance result
 
 A test run MUST record the implementation revision and the build and target
-metadata required by Compiler and target contract. Results MUST identify every
-pass, failure, and reasoned skip. A run is conforming for its declared scope
-only when:
+metadata required by
+[Compiler and target contract](#compiler-and-target-contract). Results MUST
+identify every pass, failure, and reasoned skip. A run is conforming for its
+declared scope only when:
 
 - all applicable normative cases match their reviewed expected results;
 - all applicable validation and negative-path cases pass;
@@ -2695,12 +2825,64 @@ Resource observations do not constitute a pass merely because the program
 completed. They MUST be assessed against the fixed limits in this
 specification and the available memory and watchdog constraints of the target.
 The first vertical-slice report MUST explicitly retain or revise the
-provisional hierarchy-depth and microstep limits as required under Resource and
-Performance Requirements.
+provisional hierarchy-depth and microstep limits as required under
+[Resource and Performance Requirements](#resource-and-performance-requirements).
 
 The status **Conformance verified** applies only under the target criteria in
-Version 1 target and test matrix. Passing the Node or Linux semantic suite does
-not by itself qualify a physical Espruino target.
+[Version 1 target and test matrix](#version-1-target-and-test-matrix). Passing
+the Node or Linux semantic suite does not by itself qualify a physical Espruino
+target.
+
+## Licensing and Provenance
+
+This section records project-governance considerations rather than Profile 1
+runtime requirements. It does not replace the applicable licence texts or
+legal review for a particular distribution.
+
+XState is distributed under the
+[MIT License](https://github.com/statelyai/xstate/blob/main/LICENSE). The local
+[XState v4.38.3 source archive](../../../archive/xstate-xstate-4.38.3/)
+preserves its upstream
+[licence text](../../../archive/xstate-xstate-4.38.3/LICENSE). The intended
+Xstate-fsm-c implementation is based on the behaviour specified here and on
+recorded differential observations. If implementation code, tests, comments,
+or other substantial material are copied or adapted from XState, the XState
+copyright and MIT permission notice need to accompany that material and its
+distribution.
+
+Espruino is distributed under the
+[Mozilla Public License 2.0](https://github.com/espruino/Espruino/blob/master/LICENSE).
+Existing Espruino files modified for integration remain covered files, and
+copied Espruino source remains subject to its licence. Distribution of an
+executable containing modified MPL-covered files carries the MPL source and
+notice obligations for those files. The
+[Espruino repository guidance](https://github.com/espruino/Espruino#using-espruino-in-your-projects)
+also explains its file-level treatment of modified and newly created files.
+
+Xstate-fsm-c, including its implementation, tests, and documentation, is
+licensed under the [Mozilla Public License 2.0](../LICENSE). New implementation
+source files use the MPL-2.0 Exhibit A notice. Contributions are accepted under
+the same licence and provenance rules recorded in
+[CONTRIBUTING.md](../CONTRIBUTING.md). The
+[third-party notice](../THIRD_PARTY_NOTICES.md) must be updated whenever
+external material is incorporated.
+
+The umbrella repository uses explicit per-path licensing rather than a blanket
+root licence. Its [licence map](../../../LICENSING.md) records Xstate-fsm-c,
+the XState source archive, and the Stage 1 Git submodule as separate licensing
+boundaries. The Xstate-fsm-c licence does not relicense an archive, dependency,
+submodule, sibling project, or separately identified third-party file.
+
+The software licences do not grant rights to project names, logos, or an
+official-endorsement claim. Public documentation should use "XState-compatible"
+and "for Espruino" descriptively, state that Profile 1 is an independent
+limited implementation, and avoid implying affiliation with or endorsement by
+Stately or Espruino.
+
+Compatibility fixtures taken from a Stately tool, upstream documentation, or
+another repository should record their source and version. Project-authored
+minimal configurations are preferred where they demonstrate the same behaviour
+without copying an upstream example.
 
 ## Design References
 

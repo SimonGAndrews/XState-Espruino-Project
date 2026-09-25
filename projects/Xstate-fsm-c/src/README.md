@@ -7,4 +7,5 @@ provisional physical representation in `../docs/native-format-v1.md`.
 Implementation begins with the specified vertical slice. The portable C99
 engine must remain separate from Espruino-specific wrapper operations, and the
 library must use Espruino's existing `libs` and generated-wrapper build
-mechanisms.
+mechanisms. The wrapper registers the public `XFSM` module, selected by the
+`XFSM` build-library identifier and corresponding `USE_XFSM` build variable.

@@ -49,12 +49,12 @@ requirements already cover it:
 - positional v4 action and guard callbacks.
 
 The generated module wrapper is host-only. Deployment must replace
-`import`/`export` with the Xstate-fsm-c Espruino module binding and remove the
-function-call trailing comma. The generated action and guard functions are
-empty application placeholders; deployment must bind the real hardware action
-and guard functions. A v5 implementation copied verbatim would additionally
-require adaptation from destructured arguments to Profile 1's positional
-`(context, event)` callback contract.
+`import`/`export` with `var XFSM = require("XFSM");`, use the `XFSM` exports,
+and remove the function-call trailing comma. The generated action and guard
+functions are empty application placeholders; deployment must bind the real
+hardware action and guard functions. A v5 implementation copied verbatim would
+additionally require adaptation from destructured arguments to Profile 1's
+positional `(context, event)` callback contract.
 
 ## Decisions Exposed By This Example
 

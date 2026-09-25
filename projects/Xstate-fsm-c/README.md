@@ -3,6 +3,9 @@
 Xstate-fsm-c is the Stage 3 native C state-machine project within the
 XState-Espruino-Project umbrella repository.
 
+Its public Espruino module is `XFSM`, loaded by application JavaScript with
+`require("XFSM")`.
+
 ## Status
 
 The Profile 1 specification is an implementation candidate. It defines the
@@ -39,3 +42,14 @@ relevant behavior and constraints.
 - `docs/compatibility/` - raw Stately v4/v5 exports and their assessments
 - `src/` - native engine and Espruino wrapper implementation area
 - `tests/` - conformance, differential, native-format, and resource tests
+
+## Licensing And Contributions
+
+Xstate-fsm-c is licensed under the Mozilla Public License 2.0. See
+[LICENSE](LICENSE) for the complete terms,
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for provenance, and
+[CONTRIBUTING.md](CONTRIBUTING.md) for the source-header and contribution
+rules.
+
+The licence applies to this project directory and does not relicense sibling
+projects, the XState source archive, the Stage 1 Git submodule, or Espruino.
