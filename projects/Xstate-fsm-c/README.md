@@ -5,18 +5,17 @@ XState-Espruino-Project umbrella repository.
 
 ## Status
 
-The project is in the specification and design phase. Native indexed records
-have been selected for the compiled machine representation. The index widths,
-arena ownership, record organisation, event lookup, and Espruino integration
-pattern are now specified. Profile 1 also defines its compatibility direction,
-context ownership, action and assignment ordering, exception policy, transition
-re-entry model, initial target grammar, final-state completion semantics, actor
-lifecycle, stable snapshots, and subscriptions. The remaining validation rules,
-conformance requirements, feature scope, and build system are still under
-discussion.
+The Profile 1 specification is an implementation candidate. It defines the
+supported feature scope, XState compatibility direction, native indexed arena,
+actor and context ownership, transition and action semantics, diagnostics,
+Espruino build integration, target matrix, resource measurements, and
+conformance strategy.
 
-Development will be specification-led: observable requirements and
-conformance criteria should be agreed before implementation begins.
+The first implementation step is a vertical slice on Linux Espruino followed
+by representative physical targets. That slice must measure the provisional
+native layout, hierarchy-depth and microstep limits, stack reserve, flash, RAM,
+and timing before the physical format is frozen or the full implementation
+proceeds.
 
 ## Relationship to Existing Work
 
@@ -35,7 +34,8 @@ relevant behavior and constraints.
 
 ## Project Layout
 
-- `docs/specification.md` - current normative requirements and open areas
+- `docs/specification.md` - Profile 1 normative implementation candidate
+- `docs/native-format-v1.md` - provisional native arena and actor layout
 - `docs/compatibility/` - raw Stately v4/v5 exports and their assessments
-- `src/` - native implementation, intentionally empty at this stage
-- `tests/` - conformance and implementation tests, intentionally empty at this stage
+- `src/` - native engine and Espruino wrapper implementation area
+- `tests/` - conformance, differential, native-format, and resource tests

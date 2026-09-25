@@ -202,13 +202,18 @@ typedef struct {
   uint16_t guard;
   XfcRange actions;
   uint16_t flags;
-  uint16_t reserved;
+  uint16_t domain_state;
 } XfcTransitionRecord;
 ```
 
 The record size is 12 bytes. `target_state == XFC_INDEX_NONE` represents a
 targetless transition, and `guard == XFC_INDEX_NONE` represents an unguarded
-candidate. The reserved field and unknown flags MUST be zero.
+candidate. For a targeted transition, `domain_state` names the precomputed
+exclusive exit and entry boundary defined by the main specification.
+`domain_state == XFC_INDEX_NONE` represents the conceptual outside-root
+boundary. A targetless transition MUST also use `XFC_INDEX_NONE` because it has
+no domain; `target_state` distinguishes those two meanings. Unknown transition
+flags MUST be zero.
 
 ### Guard Record
 
@@ -394,6 +399,7 @@ follows:
 - string-pool bounds;
 - root-state invariants;
 - every index, retained slot, and record range;
+- every transition domain against its source, target, and re-entry flag;
 - every record kind and known flag mask; and
 - all required zero-valued reserved fields.
 
@@ -440,6 +446,8 @@ Native-format tests MUST include:
 - an empty atomic-root machine;
 - nested compound and final states;
 - exact and wildcard handlers with guarded candidate arrays;
+- self, source-to-descendant, descendant-to-ancestor, sibling, cross-branch,
+  root-reentry, and targetless transition domains;
 - entry, exit, transition, initial-transition, and assignment actions;
 - each initial-context kind;
 - maximum and empty record ranges;

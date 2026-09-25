@@ -2,17 +2,35 @@
 
 ## Document Status
 
-- Status: Initial design decisions in progress
-- Version: 0.35
+- Status: Profile 1 implementation candidate
+- Version: 0.41
 - Implementation status: Not started
 
-This document is the future normative specification for Xstate-fsm-c. Only
-requirements stated explicitly in this document are accepted; unresolved
-headings and open questions do not imply architectural or behavioral choices.
+This document is the normative implementation candidate for Xstate-fsm-c
+Profile 1. Only requirements stated explicitly in this document are accepted.
+The hierarchy and microstep limits and the native physical layout remain
+subject to their explicitly identified first-vertical-slice review gates.
 
 ## Purpose
 
-To be defined.
+Xstate-fsm-c provides a compact native C state-machine engine for Espruino. It
+accepts the supported Profile 1 subset of XState-style JavaScript machine
+configuration, validates and compiles the fixed machine definition once into
+an indexed native arena, and executes separately owned actor instances through
+the `XState` JavaScript module.
+
+The engine is intended for reliable control applications in which state
+transitions coordinate JavaScript or native actions that interact with
+hardware. Construction performs structural validation and reference
+resolution; steady-state dispatch uses bounded native traversal, predictable
+run-to-completion semantics, and no structural JavaScript collection
+allocation. Application context, events, guards, actions, and observations
+remain available through the documented JavaScript interface.
+
+Profile 1 prioritises deterministic behaviour, actionable failure information,
+bounded RAM use, and measurable flash and execution costs on representative
+Espruino microcontrollers. It is an intentionally limited compatibility
+profile, not a claim to implement every XState, actor-model, or SCXML feature.
 
 ## Scope
 
@@ -32,12 +50,14 @@ definition containing a parallel state rather than silently changing its
 meaning.
 
 Version 1 excludes eventless and delayed transitions, invocation, activities,
-history, tags, output values, actor definitions and spawning, persistence and
-restored state, and custom state-path delimiters. Construction MUST reject
-configuration requesting one of these recognised features as
-`E_UNSUPPORTED_FEATURE`; it MUST NOT silently discard or reinterpret it. The
-exact accepted root and state-node properties are specified under State node
-and initial-transition grammar.
+history, tags, output values, actor definitions and spawning, XState-style
+actor persistence or restored-snapshot input, and custom state-path
+delimiters. Construction MUST reject configuration requesting one of these
+recognised features as `E_UNSUPPORTED_FEATURE`; it MUST NOT silently discard
+or reinterpret it. This exclusion does not prohibit the separately specified
+whole-interpreter Espruino `save()` mechanism. The exact accepted root and
+state-node properties are specified under State node and initial-transition
+grammar.
 
 A previously compiled machine object is not a state-node configuration and
 MUST NOT be accepted as a nested state. Running one machine from another would
@@ -214,6 +234,12 @@ These restrictions avoid an unbounded GC-visible event queue and prevent an
 application event from impersonating an internal completion event. See Event
 input and dispatch.
 
+A callback executing for one Profile 1 actor may call an otherwise idle second
+actor, whose operation runs synchronously in a nested coordinator frame. XState
+instead routes actor messages through the target actor's mailbox. A completed
+nested Profile 1 operation is independently committed and is not rolled back if
+the outer actor later faults. See Wrapper lifecycle and global state.
+
 ### XFC-CD-008: Exit actions on explicit stop
 
 XState v5 stops a root actor without executing the exit actions of the active
@@ -359,6 +385,20 @@ The fixed category vocabulary and bounded detail provide actionable embedded
 diagnostics without retaining configuration paths or implementing an actor
 error-observer channel. See Runtime diagnostics.
 
+### XFC-CD-019: Subscription method receiver
+
+Current XState returns an `unsubscribe` arrow closure that can be called after
+being detached from its subscription object. Profile 1 requires
+`unsubscribe()` to be called with the originating subscription object as its
+receiver. A borrowed, forged, or detached call is rejected as
+`E_RECEIVER_INVALID`.
+
+This permits all subscription objects to use one shared native method instead
+of allocating a bound function or closure for each registration. Normal
+`subscription.unsubscribe()` use is unchanged, remains idempotent, and
+continues to work after automatic subscription removal. See Snapshot
+subscriptions and Runtime diagnostics.
+
 ## Machine Model
 
 ### Machine-definition lifetime
@@ -406,9 +446,13 @@ A string naming an action or guard MUST NOT cause a lexical-scope, global-name,
 the applicable `createMachine` options map. The machine MUST resolve and retain
 the resulting function during construction.
 
-Callbacks are invoked as functions without a meaningful receiver object. An
-implementation that requires a particular `this` value MUST be supplied as a
-bound function or through a wrapper function created by the application.
+Callbacks are invoked as functions without a meaningful receiver object. The
+wrapper MUST supply `undefined` as the receiver and MUST NOT bind the actor,
+machine, implementation map, descriptor, context, or event as `this`. Normal
+JavaScript handling inside a non-strict callback is outside the engine's
+control. An implementation that requires a particular `this` value MUST be
+supplied as a bound function or through a wrapper function created by the
+application.
 
 Before calling `createMachine`, application JavaScript MAY compose any portion
 of the definition from outer-scope objects, arrays, constants, or factory
@@ -486,10 +530,10 @@ Parallel and history node types remain unsupported and MUST be rejected as
 
 Every own enumerable property of a `states` object MUST have a non-empty state
 key and a non-null, non-array state-node configuration object as its value.
-Construction MUST recurse through those objects subject to the hierarchy-depth
-limit and strict schema rules. A period or other punctuation in a state key is
-part of that one exact key and MUST NOT create hierarchy; only nesting through
-a child `states` object establishes a parent-child relationship.
+Construction MUST traverse those objects subject to the hierarchy-depth limit
+and strict schema rules. A period or other punctuation in a state key is part
+of that one exact key and MUST NOT create hierarchy; only nesting through a
+child `states` object establishes a parent-child relationship.
 
 A compound node's `initial` MUST use either a direct-child key string or this
 object form:
@@ -522,8 +566,8 @@ the action order MUST be:
 1. that compound node's entry actions;
 2. that compound node's initial-transition actions;
 3. the initial child's entry actions; and
-4. the same initial-transition and entry sequence recursively for each initial
-   compound descendant.
+4. repetition of the same initial-transition and entry sequence for each
+   initial compound descendant.
 
 The initial-transition actions MUST receive the event responsible for the
 entry: `xstate.init` during startup, or the current external or completion event
@@ -808,8 +852,9 @@ record tables and a byte-string pool:
 - **Handler records** contain an event-symbol index or full-wildcard marker and
   the ordered range of candidate transitions declared for that event by one
   state.
-- **Transition records** contain the resolved target-state index, guard-record
-  index, transition-action range, and transition flags.
+- **Transition records** contain the resolved target-state and precomputed
+  transition-domain indexes, guard-record index, transition-action range, and
+  transition flags.
 - **Guard records** contain a retained-JavaScript-value slot index and guard
   flags.
 - **Action records** contain an action kind, a retained-JavaScript-value or
@@ -890,7 +935,8 @@ Every actor method MUST validate that its receiver is a live compatible actor.
 A detached or borrowed method invoked without its originating actor as receiver
 MUST fail synchronously as `E_ACTOR_INVALID`. Extra arguments to the
 zero-argument `start()`, `stop()`, and `getSnapshot()` methods MUST be ignored
-in normal JavaScript fashion.
+in normal JavaScript fashion. `send(event)` MUST ignore arguments after its
+first; an omitted first argument remains an invalid event.
 
 An actor MUST retain its compiled machine for the actor's lifetime. Multiple
 actors MAY share one compiled machine, its native arena, and its retained
@@ -993,13 +1039,38 @@ active branch because Profile 1 excludes parallel states. State keys MUST NOT
 be split, trimmed, or otherwise interpreted while constructing this value.
 
 `matches(value)` MUST accept either a top-level state-key string or the same
-nested object grammar. A string MUST match that exact active top-level key and,
-when the key names a compound state, MUST match regardless of which descendant
-is active. An object MUST perform a partial hierarchical match: every state key
-and child value supplied by the caller must be active, while deeper active
-descendants omitted by the caller are ignored. A string MUST NOT be parsed as a
-period-delimited path. For an atomic root, `matches({})` MUST return `true` and
-a non-empty state-value object or string MUST return `false`.
+single-branch nested object grammar. A non-empty string MUST match that exact
+active key at its supplied hierarchy level and, when the key names a compound
+state, MUST match regardless of which deeper descendant is active. A valid
+object at each supplied level MUST be a non-null, non-array object with exactly
+one own enumerable string-keyed data property. It performs a partial
+hierarchical match: every supplied state key and child value must be active,
+while deeper active descendants omitted by ending with a string are ignored.
+A string MUST NOT be parsed as a period-delimited path.
+
+The empty object is valid only for the atomic-root state value. For an active
+atomic root, `matches({})` MUST return `true` and any non-empty state-value
+object or string MUST return `false`. For every other machine shape, an empty
+object MUST return `false`.
+
+An unknown but well-formed state value MUST return `false`. An omitted value,
+empty string, `null`, array, function, non-string primitive, accessor-bearing
+object, multiple-branch object, malformed nested value, or nesting beyond the
+active hierarchy MUST also return `false`; `matches(...)` MUST be a total
+boolean predicate and MUST NOT throw merely because its argument is malformed.
+It MUST ignore arguments after the first and MUST perform matching without
+allocating a state-value object, property-name array, or other JavaScript
+collection.
+
+`matches(...)` MUST return `false` when the snapshot has no published state.
+For a `done`, `stopped`, or `error` snapshot that retains a previously
+published state value, it MUST match that retained value even though the actor
+no longer has an active configuration.
+
+The `matches` method MUST validate that its receiver is the originating live
+Xstate-fsm-c snapshot. A borrowed, forged, or detached invocation MUST fail
+synchronously as `E_RECEIVER_INVALID`; this receiver failure is distinct from
+a malformed match value, which returns `false`.
 
 A snapshot MUST describe only a stable, published result. It MUST NOT expose
 an intermediate configuration from within completion processing. A snapshot
@@ -1054,6 +1125,13 @@ invoked as a function without a meaningful `this` value. Each successful call
 creates an independent registration even when the same function is already
 subscribed. The returned subscription object MUST have stable identity, and
 `unsubscribe()` MUST return `undefined`.
+
+`unsubscribe()` MUST validate that its receiver is the originating compatible
+subscription object. A borrowed, forged, or detached invocation MUST fail
+synchronously as `E_RECEIVER_INVALID`. A valid call MUST ignore extra
+arguments and remain idempotent after explicit or automatic removal. All
+subscription objects MUST be able to use one shared native method; the engine
+MUST NOT allocate a bound function or closure for each registration.
 
 Subscribing before startup MUST register the listener without calling it. A
 successful `start()` MUST notify every current listener exactly once with the
@@ -1481,6 +1559,19 @@ declared, which may be an ancestor of the active leaf state. Re-entry is a
 property of the transition, not of its actions. It determines the state exit
 and entry sets surrounding the selected transition's actions.
 
+For the rules below:
+
+- `L` is the currently active leaf state;
+- `S` is the selected transition's source state;
+- `T` is its single resolved target state; and
+- `D` is its transition domain, used as the exclusive exit and entry boundary.
+
+`S` MUST be on the active chain from the root through `L`. A *proper ancestor*
+is an ancestor that is not the state itself. The hierarchy has a conceptual
+outside-root boundary immediately above the root. That boundary is not a
+state, has no actions, and exists only so that exiting and re-entering the root
+has the same algorithm as every other transition.
+
 The canonical Profile 1 property is `reenter`, whose value MUST be boolean.
 For construction-time migration of XState v4 definitions, Profile 1 MUST also
 accept `internal` as an inverse alias: `internal: true` normalizes to
@@ -1492,28 +1583,72 @@ When neither property is present, `reenter` MUST default to `false`.
 
 A targetless transition MUST preserve the complete active state configuration,
 regardless of its `reenter` value. It MUST execute its transition actions
-without executing state exit or entry actions.
+without executing state exit or entry actions. It has no transition domain;
+`reenter: true` on a targetless transition has no behavioural effect.
 
-A targeted transition to its own source state with `reenter: false` MUST
-preserve that state and MUST NOT execute its exit or entry actions. With
-`reenter: true`, it MUST exit and re-enter the source state, executing its exit
-and entry actions around the transition actions.
+For a targeted transition, construction MUST determine `D` as follows:
 
-A transition declared on a compound source state and targeting one of its
-descendants MUST preserve the compound source when `reenter: false`. States
-below the preserved source that are left MUST execute their exit actions, and
-the targeted child state and its resolved initial descendants MUST be entered
-even when that child was already active. With `reenter: true`, the compound
-source itself MUST also be exited and re-entered.
+1. If `reenter` is `false` and `T` is `S` or a proper descendant of `S`, then
+   `D` is `S`.
+2. Otherwise, `D` is the deepest state that is a proper ancestor of both `S`
+   and `T`.
+3. If no state satisfies the preceding rule, `D` is the conceptual
+   outside-root boundary.
 
-A transition whose target lies outside its source state cannot preserve that
-source. It MUST exit the source and every other state required by the hierarchy
-regardless of the `reenter` value.
+This definition deliberately uses a *proper* common ancestor. Consequently, a
+transition from a descendant to an explicitly targeted active ancestor exits
+and re-enters that target. `reenter` changes the domain only for a transition
+from its source to that same source or one of its descendants; it has no
+additional effect when the target already lies outside the source subtree.
 
-For every selected transition, transition actions MUST execute whether states
-are re-entered, preserved, or the transition is targetless. Exit actions,
-transition actions, and entry actions MUST retain their separately specified
-ordering.
+The exit set MUST contain every active state from `L` upwards to but excluding
+`D`. Exit actions MUST execute in that descendant-to-ancestor order. When `D`
+is the outside-root boundary, the exit set includes the root. When `D` is `S`,
+the source is preserved and only its active descendants are exited.
+
+After the exit actions, all transition actions MUST execute in declared order.
+The engine MUST then enter every state on the unique hierarchy path immediately
+below `D` through `T`, in ancestor-to-descendant order. If `D` is the
+outside-root boundary, that path begins with the root. If `D == S == T`, the
+path to `T` is empty and `S` itself is not re-entered.
+
+After reaching `T`, a compound target MUST resolve through its initial child
+and continue to one atomic or final leaf. Entry and initial-transition actions
+MUST use the interleaving specified under State node and initial-transition
+grammar. This initial descent is required even when `T` or the same descendant
+path was active before the transition.
+
+These rules have the following required consequences:
+
+- a non-reentering targeted atomic self-transition executes only its
+  transition actions;
+- a non-reentering targeted compound self-transition preserves the source but
+  exits its active descendants and enters the source's initial descendant
+  path;
+- a re-entering targeted self-transition exits and enters the source as well
+  as the affected descendants;
+- a non-reentering source-to-descendant transition preserves the source but
+  replaces its active descendant path;
+- a re-entering source-to-descendant transition exits and enters the source;
+- a sibling transition preserves their parent;
+- a descendant-to-ancestor transition exits and re-enters the targeted
+  ancestor; and
+- a cross-branch transition preserves only the deepest proper common ancestor
+  of its source and target.
+
+Construction MUST precompute and store the transition-domain state index after
+resolving `S` and `T`. The outside-root boundary and the absence of a domain
+for a targetless transition MUST use the no-index sentinel and are
+distinguished by whether the transition has a target. Normal dispatch MUST use
+that stored domain; it MUST NOT repeat a least-common-ancestor search.
+
+Because Version 1 has one active leaf, one target, and no parallel regions, the
+runtime MUST implement exit and entry sets as bounded traversal of parent
+indexes rather than allocate state sets or JavaScript arrays. The transition
+domain, exit sequence, transition actions, target-entry sequence, and initial
+descent MUST be covered by pinned XState v5 differential tests, including root,
+self, active-ancestor, active-descendant, sibling, cross-branch, and
+maximum-depth cases.
 
 ### Final states and completion transitions
 
@@ -1579,7 +1714,7 @@ snapshot. For the compatibility example, `send("finish")` therefore returns
 with `Success`, not `Workflow.Completed`, as the stable state.
 
 The engine MUST protect the device from an unbounded run-to-completion sequence.
-One public `start()` or `send(...)` operation MAY execute at most 256
+One public `start()` or `send(...)` operation MUST execute no more than 256
 microsteps. The startup entry sequence counts as one microstep. A selected
 external-event transition and each selected completion transition each count
 as one further microstep. Rejected guard candidates, an offered completion
@@ -1642,8 +1777,6 @@ Native lookup and traversal MUST NOT allocate JavaScript arrays, objects, or
 temporary property names during event processing. Allocations explicitly
 required by later context, action, event, or result semantics are outside this
 structural requirement and MUST be specified separately.
-
-Further runtime semantics remain to be defined.
 
 ## Public Interfaces
 
@@ -1889,6 +2022,51 @@ condition rather than an Xstate-fsm-c actor fault. Any host diagnostic remains
 the responsibility of Espruino and MUST NOT be translated into a fabricated
 actor event or transition.
 
+### Wrapper lifecycle and global state
+
+Version 1 MUST NOT keep mutable machine, actor, coordinator, subscription, or
+JavaScript-reference state in C global or file-static storage. In particular,
+it MUST NOT retain a global current-actor pointer, actor registry, shared
+execution scratch buffer, `JsVar *`, or `JsVarRef`. Immutable `static const`
+tables, diagnostic text, and compile-time configuration do not constitute
+runtime state and MAY be shared.
+
+The library MUST NOT require Espruino wrapper `hwinit`, `init`, `kill`, or
+`idle` hooks in Version 1. All persistent ownership MUST be reachable through
+the machine, actor, snapshot, subscription, or assignment-descriptor object
+graphs. Temporary native coordinator state and `JsVar *` locks MUST belong to
+the current call and MUST be released correctly on every success and exception
+path.
+
+The coordinator MUST be re-entrant for different actors. While actor A is
+executing a guard, action, assignment expression, or listener, application code
+MAY synchronously invoke a lifecycle or dispatch method on an otherwise
+eligible actor B. Actor B MUST execute in an independent coordinator frame and
+follow its own lifecycle and publication rules. Calling back into actor A while
+A remains busy MUST fail under the existing `E_ACTOR_BUSY` rule.
+
+A stable result committed by actor B MUST NOT be rolled back if actor A later
+faults. If B's operation throws into A's application callback, A follows the
+normal callback-exception rule unless that callback catches the value. No
+cross-actor transaction, shared pending context, or shared microstep budget
+exists. This permission does not add actor spawning, actor systems, `sendTo`,
+or another public actor-composition API.
+
+Before marking any target actor busy, the wrapper MUST verify that the host has
+the configured minimum free stack required for one coordinator frame in
+addition to Espruino's normal safety margin. If that reserve is unavailable,
+the target operation MUST throw `E_LIMIT_EXCEEDED` with `stack` as its short
+detail before changing or faulting the target actor. If that exception escapes
+from an outer actor's callback, the outer actor's existing exception rule still
+applies.
+
+The minimum stack reserve is a private target/build constant, not a per-machine
+or JavaScript option. The first vertical slice MUST measure the maximum C stack
+usage of one coordinator frame, including maximum-depth hierarchy traversal,
+and document the selected reserve for each representative build. Nested calls
+remain subject to the remaining host stack and therefore fail safely rather
+than promising a fixed number of simultaneously nested actors.
+
 ### Wrapper and variable ownership
 
 Public bindings MUST use Espruino's JSON-formatted `jswrap_` declarations so
@@ -1918,7 +2096,94 @@ is needed. Examples using `import`, `export`, or object spread MUST be clearly
 identified as host-side or transpiled examples rather than directly executable
 Espruino code.
 
-Additional host-integration requirements remain to be defined.
+### Compiler and target contract
+
+The portable native engine MUST be valid standard C99 and MUST NOT require a
+GNU language extension. The Espruino wrapper MAY use established Espruino
+project conventions and APIs, but target-specific headers and behaviour MUST
+remain outside the portable engine.
+
+The implementation requires an eight-bit byte and exact-width `uint8_t`,
+`uint16_t`, and `uint32_t` types. It MUST verify those assumptions and every
+normative arena size and offset at compile time. It MUST NOT depend on the width
+or representation of `int`, `long`, `size_t`, pointers, C enumeration types, or
+plain `char` signedness. An unsupported fundamental representation MUST produce
+a clear compilation failure rather than a different native layout.
+
+Neither the portable engine nor its wrapper traversal code may use packed C
+structures, unaligned typed access, variable-length arrays, or C recursion.
+Fixed native workspaces MUST have compile-time bounds. Xstate-fsm-c MUST NOT use
+`malloc()` or `free()`; the wrapper MUST obtain persistent storage through the
+specified Espruino values and hidden-child ownership, while the portable engine
+operates on caller-owned arenas, records, and bounded call-local workspaces.
+
+The sources MUST compile correctly under the normal optimisation and
+link-time-optimisation settings of each selected Espruino target, including
+size optimisation where that target uses it. Correctness MUST NOT depend on
+optimisation being disabled, structure packing, compiler-specific enum size,
+or undefined integer overflow. Library code SHOULD compile without introducing
+new compiler warnings in every required conformance build.
+
+An arena uses the native byte order of the firmware that created it and is not
+a cross-target serialization format. The arena header MUST continue to identify
+byte order, and runtime validation MUST reject a mismatch. Version 1 does not
+claim verified big-endian execution because none of its selected Espruino
+targets is big-endian; host tests MUST nevertheless cover rejection of a
+mismatched byte-order flag.
+
+Every reported build or conformance result MUST identify at least the Espruino
+source revision, compiler and version, board definition, relevant build and
+optimisation flags, CPU architecture, pointer width, byte order,
+`process.memory().blocksize`, and Xstate-fsm-c stack-reserve setting.
+
+### Version 1 target and test matrix
+
+Target support MUST be evidence-based and recorded using one of these statuses:
+
+- **Conformance verified**: the applicable runtime, validation, resource, and
+  physical-integration tests pass on the target;
+- **Build verified**: the firmware builds and links with Xstate-fsm-c, but the
+  complete applicable runtime suite has not passed on that target; or
+- **Not yet verified**: neither of the preceding claims has current recorded
+  evidence.
+
+Sharing a CPU family with a verified board or merely compiling successfully
+MUST NOT be described as conformance support.
+
+Linux Espruino is the Version 1 reference-test host. It MUST run the complete
+portable semantic, validation, native-format corruption, allocation-failure,
+and diagnostic suite. A supported host toolchain SHOULD additionally run
+address and undefined-behaviour sanitizers. Its wider pointers provide explicit
+evidence that the arena and engine do not assume a 32-bit host pointer.
+
+The initial candidate product targets are:
+
+- **Espruino Pico**, using its STM32F401 ARM Cortex-M4F build;
+- **MDBT42Q**, using its nRF52832 ARM Cortex-M4F build;
+- **ESP32-C3**, representing the 32-bit RISC-V ESP-IDF build; and
+- **one Xtensa ESP32 target**, selected from the original ESP32 or ESP32-S3 and
+  identified in the test report.
+
+The Pico and MDBT42Q MUST be assessed separately despite sharing the ARM
+instruction set. They exercise different vendor integration, linker and memory
+layouts, Espruino configurations, and available resource envelopes. The
+MDBT42Q is the primary constrained-RAM target; the Pico additionally provides
+the constrained-flash STM32 build. ESP32-C3 and the selected Xtensa target are
+separate architecture qualifications and MUST NOT substitute for one another.
+
+Each candidate product target MUST at least pass the common machine-behaviour
+and native-format suite, callback integration using JavaScript and native
+functions, representative pin/timer actions, exception and allocation-failure
+paths feasible on that target, save/restoration tests where the host provides
+`save()`, and the resource and timing measurements required below. A target
+remains Build verified or Not yet verified until all applicable evidence for
+Conformance verified has been recorded.
+
+ESP8266, nRF51, nRF54/Zephyr, Emscripten, big-endian processors, and other
+Espruino boards are not Version 1 qualification targets. The portable-C rules
+deliberately leave room for later ports, but Version 1 MUST NOT imply support
+for those targets without adding them to this matrix and collecting the
+required evidence.
 
 ## Validation and Error Behavior
 
@@ -1957,8 +2222,8 @@ feature MUST cause construction to fail. In particular, construction MUST NOT
 silently reinterpret a misspelled property such as `intial` or `gaurd`, and
 MUST explicitly reject version 1 exclusions including parallel states,
 history states, invocation, delayed transitions, eventless transitions,
-activities, output values, tags, actor definitions, persistence and restored
-state, and custom state-path delimiters.
+activities, output values, tags, actor definitions, XState-style actor
+persistence and restored-snapshot input, and custom state-path delimiters.
 
 Profile 1 defines the following narrow exceptions for inert output generated
 by the examined Stately v4 and v5 exporters or accepted current XState
@@ -2084,15 +2349,16 @@ formatting. Defined positions include `createActor.machine`,
 `createActor.options`, `actor.<method>.this`, `actor.start`,
 `actor.start.context`, `actor.send`, `actor.send.event`,
 `actor.send.event.type`, `actor.<operation>.assign`, `actor.stop`,
-`actor.getSnapshot`, and `actor.subscribe.listener`. The position and optional
-detail follow the same bounded construction and 48-byte detail limit specified
-above.
+`actor.getSnapshot`, `actor.subscribe.listener`, `snapshot.matches.this`, and
+`subscription.unsubscribe.this`. The position and optional detail follow the
+same bounded construction and 48-byte detail limit specified above.
 
 Version 1 defines these runtime categories:
 
 ```text
 E_MACHINE_INVALID
 E_ACTOR_INVALID
+E_RECEIVER_INVALID
 E_ACTOR_STATE
 E_ACTOR_BUSY
 E_ACTOR_FAULTED
@@ -2115,6 +2381,8 @@ Their meanings are:
   compatible Xstate-fsm-c compiled machine;
 - `E_ACTOR_INVALID`: an actor method's receiver is not its live compatible
   actor;
+- `E_RECEIVER_INVALID`: a snapshot or subscription method's receiver is not
+  its originating compatible object;
 - `E_ACTOR_STATE`: the requested operation is invalid in the actor's current
   non-faulted lifecycle state;
 - `E_ACTOR_BUSY`: a prohibited re-entrant lifecycle or dispatch call was made;
@@ -2141,6 +2409,8 @@ normal JavaScript `Error`. Representative messages are:
 ```text
 XFC E_MACHINE_INVALID @ createActor.machine
 XFC E_ACTOR_INVALID @ actor.send.this
+XFC E_RECEIVER_INVALID @ snapshot.matches.this
+XFC E_RECEIVER_INVALID @ subscription.unsubscribe.this
 XFC E_ACTOR_STATE @ actor.send: status=notStarted
 XFC E_ACTOR_BUSY @ actor.send: operation=send
 XFC E_ACTOR_FAULTED @ actor.start
@@ -2159,15 +2429,15 @@ the applicable rule faults the actor, the error snapshot MUST retain that same
 value by identity.
 
 An error detected completely at the public boundary MUST NOT fault an otherwise
-usable actor. This includes an invalid machine or actor handle, unsupported
-actor options, invalid event input, invalid listener input, lifecycle-state
-misuse, a rejected re-entrant call, failure to allocate a subscription
-registration, and failure to materialise a snapshot requested only by
-`getSnapshot()`. The failing call throws, but no pending machine operation has
-begun. An `E_ACTOR_BUSY` rejection does not itself fault the actor; if that
-rejection escapes from an action or other application callback in the operation
-already in progress, the separately specified callback-exception rule still
-applies to that enclosing operation.
+usable actor. This includes an invalid machine, actor, snapshot, or subscription
+handle, unsupported actor options, invalid event input, invalid listener input,
+lifecycle-state misuse, a rejected re-entrant call, failure to allocate a
+subscription registration, and failure to materialise a snapshot requested
+only by `getSnapshot()`. The failing call throws, but no pending machine
+operation has begun. An `E_ACTOR_BUSY` rejection does not itself fault the
+actor; if that rejection escapes from an action or other application callback
+in the operation already in progress, the separately specified
+callback-exception rule still applies to that enclosing operation.
 
 An engine-created failure after a lifecycle or dispatch operation has begun
 MUST abort that operation and fault the actor. This includes an invalid runtime
@@ -2248,7 +2518,189 @@ version 1 requirement.
 
 ## Conformance Requirements
 
-To be defined.
+### Authority and evidence
+
+This specification is the normative authority for Profile 1. Reviewed expected
+results in the Profile 1 conformance corpus are executable statements of this
+specification, but a conflict MUST be resolved in favour of the specification
+and the affected expected result MUST be corrected through review.
+
+Pinned Node XState releases, Stately-generated examples, XState v4.38.3,
+FSMPlus traces, and applicable SCXML tests are compatibility evidence. They
+MUST NOT silently add, remove, or change a Profile 1 requirement. The exact
+package version or source revision used as evidence MUST be recorded; an
+unpinned dependency such as `latest` MUST NOT produce release evidence.
+
+The conformance corpus MUST distinguish:
+
+- **Profile 1 normative cases**, whose expected results are derived from this
+  specification;
+- **XState differential cases**, which execute semantically equivalent models
+  in a pinned Node XState release;
+- **intentional-difference cases**, which demonstrate both the reference
+  behaviour and the specified Profile 1 behaviour;
+- **native implementation cases**, for which Node XState has no equivalent;
+  and
+- **legacy evidence**, including existing FSMPlus and XState v4 traces that
+  have not been adopted as Profile 1 expectations.
+
+Legacy examples MUST NOT become normative merely by being copied into the new
+test tree. Any adopted example MUST be reviewed against Profile 1, assigned a
+stable case identifier, and given an explicit expected result.
+
+### Requirement traceability
+
+Every normative `MUST` or `MUST NOT` in this specification MUST be covered by
+at least one of:
+
+- an automated public-behaviour test;
+- an automated validation, fault-injection, or native-format test;
+- a build or static-inspection check; or
+- a recorded resource, stack, or timing measurement.
+
+The conformance matrix MUST link each requirement to its evidence and each test
+to the specification section it exercises. Test cases MUST use stable
+identifiers, using the `XFC-CF-<AREA>-<NUMBER>` form. A test that cannot run on
+a target MUST report a reasoned skip and MUST NOT count as a pass for that
+requirement.
+
+Each machine-behaviour case MUST identify its machine definition, ordered
+input operations, reviewed expected trace, applicable targets, and reference
+classification. A differential case MUST additionally identify the reference
+engine version and every source adaptation needed to make the models
+semantically equivalent.
+
+### Node XState differential execution
+
+Every Profile 1 requirement describing externally observable statechart
+behaviour MUST have a differential comparison with a pinned Node XState
+release unless the case is explicitly classified as Profile-specific, an
+intentional compatibility difference, or having no equivalent public XState
+behaviour. The reason for any such exclusion MUST be recorded.
+
+The initial conformance corpus MUST pin `xstate@5.33.2` as the primary reference
+for semantics shared with Profile 1 and `xstate@4.38.3` as the secondary
+reference for retained v4 features and migration syntax. The repository's
+archived v4.38.3 source MAY satisfy the latter pin. XState v4 results MUST NOT
+be used as the expected Profile 1 result where the releases differ, including
+default self-transition re-entry behaviour. Updating either reference version
+MUST be a reviewed evidence change and MUST NOT silently rewrite accepted
+expected traces.
+
+Equivalent reference models MAY differ textually from the Profile 1 model.
+Permitted adaptations include `guard` to `cond`, `reenter` to `internal`,
+callback argument shape, assignment syntax, imports, and actor lifecycle API.
+The harness MUST record each adaptation. It MUST NOT adapt the state topology,
+event sequence, guard decisions, intended context changes, or intended action
+ordering merely to make traces agree.
+
+Differential coverage MUST include, where applicable:
+
+- ordered transition candidates, guards, parent fallback, and exact-event and
+  wildcard selection;
+- exit, transition, and entry action ordering;
+- ordered assignment, context visibility, and context isolation between actor
+  instances;
+- startup, initial-state descent, initial-transition actions, and initial
+  context creation;
+- targetless, self, re-entering, relative, explicit-ID, descendant, ancestor,
+  sibling, and cross-hierarchy transitions;
+- final states, `onDone`, completion cascades, and final actor status;
+- string and object event visibility; and
+- committed snapshots and subscription notification timing.
+
+Hierarchy cases MUST include shallow and generated deep models, transitions at
+several ancestry levels, least-common-ancestor exit and entry paths, and depths
+at and immediately around the Profile 1 limit. Only supported depths are
+required to match XState execution; rejection beyond the limit is a
+Profile-specific validation case.
+
+Reference actions MUST record observable action order and reference guards
+MUST record or otherwise prove their decisions without changing the model's
+semantics. The reference output MUST be normalized into the common trace form,
+reviewed, and committed with the case. Embedded targets compare against that
+reviewed result and do not run Node. A reference-engine update or mismatch
+MUST trigger review; tooling MUST NOT automatically replace an accepted
+expected trace.
+
+### Test layers
+
+The Version 1 suite MUST cover these layers:
+
+- **Public behaviour**: construction, actor lifecycle, events, transition
+  selection, actions, context, snapshots, subscriptions, completion, and
+  faults through the documented JavaScript API.
+- **Construction validation**: every accepted grammar form, each strictness
+  rule, target resolution, diagnostic category and object-graph position, and
+  transactional cleanup after rejection.
+- **Runtime failure**: callback exceptions, allocation failure, limits, busy
+  actors, subscriber failure, and the specified post-fault lifecycle.
+- **Native format**: record encoding and decoding, bounds checks, malformed or
+  corrupted arena data, byte-order rejection, and index and offset limits.
+- **Host integration**: JavaScript and native callbacks, GC ownership, save and
+  restoration, reset, interrupt restrictions, representative pins and timers,
+  and nested calls between different actors.
+- **Resources**: attributable flash, arena and Espruino variable-block use,
+  construction and dispatch stack use, and representative construction and
+  dispatch timing.
+- **Compatibility**: pinned Node differential cases, Stately-generated input,
+  migration aliases, intentional differences, and reviewed legacy evidence.
+
+Public-behaviour tests MUST use only the documented public interface. Internal
+test seams MAY be compiled into test builds for deterministic allocation
+failure, arena corruption, and similar faults that cannot be induced reliably
+through that interface. Such seams MUST NOT alter production behaviour or be
+present in a release build.
+
+### Canonical trace
+
+Portable behaviour tests MUST emit a versioned, newline-delimited JSON trace.
+Each line MUST be one complete JSON object and MUST be emitted as the observed
+operation occurs; an embedded runner MUST NOT retain the complete trace in RAM.
+The trace vocabulary MUST represent at least case identity, public calls,
+actions, selected context observations, committed snapshots, errors, explicit
+assertions, and the final test result.
+
+State configurations MUST be represented structurally in JSON and MUST NOT be
+flattened into ambiguous period-separated paths. Raw JSON object-property order
+MUST NOT affect comparison; the host comparator MUST parse and canonicalize
+records before comparing them. Array order and the order of trace records
+remain significant.
+
+The trace format MUST NOT require arbitrary application context to be JSON
+serializable. A test involving functions, cycles, native objects, or object
+identity MUST emit a case-defined serializable projection or explicit boolean
+assertion. Values such as timestamps, addresses, allocation identifiers, or
+platform-specific exception text MUST NOT appear in a portable expected trace
+unless the case explicitly tests them.
+
+Existing plain-text FSMPlus traces remain legacy evidence and MUST NOT be used
+as the canonical Profile 1 trace format without reviewed conversion.
+
+### Conformance result
+
+A test run MUST record the implementation revision and the build and target
+metadata required by Compiler and target contract. Results MUST identify every
+pass, failure, and reasoned skip. A run is conforming for its declared scope
+only when:
+
+- all applicable normative cases match their reviewed expected results;
+- all applicable validation and negative-path cases pass;
+- there is no unexpected assertion, sanitizer finding, arena corruption,
+  leaked busy state, or unhandled diagnostic;
+- required physical host-integration cases pass; and
+- required resource, timing, and maximum-stack observations are recorded.
+
+Resource observations do not constitute a pass merely because the program
+completed. They MUST be assessed against the fixed limits in this
+specification and the available memory and watchdog constraints of the target.
+The first vertical-slice report MUST explicitly retain or revise the
+provisional hierarchy-depth and microstep limits as required under Resource and
+Performance Requirements.
+
+The status **Conformance verified** applies only under the target criteria in
+Version 1 target and test matrix. Passing the Node or Linux semantic suite does
+not by itself qualify a physical Espruino target.
 
 ## Design References
 
@@ -2290,5 +2742,10 @@ notes above but is not itself normative for Xstate-fsm-c.
 
 ## Open Questions
 
-No individual design questions are currently recorded here. Broader unfinished
-areas remain identified by their specification headings.
+No unresolved Profile 1 design questions are currently recorded.
+
+The hierarchy-depth limit, microstep budget, native physical layout, and stack
+reserve retain their specified measurement and review gates. Those gates are
+implementation evidence required from the first vertical slice rather than
+undefined Version 1 semantics. Features explicitly excluded by Scope are
+possible subjects for later profiles and are not open Profile 1 requirements.

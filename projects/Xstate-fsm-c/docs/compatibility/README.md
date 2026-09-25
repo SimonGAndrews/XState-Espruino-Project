@@ -17,10 +17,10 @@ one establishes for Xstate-fsm-c Profile 1.
 
 ## Further Scope-boundary Examples
 
-After the core profile is settled, small examples should be captured for
-eventless transitions, delayed transitions, invoked actors, history states,
-and parallel states. These are scope-boundary examples: they may establish a
-required construction-time rejection rather than a supported feature.
+Before the conformance corpus is complete, small examples should be captured
+for eventless transitions, delayed transitions, invoked actors, history states,
+and parallel states. These are scope-boundary examples: they establish required
+construction-time rejection rather than support in Profile 1.
 
 Every example should retain the unmodified v4 and v5 exports when both are
 available. GUI limitations, manual-import round trips, and hand-authored XState
