@@ -12,18 +12,19 @@ direction relates to the Stage 1 and FSMPlus projects.
 ## Status
 
 The Profile 1 specification is an implementation candidate. The M3
-construction vertical slice is implemented and verified on Linux: the
-supported hierarchical subset compiles transactionally into the native arena,
-with GC-visible retained values and categorized diagnostics. Actor execution
-and runtime behaviour have not started. The specification defines the
+construction and M4 actor-execution vertical slices are implemented and
+verified on Linux. The supported hierarchical subset compiles transactionally
+into the native arena and executes through the actor lifecycle, dispatch,
+actions, ordered assignment, stable snapshots, subscriptions, controlled
+stop, and callback-fault paths. The specification defines the
 supported feature scope, XState compatibility direction, native indexed arena,
 actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
 conformance strategy.
 
-The next code milestone is the M4 actor-execution vertical slice on Linux
-Espruino. The completed construction and execution slices must then measure the
-provisional native layout, hierarchy-depth and microstep limits, stack reserve,
+The next milestone is the M5 resource and timing evidence gate. The completed
+construction and execution slices must now measure the provisional native
+layout, hierarchy-depth and microstep limits, stack reserve,
 flash, RAM, and timing before the physical format is frozen or the full
 implementation proceeds.
 

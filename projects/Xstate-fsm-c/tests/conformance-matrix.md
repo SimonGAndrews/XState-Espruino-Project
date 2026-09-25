@@ -4,7 +4,7 @@
 
 - Matrix status: Scaffolded
 - Requirement inventory: Not yet complete
-- Implemented cases: M1-M3 foundation and construction cases listed below
+- Implemented cases: M1-M4 foundation, construction, and actor cases below
 - Normative authority: [Profile 1 specification](../docs/specification.md)
 
 The specification requires every normative `MUST` and `MUST NOT` to link to an
@@ -66,9 +66,14 @@ requirement inventory before Profile 1 completion can be claimed.
 | `XFC-CF-CONTEXT-002` | Construction: literal context and property-map `assign` retain the required JavaScript values and resolved indexes | Profile 1 normative slice | [Decoded retained values and assignment records](results/linux/2026-09-25-construction.json) | Linux, physical targets | Linux: Pass; physical: Planned |
 | `XFC-CF-DIAG-001` | Validation and Error Behavior: construction failures expose a stable category and object-graph path | Profile 1 normative slice | [Construction diagnostic cases](results/linux/2026-09-25-construction.json) | Linux, physical targets | Linux: Pass; physical: Planned |
 | `XFC-CF-HOST-001` | Ownership: compiled-machine values remain GC-visible and temporary construction values are released on success and tested failures | Profile 1 normative slice | [Espruino memory cleanup checks](results/linux/2026-09-25-construction.json) | Linux, physical targets | Linux: Pass; physical: Planned |
-| `XFC-CF-TRANS-001` | Construction and Runtime: hierarchical initial descent and indexed transition execution | XState differential | Profile 1 trace plus `xstate@5.33.2` reference | Linux, physical targets | Planned |
-| `XFC-CF-ACTION-001` | Runtime Semantics: exit, transition, and entry actions execute in specified order | XState differential | Ordered action trace | Linux, physical targets | Planned |
-| `XFC-CF-CONTEXT-001` | Runtime Semantics: `assign` executes at its declared position with ordered visibility | Intentional difference/compatibility | Profile 1, v5, and applicable v4 reference traces | Linux, physical targets | Planned |
+| `XFC-CF-LIFE-001` | Actor Lifecycle: private actor allocation, start/send/controlled stop states, busy rejection, and fault terminality for the M4 slice | Profile 1 normative slice | [Actor lifecycle and fault tests](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-TRANS-001` | Construction and Runtime: hierarchical initial descent, parent fallback, ordered guards, native indexed dispatch, transition domains, and re-entry | Profile 1 normative slice | [Reviewed hierarchical runtime trace](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-ACTION-001` | Runtime Semantics: exit, transition, and entry actions execute in specified order and escaping callback exceptions fault transactionally | Profile 1 normative slice | [Ordered action and fault traces](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-CONTEXT-001` | Runtime Semantics: initial context factories and `assign` execute at their declared positions with ordered visibility and committed-context rollback | Intentional difference/compatibility | [Profile 1 runtime and fault traces](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-SNAP-001` | Stable Snapshots: status, hierarchical value, context, `matches`, lazy identity, and retained diagnostic state for the M4 slice | Profile 1 normative slice | [Snapshot checks](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-SUB-001` | Snapshot Subscriptions: ordered notification, unhandled events, mutation during notification, listener exceptions, and automatic stop removal | Profile 1 normative slice | [Subscription tests](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-DIAG-002` | Runtime diagnostics: invalid events and receivers, busy/state/fault categories, callback exception identity, and contextual paths for tested M4 operations | Profile 1 normative slice | [Runtime negative-path tests](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
+| `XFC-CF-HOST-002` | Host representation: shared native methods, private GC-visible actor graph, and zero retained test records after runtime cleanup | Profile 1 normative slice | [M4 runtime and cleanup record](results/linux/2026-09-25-actor-runtime.json) | Linux, physical targets | Linux: Pass; physical: Planned |
 | `XFC-CF-RESOURCE-001` | Resource Requirements: enabled firmware-size increase is recorded against an identical disabled build | Resource measurement | Build artifacts and linker-map report | Linux, each physical target | Planned |
 | `XFC-CF-LIMIT-001` | Resource Requirements: hierarchy depth 32 and rejection at 33 are measured and tested | Profile-specific limit | Generated boundary cases and stack report | Linux, MDBT42Q | Planned |
 | `XFC-CF-LIMIT-002` | Resource Requirements: microstep budget 256 is measured and enforced | Profile-specific limit | Completion-chain boundary cases and timing report | Linux, MDBT42Q | Planned |

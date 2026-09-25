@@ -29,3 +29,6 @@ The M2 native-format suite is recorded in the
 The M3 machine-construction, arena-decoding, diagnostic-path, source-isolation,
 and cleanup checks are recorded in the
 [Linux construction result](results/linux/2026-09-25-construction.json).
+The M4 hierarchical actor trace, runtime fault paths, subscription ordering,
+snapshot behaviour, and cleanup checks are recorded in the
+[Linux actor-runtime result](results/linux/2026-09-25-actor-runtime.json).

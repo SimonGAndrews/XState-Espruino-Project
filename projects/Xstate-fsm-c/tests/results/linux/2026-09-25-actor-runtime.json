@@ -1,0 +1,109 @@
+{
+  "kind": "xfsm-actor-runtime-linux-test",
+  "date": "2026-09-25",
+  "caseIds": [
+    "XFC-CF-LIFE-001",
+    "XFC-CF-TRANS-001",
+    "XFC-CF-ACTION-001",
+    "XFC-CF-CONTEXT-001",
+    "XFC-CF-SNAP-001",
+    "XFC-CF-SUB-001",
+    "XFC-CF-DIAG-002",
+    "XFC-CF-HOST-002"
+  ],
+  "xstateEspruinoProjectRevision": "7e7c591",
+  "specificationVersion": "0.48",
+  "espruinoRevision": "c6505437a",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Linux",
+  "board": "LINUX",
+  "host": {
+    "architecture": "x86_64",
+    "pointerBits": 64,
+    "byteOrder": "little-endian"
+  },
+  "toolchain": {
+    "cc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "language": "C99"
+  },
+  "runtimeSuite": {
+    "buildCommand": "make clean && make USE_XFSM=1 -j2",
+    "tests": [
+      {
+        "command": "bin/espruino --test libs/xfsm/tests/test_shell.js",
+        "observed": "pass; actor surface and initial snapshot; zero retained memory records after GC"
+      },
+      {
+        "command": "bin/espruino --test libs/xfsm/tests/test_compile.js",
+        "observed": "pass; construction regression; zero retained memory records after GC"
+      },
+      {
+        "command": "bin/espruino --test libs/xfsm/tests/test_diagnostics.js",
+        "observed": "pass; construction diagnostics regression; zero retained memory records after GC"
+      },
+      {
+        "command": "bin/espruino --test libs/xfsm/tests/test_runtime.js",
+        "observed": "pass; reviewed hierarchical action/context/snapshot trace; zero retained memory records after GC"
+      },
+      {
+        "command": "bin/espruino --test libs/xfsm/tests/test_runtime_errors.js",
+        "observed": "pass; callback, listener, busy, fault, event, and receiver paths; zero retained memory records after GC"
+      },
+      {
+        "command": "bin/espruino --test libs/xfsm/tests/test_subscriptions.js",
+        "observed": "pass; ordered mutation, unhandled event, stop notification, and automatic removal; zero retained memory records after GC"
+      }
+    ],
+    "result": "pass"
+  },
+  "representativeTrace": {
+    "initial": "{ Parent: ChildA }",
+    "operations": [
+      "start",
+      "GO guarded ChildA to ChildB with ordered assign",
+      "PING targetless",
+      "AGAIN non-reentering targeted self-transition",
+      "RESTART explicitly re-entering self-transition",
+      "OUT parent fallback to Outside",
+      "BACK to Parent initial ChildA",
+      "stop"
+    ],
+    "validated": [
+      "root-to-leaf startup entry",
+      "ordered false and true guard candidates",
+      "leaf-to-domain exits",
+      "transition actions before domain-to-leaf entries",
+      "positional context visibility around assign",
+      "hierarchical snapshot values and partial matches",
+      "snapshot reuse when state, context, and status are unchanged",
+      "subscriber notification after stable publication",
+      "leaf-to-root explicit-stop exits"
+    ]
+  },
+  "negativePaths": [
+    "escaping action exception retains exact value and last stable snapshot",
+    "escaping same-actor re-entrant send reports E_ACTOR_BUSY and faults the outer action",
+    "listener exception continues remaining listeners and does not fault actor",
+    "invalid event reports E_EVENT_INVALID without dispatch",
+    "borrowed actor method reports E_ACTOR_INVALID",
+    "send to faulted actor reports E_ACTOR_FAULTED"
+  ],
+  "regressions": {
+    "nativeCommand": "make -C libs/xfsm/tests/native clean test",
+    "nativeObserved": "PASS 66 XFSM native checks; no sanitizer finding",
+    "disabledBuildCommand": "make clean && make -j2",
+    "disabledBuildResult": "pass"
+  },
+  "implementationTests": [
+    "libs/xfsm/tests/test_shell.js",
+    "libs/xfsm/tests/test_compile.js",
+    "libs/xfsm/tests/test_diagnostics.js",
+    "libs/xfsm/tests/test_runtime.js",
+    "libs/xfsm/tests/test_runtime_errors.js",
+    "libs/xfsm/tests/test_subscriptions.js"
+  ],
+  "report": "docs/reports/2026-09-25-linux-actor-runtime.md",
+  "result": "pass",
+  "scope": "M4 actor execution for the M3 hierarchical construction subset. Final states, completion cascades, the remaining Profile 1 grammar, M5 resource qualification, and physical-target conformance are not claimed."
+}

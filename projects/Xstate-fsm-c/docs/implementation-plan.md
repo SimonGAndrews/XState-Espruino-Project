@@ -3,7 +3,7 @@
 ## Status
 
 - Plan status: Initial implementation baseline
-- Current milestone: M4 - actor execution vertical slice; M0 requirement
+- Current milestone: M5 - first vertical-slice evidence; M0 requirement
   inventory remains open
 - Normative authority: [Profile 1 specification](specification.md)
 - Physical format: [Native Format Version 1](native-format-v1.md)

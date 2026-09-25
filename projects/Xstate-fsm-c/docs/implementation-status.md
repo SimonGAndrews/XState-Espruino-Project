@@ -1,11 +1,11 @@
 # Xstate-fsm-c Implementation Status
 
 - Last reviewed: 2026-09-25
-- Overall status: M3 construction vertical slice verified on Linux
-- Current milestone: M0 evidence completion and M4 actor execution
-- Implementation code status: Transactional machine compiler and native-format
-  foundation; actor API remains controlled
-- Next gate: Actor execution vertical slice
+- Overall status: M4 actor execution vertical slice verified on Linux
+- Current milestone: M0 evidence completion and M5 resource evaluation
+- Implementation code status: Transactional machine compiler and native actor
+  runtime for the M4 hierarchical slice
+- Next gate: First vertical-slice resource and timing evidence
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md).
@@ -22,11 +22,11 @@ criteria are in the [Implementation Plan](implementation-plan.md).
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `80d424772d08bbeb713288b1b1cad5b262cdfe9a` |
+| Current implementation HEAD | `c6505437a` |
 | Canonical source path | `libs/xfsm/` |
 
-The branch is one local commit ahead of its tracked remote. The M2 branch push
-was confirmed on 2026-09-25; the M3 implementation commit has not been pushed.
+The branch is one local M4 commit ahead of its tracked remote. The M3 revision
+was confirmed pushed before M4 work began.
 
 ## Completed Foundation Work
 
@@ -65,24 +65,37 @@ was confirmed on 2026-09-25; the M3 implementation commit has not been pushed.
   category and object-graph path checks.
 - Three Espruino construction tests pass with zero retained memory records
   after test cleanup and garbage collection.
+- Actor objects use interpreter-owned private brands, a 16-byte native actor
+  block, hidden GC-visible ownership, and shared private native prototypes.
+- `start`, `send`, `stop`, `getSnapshot`, and `subscribe` execute against M3
+  native records without returning to the source configuration.
+- Hierarchical initial descent, parent fallback, ordered guards, transition
+  domains, re-entry, action ordering, context factories, and ordered
+  assignments pass the representative Linux trace.
+- Stable hierarchical snapshots, `matches`, snapshot identity rules, ordered
+  subscription mutation, unhandled-event notification, controlled stop, and
+  callback exception paths pass focused Linux tests.
+- Six Espruino tests pass with zero retained memory records after cleanup and
+  garbage collection; the disabled build and 66-check sanitizer suite remain
+  green.
 
 ## Current Work
 
-The M3 construction exit gate is satisfied on Linux. M0's full normative
-requirement inventory remains documentation work; the next code work is the M4
-actor-execution vertical slice.
+The M4 actor-execution exit gate is satisfied on Linux. M0's full normative
+requirement inventory remains documentation work; the next implementation
+gate is M5 measurement of the combined construction and execution slice.
 
 Immediate tasks:
 
 1. expand the conformance matrix into the initial normative requirement
    inventory;
-2. define the M4 representative execution trace and expected snapshots;
-3. implement actor allocation, branding, lifecycle, and controlled stop;
-4. implement initial descent, event dispatch, guards, and transition-domain
-   traversal against the M3 arena;
-5. execute ordered user actions and context assignments, then publish stable
-   snapshots and subscriber notifications; and
-6. push the reviewed Espruino and umbrella commits when requested.
+2. measure enabled/disabled flash size and representative arena, actor,
+   snapshot, and subscription costs;
+3. measure local, guarded, parent-fallback, and unhandled dispatch timing;
+4. measure coordinator stack and hierarchy traversal at representative depths;
+5. use the results to re-evaluate the provisional arena, depth 32, and the
+   256-microstep budget; and
+6. push the reviewed Espruino and umbrella commits.
 
 ## Open Issues And Blockers
 
@@ -112,7 +125,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 
 | Target | Current status | Latest evidence |
 | --- | --- | --- |
-| Linux Espruino | Build verified | [M3 construction report](reports/2026-09-25-linux-construction.md) |
+| Linux Espruino | Build verified | [M4 actor-runtime report](reports/2026-09-25-linux-actor-runtime.md) |
 | Espruino Pico | Not yet verified | None |
 | MDBT42Q | Not yet verified | None |
 | ESP32-C3 | Not yet verified | None |
@@ -125,6 +138,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-25 | M4 actor execution vertical slice committed at `c6505437a`; hierarchical runtime, actions, assignments, stable snapshots, subscriptions, fault paths, enabled/disabled builds, GC cleanup, and native sanitizer regression passed |
 | 2026-09-25 | M3 construction vertical slice committed at `80d424772`; clean enabled/disabled builds, three Espruino tests, decoded records, diagnostics, source independence, GC cleanup, and the native sanitizer regression passed |
 | 2026-09-25 | M2 native-format foundation committed at `d4860d07a`; 66 strict sanitizer checks and enabled/disabled Linux regression builds passed |
 | 2026-09-25 | M1 optional-library shell committed at `225e55fba`; Linux disabled/enabled builds and module smoke tests passed |

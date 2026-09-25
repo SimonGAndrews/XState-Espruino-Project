@@ -29,18 +29,17 @@ only after review against the receiving project's contract.
 
 Xstate-fsm-c Profile 1 is the active specification-led development effort. Its
 design is an implementation candidate, no unresolved Profile 1 design questions
-are recorded, and its M2 native-format foundation is sanitizer-verified on
-Linux. Machine construction and runtime behaviour have not started. Current
-revisions, progress, and next tasks are recorded in its
+are recorded, and its M3 construction and M4 actor-execution slices are
+verified on Linux. Current revisions, progress, and next tasks are recorded in
+its
 [implementation status](../projects/Xstate-fsm-c/docs/implementation-status.md).
 
-The next code step is the M3 transactional construction vertical slice,
-followed by actor execution on Linux Espruino. The completed slice must exercise
-construction and execution through the native C engine and Espruino wrapper,
-then produce the required resource, layout, stack, limit, and timing evidence
-before the native physical format is frozen or the full implementation
-proceeds. Espruino Pico, MDBT42Q, ESP32-C3, and an Xtensa ESP32 provide the
-initial physical qualification matrix after the Linux host.
+The next implementation step is the M5 evidence gate. The completed vertical
+slice now exercises construction and execution through the native C engine and
+Espruino wrapper; it must next produce the required resource, layout, stack,
+limit, and timing evidence before the native physical format is frozen or the
+full implementation proceeds. Espruino Pico, MDBT42Q, ESP32-C3, and an Xtensa
+ESP32 provide the initial physical qualification matrix after the Linux host.
 
 Canonical implementation code is developed under `libs/xfsm/` in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).

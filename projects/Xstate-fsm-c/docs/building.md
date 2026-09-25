@@ -2,11 +2,11 @@
 
 ## Status
 
-- Build-document status: Linux construction, firmware, and native-format
-  sanitizer builds verified
+- Build-document status: Linux construction, actor runtime, firmware, and
+  native-format sanitizer builds verified
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `80d424772d08bbeb713288b1b1cad5b262cdfe9a`
+- Current implementation revision: `c6505437a`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -115,12 +115,23 @@ bin/espruino --test libs/xfsm/tests/test_compile.js
 bin/espruino --test libs/xfsm/tests/test_diagnostics.js
 ```
 
-At revision `80d424772`, all three JavaScript tests passed and each returned
-to zero retained memory records after garbage collection. The construction
+Verify the M4 actor execution slice with:
+
+```bash
+bin/espruino --test libs/xfsm/tests/test_runtime.js
+bin/espruino --test libs/xfsm/tests/test_runtime_errors.js
+bin/espruino --test libs/xfsm/tests/test_subscriptions.js
+```
+
+At revision `c6505437a`, all six JavaScript tests passed and each returned to
+zero retained memory records after garbage collection. The construction
 result is recorded in
 [the Linux construction result](../tests/results/linux/2026-09-25-construction.json)
-and interpreted in the
-[construction report](reports/2026-09-25-linux-construction.md).
+and the runtime result is recorded in
+[the Linux actor-runtime result](../tests/results/linux/2026-09-25-actor-runtime.json).
+They are interpreted in the [construction
+report](reports/2026-09-25-linux-construction.md) and [actor-runtime
+report](reports/2026-09-25-linux-actor-runtime.md).
 
 The shell-size comparison and its limitations are explained in the
 [Linux library-shell report](reports/2026-09-25-linux-library-shell.md).
@@ -136,7 +147,7 @@ cd "$ESPRUINO_XFSM_ROOT"
 make -C libs/xfsm/tests/native clean test
 ```
 
-At revisions `d4860d07a` and `80d424772`, GCC 13.3.0 compiled the C99 suite
+At revisions `d4860d07a`, `80d424772`, and `c6505437a`, GCC 13.3.0 compiled the C99 suite
 with strict warnings promoted to errors and all 66 checks passed without a
 sanitizer finding. The result is recorded in the
 [native-format result](../tests/results/linux/2026-09-25-native-format.json)
