@@ -1,0 +1,90 @@
+{
+  "kind": "xfsm-m6-lifecycle-subscribers-linux",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-LIFE-001",
+    "XFC-CF-SUB-001",
+    "XFC-CF-ACTION-001",
+    "XFC-CF-DIAG-002"
+  ],
+  "xstateEspruinoProjectRevision": "f7fe0f32189e39ca323563183fd98405f4f49d13",
+  "specificationVersion": "0.50",
+  "implementationRevision": "2b31e01c0a436257a60b4e755b111cd040e5ce8c",
+  "implementationState": "committed M6 lifecycle and host-integration implementation",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "compiler": "GCC 13.3.0",
+  "buildChecks": {
+    "disabledCommand": "env -u DEBUG make clean && env -u DEBUG make USE_XFSM=0 -j2",
+    "disabledResult": "pass",
+    "disabledSymbolCheck": "pass: no XFSM runtime symbols in bin/espruino",
+    "enabledCommand": "env -u DEBUG make clean && env -u DEBUG make USE_XFSM=1 -j2",
+    "enabledResult": "pass"
+  },
+  "semanticCommand": "bin/espruino --test libs/xfsm/tests/<suite>.js",
+  "semanticTests": {
+    "test_shell.js": "pass",
+    "test_compile.js": "pass",
+    "test_diagnostics.js": "pass",
+    "test_runtime.js": "pass",
+    "test_completion.js": "pass",
+    "test_completion_cascade.js": "pass",
+    "test_targets.js": "pass",
+    "test_events_migration.js": "pass",
+    "test_profile1_diagnostics.js": "pass",
+    "test_context_ownership.js": "pass",
+    "test_assign_forms.js": "pass",
+    "test_context_diagnostics.js": "pass",
+    "test_transition_domains.js": "pass",
+    "test_transition_depth.js": "pass",
+    "test_lifecycle_complete.js": "pass",
+    "test_subscriber_complete.js": "pass",
+    "test_runtime_errors.js": "pass",
+    "test_subscriptions.js": "pass"
+  },
+  "lifecycleCoverage": {
+    "notStartedActiveDoneStoppedMatrix": "pass",
+    "busyStartSendStopFromAction": "pass",
+    "busyStartSendStopFromActiveNotification": "pass",
+    "busyStartSendStopFromDoneNotification": "pass",
+    "busyStartSendStopFromStoppedNotification": "pass",
+    "escapingBusyExceptionFaultsOuterOperation": "pass",
+    "guardExitEntryStopExitAndStartupEntryFaults": "pass",
+    "exactThrownValueAndTransactionalRollback": "pass",
+    "postFaultLifecycleRejection": "pass",
+    "invalidBorrowedActorReceivers": "pass"
+  },
+  "subscriptionCoverage": {
+    "exactlyOneCallableListener": "pass",
+    "observerObjectsAndExtraArgumentsRejected": "pass",
+    "orderedNotificationAndSnapshotIdentity": "pass",
+    "selfAndOtherUnsubscribe": "pass",
+    "listenerAddedDuringNotificationDeferred": "pass",
+    "duplicateRegistrationsIndependent": "pass",
+    "allListenersRunBeforeFirstThrownValueEscapes": "pass",
+    "listenerFailureLeavesActorCommittedAndUsable": "pass",
+    "doneAndStoppedAutomaticRemoval": "pass",
+    "inactiveTerminalSubscription": "pass",
+    "invalidBorrowedAndDetachedUnsubscribe": "pass"
+  },
+  "xstateDifferential": {
+    "nodeVersion": "20.15.0",
+    "xstateV5Version": "5.33.2",
+    "command": "npm ci --ignore-scripts && node verify-reference.mjs in tests/reference/xstate-v5",
+    "result": "pass"
+  },
+  "xstateV4Regression": {
+    "version": "4.38.3",
+    "command": "npm ci --ignore-scripts && node verify-reference.mjs in tests/reference/xstate-v4",
+    "result": "pass"
+  },
+  "nativeSanitizer": {
+    "command": "make -C libs/xfsm/tests/native clean test",
+    "checks": 66,
+    "result": "pass"
+  },
+  "retainedRecordsAfterGcPerSemanticSuite": 0,
+  "relatedEsp32BuildEvidence": "../esp32-xtensa/2026-09-27-m6-lifecycle-subscribers-build.json",
+  "result": "pass",
+  "scope": "M6 lifecycle, fault, busy-actor, and subscriber behavior on Linux. Physical targets and later M6 save/reset, cross-actor, strict-validation, and allocation-fault work are outside this result."
+}

@@ -1,0 +1,80 @@
+{
+  "kind": "xfsm-m6-host-lifecycle-esp32",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-HOST-001",
+    "XFC-CF-HOST-002",
+    "XFC-CF-HOST-003",
+    "XFC-CF-HOST-004",
+    "XFC-CF-LIFE-001",
+    "XFC-CF-SUB-001"
+  ],
+  "xstateEspruinoProjectRevision": "f7fe0f32189e39ca323563183fd98405f4f49d13",
+  "specificationVersion": "0.50",
+  "implementationRevision": "2b31e01c0a436257a60b4e755b111cd040e5ce8c",
+  "implementationState": "tested from the exact pre-commit source now committed at the implementation revision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": "ESP32-D0WD-V3 revision 3.1, 4 MB flash",
+  "serialPort": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+  "firmware": {
+    "version": "2v29.437",
+    "gitCommit": "c91f441a8",
+    "xfsmCreateMachine": "function",
+    "measurementApi": "undefined",
+    "appImageBytes": 1522272,
+    "buildEvidence": "2026-09-27-m6-lifecycle-subscribers-build.json"
+  },
+  "runner": {
+    "path": "/home/simon/MaBecker/ESP32_SGATest/tools/repl/run_test.py",
+    "transport": "direct paced serial",
+    "baud": 115200
+  },
+  "portableTest": {
+    "suite": "test_cross_actor_gc.js",
+    "timeoutSeconds": 30,
+    "result": "pass",
+    "coverage": "nested calls into a different actor from guards, assignments, actions, and listeners; independent commit/fault behavior; retained graph relocation"
+  },
+  "saveRestoreTest": {
+    "suite": "test_save_restore.js",
+    "timeoutSeconds": 60,
+    "result": "pass",
+    "saveRequestedFrom": "guard, assignment expression, transition action, and subscriber during one synchronous transition",
+    "savedImage": "39242 interpreter bytes compressed to 7734 flash bytes",
+    "restoration": "physical ESP32 software reset followed by automatic .varimg load and E.on(init)",
+    "verified": [
+      "save captured the stable target state and committed context after the enclosing operation",
+      "save requests from every specified callback boundary deferred to idle",
+      "not-started, active, done, stopped, and faulted actors retained their status and cached snapshot identity",
+      "machine, actor, callbacks, cached snapshot identity, and subscription remained usable",
+      "restoration did not replay entry or exit actions or notify the subscriber",
+      "start on the restored active actor was idempotent",
+      "post-restore send completed the actor and notified the restored subscription",
+      "the restored compiled machine created and ran a fresh actor"
+    ]
+  },
+  "resetTest": {
+    "suite": "test_reset_lifecycle.js",
+    "timeoutSeconds": 30,
+    "result": "pass",
+    "verified": [
+      "save, reboot restoration, and reset did not execute the exit action of a separate active actor",
+      "reset(true) erased the .varimg saved interpreter image"
+    ]
+  },
+  "portableSuiteStatusAfterBatch": {
+    "passingSuites": 18,
+    "failingSuites": 1,
+    "totalSuites": 19,
+    "remainingFailure": "test_transition_depth.js cannot construct its depth-32/65-action fixture in the stock 2803-block profile"
+  },
+  "xstateDifferential": {
+    "classification": "not applicable to host-specific behavior",
+    "reason": "GC relocation and Espruino whole-interpreter save/reset have no equivalent public Node XState lifecycle"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass for M6 host-lifecycle batch",
+  "scope": "Physical cross-actor, GC relocation, deferred save, hard-reboot restoration, and reset lifecycle. This does not resolve the separately recorded maximum-depth fixture memory failure."
+}

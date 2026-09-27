@@ -2,12 +2,13 @@
 
 ## Status
 
-- Build-document status: M6.3 Linux runtime verified; original ESP32 IDF5
-  build and M6.2 physical slice verified; reduced-profile Pico build verified;
-  MDBT42Q enabled size check blocked
+- Build-document status: M6 batches 1 through 6 verified on Linux and original
+  ESP32, including physical save/reboot/reset; transition domains pass on both,
+  while the stock ESP32 profile cannot construct the depth-32/65-action
+  fixture; reduced-profile Pico build verified; MDBT42Q size check blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `c91f441a8`
+- Current implementation revision: `2b31e01c0`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -149,6 +150,45 @@ bin/espruino --test libs/xfsm/tests/test_transition_domains.js
 bin/espruino --test libs/xfsm/tests/test_transition_depth.js
 ```
 
+Verify the M6 lifecycle and subscriber batch with:
+
+```bash
+bin/espruino --test libs/xfsm/tests/test_lifecycle_complete.js
+bin/espruino --test libs/xfsm/tests/test_subscriber_complete.js
+```
+
+Verify portable M6 cross-actor and broader GC behavior with:
+
+```bash
+bin/espruino --test libs/xfsm/tests/test_cross_actor_gc.js
+```
+
+The Espruino whole-interpreter lifecycle is physical-device-only. Run
+`test_save_restore.js` followed, after its scheduled `reset(true)`, by
+`test_reset_lifecycle.js` using the paced direct serial procedure below. The
+first test writes `.varimg`, reboots the board, and resumes in `E.on("init")`;
+do not add it to the ordinary Linux or CI loop.
+
+The clean M6 host-lifecycle regression runs all nineteen portable JavaScript
+suites, the 66-check sanitizer suite, and both pinned XState references. Its
+result is recorded in the [Linux M6 host-lifecycle
+result](../tests/results/linux/2026-09-27-m6-host-lifecycle.json). The [physical
+ESP32 result](../tests/results/esp32-xtensa/2026-09-27-m6-host-lifecycle.json)
+records cross-actor/GC execution plus save, hard-reboot restoration, and reset.
+
+The clean lifecycle/subscriber Linux regression runs all eighteen JavaScript
+suites, disabled and enabled builds, the 66-check sanitizer suite, and the
+pinned XState 4.38.3 and 5.33.2 references. Its result is recorded in the
+[Linux M6 lifecycle/subscriber
+result](../tests/results/linux/2026-09-27-m6-lifecycle-subscribers.json).
+The matching current original ESP32 IDF5 cross-build is recorded separately in
+the [ESP32 build
+result](../tests/results/esp32-xtensa/2026-09-27-m6-lifecycle-subscribers-build.json).
+The [ESP32 physical
+result](../tests/results/esp32-xtensa/2026-09-27-m6-lifecycle-subscribers.json)
+records three passing new suites and the reproducible stock-profile memory
+failure for the depth-32/65-action fixture.
+
 The clean M6.3 Linux regression runs all sixteen JavaScript suites, disabled
 and enabled builds, the 66-check sanitizer suite, and the pinned XState 4.38.3
 and 5.33.2 references. Its result is recorded in the [Linux M6.3
@@ -226,7 +266,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | --- | --- | --- |
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
-| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; fourteen semantic suites plus implemented M5, M6.1, and M6.2 physical slices passed; M6.3 physical run pending |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; eighteen portable suites, physical save/reboot/reset, and implemented M5 evidence pass; depth-32/65-action fixture fails stock-profile construction memory |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Secondary architecture qualification; stock capacity established |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 

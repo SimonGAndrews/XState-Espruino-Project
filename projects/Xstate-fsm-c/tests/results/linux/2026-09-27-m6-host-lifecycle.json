@@ -1,0 +1,59 @@
+{
+  "kind": "xfsm-m6-host-lifecycle-linux",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-HOST-001",
+    "XFC-CF-HOST-002",
+    "XFC-CF-HOST-003",
+    "XFC-CF-HOST-004",
+    "XFC-CF-LIFE-001",
+    "XFC-CF-SUB-001"
+  ],
+  "xstateEspruinoProjectRevision": "f7fe0f32189e39ca323563183fd98405f4f49d13",
+  "specificationVersion": "0.50",
+  "implementationRevision": "2b31e01c0a436257a60b4e755b111cd040e5ce8c",
+  "implementationSourceDiffSha256": "476ac75f68f3b74131d942ddb995eaf8b2c1df2c2571ab40b0ddd7ce061a4281",
+  "implementationState": "committed M6 lifecycle and host-integration implementation",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "compiler": "GCC 13.3.0",
+  "buildChecks": {
+    "disabledCommand": "env -u DEBUG make clean; env -u DEBUG make USE_XFSM=0 -j2",
+    "disabledResult": "pass",
+    "enabledCommand": "env -u DEBUG make clean; env -u DEBUG make USE_XFSM=1 -j2",
+    "enabledResult": "pass"
+  },
+  "semanticCommand": "bin/espruino --test libs/xfsm/tests/<suite>.js",
+  "portableSemanticSuites": {
+    "count": 19,
+    "result": "pass",
+    "newSuite": "test_cross_actor_gc.js"
+  },
+  "crossActorAndGcCoverage": {
+    "nestedSendFromGuard": "pass",
+    "nestedSendFromAssignment": "pass",
+    "nestedSendFromAction": "pass",
+    "nestedSendFromListener": "pass",
+    "innerCommitRetainedWhenOuterFaults": "pass",
+    "innerExceptionPropagatesAndFaultsBothActors": "pass",
+    "independentActorFramesStateAndContext": "pass",
+    "machineActorCallbacksAndSubscriptionSurviveGcRelocation": "pass"
+  },
+  "xstateDifferential": {
+    "nodeVersion": "20.15.0",
+    "xstateV5Version": "5.33.2",
+    "xstateV5Result": "pass",
+    "xstateV4Version": "4.38.3",
+    "xstateV4Result": "pass",
+    "hostLifecycleExclusion": "GC relocation, Espruino whole-interpreter save/reset, and coordinator isolation have no equivalent public Node XState behavior"
+  },
+  "nativeSanitizer": {
+    "command": "make -C libs/xfsm/tests/native clean test",
+    "checks": 66,
+    "result": "pass"
+  },
+  "retainedRecordsAfterGcPerPortableSuite": 0,
+  "relatedPhysicalEvidence": "../esp32-xtensa/2026-09-27-m6-host-lifecycle.json",
+  "result": "pass",
+  "scope": "All 19 portable suites pass on Linux. Whole-interpreter save, hard-reboot restoration, and reset are exercised only in the linked physical ESP32 result."
+}

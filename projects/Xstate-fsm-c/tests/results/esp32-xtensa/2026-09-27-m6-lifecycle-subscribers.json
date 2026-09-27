@@ -1,0 +1,77 @@
+{
+  "kind": "xfsm-m6-transition-lifecycle-subscribers-esp32",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-TRANS-004",
+    "XFC-CF-LIFE-001",
+    "XFC-CF-SUB-001",
+    "XFC-CF-ACTION-001",
+    "XFC-CF-DIAG-002",
+    "XFC-CF-LIMIT-001"
+  ],
+  "xstateEspruinoProjectRevision": "f7fe0f32189e39ca323563183fd98405f4f49d13",
+  "specificationVersion": "0.50",
+  "implementationRevision": "2b31e01c0a436257a60b4e755b111cd040e5ce8c",
+  "implementationState": "tested from the exact pre-commit source now committed at the implementation revision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": "ESP32-D0WD-V3 revision 3.1, 4 MB flash",
+  "serialPort": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+  "firmware": {
+    "version": "2v29.437",
+    "gitCommit": "c91f441a8",
+    "xfsmCreateMachine": "function",
+    "measurementApi": "undefined",
+    "flashCommand": "make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 flash PORT=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+    "flashResult": "pass: bootloader, application, and partition table write hashes verified",
+    "appImageBytes": 1522272
+  },
+  "runner": {
+    "path": "/home/simon/MaBecker/ESP32_SGATest/tools/repl/run_test.py",
+    "transport": "direct paced serial",
+    "baud": 115200,
+    "timeoutSeconds": 75,
+    "precondition": "ESP32.reboot() before each resource-sensitive suite"
+  },
+  "cleanBootMemory": {
+    "freeBlocks": 2747,
+    "usedBlocks": 56,
+    "totalBlocks": 2803,
+    "blockBytes": 14,
+    "stackFreeBytes": 22552
+  },
+  "semanticTests": {
+    "test_transition_domains.js": {
+      "result": "pass",
+      "note": "The same assertions were phased so the REPL did not retain the complete source expression during machine compilation."
+    },
+    "test_transition_depth.js": {
+      "result": "fail: resource limit",
+      "error": "XFC E_NO_MEMORY @ createMachine",
+      "reproducibility": "failed after two independent hardware reboots",
+      "note": "The legal depth-32 fixture has entry and exit actions at all 32 levels plus one transition action. It cannot compile within the stock 2,803-block ESP32_IDF5 runtime."
+    },
+    "test_lifecycle_complete.js": {
+      "result": "pass",
+      "note": "Independent fixtures were released between phases; semantic assertions are unchanged."
+    },
+    "test_subscriber_complete.js": {
+      "result": "pass"
+    }
+  },
+  "portableSuiteStatus": {
+    "passingSuites": 17,
+    "failingSuites": 1,
+    "totalSuites": 18,
+    "currentCandidatePassingRegression": "all 17 non-depth suites rerun and passed on this firmware"
+  },
+  "linuxRegressionAfterTestPhasing": {
+    "semanticSuites": 18,
+    "result": "pass",
+    "retainedRecordsAfterGcPerSuite": 0
+  },
+  "targetStatus": "Build verified",
+  "result": "partial: three newly pending suites pass; maximum-depth action trace fails construction due to stock runtime memory capacity",
+  "scope": "Physical behavior on the stock ESP32_IDF5 profile. The failure is a recorded target resource result, not a transition-semantic mismatch. A product Board.py memory allocation decision is required before claiming full physical conformance."
+}

@@ -56,3 +56,17 @@ result](results/linux/2026-09-26-m6-context-assignment.json) and [ESP32 M6.2
 result](results/esp32-xtensa/2026-09-26-m6-context-assignment.json).
 M6 transition-domain, re-entry, and maximum-depth evidence is recorded in the
 [Linux M6.3 result](results/linux/2026-09-27-m6-transition-domains.json).
+M6 lifecycle-state, callback-fault, busy-actor, and subscriber evidence is
+recorded in the [Linux M6 lifecycle/subscriber
+result](results/linux/2026-09-27-m6-lifecycle-subscribers.json); that record
+is accompanied by the [current ESP32 IDF5 build
+result](results/esp32-xtensa/2026-09-27-m6-lifecycle-subscribers-build.json),
+and [physical
+result](results/esp32-xtensa/2026-09-27-m6-lifecycle-subscribers.json). The
+physical record distinguishes the three passing suites from the stock-profile
+memory failure of the maximum-depth action fixture.
+M6 cross-actor isolation, broader GC relocation, and physical Espruino
+save/reboot/reset evidence is recorded in the [Linux host-lifecycle
+result](results/linux/2026-09-27-m6-host-lifecycle.json) and [original ESP32
+host-lifecycle
+result](results/esp32-xtensa/2026-09-27-m6-host-lifecycle.json).

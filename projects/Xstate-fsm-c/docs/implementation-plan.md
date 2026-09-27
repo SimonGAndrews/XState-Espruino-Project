@@ -143,8 +143,9 @@ Measure and report:
 - diagnostic formatting cost; and
 - GC ownership and relocation behaviour.
 
-Linux Espruino is assessed first. MDBT42Q supplies the primary constrained-RAM
-measurement before the full implementation proceeds.
+Linux Espruino is assessed first. MDBT42Q supplies early constrained-RAM
+evidence; final resource and target-profile decisions are deferred until the
+complete Profile 1 behavior is implemented.
 
 Review gate: explicitly retain or revise the native layout, hierarchy depth
 `32`, microstep budget `256`, stack reserve, snapshot strategy, retained-value
@@ -169,6 +170,15 @@ Complete the remaining implementation in reviewed behavioural batches:
 
 Exit gate: the complete applicable Linux semantic, validation, native-format,
 fault, diagnostic, and differential suites pass.
+
+After the M6 behavior exit gate, perform a whole-build resource review before
+changing target profiles or beginning final physical qualification. Review
+flash, JsVar and native-heap use, construction peaks, persistent arena and
+binding storage, actor/runtime allocation, coordinator stack, diagnostic cost,
+and test-loading overhead against matched enabled and disabled builds. The
+stock ESP32 depth-32/65-action construction failure is an input to this review.
+Any optimization must preserve the completed Profile 1 behavior and rerun its
+full regression suite before it is accepted.
 
 ### M7 - Physical Target Qualification
 

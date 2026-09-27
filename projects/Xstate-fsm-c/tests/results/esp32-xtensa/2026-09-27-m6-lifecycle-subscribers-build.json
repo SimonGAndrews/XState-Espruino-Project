@@ -1,0 +1,48 @@
+{
+  "kind": "xfsm-m6-lifecycle-subscribers-esp32-idf5-build",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-BUILD-004"
+  ],
+  "xstateEspruinoProjectRevision": "f7fe0f32189e39ca323563183fd98405f4f49d13",
+  "specificationVersion": "0.50",
+  "implementationRevision": "2b31e01c0a436257a60b4e755b111cd040e5ce8c",
+  "implementationState": "built from the exact pre-commit source now committed at the implementation revision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "cpu": "Espressif ESP32 Xtensa LX6",
+  "pointerBits": 32,
+  "byteOrder": "little-endian",
+  "toolchain": {
+    "sdk": "ESP-IDF 5.5.3",
+    "cc": "xtensa-esp-elf-gcc 14.2.0",
+    "source": "scripts/provision.sh ESP32_IDF5"
+  },
+  "build": {
+    "enabledCommand": "env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 clean && env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2",
+    "enabledResult": "pass: XFSM and wrapper sources compiled, linked, and passed the app-partition size check",
+    "image": "bin/espruino_2v29.437_esp32.bin",
+    "enabledSize": {
+      "appImageBytes": 1522272,
+      "appPartitionBytes": 2048000,
+      "appPartitionFreeBytes": 525728,
+      "appPartitionFreePercent": 25.670313
+    },
+    "cleanDisabledBaselineBytes": 1491968,
+    "delta": {
+      "appImageBytes": 30304,
+      "appImagePercentOfBaseline": 2.031143
+    }
+  },
+  "physicalExecution": {
+    "status": "completed with one resource-limited failure",
+    "firmwareWritten": true,
+    "result": "2026-09-27-m6-lifecycle-subscribers.json"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass",
+  "scope": "Build evidence only. No physical-device behavioural-conformance claim is made for the M6.3 or lifecycle/subscriber suites."
+}
