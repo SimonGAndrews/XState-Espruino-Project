@@ -1,0 +1,88 @@
+{
+  "kind": "xfsm-compiler-jsvar-optimization",
+  "date": "2026-09-27",
+  "specificationVersion": "0.50",
+  "implementationRevision": "cb5d74e8953ac7b4290aaba64f2aabe7714a3a05",
+  "implementationSourceSha256": {
+    "xfsm_compile.c": "689c6c81cb443a25f300ce5e5b43a27ec4f85f68a6edd11b63e6cf814b9e2cd9",
+    "measure_compile_pressure.js": "087c5fb994674813aef49d9427de6f419cbc143183c2323ef9580babbf63c86a",
+    "test_fault_injection.js": "bcfb0c7a505f6102b340e1f2bab8f4f236c05bc559e0b752a84de3d151ec3e67"
+  },
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": "ESP32-D0WD-V3 revision 3.1, 4 MB flash",
+  "cpuArchitecture": "Xtensa LX6",
+  "serialPort": "/dev/ttyUSB0",
+  "runtimeIdentity": {
+    "version": "2v29.444",
+    "gitCommit": "cb5d74e89"
+  },
+  "profile": {
+    "nativeHeapReserveBytes": 70000,
+    "jsVarBlocks": 2799,
+    "jsVarBlockBytes": 14,
+    "setDefinesOverride": false,
+    "featuresRemoved": []
+  },
+  "actionHeavyDepth32Measurement": {
+    "configuredUsageBlocks": 509,
+    "compiledUsageBlocks": 958,
+    "arenaBytes": 5025,
+    "compilerPeakDeltaBlocks": 1250,
+    "compilerEndDeltaBlocks": 374,
+    "approximateAbsolutePeakBlocks": 1759,
+    "remainingHeadroomBlocks": 1040,
+    "remainingHeadroomPercent": 37.16,
+    "constructionMilliseconds": 2299.789,
+    "result": "pass"
+  },
+  "compactDepth32Measurement": {
+    "initialUsageBlocks": 54,
+    "configuredUsageBlocks": 354,
+    "arenaBytes": 4610,
+    "persistentMachineBlocks": 382,
+    "compilerPeakDeltaBlocks": 1257,
+    "compilerEndDeltaBlocks": 342,
+    "maximumCoordinatorStackBytes": 224,
+    "result": "pass"
+  },
+  "maximumDepthDirect": {
+    "startupUsageBlocks": 1016,
+    "startupActions": 32,
+    "transitionUsageBlocks": 1092,
+    "transitionActions": 65,
+    "result": "pass"
+  },
+  "maximumDepthStorage": {
+    "beforeUsageBlocks": 181,
+    "configuredUsageBlocks": 644,
+    "compiledUsageBlocks": 1046,
+    "finalUsageBlocks": 293,
+    "nativeFreeHeapBytes": 66688,
+    "nativeMinimumFreeHeapBytes": 66268,
+    "nativeLargestFreeBlockBytes": 65536,
+    "storageCleanup": true,
+    "result": "pass"
+  },
+  "hostRegression": {
+    "memoryCleanupBaselineBlocks": 1819,
+    "memoryCleanupRuns": "two eight-actor graphs, six repeat cycles, and one faulted graph",
+    "exactCleanup": true,
+    "serializedEvents": 128,
+    "serializedEventMilliseconds": 624.067,
+    "linuxJavaScriptSuites": 22,
+    "faultInjectionSuite": "pass",
+    "nativeSanitizerChecks": 66,
+    "result": "pass"
+  },
+  "firmware": {
+    "measurementImageBytes": 1526256,
+    "normalImageBytes": 1525248,
+    "normalImageFreePartitionBytes": 522752,
+    "normalFirmwareRestored": true,
+    "postRestoreTestShell": "pass"
+  },
+  "decision": "Use the stock 70 KB native-heap reserve; the earlier 65 KB override is no longer selected.",
+  "report": "../../../docs/reports/2026-09-27-compiler-jsvar-optimization.md",
+  "result": "pass"
+}

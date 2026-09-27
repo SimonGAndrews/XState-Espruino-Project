@@ -300,8 +300,8 @@ Commands and required toolchain revisions will be recorded separately for:
 | --- | --- | --- |
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
-| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; provisional full-feature 3,160-block profile passes M7.1-M7.3, including action-heavy depth 32, Storage-backed execution, and production allocation pressure |
-| ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Stock full-feature build verified; physical qualification pending |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; optimized stock 70 KB full-feature profile passes action-heavy depth 32, Storage-backed execution, cleanup, GC, and serialization |
+| ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Build verified; optimized stock 70 KB full-feature profile passes the same focused resource and runtime checks; loaded-service qualification pending |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
 The library must be selected through Espruino's normal optional-library
@@ -390,10 +390,10 @@ with 334,736 bytes free. This advances the target only to `Build verified`.
 See the [C3 build report](reports/2026-09-27-m7-esp32-c3-build-feasibility.md)
 and [result](../tests/results/esp32-riscv/2026-09-27-m7-build-feasibility.json).
 
-On physical C3 hardware, the stock 70,000-byte native-heap reserve produced
-3,016 13-byte JsVar blocks in the qualification run and failed both direct and
-Storage-backed depth-32 construction with `E_NO_MEMORY`. A diagnostic trial using the existing
-`esp32_xfsm_profile.make` layer provides 3,402 blocks and passes both cases:
+Before compiler optimization, physical C3 testing found that the stock
+70,000-byte native-heap reserve failed both direct and Storage-backed depth-32
+construction with `E_NO_MEMORY`. The following 65 KB trial proved that the
+failure was JsVar capacity rather than a semantic or native-heap fault:
 
 ```bash
 env -u DEBUG make BOARD=ESP32C3_IDF5 clean
@@ -404,13 +404,15 @@ env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 \
   flash PORT=/dev/ttyACM0
 ```
 
-This is diagnostic evidence, not the selected C3 product profile. The stock
-70 KB native reserve exists to support Bluetooth plus HTTPS under memory
-pressure, as discussed in [Espruino issue
+This is historical diagnostic evidence, not the selected C3 product profile.
+At revision `cb5d74e89`, compact compiler metadata makes both depth fixtures
+pass on the normal stock build with 1,174 measured blocks of construction
+headroom. The stock 70 KB native reserve exists to support Bluetooth plus
+HTTPS under memory pressure, as discussed in [Espruino issue
 #2746](https://github.com/espruino/Espruino/issues/2746). Preserve it while
-investigating XFSM peak JsVar reductions. A lower reserve requires explicit
-Bluetooth-plus-HTTPS coexistence evidence and approval. See the [physical
-baseline report](reports/2026-09-27-m7-esp32-c3-physical-baseline.md).
+qualifying service coexistence. See the [compiler optimization
+report](reports/2026-09-27-compiler-jsvar-optimization.md) and earlier
+[physical baseline report](reports/2026-09-27-m7-esp32-c3-physical-baseline.md).
 
 At complete implementation revision `1589218d3`, the same clean comparison
 produces a 1,491,968-byte disabled image and 1,523,424-byte enabled image. XFSM
@@ -419,9 +421,9 @@ build, complete-engine memory measurements, compact depth-32 result, and test-
 loading interpretation are in the [post-M6 resource
 report](reports/2026-09-27-post-m6-resource-review.md).
 
-M7.3 selects a provisional full-feature original-ESP32 XFSM memory profile.
-It leaves `boards/ESP32_IDF5.py` unchanged and uses Make's `SETDEFINES` hook to
-replace `ESP_HEAP_SIZE=70000` with `ESP_HEAP_SIZE=65000`:
+M7.3 originally used a provisional full-feature original-ESP32 XFSM memory
+profile. It left `boards/ESP32_IDF5.py` unchanged and used Make's `SETDEFINES`
+hook to replace `ESP_HEAP_SIZE=70000` with `ESP_HEAP_SIZE=65000`:
 
 ```bash
 source scripts/provision.sh ESP32_IDF5
@@ -438,6 +440,22 @@ and leaves 524,288 bytes in the app partition. Direct and Storage-backed
 depth-32/65-action fixtures pass, with the latter reporting 62,644 native-heap
 bytes free. See the [M7.3 report](reports/2026-09-27-m7-original-esp32-allocation-profile.md)
 and [result](../tests/results/esp32-xtensa/2026-09-27-m7-allocation-profile.json).
+
+The compiler optimization at revision `cb5d74e89` supersedes that selection.
+Normal original-ESP32 and ESP32-C3 product builds now omit `SETDEFINES` and use
+the stock 70 KB reserve:
+
+```bash
+env -u DEBUG make BOARD=ESP32_IDF5 clean
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
+
+env -u DEBUG make BOARD=ESP32C3_IDF5 clean
+env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 -j2
+```
+
+Both physical boards pass direct and Storage-backed action-heavy depth 32,
+cleanup, GC relocation, and event serialization on this stock profile. Keep
+`esp32_xfsm_profile.make` only for reproducing the earlier diagnostic evidence.
 
 ### Original ESP32 device workflow
 
@@ -463,10 +481,8 @@ the matching offsets:
 cd "$ESPRUINO_XFSM_ROOT"
 source scripts/provision.sh ESP32_IDF5
 env -u DEBUG make BOARD=ESP32_IDF5 clean
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
 env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 \
-  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make -j2
-env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 \
-  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make \
   flash PORT="$ESP32_PORT"
 ```
 

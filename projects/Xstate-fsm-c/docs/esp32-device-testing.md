@@ -98,8 +98,7 @@ cd "$ESPRUINO_XFSM_ROOT"
 source scripts/provision.sh ESP32_IDF5
 unset DEBUG
 make BOARD=ESP32_IDF5 clean
-make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 \
-  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make -j2
+make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
 ```
 
 Before flashing, check the generated target identity. A classic ESP32 build
@@ -130,9 +129,7 @@ Release any process holding the serial port, then flash the image produced by
 the same provisioned checkout:
 
 ```bash
-make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 \
-  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make \
-  flash PORT="$ESP32_PORT"
+make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 flash PORT="$ESP32_PORT"
 ```
 
 Build and flash are normally separate operations so compilation failure cannot
@@ -143,6 +140,11 @@ Routine flashing does not require erasing the full device. Erasure destroys
 saved JavaScript and persistent configuration and must be an explicit,
 recorded test precondition. A full flash backup is optional and is not required
 when the existing image can be reproduced from source.
+
+The older `SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make` form reduces the
+native reserve to 65 KB. It is retained only to reproduce M7.3 diagnostic
+evidence; the optimized compiler passes the required depth cases with the
+stock 70 KB reserve and normal builds must omit that override.
 
 If automatic entry to the ROM loader fails:
 
@@ -236,8 +238,8 @@ python3 tools/repl/run_test.py \
   --port "$ESP32_PORT" --baud 115200 --timeout 60 --show-raw
 ```
 
-The M7.3 profile and allocation fixtures require the product-profile build
-above. They check maximum-depth execution directly and from flash Storage,
+The M7.3 allocation fixtures run against the normal stock-profile build above.
+They check maximum-depth execution directly and from flash Storage,
 recoverable construction failure and retry, and compact diagnostic fallback:
 
 ```bash

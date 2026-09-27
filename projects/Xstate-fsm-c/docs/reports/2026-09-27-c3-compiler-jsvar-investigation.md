@@ -111,3 +111,12 @@ Only reconsider the Profile 1 depth target if those changes still cannot
 provide a useful margin on the C3. A lower limit should then be selected from a
 documented resource envelope across several model shapes, rather than from the
 single depth threshold measured here.
+
+## Outcome
+
+The first two recommended stages were implemented at revision `cb5d74e89`.
+The compact depth-32 peak fell from 2,245 to 1,335 blocks (40.5%), and the
+action-heavy depth-32 fixture now passes on the stock 70 KB C3 profile with
+1,174 blocks of measured headroom. See the [optimization
+report](2026-09-27-compiler-jsvar-optimization.md). No Profile 1 limit was
+reduced.

@@ -1,0 +1,96 @@
+{
+  "kind": "xfsm-compiler-jsvar-optimization",
+  "date": "2026-09-27",
+  "specificationVersion": "0.50",
+  "implementationRevision": "cb5d74e8953ac7b4290aaba64f2aabe7714a3a05",
+  "implementationSourceSha256": {
+    "xfsm_compile.c": "689c6c81cb443a25f300ce5e5b43a27ec4f85f68a6edd11b63e6cf814b9e2cd9",
+    "measure_compile_pressure.js": "087c5fb994674813aef49d9427de6f419cbc143183c2323ef9580babbf63c86a",
+    "test_fault_injection.js": "bcfb0c7a505f6102b340e1f2bab8f4f236c05bc559e0b752a84de3d151ec3e67"
+  },
+  "target": "ESP32-C3 IDF5",
+  "board": "ESP32C3_IDF5",
+  "cpuArchitecture": "RISC-V RV32IMC",
+  "serialPort": "/dev/ttyACM0",
+  "runtimeIdentity": {
+    "version": "2v29.444",
+    "gitCommit": "cb5d74e89"
+  },
+  "profile": {
+    "nativeHeapReserveBytes": 70000,
+    "jsVarBlocks": 3012,
+    "jsVarBlockBytes": 13,
+    "setDefinesOverride": false,
+    "featuresRemoved": []
+  },
+  "compactDepth32Before": {
+    "compilerPeakDeltaBlocks": 2245,
+    "persistentMachineBlocks": 410,
+    "arenaBytes": 4610,
+    "source": "2026-09-27-compiler-depth-probe.json"
+  },
+  "compactDepth32After": {
+    "initialUsageBlocks": 54,
+    "configuredUsageBlocks": 357,
+    "arenaBytes": 4610,
+    "persistentMachineBlocks": 409,
+    "compilerPeakDeltaBlocks": 1335,
+    "compilerEndDeltaBlocks": 367,
+    "maximumCoordinatorStackBytes": 256,
+    "peakReductionBlocks": 910,
+    "peakReductionPercent": 40.53,
+    "result": "pass"
+  },
+  "actionHeavyDepth32Measurement": {
+    "configuredUsageBlocks": 509,
+    "compiledUsageBlocks": 992,
+    "arenaBytes": 5025,
+    "compilerPeakDeltaBlocks": 1329,
+    "compilerEndDeltaBlocks": 402,
+    "approximateAbsolutePeakBlocks": 1838,
+    "remainingHeadroomBlocks": 1174,
+    "remainingHeadroomPercent": 38.98,
+    "constructionMilliseconds": 2291.147,
+    "result": "pass"
+  },
+  "maximumDepthDirect": {
+    "initialUsageBlocks": 58,
+    "startupUsageBlocks": 1049,
+    "startupActions": 32,
+    "transitionUsageBlocks": 1126,
+    "transitionActions": 65,
+    "result": "pass"
+  },
+  "maximumDepthStorage": {
+    "beforeUsageBlocks": 187,
+    "configuredUsageBlocks": 653,
+    "compiledUsageBlocks": 1083,
+    "finalUsageBlocks": 302,
+    "nativeFreeHeapBytes": 66960,
+    "nativeMinimumFreeHeapBytes": 66388,
+    "nativeLargestFreeBlockBytes": 57344,
+    "storageCleanup": true,
+    "result": "pass"
+  },
+  "hostRegression": {
+    "memoryCleanupBaselineBlocks": 1973,
+    "memoryCleanupRuns": "two eight-actor graphs, six repeat cycles, and one faulted graph",
+    "exactCleanup": true,
+    "serializedEvents": 128,
+    "serializedEventMilliseconds": 591.031,
+    "linuxJavaScriptSuites": 22,
+    "faultInjectionSuite": "pass",
+    "nativeSanitizerChecks": 66,
+    "result": "pass"
+  },
+  "firmware": {
+    "measurementImageBytes": 1716384,
+    "normalImageBytes": 1715120,
+    "normalImageFreePartitionBytes": 332880,
+    "normalFirmwareRestored": true,
+    "postRestoreTestShell": "pass"
+  },
+  "decision": "Use the stock 70 KB native-heap reserve and retain Profile 1 depth 32; loaded-service coexistence remains pending.",
+  "report": "../../../docs/reports/2026-09-27-compiler-jsvar-optimization.md",
+  "result": "pass"
+}

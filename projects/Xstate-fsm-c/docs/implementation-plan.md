@@ -2,8 +2,8 @@
 
 ## Status
 
-- Plan status: M6 behavior, post-M6 resource review, and original-ESP32
-  M7.1-M7.3 qualification slices complete
+- Plan status: M6 behavior, post-M6 resource review, original-ESP32 M7.1-M7.3,
+  and stock-profile ESP32 compiler-capacity optimization complete
 - Current milestone: M0 requirement inventory and M7 product-profile and
   physical-target qualification
 - Normative authority: [Profile 1 specification](specification.md)
@@ -238,6 +238,14 @@ same-configuration retry pass; and diagnostic-path pressure returns the
 compact fallback without accumulating allocation. See the [M7.3
 report](reports/2026-09-27-m7-original-esp32-allocation-profile.md).
 
+The compiler-capacity follow-up supersedes the provisional 65 KB product
+selection. At revision `cb5d74e89`, compact GC-owned state metadata and
+on-demand derived paths allow the direct and Storage-backed depth-32/65-action
+fixtures to pass on the stock 70 KB original-ESP32 profile with 1,040 measured
+blocks of construction headroom. The override remains a diagnostic artifact,
+not the selected product profile. See the [compiler optimization
+report](reports/2026-09-27-compiler-jsvar-optimization.md).
+
 The M7.4 release-candidate rerun remains open for this target.
 
 ESP32-C3 follows its own qualification track so the classic ESP32 memory
@@ -255,12 +263,11 @@ profile is not assumed to suit the RISC-V target:
    completion-boundary, GC-relocation, cleanup, stack, timing, JsVar, and
    native-heap checks using the stock 70,000-byte native-heap reserve.
 3. **C3-C, memory optimization and loaded-service qualification:** retain the
-   stock 70,000-byte native-heap reserve as the preferred product constraint,
-   measure and reduce XFSM's peak compiler-side JsVar demand, and repeat memory
-   and lifecycle checks during WiFi association, HTTP and HTTPS/TLS work, BLE
-   activity, and combined WiFi/BLE coexistence. A lower native reserve is a
-   fallback only after Bluetooth-plus-HTTPS evidence and an explicit decision;
-   do not inherit the classic ESP32's 65,000-byte override by default.
+   stock 70,000-byte native-heap reserve as the product constraint, reduce
+   XFSM's peak compiler-side JsVar demand, and repeat memory and lifecycle
+   checks during WiFi association, HTTP and HTTPS/TLS work, BLE activity, and
+   combined WiFi/BLE coexistence. The compiler reduction is complete; loaded-
+   service qualification remains open.
 4. **C3-D, release-candidate rerun:** repeat clean disabled/enabled builds and
    the agreed portable, target, resource, cleanup, and service-coexistence
    suite against the selected C3 profile. Advance from `Build verified` to
@@ -284,6 +291,12 @@ The [compiler JsVar investigation](reports/2026-09-27-c3-compiler-jsvar-investig
 measures the stock-profile depth threshold and recommends retaining depth 32
 while first removing retained paths/derived IDs and compacting compiler
 metadata.
+
+That optimization is now complete at revision `cb5d74e89`. The compact C3
+depth-32 compiler peak fell from 2,245 to 1,335 blocks (40.5%), and the direct
+and Storage-backed action-heavy fixtures pass on the stock 70 KB profile with
+1,174 measured blocks of construction headroom. C3-B's capacity gate is
+closed; C3-C service coexistence remains open.
 
 ### M8 - Format Freeze And Release Readiness
 
