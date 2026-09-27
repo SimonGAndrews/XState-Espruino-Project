@@ -300,7 +300,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | --- | --- | --- |
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
-| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; compact strict validation, focused M6.7 regressions, physical save/reboot/reset, and post-M6 resource evidence pass; compact depth 32 passes while the action-heavy all-in-one fixture exceeds stock application/test headroom |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; provisional full-feature 3,160-block profile passes M7.1-M7.3, including action-heavy depth 32, Storage-backed execution, and production allocation pressure |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Secondary architecture qualification; stock capacity established |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
@@ -377,6 +377,26 @@ build, complete-engine memory measurements, compact depth-32 result, and test-
 loading interpretation are in the [post-M6 resource
 report](reports/2026-09-27-post-m6-resource-review.md).
 
+M7.3 selects a provisional full-feature original-ESP32 XFSM memory profile.
+It leaves `boards/ESP32_IDF5.py` unchanged and uses Make's `SETDEFINES` hook to
+replace `ESP_HEAP_SIZE=70000` with `ESP_HEAP_SIZE=65000`:
+
+```bash
+source scripts/provision.sh ESP32_IDF5
+env -u DEBUG make BOARD=ESP32_IDF5 clean
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 \
+  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make -j2
+```
+
+The profile retains every normal board feature and the 14-byte JsVar layout.
+It trades 5,000 bytes of configured native reserve for 357 JsVar blocks,
+increasing the pool from 2,803 to 3,160. The M7.3 image is 1,523,712 bytes,
+adds 31,744 bytes (2.13%) to the matched 1,491,968-byte disabled reference,
+and leaves 524,288 bytes in the app partition. Direct and Storage-backed
+depth-32/65-action fixtures pass, with the latter reporting 62,644 native-heap
+bytes free. See the [M7.3 report](reports/2026-09-27-m7-original-esp32-allocation-profile.md)
+and [result](../tests/results/esp32-xtensa/2026-09-27-m7-allocation-profile.json).
+
 ### Original ESP32 device workflow
 
 The complete USB-UART, provenance, flashing, reset, direct-runner, evidence,
@@ -401,8 +421,11 @@ the matching offsets:
 cd "$ESPRUINO_XFSM_ROOT"
 source scripts/provision.sh ESP32_IDF5
 env -u DEBUG make BOARD=ESP32_IDF5 clean
-env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
-env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 flash PORT="$ESP32_PORT"
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 \
+  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make -j2
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 \
+  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make \
+  flash PORT="$ESP32_PORT"
 ```
 
 Do not use the EspruinoTools `-f` option as the normal ESP32 flashing path.

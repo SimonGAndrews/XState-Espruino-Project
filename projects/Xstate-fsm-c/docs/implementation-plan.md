@@ -2,7 +2,8 @@
 
 ## Status
 
-- Plan status: M6 behavior and post-M6 resource review complete
+- Plan status: M6 behavior, post-M6 resource review, and original-ESP32
+  M7.1-M7.3 qualification slices complete
 - Current milestone: M0 requirement inventory and M7 product-profile and
   physical-target qualification
 - Normative authority: [Profile 1 specification](specification.md)
@@ -227,8 +228,17 @@ complete eight-actor shared-machine graphs, six repeated construction and
 cleanup cycles, and a faulted graph return exactly to the warmed production
 baseline; a queued timer observes the fully published result only after 128
 synchronous sends finish. See the [M7.2 report](reports/2026-09-27-m7-original-esp32-memory-serialization.md).
-Physical allocation-pressure closure, the product-headroom decision, and the
-release-candidate rerun remain open for this target.
+
+M7.3 provisionally selects the original-ESP32 XFSM product profile without
+changing the stock board file or removing features. A `SETDEFINES` layer
+changes `ESP_HEAP_SIZE` from 70,000 to 65,000 bytes, increasing the pool from
+2,803 to 3,160 14-byte JsVar blocks. The depth-32/65-action trace passes both
+directly and from flash `Storage`; production allocation failure, cleanup and
+same-configuration retry pass; and diagnostic-path pressure returns the
+compact fallback without accumulating allocation. See the [M7.3
+report](reports/2026-09-27-m7-original-esp32-allocation-profile.md).
+
+The M7.4 release-candidate rerun remains open for this target.
 
 ### M8 - Format Freeze And Release Readiness
 

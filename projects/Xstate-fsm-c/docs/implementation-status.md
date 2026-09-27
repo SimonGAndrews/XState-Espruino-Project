@@ -2,10 +2,10 @@
 
 - Last reviewed: 2026-09-27
 - Overall status: all seven M6 behavioural batches, the post-M6 whole-build
-  resource review, and M7.1-M7.2 original-ESP32 application, memory-lifecycle,
-  and event-serialization integration pass their applicable scope; the stock
-  ESP32 constructs depth 32 with a compact harness but has little headroom for
-  an action-heavy model and large test source together
+  resource review, and M7.1-M7.3 original-ESP32 integration pass their
+  applicable scope; a provisional full-feature profile now provides 3,160
+  JsVar blocks and passes the action-heavy depth-32 model, Storage-backed
+  execution, and production allocation and diagnostic-pressure cases
 - Current milestone: M0 normative requirement inventory and M7 product-profile
   and physical-target qualification
 - Implementation code status: M4 runtime plus final/completion behavior, full
@@ -16,9 +16,10 @@
   byte-limit validation, transactional allocation-failure handling, M5
   instrumentation, enforced stack reserve, and physical flash/native callback,
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
-  and event-serialization coverage
-- Next gate: select the remaining M7 product profiles, complete the original
-  ESP32 release-candidate evidence, and qualify a physical Pico while
+  event-serialization, maximum-depth product-profile, and production
+  allocation-pressure coverage
+- Next gate: complete the original ESP32 M7.4 release-candidate evidence,
+  select the remaining M7 product profiles, and qualify a physical Pico while
   completing M0 traceability
 
 This is the living status dashboard. The stable milestone definitions and exit
@@ -34,12 +35,12 @@ and outstanding tests for final project review.
 | Specification project path | `projects/Xstate-fsm-c/` |
 | Current specification version | `0.50` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
-| Project base for this evidence | `60a79d5` |
+| Project base for this evidence | `eaeb141` |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `b7b6d88d7` |
+| Current implementation HEAD | `8ce408fb5` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -48,6 +49,9 @@ measurement support and the revised coordinator reserve are committed in
 implementation revision `1589218d3`, and the M7.1 physical application fixture
 is committed in `21154897f`. The M7.2 production-memory and event-serialization
 fixtures are committed in `b7b6d88d7`.
+The exact M7.3 hardened compiler, product-profile layer, and physical pressure
+fixtures are committed in `8ce408fb5`; their source hashes are retained in the
+[M7.3 result](../tests/results/esp32-xtensa/2026-09-27-m7-allocation-profile.json).
 
 ## Completed Foundation Work
 
@@ -154,10 +158,23 @@ fixtures are committed in `b7b6d88d7`.
   first full-path warm-up. A separate timer test observes all 128 synchronous
   sends and 129 publications only after the uninterrupted 666-670 ms loop
   completes, despite its one-millisecond delay.
+- M7.3 provisionally selects a full-feature original-ESP32 profile by reducing
+  `ESP_HEAP_SIZE` from 70,000 to 65,000 bytes through `SETDEFINES`, without
+  changing `ESP32_IDF5.py`. The resulting 3,160-block pool passes the direct
+  and Storage-backed depth-32/65-action trace.
+- Production construction pressure returns `E_NO_MEMORY` at 501 free blocks,
+  cleans to the same settled usage, and retries the identical configuration
+  successfully. Diagnostic-path pressure returns
+  `XFC E_NO_MEMORY @ createMachine` at 387 free blocks twice without
+  accumulation.
+- Checked segmented-string copying and complete diagnostic-path preflight now
+  prevent the null dereference exposed by an early long-key pressure run. The
+  exact hardened source passes 22 normal Linux suites, the private fault suite,
+  and all 66 sanitizer checks.
 - The same lifecycle/subscriber coverage and complete transition-domain corpus
-  pass on the original ESP32. The maximum-depth 65-action fixture instead
-  reports `E_NO_MEMORY` during `createMachine` after a clean hardware reboot;
-  the stock profile exposes 2,803 14-byte JsVar blocks.
+  pass on the original ESP32. The stock 2,803-block profile failed the
+  maximum-depth 65-action fixture, while the selected 3,160-block M7.3 profile
+  passes it directly and from flash Storage.
 - Build-only M5 instrumentation measures construction block high-water and
   synchronous coordinator stack without changing normal firmware API or cost.
 - Linux firmware size, arena, retained values, construction, actor, snapshot,
@@ -191,10 +208,10 @@ fixtures are committed in `b7b6d88d7`.
   JavaScript suites, the private allocation-fault suite, 66 native sanitizer
   checks, and the enabled original ESP32 IDF5 build without changing any stock
   board definition.
-- A physical ESP32-D0WD-V3 running the `ESP32_IDF5` build passes eighteen of
-  nineteen portable JavaScript suites plus save/reboot/reset host-lifecycle
-  tests and the M5 resource, timing, and GC relocation harnesses. The remaining
-  portable suite is the separately recorded stock-profile depth fixture.
+- A physical ESP32-D0WD-V3 running the selected `ESP32_IDF5` profile passes all
+  nineteen portable JavaScript suites, including the formerly constrained
+  depth fixture, plus save/reboot/reset host-lifecycle tests and the M5
+  resource, timing, and GC relocation harnesses.
 - Post-M6 compact depth-32 construction passed from a clean stock runtime with
   a 4,610-byte arena, a 2,102-block construction peak, and 224 bytes of maximum
   measured coordinator stack. Its sampled peak uses about 87.75% of all 2,799
@@ -208,19 +225,22 @@ fixtures are committed in `b7b6d88d7`.
   runtime, subscription, completion, and lifecycle regressions pass; the full
   desktop-oriented strict-validation source is a reasoned non-run because its
   test harness exhausts the stock 2,803-block JavaScript heap.
+- The M7.3 production-profile image builds at 1,523,712 bytes, a 31,744-byte
+  or 2.13% increase over the matched disabled reference, and leaves 524,288
+  app-partition bytes free.
 
 ## Current Work
 
-All seven M6 behavioural batches, the post-M6 resource review, and M7.1-M7.2
+All seven M6 behavioural batches, the post-M6 resource review, and M7.1-M7.3
 original-ESP32 integration are complete. Shared behavior is checked against
 pinned XState 4.38.3 and 5.33.2 references; strict native validation,
 allocation failures, Espruino GC, save/reset, Storage-backed callbacks, GPIO,
 timer integration, and interpreter scheduling have no direct Node XState
 equivalent. The resource review retains the current arena, depth, microstep,
 lazy-snapshot, and diagnostic designs provisionally and raises the default
-stack reserve to 1,024 bytes. The original ESP32 passes a compact depth-32
-fixture, while the action-heavy all-in-one source still demonstrates limited
-application and test-loading headroom.
+stack reserve to 1,024 bytes. The provisional original-ESP32 profile now
+passes the action-heavy depth-32 fixture while retaining the board's complete
+feature set and more than 62 KB of measured native-heap headroom.
 
 A reduced-profile Pico image passes its size gate, but no physical Pico runtime
 evidence has been collected. The stock MDBT42Q release/DFU image passes, while
@@ -232,10 +252,10 @@ Immediate tasks:
 
 1. expand the M0 normative requirement inventory while
    maintaining the consolidated [test inventory](../tests/test-inventory.md);
-2. select explicit M7 product `Board.py` profiles and physical targets from the
-   completed [resource review](reports/2026-09-27-post-m6-resource-review.md);
-3. complete original-ESP32 qualification, qualify a physical Pico, and measure
-   ESP32-C3 when hardware is available;
+2. complete the original-ESP32 M7.4 release-candidate rerun and select the
+   remaining target profiles from the completed [resource
+   review](reports/2026-09-27-post-m6-resource-review.md);
+3. qualify a physical Pico and measure ESP32-C3 when hardware is available;
 4. produce an XFSM memory architecture and lifetime diagram that distinguishes
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
    actor storage, native heap, and the single native C stack. Show their use
@@ -257,12 +277,12 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Decision | Required evidence | Review milestone |
 | --- | --- | --- |
 | Freeze or revise native record layout | Complete Linux/original-ESP32 review retains Version 1 provisionally; constrained target still required | M7 open |
-| Retain or revise hierarchy depth 32 | Retained provisionally: compact ESP32 fixture passes but reaches about 87.75% total block use at sampled construction peak | M7 open for product headroom |
+| Retain or revise hierarchy depth 32 | Retained provisionally: direct and Storage-backed 65-action fixtures pass on the selected 3,160-block original-ESP32 profile | M7 open for remaining targets |
 | Retain or revise microstep budget 256 | Retained: Linux and original ESP32 enforce the boundary; current ESP32 observation is 807.461 ms | Closed for represented targets |
 | Select per-target stack reserve | Default raised to 1,024 bytes after complete-runtime Linux measured 704 bytes and original ESP32 measured 448 bytes; remaining physical families pending | M7 |
 | Retain or revise snapshot materialization | Lazy snapshots retained provisionally after Linux and ESP32 allocation measurement; constrained-target evidence pending | M7 open |
 | Retain or revise diagnostic detail | The 48-byte detail budget is retained provisionally after complete Linux and compact ESP32 validation; constrained-target evidence pending | M7 open |
-| Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected, build verified, and physically exercised through complete M6 and the post-M6 resource review | M7 |
+| Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected; full-feature 3,160-block product profile and M7.1-M7.3 physical slices pass | M7.4 release-candidate rerun |
 
 ## Target Status
 
@@ -271,7 +291,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Linux Espruino | Build verified | [Post-M6 resource result](../tests/results/linux/2026-09-27-post-m6-resource-review.json) |
 | Espruino Pico | Build verified for reduced product profile | [Pico feasibility build](../tests/results/pico/2026-09-26-feasibility-build.json) |
 | MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
-| Original ESP32 IDF5 | Build verified; M7.1-M7.2 application integration, exact settled-baseline cleanup, event serialization, compact strict validation, focused regressions and compact depth 32 pass; action-heavy test/application headroom remains constrained | [M7.2 memory/serialization result](../tests/results/esp32-xtensa/2026-09-27-m7-memory-serialization.json) |
+| Original ESP32 IDF5 | Build verified; M7.1-M7.3 application integration, exact settled-baseline cleanup, event serialization, compact validation, action-heavy depth 32, Storage-backed execution and production allocation pressure pass on the provisional 3,160-block profile | [M7.3 allocation/profile result](../tests/results/esp32-xtensa/2026-09-27-m7-allocation-profile.json) |
 | ESP32-C3 IDF5 | Not yet verified | Stock-build capacity established from upstream Actions; XFSM build pending |
 | ESP32-S3 IDF5 | Not yet verified | Later expansion target; not required for Version 1 qualification |
 
@@ -282,6 +302,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-27 | M7.3 selected the provisional full-feature original-ESP32 3,160-block profile; direct and Storage-backed depth-32/65-action execution, production failure/retry, diagnostic fallback, 22 Linux suites, fault injection, and 66 sanitizer checks passed |
 | 2026-09-27 | M7.2 original-ESP32 memory lifecycle and event serialization passed twice: shared, repeated and faulted graphs return exactly to the settled production baseline, and queued timer work waits for 128 synchronous sends and publications |
 | 2026-09-27 | M7.1 original-ESP32 application integration passed twice with retained outer-scope, closure, flash-backed and native callbacks, GPIO output/readback, timer-driven dispatch, exact callback-fault rollback, and safe Storage/cache/pin cleanup |
 | 2026-09-27 | Post-M6 whole-build review measured matched Linux and original ESP32 production images, complete-engine allocations, native heap, depth-32 headroom, completion timing, stack and test loading; retained the current designs provisionally and raised the coordinator reserve to 1,024 bytes |

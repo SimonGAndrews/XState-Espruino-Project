@@ -30,8 +30,12 @@ recorded. M7.1 original-ESP32 application integration passes with retained
 outer-scope, closure, flash-backed and native callbacks, GPIO actions,
 timer-driven dispatch, and safe cleanup. M7.2 adds exact settled-baseline
 recovery across shared, repeated and faulted runtime graphs plus queued-timer
-serialization after a long synchronous send sequence. The current format and
-limits are retained provisionally, pending constrained-target M7 evidence.
+serialization after a long synchronous send sequence. M7.3 provisionally
+selects a full-feature original-ESP32 memory profile with 3,160 JsVar blocks;
+the action-heavy depth-32 trace, Storage-backed execution, production
+allocation failure/retry, and compact diagnostic fallback all pass. The
+current format and limits are retained provisionally, pending the final
+release-candidate run and constrained-target M7 evidence.
 
 Current work, revisions, and next tasks are recorded in the
 [implementation status](docs/implementation-status.md). The

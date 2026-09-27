@@ -2,7 +2,7 @@
 
 ## Status And Provenance
 
-- Last reviewed: 2026-09-25
+- Last reviewed: 2026-09-27
 - XFSM target: original ESP32 using Espruino `ESP32_IDF5`
 - Verified device: ESP32-D0WD-V3 revision 3.1, 4 MB flash
 - Verified implementation branch: `feature/xfsm-profile1`
@@ -98,7 +98,8 @@ cd "$ESPRUINO_XFSM_ROOT"
 source scripts/provision.sh ESP32_IDF5
 unset DEBUG
 make BOARD=ESP32_IDF5 clean
-make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
+make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 \
+  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make -j2
 ```
 
 Before flashing, check the generated target identity. A classic ESP32 build
@@ -130,6 +131,7 @@ the same provisioned checkout:
 
 ```bash
 make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 \
+  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make \
   flash PORT="$ESP32_PORT"
 ```
 
@@ -233,6 +235,26 @@ python3 tools/repl/run_test.py \
   "$ESPRUINO_XFSM_ROOT/libs/xfsm/tests/test_host_event_serialization.js" \
   --port "$ESP32_PORT" --baud 115200 --timeout 60 --show-raw
 ```
+
+The M7.3 profile and allocation fixtures require the product-profile build
+above. They check maximum-depth execution directly and from flash Storage,
+recoverable construction failure and retry, and compact diagnostic fallback:
+
+```bash
+for test in \
+  test_transition_depth.js \
+  test_transition_depth_storage.js \
+  test_host_allocation_pressure.js \
+  test_host_diagnostic_pressure.js; do
+  python3 tools/repl/run_test.py \
+    "$ESPRUINO_XFSM_ROOT/libs/xfsm/tests/$test" \
+    --port "$ESP32_PORT" --baud 115200 --timeout 180 --show-raw
+done
+```
+
+`test_transition_depth_storage.js` writes and erases `xfc_d32` in Storage.
+The allocation fixtures intentionally consume much of the JsVar pool; run
+them only after ordinary application state has been cleared by the runner.
 
 ## Test Program Contract
 

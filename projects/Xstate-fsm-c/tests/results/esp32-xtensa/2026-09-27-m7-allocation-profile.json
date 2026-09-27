@@ -1,0 +1,149 @@
+{
+  "kind": "xfsm-m7-allocation-profile-esp32",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-HOST-001",
+    "XFC-CF-LIFE-002",
+    "XFC-CF-TRANS-004",
+    "XFC-CF-LIMIT-001",
+    "XFC-CF-DIAG-005",
+    "XFC-CF-RESOURCE-002",
+    "XFC-CF-BUILD-004"
+  ],
+  "xstateEspruinoProjectBaseRevision": "eaeb141cda165df425567d949d07afeb479cb215",
+  "specificationVersion": "0.50",
+  "implementationBaseRevision": "b7b6d88d79ab8602574f1551804bd1baa672f96f",
+  "implementationRevision": "8ce408fb560ed60b33d327f2feb7fac856e3f8ac",
+  "implementationState": "the exact tested M7.3 source identified by the hashes below is committed at the implementation revision; the physical image was built immediately before that commit from a working tree based on the implementation base revision",
+  "implementationSourceSha256": {
+    "xfsm_compile.c": "451de8be02cb1e9178807a3b0b0b523dd6e40df107b3f2440ef382a28ea959f0",
+    "test_transition_depth.js": "58b3f13e7bfb8b2a58a2b71c214aa2465c3199add5d380fc83dea6c06e3af4a8",
+    "test_transition_depth_storage.js": "571457458db5375cd09a552b69f25aa9b3d8960a2b276f40fb910dae56df2530",
+    "test_host_allocation_pressure.js": "2faefd237acc2984b691d6726efc5947e89302ce5297b1db54e10b5144ac2e0a",
+    "test_host_diagnostic_pressure.js": "ccfd26aedf9758b36b8c356cc749bb75341c237e34647187322778a25b16fca5",
+    "esp32_xfsm_profile.make": "c26951d3b4a8906aad2f85de3750864c44ef427fe5155cd21c4b5c81ba65b3a0"
+  },
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": "ESP32-D0WD-V3 revision 3.1, 4 MB flash",
+  "cpuArchitecture": "Xtensa LX6",
+  "pointerBits": 32,
+  "byteOrder": "little-endian",
+  "jsVarBlockBytes": 14,
+  "serialPort": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+  "toolchain": {
+    "espIdf": "5.5.3",
+    "compiler": "Xtensa GCC 14.2.0"
+  },
+  "profile": {
+    "file": "libs/xfsm/tests/esp32_xfsm_profile.make",
+    "selection": "SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make",
+    "boardFileChanged": false,
+    "featuresRemoved": [],
+    "stockEspHeapSizeBytes": 70000,
+    "selectedEspHeapSizeBytes": 65000,
+    "nativeReserveTradeBytes": 5000,
+    "stockJsVarBlocks": 2803,
+    "selectedJsVarBlocks": 3160,
+    "additionalJsVarBlocks": 357,
+    "additionalJsVarBytes": 4998,
+    "jsVarBlockIncreasePercent": 12.736354,
+    "decision": "selected provisionally for original-ESP32 XFSM qualification"
+  },
+  "firmware": {
+    "version": "2v29.442",
+    "reportedGitCommit": "b7b6d88d7",
+    "sourceIdentityNote": "process.env.GIT_COMMIT identifies the committed parent because the image was built immediately before the exact tested source was committed as 8ce408fb5; the recorded hashes match that revision",
+    "buildFlags": "BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make; DEBUG removed; XFC_TEST and XFC_MEASURE absent",
+    "optimization": "board optimizeflags -Og; RELEASE=1",
+    "coordinatorStackReserveBytes": 1024,
+    "measurementApi": "absent",
+    "faultInjectionApi": "absent",
+    "appPartitionBytes": 2048000,
+    "disabledReferenceImageBytes": 1491968,
+    "enabledImageBytes": 1523712,
+    "deltaBytes": 31744,
+    "deltaPercentOfBaseline": 2.127660,
+    "enabledFreeBytes": 524288,
+    "enabledFreePercent": 25.6,
+    "result": "pass"
+  },
+  "runner": {
+    "path": "/home/simon/MaBecker/ESP32_SGATest/tools/repl/run_test.py",
+    "transport": "direct paced serial",
+    "baud": 115200
+  },
+  "maximumDepthDirect": {
+    "suite": "libs/xfsm/tests/test_transition_depth.js",
+    "result": "pass",
+    "totalBlocks": 3160,
+    "initialUsageBlocks": 57,
+    "startupUsageBlocks": 1016,
+    "startupActions": 32,
+    "transitionUsageBlocks": 1092,
+    "transitionActions": 65,
+    "orderedTrace": true,
+    "activeAncestorMatch": true
+  },
+  "maximumDepthStorage": {
+    "suite": "libs/xfsm/tests/test_transition_depth_storage.js",
+    "result": "pass",
+    "totalBlocks": 3160,
+    "beforeUsageBlocks": 181,
+    "configuredUsageBlocks": 644,
+    "compiledUsageBlocks": 1046,
+    "finalUsageBlocks": 293,
+    "nativeFreeHeapBytes": 62644,
+    "nativeMinimumFreeHeapBytes": 62216,
+    "nativeLargestFreeBlockBytes": 61440,
+    "storageCleanup": true
+  },
+  "allocationPressure": {
+    "suite": "libs/xfsm/tests/test_host_allocation_pressure.js",
+    "finalRuns": 2,
+    "result": "pass",
+    "pressureFreeBlocks": 501,
+    "settledUsageBlocks": 1798,
+    "postFailureUsageBlocks": 1798,
+    "recoveredUsageBlocks": 1798,
+    "productionError": "E_NO_MEMORY",
+    "sameConfigurationRetry": "pass",
+    "nonAccumulation": true
+  },
+  "diagnosticPressure": {
+    "suite": "libs/xfsm/tests/test_host_diagnostic_pressure.js",
+    "finalRuns": 2,
+    "result": "pass",
+    "eventNameBytes": 8000,
+    "prePressureFreeBlocks": 974,
+    "pressureFreeBlocks": 387,
+    "settledUsageBlocks": 2186,
+    "postFailureUsageBlocks": 2186,
+    "fallbackError": "XFC E_NO_MEMORY @ createMachine",
+    "nonAccumulation": true,
+    "hardening": "checked segmented-string copying and complete diagnostic-path allocation preflight reserve 32 JsVar blocks for fallback reporting"
+  },
+  "hostRegression": {
+    "productionLinuxSuites": 22,
+    "productionLinuxResult": "pass with zero records after collection",
+    "deterministicFaultSuite": "pass",
+    "nativeSanitizerChecks": 66,
+    "nativeSanitizerResult": "pass with address, undefined-behaviour and leak sanitizers"
+  },
+  "postTestDeviceRegression": {
+    "test_shell.js": "pass"
+  },
+  "xstateDifferential": {
+    "classification": "not rerun for allocation/profile mechanics",
+    "reason": "memory partitioning, Espruino allocation failure, Storage loading, and diagnostic fallback are host-specific; the same depth-32 65-action trace already matches pinned XState 5.33.2 in the M6.3 result"
+  },
+  "limitations": [
+    "The profile is provisionally selected for original ESP32 and does not establish a profile for Pico, MDBT42Q, ESP32-C3, or ESP32-S3.",
+    "At an exploratory 68 free JsVar blocks, Espruino raised its global out-of-memory interrupt before XFSM could construct a normal JavaScript Error; the retained production pressure cases use 387 and 501 free blocks and return cleanly.",
+    "The final original-ESP32 release-candidate suite remains M7.4 work, so target status remains Build verified."
+  ],
+  "targetStatus": "Build verified",
+  "result": "pass for M7.3 original-ESP32 product profile, maximum-depth execution, and production allocation pressure",
+  "report": "../../../docs/reports/2026-09-27-m7-original-esp32-allocation-profile.md"
+}
