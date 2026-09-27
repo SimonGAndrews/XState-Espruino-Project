@@ -301,7 +301,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
 | Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; provisional full-feature 3,160-block profile passes M7.1-M7.3, including action-heavy depth 32, Storage-backed execution, and production allocation pressure |
-| ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Secondary architecture qualification; stock capacity established |
+| ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Stock full-feature build verified; physical qualification pending |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
 The library must be selected through Espruino's normal optional-library
@@ -369,6 +369,48 @@ bytes, a 27,904-byte or 1.87% increase, and passed the partition-size check
 with 528,128 bytes free. See the [ESP32 IDF5 build
 report](reports/2026-09-25-esp32-idf5-build.md) and [result
 record](../tests/results/esp32-xtensa/2026-09-25-m5-idf5-build.json).
+
+The ESP32-C3 feasibility comparison also uses ESP-IDF 5.5.3, with the
+provisioned RISC-V GCC 14.2.0 toolchain. Start with the stock memory profile;
+do not apply the classic ESP32 `esp32_xfsm_profile.make` override before C3
+runtime memory and wireless-service measurements:
+
+```bash
+source scripts/provision.sh ESP32_IDF5
+env -u DEBUG make BOARD=ESP32C3_IDF5 clean
+env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=0 -j2
+env -u DEBUG make BOARD=ESP32C3_IDF5 clean
+env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 -j2
+```
+
+At implementation revision `8ce408fb5`, the disabled image is 1,678,240 bytes
+and the enabled image is 1,713,264 bytes. XFSM adds 35,024 bytes (2.09%) and
+the enabled image passes ESP-IDF's generated 2,048,000-byte app-partition check
+with 334,736 bytes free. This advances the target only to `Build verified`.
+See the [C3 build report](reports/2026-09-27-m7-esp32-c3-build-feasibility.md)
+and [result](../tests/results/esp32-riscv/2026-09-27-m7-build-feasibility.json).
+
+On physical C3 hardware, the stock 70,000-byte native-heap reserve produced
+3,016 13-byte JsVar blocks in the qualification run and failed both direct and
+Storage-backed depth-32 construction with `E_NO_MEMORY`. A diagnostic trial using the existing
+`esp32_xfsm_profile.make` layer provides 3,402 blocks and passes both cases:
+
+```bash
+env -u DEBUG make BOARD=ESP32C3_IDF5 clean
+env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 \
+  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make -j2
+env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 \
+  SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make \
+  flash PORT=/dev/ttyACM0
+```
+
+This is diagnostic evidence, not the selected C3 product profile. The stock
+70 KB native reserve exists to support Bluetooth plus HTTPS under memory
+pressure, as discussed in [Espruino issue
+#2746](https://github.com/espruino/Espruino/issues/2746). Preserve it while
+investigating XFSM peak JsVar reductions. A lower reserve requires explicit
+Bluetooth-plus-HTTPS coexistence evidence and approval. See the [physical
+baseline report](reports/2026-09-27-m7-esp32-c3-physical-baseline.md).
 
 At complete implementation revision `1589218d3`, the same clean comparison
 produces a 1,491,968-byte disabled image and 1,523,424-byte enabled image. XFSM

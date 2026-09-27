@@ -240,6 +240,51 @@ report](reports/2026-09-27-m7-original-esp32-allocation-profile.md).
 
 The M7.4 release-candidate rerun remains open for this target.
 
+ESP32-C3 follows its own qualification track so the classic ESP32 memory
+profile is not assumed to suit the RISC-V target:
+
+1. **C3-A, build feasibility:** make clean, matched XFSM-disabled and enabled
+   stock `ESP32C3_IDF5` release builds; record the exact app-image delta,
+   generated partition headroom, toolchain, and linked XFSM symbol. This gate
+   passed at implementation revision `8ce408fb5`: the enabled image is
+   1,713,264 bytes, adds 35,024 bytes (2.09%), and leaves 334,736 bytes in the
+   2,048,000-byte app partition. See the [C3 build
+   report](reports/2026-09-27-m7-esp32-c3-build-feasibility.md).
+2. **C3-B, stock-profile physical baseline:** identify and flash a physical
+   C3; verify boot and module identity; run compact Profile 1, depth-32,
+   completion-boundary, GC-relocation, cleanup, stack, timing, JsVar, and
+   native-heap checks using the stock 70,000-byte native-heap reserve.
+3. **C3-C, memory optimization and loaded-service qualification:** retain the
+   stock 70,000-byte native-heap reserve as the preferred product constraint,
+   measure and reduce XFSM's peak compiler-side JsVar demand, and repeat memory
+   and lifecycle checks during WiFi association, HTTP and HTTPS/TLS work, BLE
+   activity, and combined WiFi/BLE coexistence. A lower native reserve is a
+   fallback only after Bluetooth-plus-HTTPS evidence and an explicit decision;
+   do not inherit the classic ESP32's 65,000-byte override by default.
+4. **C3-D, release-candidate rerun:** repeat clean disabled/enabled builds and
+   the agreed portable, target, resource, cleanup, and service-coexistence
+   suite against the selected C3 profile. Advance from `Build verified` to
+   `Conformance verified` only when this physical evidence passes.
+
+The first C3-B physical slice is recorded in the [C3 physical baseline
+report](reports/2026-09-27-m7-esp32-c3-physical-baseline.md). The stock
+70,000-byte reserve exposed 3,016 JsVar blocks in the qualification run and
+passed the representative functional and cleanup checks, but both direct and
+Storage-backed depth-32
+fixtures fail construction with `E_NO_MEMORY`. A diagnostic 65,000-byte trial
+exposes 3,402 blocks and passes both depth fixtures, exact eight-actor and
+fault cleanup, GC relocation, and event serialization while retaining 62,924
+native-heap bytes after the Storage-backed case. This trial identifies the
+required JsVar headroom; it does not select a C3 profile. C3-B remains open for
+instrumented stack/timing and remaining portable checks. C3-C must first seek
+that headroom through XFSM optimization while preserving the 70 KB reserve,
+whose Bluetooth-plus-HTTPS rationale is recorded in [Espruino issue
+#2746](https://github.com/espruino/Espruino/issues/2746).
+The [compiler JsVar investigation](reports/2026-09-27-c3-compiler-jsvar-investigation.md)
+measures the stock-profile depth threshold and recommends retaining depth 32
+while first removing retained paths/derived IDs and compacting compiler
+metadata.
+
 ### M8 - Format Freeze And Release Readiness
 
 Deliverables:

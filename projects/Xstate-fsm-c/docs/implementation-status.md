@@ -3,9 +3,9 @@
 - Last reviewed: 2026-09-27
 - Overall status: all seven M6 behavioural batches, the post-M6 whole-build
   resource review, and M7.1-M7.3 original-ESP32 integration pass their
-  applicable scope; a provisional full-feature profile now provides 3,160
-  JsVar blocks and passes the action-heavy depth-32 model, Storage-backed
-  execution, and production allocation and diagnostic-pressure cases
+  applicable scope; ESP32-C3 build feasibility and an initial physical
+  baseline also pass, while its stock 70 KB native-heap profile exposes an
+  XFSM maximum-depth construction-capacity gap
 - Current milestone: M0 normative requirement inventory and M7 product-profile
   and physical-target qualification
 - Implementation code status: M4 runtime plus final/completion behavior, full
@@ -18,9 +18,10 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Next gate: complete the original ESP32 M7.4 release-candidate evidence,
-  select the remaining M7 product profiles, and qualify a physical Pico while
-  completing M0 traceability
+- Next gate: complete ESP32-C3 C3-B measurements, reduce its XFSM construction
+  JsVar peak while preserving the preferred 70 KB native-heap reserve, then
+  run C3-C wireless-service coexistence; also complete original ESP32 M7.4 and
+  continue M0 traceability
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -243,20 +244,29 @@ passes the action-heavy depth-32 fixture while retaining the board's complete
 feature set and more than 62 KB of measured native-heap headroom.
 
 A reduced-profile Pico image passes its size gate, but no physical Pico runtime
-evidence has been collected. The stock MDBT42Q release/DFU image passes, while
-the XFSM-enabled ELF links but overlaps reserved Storage by 22,176 bytes and
-fails the target size check. M0's full normative requirement inventory also
-remains documentation work.
+evidence has been collected. The stock full-feature ESP32-C3 image also passes:
+XFSM adds 35,024 bytes (2.09%) and leaves 334,736 bytes in its generated app
+partition. Physical testing shows that its roughly 3,016-block JavaScript pool
+cannot construct the maximum-depth fixture; a diagnostic 65 KB native-heap
+trial raises the pool to 3,402 blocks and passes direct and Storage-backed
+depth, exact cleanup, GC relocation, and event serialization. Because the C3's
+70 KB native reserve supports Bluetooth-plus-HTTPS use, XFSM optimization is
+preferred over adopting the trial. The stock MDBT42Q release/DFU image passes,
+while the XFSM-enabled ELF links but overlaps reserved Storage by 22,176 bytes
+and fails the target size check. M0's full normative requirement inventory
+also remains documentation work.
 
 Immediate tasks:
 
 1. expand the M0 normative requirement inventory while
    maintaining the consolidated [test inventory](../tests/test-inventory.md);
-2. complete the original-ESP32 M7.4 release-candidate rerun and select the
-   remaining target profiles from the completed [resource
-   review](reports/2026-09-27-post-m6-resource-review.md);
-3. qualify a physical Pico and measure ESP32-C3 when hardware is available;
-4. produce an XFSM memory architecture and lifetime diagram that distinguishes
+2. implement the staged reductions identified by the [ESP32-C3 compiler JsVar
+   investigation](reports/2026-09-27-c3-compiler-jsvar-investigation.md), then
+   repeat maximum-depth measurement with the stock 70 KB native reserve;
+3. run C3-C WiFi, HTTPS/TLS, BLE, and combined-service memory qualification;
+4. complete the original-ESP32 M7.4 release-candidate rerun and qualify a
+   physical Pico;
+5. produce an XFSM memory architecture and lifetime diagram that distinguishes
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
    actor storage, native heap, and the single native C stack. Show their use
    during module loading, `createMachine` compilation, `createActor`,
@@ -268,6 +278,7 @@ Immediate tasks:
 
 | Issue | Repository | Effect | Status |
 | --- | --- | --- | --- |
+| ESP32-C3 stock 70 KB native reserve exposes roughly 3,016 JsVar blocks and the current compiler cannot construct the action-heavy depth-32 fixture | Espruino implementation | The required hierarchy boundary fails with `E_NO_MEMORY`; reducing native reserve conflicts with its Bluetooth-plus-HTTPS rationale | Optimize XFSM peak JsVar demand first; retain the 65 KB run as diagnostic evidence only |
 | XFSM adds 22,288 flash bytes to an MDBT42Q baseline with only 112 bytes before reserved Storage | Espruino implementation | Enabled ELF overlaps Storage by 22,176 bytes, preventing a valid DFU and runtime measurement | Select a viable target library/Storage budget without changing the stock board build |
 
 ## Evidence-Dependent Decisions
@@ -283,6 +294,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Retain or revise snapshot materialization | Lazy snapshots retained provisionally after Linux and ESP32 allocation measurement; constrained-target evidence pending | M7 open |
 | Retain or revise diagnostic detail | The 48-byte detail budget is retained provisionally after complete Linux and compact ESP32 validation; constrained-target evidence pending | M7 open |
 | Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected; full-feature 3,160-block product profile and M7.1-M7.3 physical slices pass | M7.4 release-candidate rerun |
+| Select ESP32-C3 JsVar/native-heap profile | Stock 70 KB reserve protects Bluetooth-plus-HTTPS use but approximately 3,016 blocks do not fit the current maximum-depth compiler peak; diagnostic 65 KB trial proves that 3,402 blocks suffice | Reduce XFSM peak JsVar demand at 70 KB, then run C3-C service coexistence before considering any lower-reserve fallback |
 
 ## Target Status
 
@@ -292,7 +304,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Espruino Pico | Build verified for reduced product profile | [Pico feasibility build](../tests/results/pico/2026-09-26-feasibility-build.json) |
 | MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
 | Original ESP32 IDF5 | Build verified; M7.1-M7.3 application integration, exact settled-baseline cleanup, event serialization, compact validation, action-heavy depth 32, Storage-backed execution and production allocation pressure pass on the provisional 3,160-block profile | [M7.3 allocation/profile result](../tests/results/esp32-xtensa/2026-09-27-m7-allocation-profile.json) |
-| ESP32-C3 IDF5 | Not yet verified | Stock-build capacity established from upstream Actions; XFSM build pending |
+| ESP32-C3 IDF5 | Build verified; stock-profile functional checks pass but maximum-depth construction needs lower XFSM JsVar demand; diagnostic 65 KB trial passes focused depth, cleanup, GC and serialization checks; wireless-service and release qualification pending | [M7 physical-baseline result](../tests/results/esp32-riscv/2026-09-27-m7-physical-baseline.json) |
 | ESP32-S3 IDF5 | Not yet verified | Later expansion target; not required for Version 1 qualification |
 
 Statuses have the meanings defined in the Profile 1 specification. A successful
@@ -302,6 +314,9 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-27 | Instrumented stock-profile ESP32-C3 measurement found a 2,245-block compiler peak for the compact depth-32 model and an action-heavy pass/fail boundary between depths 30 and 31; the resulting trade study recommends compiler metadata reduction before any Profile 1 limit reduction |
+| 2026-09-27 | Initial physical ESP32-C3 baseline passed representative runtime, exact cleanup, GC and serialization checks; stock 70 KB profile failed maximum-depth construction, while a diagnostic 65 KB reserve raised the pool from 3,016 to 3,402 blocks and passed both direct and Storage-backed depth fixtures; retaining 70 KB and reducing XFSM's peak JsVar demand is preferred |
+| 2026-09-27 | Stock full-feature ESP32-C3 IDF5 disabled and XFSM-enabled builds passed with RISC-V GCC 14.2.0; XFSM adds 35,024 app-image bytes (2.09%) and leaves 334,736 bytes in the generated app partition, advancing the target to Build verified |
 | 2026-09-27 | M7.3 selected the provisional full-feature original-ESP32 3,160-block profile; direct and Storage-backed depth-32/65-action execution, production failure/retry, diagnostic fallback, 22 Linux suites, fault injection, and 66 sanitizer checks passed |
 | 2026-09-27 | M7.2 original-ESP32 memory lifecycle and event serialization passed twice: shared, repeated and faulted graphs return exactly to the settled production baseline, and queued timer work waits for 128 synchronous sends and publications |
 | 2026-09-27 | M7.1 original-ESP32 application integration passed twice with retained outer-scope, closure, flash-backed and native callbacks, GPIO output/readback, timer-driven dispatch, exact callback-fault rollback, and safe Storage/cache/pin cleanup |

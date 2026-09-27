@@ -1,0 +1,51 @@
+{
+  "kind": "xfsm-esp32-c3-compiler-jsvar-investigation",
+  "date": "2026-09-27",
+  "specificationVersion": "0.50",
+  "espruinoRevision": "8ce408fb560ed60b33d327f2feb7fac856e3f8ac",
+  "branch": "feature/xfsm-profile1",
+  "target": "ESP32-C3 IDF5",
+  "board": "ESP32C3_IDF5",
+  "runtimeIdentity": {
+    "version": "2v29.443",
+    "gitCommit": "8ce408fb5"
+  },
+  "profile": {
+    "nativeHeapReserveBytes": 70000,
+    "jsVarBlocks": 3012,
+    "jsVarBlockBytes": 13,
+    "features": [
+      "WiFi",
+      "Bluetooth",
+      "TLS",
+      "filesystem",
+      "graphics",
+      "debugger",
+      "tab completion"
+    ],
+    "measurementBuild": true
+  },
+  "compactDepth32": {
+    "result": "pass",
+    "initialUsageBlocks": 54,
+    "configuredUsageBlocks": 357,
+    "arenaBytes": 4610,
+    "persistentMachineBlocks": 410,
+    "compilerPeakDeltaBlocks": 2245,
+    "compilerEndDeltaBlocks": 367,
+    "approximateAbsolutePeakBlocks": 2602,
+    "approximatePoolUsePercent": 86.39
+  },
+  "actionHeavyDepthSweep": [
+    {"depth": 16, "configuredBlocks": 430, "peakDeltaBlocks": 855, "lastAbsoluteBlocks": 1285, "endDeltaBlocks": 178, "result": "pass"},
+    {"depth": 20, "configuredBlocks": 487, "peakDeltaBlocks": 1144, "lastAbsoluteBlocks": 1631, "endDeltaBlocks": 224, "result": "pass"},
+    {"depth": 24, "configuredBlocks": 539, "peakDeltaBlocks": 1474, "lastAbsoluteBlocks": 2013, "endDeltaBlocks": 277, "result": "pass"},
+    {"depth": 26, "configuredBlocks": 565, "peakDeltaBlocks": 1655, "lastAbsoluteBlocks": 2220, "endDeltaBlocks": 306, "result": "pass"},
+    {"depth": 28, "configuredBlocks": 591, "peakDeltaBlocks": 1844, "lastAbsoluteBlocks": 2435, "endDeltaBlocks": 336, "result": "pass"},
+    {"depth": 30, "configuredBlocks": 617, "peakDeltaBlocks": 2043, "lastAbsoluteBlocks": 2660, "endDeltaBlocks": 367, "result": "pass"},
+    {"depth": 31, "configuredBlocks": 630, "peakDeltaBlocks": 2002, "lastAbsoluteBlocks": 2632, "endDeltaBlocks": 49, "result": "E_NO_MEMORY at createMachine"},
+    {"depth": 32, "configuredBlocks": 651, "peakDeltaBlocks": 2098, "lastAbsoluteBlocks": 2749, "endDeltaBlocks": 41, "result": "E_NO_MEMORY at createMachine"}
+  ],
+  "interpretation": "The compiler's JavaScript-backed state and symbol metadata dominates its persistent result. A depth reduction to 30 passes this fixture but does not provide a model-independent capacity guarantee. Preserve Profile 1 limits and reduce compiler peak demand first.",
+  "finalBenchState": "Normal non-instrumented stock 70 KB XFSM firmware restored after measurement."
+}

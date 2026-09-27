@@ -1,0 +1,65 @@
+{
+  "kind": "xfsm-m7-esp32-c3-idf5-build-feasibility",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-BUILD-006"
+  ],
+  "xstateEspruinoProjectRevision": "c650904e303d2718ccd507d5f3f5b657fcfe7be8",
+  "specificationVersion": "0.50",
+  "espruinoRevision": "8ce408fb560ed60b33d327f2feb7fac856e3f8ac",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "ESP32-C3 IDF5",
+  "board": "ESP32C3_IDF5",
+  "cpu": "Espressif ESP32-C3 32-bit RISC-V",
+  "pointerBits": 32,
+  "byteOrder": "little-endian",
+  "toolchain": {
+    "sdk": "ESP-IDF 5.5.3",
+    "cc": "riscv32-esp-elf-gcc 14.2.0",
+    "source": "scripts/provision.sh ESP32_IDF5"
+  },
+  "build": {
+    "commonFlags": "BOARD=ESP32C3_IDF5 RELEASE=1 -j2",
+    "environmentControl": "DEBUG was removed from the command environment for both clean release builds",
+    "profile": "Stock ESP32C3_IDF5 feature and memory profile: WiFi, Bluetooth, TLS, filesystem, graphics and crypto; 4095 configured variables and ESP_HEAP_SIZE=70000",
+    "optimization": "ESP32C3_IDF5 applies -Og to Espruino component sources; ESP-IDF sdkconfig has CONFIG_COMPILER_OPTIMIZATION_SIZE=y",
+    "appPartitionBytes": 2048000,
+    "partitionAuthority": "ESP-IDF generated partition table and check_sizes.py result for the produced IDF5 image",
+    "disabledCommand": "env -u DEBUG make BOARD=ESP32C3_IDF5 clean && env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=0 -j2",
+    "disabledResult": "pass: RISC-V compile, link, app image and ESP-IDF partition-size check completed",
+    "disabledSize": {
+      "appImageBytes": 1678240,
+      "appPartitionFreeBytes": 369760,
+      "appPartitionUsedPercent": 81.945313
+    },
+    "enabledCommand": "env -u DEBUG make BOARD=ESP32C3_IDF5 clean && env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 -j2",
+    "enabledResult": "pass: XFSM and wrapper sources compiled and linked for RISC-V and passed the ESP-IDF partition-size check",
+    "enabledSize": {
+      "appImageBytes": 1713264,
+      "appPartitionFreeBytes": 334736,
+      "appPartitionUsedPercent": 83.655469
+    },
+    "delta": {
+      "appImageBytes": 35024,
+      "appImagePercentOfBaseline": 2.086948,
+      "appPartitionPercent": 1.710156
+    }
+  },
+  "integration": {
+    "stockBoardFileModified": false,
+    "selection": "USE_XFSM=1 used Espruino's normal optional-library mechanism",
+    "xfsmSymbol": "jswrap_xfsm_createMachine present in the linked RISC-V ELF",
+    "boardFileFlashConstant": "ESP32_FLASH_MAX=1572864 is not used by the ESP32_IDF5 Make target; the generated 2048000-byte app partition is checked by ESP-IDF"
+  },
+  "artifacts": {
+    "disabledAppImageSha256": "387d817cc97600e6f27a4bdcc1a9ee71af5b3d6c181a320d905e12798656b516",
+    "enabledAppImageSha256": "3b7503f50d8ae96eebb02c25e6b116b76f4fea6066cc1cfa99835a7b89a2de8e",
+    "enabledElfSha256": "aaa13c2f5981a34c191eea741b5a9e276bb70282c84c99747ab93eddbc8a041d",
+    "retention": "Transient local build artifacts; not committed"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass",
+  "scope": "Build feasibility only. No physical-device runtime, semantic, RAM, stack, timing, GC, save/restore, WiFi/BLE coexistence or hardware-action conformance is claimed."
+}

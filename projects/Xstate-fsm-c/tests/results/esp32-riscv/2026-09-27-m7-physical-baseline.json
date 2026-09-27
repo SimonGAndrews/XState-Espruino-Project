@@ -1,0 +1,116 @@
+{
+  "kind": "xfsm-m7-esp32-c3-physical-baseline",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-API-001",
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-LIMIT-001",
+    "XFC-CF-HOST-001",
+    "XFC-CF-HOST-006"
+  ],
+  "xstateEspruinoProjectRevision": "c650904e303d2718ccd507d5f3f5b657fcfe7be8",
+  "specificationVersion": "0.50",
+  "espruinoRevision": "8ce408fb560ed60b33d327f2feb7fac856e3f8ac",
+  "branch": "feature/xfsm-profile1",
+  "target": "ESP32-C3 IDF5",
+  "board": "ESP32C3_IDF5",
+  "device": {
+    "chip": "ESP32-C3 QFN32 revision 0.3",
+    "features": ["WiFi", "BLE", "4 MB embedded flash", "USB Serial/JTAG"],
+    "controlPort": "/dev/ttyACM0",
+    "persistentPort": "/dev/serial/by-id/usb-Espressif_USB_JTAG_serial_debug_unit_A0:76:4E:7B:63:90-if00"
+  },
+  "runtimeIdentity": {
+    "board": "ESP32C3_IDF5",
+    "version": "2v29.443",
+    "gitCommit": "8ce408fb5",
+    "xfsmCreateMachine": "function",
+    "measurementApi": "undefined"
+  },
+  "stockProfile": {
+    "nativeHeapReserveBytes": 70000,
+    "jsVarBlocks": 3016,
+    "postTrialRestoreJsVarBlocks": 3017,
+    "jsVarBlockBytes": 13,
+    "passedTests": [
+      "test_shell.js",
+      "test_compile.js",
+      "test_runtime.js",
+      "test_assign_forms.js",
+      "test_transition_domains.js",
+      "test_completion_cascade.js",
+      "test_lifecycle_complete.js",
+      "test_strict_validation_embedded.js",
+      "test_host_memory_cleanup.js",
+      "measure_m5_gc_relocation.js",
+      "test_host_event_serialization.js"
+    ],
+    "failedTests": {
+      "test_transition_depth.js": "E_NO_MEMORY at createMachine before entry actions",
+      "test_transition_depth_storage.js": "E_NO_MEMORY at createMachine; Storage cleanup passed",
+      "test_limits.js": "Stopped at its depth-32 createMachine check with E_NO_MEMORY; no DONE marker"
+    },
+    "cleanup": {
+      "settledBaselineBlocks": 1973,
+      "secondSharedCleanupBlocks": 1973,
+      "repeatCleanupMaximumBlocks": 1973,
+      "faultCleanupBlocks": 1973,
+      "finalUsageBlocks": 1973,
+      "actorCount": 8,
+      "repeatCount": 6
+    },
+    "nativeHeapAfterFailedStorageDepth": {
+      "freeBytes": 67020,
+      "minimumFreeBytes": 66432,
+      "largestBlockBytes": 57344
+    }
+  },
+  "diagnostic65kTrial": {
+    "selection": "SETDEFINES=libs/xfsm/tests/esp32_xfsm_profile.make used diagnostically; no C3 profile was selected or board file changed",
+    "nativeHeapReserveBytes": 65000,
+    "jsVarBlocks": 3402,
+    "jsVarBlockBytes": 13,
+    "additionalJsVarBlocks": 386,
+    "appImageBytes": 1713264,
+    "passedTests": [
+      "test_shell.js",
+      "test_transition_depth.js",
+      "test_transition_depth_storage.js",
+      "test_host_memory_cleanup.js",
+      "measure_m5_gc_relocation.js",
+      "test_host_event_serialization.js"
+    ],
+    "depth": {
+      "startupActions": 32,
+      "transitionActions": 65,
+      "directPass": true,
+      "storageBackedPass": true
+    },
+    "cleanup": {
+      "settledBaselineBlocks": 1973,
+      "secondSharedCleanupBlocks": 1973,
+      "repeatCleanupMaximumBlocks": 1973,
+      "faultCleanupBlocks": 1973,
+      "finalUsageBlocks": 1973,
+      "liveFreeBlocksWithEightActors": 938
+    },
+    "nativeHeapAfterStorageDepth": {
+      "freeBytes": 62924,
+      "minimumFreeBytes": 62340,
+      "largestBlockBytes": 53248
+    },
+    "eventSerialization": {
+      "synchronousSends": 128,
+      "timerObservedCount": 128,
+      "elapsedMilliseconds": 580.25
+    },
+    "enabledAppImageSha256": "af262383a468e5f0e2948a4bd99620d6cb1fef83e89cd1fe731d816b5c247d41",
+    "enabledElfSha256": "c314df20bab5a14d84e6af8e6e4260ac3d69b097d0cba40863f862ce5787df1a",
+    "interpretation": "The trial isolates JsVar capacity as the depth failure and establishes the extra headroom required. It is not a recommended product profile because the C3 70 KB native reserve was introduced to support Bluetooth plus HTTPS."
+  },
+  "decision": "ESP32-C3 is physically viable for XFSM, but the stock 70 KB native-heap split is insufficient for the current depth-32 compiler peak. Preserve 70 KB as the preferred product reserve and optimize XFSM JsVar demand. A lower reserve is a fallback only if combined Bluetooth and HTTPS service-load evidence passes and the deviation is explicitly accepted.",
+  "finalBenchState": "Stock ESP_HEAP_SIZE=70000 XFSM image restored and runtime identity checked after the diagnostic trial; that boot exposed 3017 JsVar blocks.",
+  "targetStatus": "Build verified",
+  "result": "partial-pass",
+  "scope": "Initial physical C3-B evidence. It does not complete the portable suite, instrumented stack/timing measurements, wireless-service coexistence, save/reset, hardware actions, or release-candidate qualification."
+}
