@@ -1,0 +1,130 @@
+{
+  "kind": "xfsm-post-m6-resource-review-esp32",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-RESOURCE-002",
+    "XFC-CF-BUILD-004",
+    "XFC-CF-LIMIT-001",
+    "XFC-CF-LIMIT-002",
+    "XFC-CF-LIMIT-003"
+  ],
+  "xstateEspruinoProjectBaseRevision": "38cfcbe",
+  "specificationVersion": "0.50",
+  "implementationRevision": "1589218d30bcd761d1e323cd09b93187417a4797",
+  "implementationState": "built and tested from the exact pre-commit source subsequently committed at this revision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": "ESP32-D0WD-V3 revision 3.1, 4 MB flash",
+  "serialPort": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+  "toolchain": {
+    "espIdf": "5.5.3",
+    "compiler": "Xtensa GCC 14.2.0"
+  },
+  "cpuArchitecture": "Xtensa LX6",
+  "pointerBits": 32,
+  "byteOrder": "little-endian",
+  "jsVarBlockBytes": 14,
+  "optimization": "board optimizeflags -Og; RELEASE=1; DEBUG removed",
+  "coordinatorStackReserveBytes": 1024,
+  "productionBuild": {
+    "disabledCommand": "env -u DEBUG make clean && env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=0 -j2",
+    "enabledCommand": "env -u DEBUG make clean && env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2",
+    "appPartitionBytes": 2048000,
+    "disabledImageBytes": 1491968,
+    "enabledImageBytes": 1523424,
+    "deltaBytes": 31456,
+    "deltaPercentOfBaseline": 2.108356,
+    "enabledFreeBytes": 524576,
+    "enabledFreePercent": 25.614062,
+    "result": "pass"
+  },
+  "measurementBuild": {
+    "command": "env -u DEBUG make clean && env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 XFC_MEASURE=1 -j2",
+    "imageBytes": 1524416,
+    "overheadBytes": 992,
+    "overheadPercentOfProduction": 0.065116,
+    "privateApiAbsentFromRestoredProductionImage": true
+  },
+  "featureFixture": {
+    "suite": "measure_post_m6.js",
+    "result": "pass",
+    "sourceBytes": 5638,
+    "initialUsageBlocks": 1161,
+    "totalBlocks": 2799,
+    "jsVarBlockBytes": 14,
+    "arenaBytes": 943,
+    "retainedValues": 6,
+    "machinePersistentBlocks": 125,
+    "constructionPeakBlocks": 338,
+    "constructionEndBlocks": 86,
+    "actorBeforeStartBlocks": 33,
+    "startPersistentBlocks": 13,
+    "startSampledPeakBlocks": 17,
+    "firstSnapshotBlocks": 33,
+    "firstSubscriptionBlocks": 30,
+    "sendPersistentBlocks": 30,
+    "sendSampledPeakBlocks": 29,
+    "startStackBytes": 128,
+    "sendStackBytes": 304,
+    "nativeHeapBefore": {
+      "freeBytes": 66696,
+      "minimumFreeBytes": 66288,
+      "largestFreeBlockBytes": 65536
+    },
+    "nativeHeapAfter": {
+      "freeBytes": 66696,
+      "minimumFreeBytes": 66288,
+      "largestFreeBlockBytes": 65536
+    }
+  },
+  "depth32Fixture": {
+    "suite": "measure_post_m6_depth.js",
+    "result": "pass",
+    "sourceBytes": 1859,
+    "initialUsageBlocks": 54,
+    "configuredUsageBlocks": 354,
+    "totalBlocks": 2799,
+    "arenaBytes": 4610,
+    "machinePersistentBlocks": 382,
+    "constructionPeakBlocks": 2102,
+    "constructionEndBlocks": 342,
+    "approximateTotalPeakBlocks": 2456,
+    "approximateTotalPeakPercent": 87.745623,
+    "approximateRemainingBlocks": 343,
+    "approximateRemainingBytes": 4802,
+    "maximumStackBytes": 224
+  },
+  "diagnosticEvidence": {
+    "currentCompactValidation": "pass",
+    "currentDetailLimitBytes": 48,
+    "allocationCostReference": "2026-09-25-m5-physical-evidence.json",
+    "referencePeakBlocks": 113,
+    "referenceEndBlocks": 32
+  },
+  "completionBoundary": {
+    "suite": "measure_m5_completion.js",
+    "result": "pass",
+    "microstep256Microseconds": 807461,
+    "microstep257RejectionMicroseconds": 776229,
+    "maximumStackBytes": 448,
+    "stableRollback": true
+  },
+  "productionPhysicalRegression": {
+    "firmwareRestored": true,
+    "version": "2v29.439",
+    "reportedGitCommit": "319adfef5",
+    "sourceIdentityNote": "the generated version records the parent commit because the image was built immediately before committing the exact tested working tree as 1589218d3",
+    "test_shell.js": "pass",
+    "test_runtime.js": "pass",
+    "test_completion.js": "pass",
+    "measurementApi": "absent",
+    "faultInjectionApi": "absent"
+  },
+  "discardedControlBuilds": {
+    "reason": "The host exports DEBUG=release, which GNU Make treated as enabled and added -DDEBUG. Those first measurements were discarded and every recorded build explicitly removes DEBUG."
+  },
+  "result": "pass with documented depth-32 headroom constraint",
+  "report": "../../../docs/reports/2026-09-27-post-m6-resource-review.md"
+}

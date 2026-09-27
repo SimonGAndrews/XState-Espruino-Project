@@ -1,0 +1,120 @@
+{
+  "kind": "xfsm-post-m6-resource-review-linux",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-RESOURCE-002",
+    "XFC-CF-LIMIT-001",
+    "XFC-CF-LIMIT-002",
+    "XFC-CF-LIMIT-003",
+    "XFC-CF-HOST-003"
+  ],
+  "xstateEspruinoProjectBaseRevision": "38cfcbe",
+  "specificationVersion": "0.50",
+  "implementationRevision": "1589218d30bcd761d1e323cd09b93187417a4797",
+  "implementationState": "production and regression commands used the exact pre-commit source subsequently committed at this revision; final measurement commands ran after the commit",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "toolchain": "GCC 13.3.0",
+  "cpuArchitecture": "x86-64",
+  "pointerBits": 64,
+  "byteOrder": "little-endian",
+  "jsVarBlockBytes": 27,
+  "optimization": "default Linux build with OPTIMIZEFLAGS empty; DEBUG removed",
+  "coordinatorStackReserveBytes": 1024,
+  "productionBuild": {
+    "disabledCommand": "env -u DEBUG make clean && env -u DEBUG make USE_XFSM=0 -j2",
+    "enabledCommand": "env -u DEBUG make clean && env -u DEBUG make USE_XFSM=1 -j2",
+    "disabled": {
+      "textBytes": 1192046,
+      "dataBytes": 20048,
+      "bssBytes": 4704,
+      "linkedBytes": 1216798,
+      "fileBytes": 4852552,
+      "xfsmSymbols": "absent"
+    },
+    "enabled": {
+      "textBytes": 1268654,
+      "dataBytes": 21104,
+      "bssBytes": 4704,
+      "linkedBytes": 1294462,
+      "fileBytes": 5017520
+    },
+    "delta": {
+      "textBytes": 76608,
+      "dataBytes": 1056,
+      "bssBytes": 0,
+      "linkedBytes": 77664,
+      "linkedPercentOfBaseline": 6.382653,
+      "fileBytes": 164968,
+      "filePercentOfBaseline": 3.399613
+    },
+    "generatedVersionCommit": "319adfef5"
+  },
+  "measurementBuild": {
+    "command": "env -u DEBUG make clean && env -u DEBUG make USE_XFSM=1 XFC_MEASURE=1 -j2",
+    "linkedBytes": 1296726,
+    "fileBytes": 5022384,
+    "privateApiAbsentFromProduction": true
+  },
+  "featureFixture": {
+    "suite": "measure_post_m6.js",
+    "result": "pass",
+    "jsVarBlockBytes": 27,
+    "arenaBytes": 943,
+    "retainedValues": 6,
+    "machinePersistentBlocks": 77,
+    "constructionPeakBlocks": 265,
+    "constructionEndBlocks": 49,
+    "actorBeforeStartBlocks": 25,
+    "startPersistentBlocks": 9,
+    "startSampledPeakBlocks": 12,
+    "firstSnapshotBlocks": 22,
+    "firstSubscriptionBlocks": 21,
+    "sendPersistentBlocks": 21,
+    "sendSampledPeakBlocks": 20,
+    "startStackBytes": 256,
+    "sendStackBytes": 480,
+    "cleanupRetainedRecords": 0
+  },
+  "depth32Fixture": {
+    "suite": "measure_post_m6_depth.js",
+    "result": "pass",
+    "arenaBytes": 4610,
+    "machinePersistentBlocks": 208,
+    "constructionPeakBlocks": 1388,
+    "constructionEndBlocks": 179,
+    "maximumStackBytes": 304,
+    "cleanupRetainedRecords": 0
+  },
+  "dispatchTiming": {
+    "iterations": 5000,
+    "localHitMicroseconds": 48.686981,
+    "parentFallbackMicroseconds": 49.011612,
+    "guardedMicroseconds": 59.544563,
+    "unhandledMicroseconds": 48.165989
+  },
+  "diagnostic": {
+    "characters": 87,
+    "peakBlocks": 93,
+    "endBlocks": 21
+  },
+  "completionBoundary": {
+    "suite": "measure_m5_completion.js",
+    "result": "pass",
+    "microstep256Microseconds": 16185.998917,
+    "microstep257RejectionMicroseconds": 16180.992126,
+    "maximumStackBytes": 704,
+    "stableRollback": true,
+    "cleanupRetainedRecords": 0
+  },
+  "regression": {
+    "normalJavaScriptSuites": 22,
+    "normalJavaScriptResult": "pass with zero retained records after each suite",
+    "allocationFaultSuite": "pass",
+    "nativeSanitizerChecks": 66,
+    "nativeSanitizerResult": "pass"
+  },
+  "result": "pass",
+  "report": "../../../docs/reports/2026-09-27-post-m6-resource-review.md"
+}

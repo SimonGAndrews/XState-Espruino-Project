@@ -2,9 +2,9 @@
 
 ## Status
 
-- Plan status: Initial implementation baseline
-- Current milestone: post-M6 whole-build resource review; M0 requirement
-  inventory and M5 evidence decisions remain open before M7 qualification
+- Plan status: M6 behavior and post-M6 resource review complete
+- Current milestone: M0 requirement inventory and M7 product-profile and
+  physical-target qualification
 - Normative authority: [Profile 1 specification](specification.md)
 - Physical format: [Native Format Version 1](native-format-v1.md)
 - Living progress: [Implementation Status](implementation-status.md)
@@ -185,6 +185,15 @@ and test-loading overhead against matched enabled and disabled builds. The
 stock ESP32 depth-32/65-action construction failure is an input to this review.
 Any optimization must preserve the completed Profile 1 behavior and rerun its
 full regression suite before it is accepted.
+
+Review status: satisfied in implementation revision `1589218d3`. Matched
+Linux and original ESP32 production builds, complete-engine RAM and stack
+measurements, compact depth-32 construction, the completion boundary, and
+test-loading overhead are recorded in the [post-M6 resource
+report](reports/2026-09-27-post-m6-resource-review.md). The review retains the
+current record, depth, microstep, snapshot, and diagnostic designs
+provisionally, raises the default coordinator reserve to 1,024 bytes, and
+passes the remaining product-profile and target-specific decisions to M7.
 
 ### M7 - Physical Target Qualification
 

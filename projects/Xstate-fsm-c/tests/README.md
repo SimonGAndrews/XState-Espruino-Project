@@ -70,3 +70,9 @@ save/reboot/reset evidence is recorded in the [Linux host-lifecycle
 result](results/linux/2026-09-27-m6-host-lifecycle.json) and [original ESP32
 host-lifecycle
 result](results/esp32-xtensa/2026-09-27-m6-host-lifecycle.json).
+The complete-engine flash, JsVar, native-heap, arena, runtime-allocation,
+stack, timing, depth-headroom, and test-loading measurements are recorded in
+the [Linux post-M6 resource
+result](results/linux/2026-09-27-post-m6-resource-review.json) and [original
+ESP32 post-M6 resource
+result](results/esp32-xtensa/2026-09-27-post-m6-resource-review.json).

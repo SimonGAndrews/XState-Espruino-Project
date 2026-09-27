@@ -5,8 +5,9 @@
 - Status: Provisional physical layout for the first vertical slice
 - Arena format version: 1
 - Public API status: Private implementation format
-- Review status: Linux M5 evidence supports provisional retention; constrained
-  target evidence is still required before freeze
+- Review status: post-M6 Linux and original ESP32 evidence supports
+  provisional retention; constrained-target M7 evidence is still required
+  before freeze
 
 This appendix defines the physical native representation required by the
 Xstate-fsm-c Profile 1 specification. It is normative for the Version 1 C

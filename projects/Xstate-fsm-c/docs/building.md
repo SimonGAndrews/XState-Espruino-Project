@@ -2,14 +2,12 @@
 
 ## Status
 
-- Build-document status: all seven M6 batches verified for their applicable
-  Linux scope; production ESP32 compact validation and focused regressions,
-  save/reboot/reset, and transition domains pass, while its stock profile
-  cannot construct the depth-32/65-action fixture; reduced-profile Pico build
-  verified; MDBT42Q size check blocked
+- Build-document status: all seven M6 batches and the post-M6 whole-build
+  resource review are verified for their applicable Linux and original ESP32
+  scope; reduced-profile Pico build verified; MDBT42Q size check blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `319adfef5`
+- Current implementation revision: `1589218d3`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -267,11 +265,19 @@ make clean
 make USE_XFSM=1 XFC_MEASURE=1 -j2
 bin/espruino --test libs/xfsm/tests/measure_m5.js
 bin/espruino --test libs/xfsm/tests/measure_m5_completion.js
+bin/espruino --test libs/xfsm/tests/measure_post_m6.js
+bin/espruino --test libs/xfsm/tests/measure_post_m6_depth.js
 ```
 
-`XFC_MEASURE=1` adds two private measurement methods and native counters. They
-are absent from normal builds and are not XFSM API. The stack-reserve negative
-path was verified separately:
+`measure_post_m6.js` measures a complete feature-rich Profile 1 fixture.
+`measure_post_m6_depth.js` keeps its JavaScript source small so depth-32 engine
+construction can be distinguished from all-in-one test-program loading cost.
+Passing `true` as the second private `_measure` argument enables JsVar samples
+at runtime checkpoints; ordinary timing measurements leave that sampling off.
+
+`XFC_MEASURE=1` adds private measurement methods and native counters. They are
+absent from normal builds and are not XFSM API. The stack-reserve negative path
+was verified separately:
 
 ```bash
 make clean
@@ -279,8 +285,9 @@ make USE_XFSM=1 XFC_STACK_RESERVE=2000000 -j2
 bin/espruino --test libs/xfsm/tests/test_stack_reserve.js
 ```
 
-Normal builds default to a 768-byte XFSM coordinator reserve plus Espruino's
-512-byte safety allowance. See the [M5
+Normal builds default to a 1,024-byte XFSM coordinator reserve plus Espruino's
+512-byte safety allowance. See the [post-M6 resource
+report](reports/2026-09-27-post-m6-resource-review.md), [M5
 report](reports/2026-09-25-m5-first-evidence.md), [completion
 report](reports/2026-09-26-completion.md), and [Linux completion
 result](../tests/results/linux/2026-09-26-completion.json).
@@ -293,7 +300,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | --- | --- | --- |
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
-| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; compact strict validation, focused M6.7 regressions, earlier portable coverage, physical save/reboot/reset, and M5 evidence pass; depth-32/65-action fixture fails stock-profile construction memory |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; compact strict validation, focused M6.7 regressions, physical save/reboot/reset, and post-M6 resource evidence pass; compact depth 32 passes while the action-heavy all-in-one fixture exceeds stock application/test headroom |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Secondary architecture qualification; stock capacity established |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
@@ -363,6 +370,13 @@ with 528,128 bytes free. See the [ESP32 IDF5 build
 report](reports/2026-09-25-esp32-idf5-build.md) and [result
 record](../tests/results/esp32-xtensa/2026-09-25-m5-idf5-build.json).
 
+At complete implementation revision `1589218d3`, the same clean comparison
+produces a 1,491,968-byte disabled image and 1,523,424-byte enabled image. XFSM
+therefore adds 31,456 bytes (2.11%) and leaves 524,576 bytes free. The matched
+build, complete-engine memory measurements, compact depth-32 result, and test-
+loading interpretation are in the [post-M6 resource
+report](reports/2026-09-27-post-m6-resource-review.md).
+
 ### Original ESP32 device workflow
 
 The complete USB-UART, provenance, flashing, reset, direct-runner, evidence,
@@ -386,9 +400,9 @@ the matching offsets:
 ```bash
 cd "$ESPRUINO_XFSM_ROOT"
 source scripts/provision.sh ESP32_IDF5
-make BOARD=ESP32_IDF5 clean
-make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
-make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 flash PORT="$ESP32_PORT"
+env -u DEBUG make BOARD=ESP32_IDF5 clean
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 flash PORT="$ESP32_PORT"
 ```
 
 Do not use the EspruinoTools `-f` option as the normal ESP32 flashing path.

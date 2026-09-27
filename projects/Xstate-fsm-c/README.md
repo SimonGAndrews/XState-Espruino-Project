@@ -11,11 +11,10 @@ direction relates to the Stage 1 and FSMPlus projects.
 
 ## Status
 
-The Profile 1 specification is an implementation candidate. The M3
-construction and M4 actor-execution vertical slices are implemented and
-verified on Linux. The implemented M4 slice and M5 resource harness also pass
-on a physical original ESP32 IDF5 target. The supported hierarchical subset
-compiles transactionally
+The Profile 1 specification is an implementation candidate. All seven M6
+behavioural batches pass their applicable Linux exit suites, and the post-M6
+whole-build resource review passes on Linux and a physical original ESP32 IDF5
+target. The supported hierarchical subset compiles transactionally
 into the native arena and executes through the actor lifecycle, dispatch,
 actions, ordered assignment, stable snapshots, subscriptions, controlled
 stop, and callback-fault paths. The specification defines the
@@ -24,11 +23,11 @@ actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
 conformance strategy.
 
-M5 remains the current gate. Linux and original ESP32 sizing, memory, timing,
-stack, hierarchy, diagnostic, GC, and relocation measurements are recorded.
-Constrained-target runtime measurement and the completion-chain/microstep
-evidence remain open, so the physical format and provisional limits are not
-frozen.
+Current work is M0 normative traceability and M7 product-profile and physical-
+target qualification. Complete-engine Linux and original ESP32 sizing, memory,
+timing, stack, hierarchy, diagnostic, GC, and relocation measurements are
+recorded. The current format and limits are retained provisionally, pending
+constrained-target M7 evidence.
 
 Current work, revisions, and next tasks are recorded in the
 [implementation status](docs/implementation-status.md). The
