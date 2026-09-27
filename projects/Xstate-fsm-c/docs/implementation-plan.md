@@ -213,6 +213,15 @@ Each target must be reported only as `Not yet verified`, `Build verified`, or
 `Conformance verified` under the specification's criteria. Shared CPU families
 do not substitute for target-specific evidence.
 
+M7.1 original-ESP32 application integration passed with production engine
+source `1589218d3` and the physical fixture committed at `21154897f` under
+`libs/xfsm/tests/test_host_application.js`. The retained outer-scope, closure,
+flash-backed module and native callback cases, representative GPIO output,
+timer-driven event ingress, flash-callback exception, and safe cleanup are
+recorded in the [M7.1 report](reports/2026-09-27-m7-original-esp32-application-integration.md).
+The target remains `Build verified` until its remaining product-profile,
+allocation/cleanup, and release-candidate evidence is complete.
+
 ### M8 - Format Freeze And Release Readiness
 
 Deliverables:

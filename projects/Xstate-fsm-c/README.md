@@ -26,8 +26,10 @@ conformance strategy.
 Current work is M0 normative traceability and M7 product-profile and physical-
 target qualification. Complete-engine Linux and original ESP32 sizing, memory,
 timing, stack, hierarchy, diagnostic, GC, and relocation measurements are
-recorded. The current format and limits are retained provisionally, pending
-constrained-target M7 evidence.
+recorded. M7.1 original-ESP32 application integration also passes with retained
+outer-scope, closure, flash-backed and native callbacks, GPIO actions,
+timer-driven dispatch, and safe cleanup. The current format and limits are
+retained provisionally, pending constrained-target M7 evidence.
 
 Current work, revisions, and next tasks are recorded in the
 [implementation status](docs/implementation-status.md). The

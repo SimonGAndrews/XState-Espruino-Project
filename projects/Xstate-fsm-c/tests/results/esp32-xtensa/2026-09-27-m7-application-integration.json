@@ -1,0 +1,80 @@
+{
+  "kind": "xfsm-m7-application-integration-esp32",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-HOST-005",
+    "XFC-CF-HOST-006",
+    "XFC-CF-ACTION-001"
+  ],
+  "xstateEspruinoProjectBaseRevision": "f88a5958a2e69bb9691e02479c26a76ff1d8f356",
+  "specificationVersion": "0.50",
+  "implementationRevision": "1589218d30bcd761d1e323cd09b93187417a4797",
+  "implementationTestRevision": "21154897f3c5a76864989ade0c5ac959e35bd8f7",
+  "implementationState": "production firmware built from the engine revision; the physical test and its documentation were subsequently committed at the implementation test revision",
+  "testSourceSha256": "be729898697299522e8ee4fec2c28d2c7919da8827a30d21b9e69865a363c4d0",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": "ESP32-D0WD-V3 revision 3.1, 4 MB flash",
+  "cpuArchitecture": "Xtensa LX6",
+  "serialPort": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+  "firmware": {
+    "version": "2v29.439",
+    "gitCommit": "319adfef5",
+    "sourceIdentityNote": "the generated version records the parent commit because the production image was built immediately before committing the exact tested engine source as 1589218d3",
+    "measurementApi": "absent",
+    "faultInjectionApi": "absent"
+  },
+  "runner": {
+    "path": "/home/simon/MaBecker/ESP32_SGATest/tools/repl/run_test.py",
+    "transport": "direct paced serial",
+    "baud": 115200,
+    "timeoutSeconds": 45
+  },
+  "applicationTest": {
+    "suite": "libs/xfsm/tests/test_host_application.js",
+    "runs": 2,
+    "result": "pass",
+    "checksPerRun": 13,
+    "identicalTraceOnBothRuns": true,
+    "trace": "sub:Idle|nativeGuard|sub:Idle|outer:3|closure:3|flash:3|pinHigh:1|sub:Active|timerBefore|pinLow:0|flash:7|sub:Done|timerAfter|flashFail",
+    "initialUsageBlocks": 1236,
+    "finalUsageBlocks": 427,
+    "memoryMetricNote": "the values include changing test-source/parser lifetime and are recorded as cleanup context, not as a standalone leak measurement",
+    "verified": [
+      "the compiled machine retained an outer-scope action and closure after the source configuration, implementation map, and application function variables were discarded and garbage collection was requested",
+      "Boolean executed as a directly bound native guard",
+      "guard, action, and throwing action exports loaded from an Espruino Storage module remained callable after its module-cache entry was removed",
+      "bound native digitalWrite actions drove board LED1/GPIO2 high on entry and low on exit, with immediate JavaScript readback",
+      "a setTimeout callback called actor.send synchronously and publication completed before the callback resumed",
+      "the flash-backed throwing action retained exact exception identity and the last stable Done state and context",
+      "subscription publication occurred at the expected stable boundaries",
+      "the temporary Storage module and module-cache entry were removed and LED1 was left low"
+    ]
+  },
+  "postTestRegression": {
+    "suite": "test_shell.js",
+    "result": "pass"
+  },
+  "flashBackingInspection": {
+    "result": "pass",
+    "evidence": "jswrap_require reads the Storage file with jsfReadFile; the memory-mapped ESP32 path returns a native string over flash, and the parser retains a native substring for each function body"
+  },
+  "interruptBoundaryInspection": {
+    "result": "pass for Version 1 interface boundary",
+    "evidence": [
+      "actor start, send, stop, snapshot, and subscription entry functions are private static callables installed on interpreter-owned prototypes",
+      "the public module exposes only createMachine, createActor, and assign in the production build",
+      "the XFSM sources contain no ISR, task, mutex, atomic, mailbox, or event-queue ingress integration",
+      "the physical timer case enters actor.send from Espruino's normally dispatched JavaScript callback"
+    ],
+    "scope": "The test does not call the private coordinator from an ISR; doing so would violate the interface being verified. Remaining targets must repeat their applicable integration evidence."
+  },
+  "xstateDifferential": {
+    "classification": "not applicable",
+    "reason": "Espruino Storage-backed functions, native GPIO callbacks, timer scheduling, module-cache cleanup, and the interpreter/ISR boundary are host-integration behavior rather than shared XState semantics"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass for M7.1 original-ESP32 application integration",
+  "report": "../../../docs/reports/2026-09-27-m7-original-esp32-application-integration.md"
+}

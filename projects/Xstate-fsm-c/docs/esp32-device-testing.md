@@ -208,6 +208,20 @@ The current runner fails its process exit status when it sees an explicit
 final `DONE=` marker; `DONE=FAIL` alone is not sufficient protection against a
 misleading zero exit status.
 
+The M7.1 application-integration fixture is physical-target-only. It uses the
+original ESP32 board's `LED1`/GPIO2, writes and removes a temporary `xfc_m7`
+Storage module, and leaves the output low:
+
+```bash
+cd /home/simon/MaBecker/ESP32_SGATest
+python3 tools/repl/run_test.py \
+  "$ESPRUINO_XFSM_ROOT/libs/xfsm/tests/test_host_application.js" \
+  --port "$ESP32_PORT" \
+  --baud 115200 \
+  --timeout 45 \
+  --show-raw
+```
+
 ## Test Program Contract
 
 A device test must be standalone, bounded, and machine-readable:
