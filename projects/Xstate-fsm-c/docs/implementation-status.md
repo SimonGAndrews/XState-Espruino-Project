@@ -1,21 +1,21 @@
 # Xstate-fsm-c Implementation Status
 
 - Last reviewed: 2026-09-27
-- Overall status: M6 batches 1 through 6 pass their applicable Linux and
-  original ESP32 coverage, including cross-actor nesting and physical save,
-  reboot restoration, and reset; the stock ESP32 profile cannot construct the
-  depth-32/65-action fixture, while the M5 constrained-target gate remains open
-- Current milestone: M6 complete Profile 1 behaviour, with M0/M5 evidence work
-  continuing alongside it
+- Overall status: all seven M6 behavioural batches pass their applicable Linux
+  exit suites; the production original ESP32 image passes compact strict-
+  validation and focused runtime regressions, while its stock profile still
+  cannot construct the depth-32/65-action fixture
+- Current milestone: post-M6 whole-build resource review, with M0 requirement
+  inventory and M5 evidence decisions continuing alongside it
 - Implementation code status: M4 runtime plus final/completion behavior, full
   Profile 1 target forms, wildcard event lookup, v4 migration aliases, all
   Profile 1 context and assignment forms, complete transition-domain and
   re-entry traversal, complete lifecycle and subscription behavior, cross-
-  actor isolation, host save/restoration/reset behavior, M5 instrumentation,
-  and enforced stack reserve
-- Next gate: M6 batch 7 strict validation, diagnostics, limits, and
-  deterministic fault injection; the whole-build resource review follows the
-  completed M6 behavior gate
+  actor isolation, host save/restoration/reset behavior, strict schema and
+  byte-limit validation, transactional allocation-failure handling, M5
+  instrumentation, and enforced stack reserve
+- Next gate: complete the post-M6 whole-build resource review before changing
+  target profiles or beginning M7 physical qualification
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -30,17 +30,17 @@ and outstanding tests for final project review.
 | Specification project path | `projects/Xstate-fsm-c/` |
 | Current specification version | `0.50` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
-| Current project HEAD | `f7fe0f321` plus the M6 evidence working tree |
+| Current project HEAD | `fd32f8671` plus the M6 batch 7 evidence working tree |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `2b31e01c0` |
+| Current implementation HEAD | `319adfef5` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
-M6 lifecycle, subscriber, cross-actor, GC, and host-lifecycle work is committed
-in implementation revision `2b31e01c0`.
+M6 strict validation, diagnostics, byte limits, and deterministic allocation-
+failure handling are committed in implementation revision `319adfef5`.
 
 ## Completed Foundation Work
 
@@ -89,9 +89,9 @@ in implementation revision `2b31e01c0`.
 - Stable hierarchical snapshots, `matches`, snapshot identity rules, ordered
   subscription mutation, unhandled-event notification, controlled stop, and
   callback exception paths pass focused Linux tests.
-- Nineteen Espruino tests pass on Linux with zero retained memory records after
-  cleanup and garbage collection; the disabled build and 66-check sanitizer
-  suite remain green.
+- Twenty-two normal Espruino tests pass on Linux with zero retained memory
+  records after cleanup and garbage collection; the disabled build and 66-
+  check sanitizer suite remain green.
 - Final states, compound `onDone`, XState v5 completion-event spelling,
   targetless completion, terminal `done`, completion ordering, and stable-only
   publication pass the pinned Node differential and focused semantic tests.
@@ -147,15 +147,31 @@ in implementation revision `2b31e01c0`.
   is recorded in the [M5 report](reports/2026-09-25-m5-first-evidence.md).
 - A 768-byte coordinator reserve plus Espruino's 512-byte safety allowance is
   enforced before an actor operation marks the actor busy.
+- Strict schema validation rejects unsupported and accessor properties without
+  invoking accessors, and construction diagnostic detail is bounded to 48
+  bytes at a valid UTF-8 boundary.
+- Native symbol, target, event, and runtime limits are enforced using Espruino
+  string bytes. Automated Linux boundaries cover hierarchy depth 32/33,
+  string length 65,535/65,536 bytes, Unicode byte length, and non-faulting
+  rejection of oversized runtime events.
+- A separate `XFC_TEST=1` build deterministically exercises construction,
+  actor, startup, send, assignment, completion, publication, snapshot, stop,
+  and subscription allocation failures. It verifies rollback and exact error
+  identity; neither `_failNext` nor measurement helpers exist in production
+  firmware.
+- Subscriber snapshot materialization now precedes state/context commit, so a
+  publication allocation failure faults against the last stable actor state
+  and does not call listeners.
 - All XFSM sources compile for 32-bit ARM with the pinned MDBT42Q toolchain.
 - Clean disabled and XFSM-enabled original ESP32 builds pass with ESP-IDF 5.5.3
   and Xtensa GCC 14.2.0; the enabled image leaves 528,128 app-partition bytes.
 - Matching disabled and XFSM-enabled `PICO_R1_3` reduced-profile builds pass
   with ARM GCC 13.2.1; XFSM adds 23,528 bytes and leaves 16,288 bytes in the
   application region without changing the stock board definition.
-- Fork-local XFSM CI covers disabled/enabled Linux builds, nineteen JavaScript
-  test suites, 66 native sanitizer checks, and the enabled original ESP32 IDF5
-  build without changing any stock board definition.
+- Fork-local XFSM CI covers disabled/enabled Linux builds, twenty-two normal
+  JavaScript suites, the private allocation-fault suite, 66 native sanitizer
+  checks, and the enabled original ESP32 IDF5 build without changing any stock
+  board definition.
 - A physical ESP32-D0WD-V3 running the `ESP32_IDF5` build passes eighteen of
   nineteen portable JavaScript suites plus save/reboot/reset host-lifecycle
   tests and the M5 resource, timing, and GC relocation harnesses. The remaining
@@ -167,15 +183,22 @@ in implementation revision `2b31e01c0`.
 - The original ESP32 USB-UART, Make flashing, direct-runner, reset, evidence,
   and recovery procedure is retained in the project-local
   [device-testing guide](esp32-device-testing.md).
+- The production M6 batch 7 ESP32 image builds at 1,523,392 bytes with 524,608
+  app-partition bytes free. Its compact strict-validation suite and focused
+  runtime, subscription, completion, and lifecycle regressions pass; the full
+  desktop-oriented strict-validation source is a reasoned non-run because its
+  test harness exhausts the stock 2,803-block JavaScript heap.
 
 ## Current Work
 
-M6 batches 1 through 6 are implemented. Batches 1, 2, 4, 5, and 6 pass on
-Linux and the original ESP32. Batch 3's transition-domain cases pass on both,
-while its depth-32/65-action fixture passes on Linux and fails construction on
-the stock ESP32 profile for lack of JsVar memory. Shared behavior is checked
-against pinned XState 4.38.3 and 5.33.2 references; host-specific save, reset,
-and GC behavior has no direct Node XState equivalent.
+All seven M6 behavioural batches are implemented and pass their applicable
+Linux exit suites. Shared behavior is checked against pinned XState 4.38.3 and
+5.33.2 references; strict native validation, allocation failures, Espruino GC,
+save, and reset have no direct Node XState equivalent. The original ESP32
+passes the compact batch 7 validation smoke and focused regressions. Its
+depth-32/65-action fixture still fails construction on the stock profile for
+lack of JsVar memory, and the full desktop validation harness is too large to
+load there; neither limitation is recorded as an engine semantic failure.
 The M5 exit gate is not satisfied. A reduced-profile Pico image passes its size
 gate, but no physical Pico runtime evidence has been collected. The stock
 MDBT42Q release/DFU image passes, while the XFSM-enabled ELF links but overlaps
@@ -184,14 +207,12 @@ normative requirement inventory also remains documentation work.
 
 Immediate tasks:
 
-1. implement M6 batch 7 strict validation, diagnostics, limits, and
-   deterministic fault injection;
-2. expand the M0 normative requirement inventory alongside M6 while
+1. perform the post-M6 whole-build resource review, including flash, JsVar,
+   native heap, retained arena/bindings, runtime allocation, stack,
+   diagnostics, and test-loading overhead;
+2. expand the M0 normative requirement inventory while
    maintaining the consolidated [test inventory](../tests/test-inventory.md);
-3. after the M6 behavior exit gate, perform the whole-build resource review,
-   including the ESP32 JsVar/native-heap balance and depth-32/65-action result;
-   and
-4. use that review to select product `Board.py` profiles, close the provisional
+3. use the resource review to select product `Board.py` profiles, close the provisional
    layout/depth/stack/snapshot/diagnostic decisions, and plan M7 qualification.
 
 ## Open Issues And Blockers
@@ -218,10 +239,10 @@ These are specified review gates, not unresolved Profile 1 semantics:
 
 | Target | Current status | Latest evidence |
 | --- | --- | --- |
-| Linux Espruino | Build verified | [M6 host-lifecycle result](../tests/results/linux/2026-09-27-m6-host-lifecycle.json) |
+| Linux Espruino | Build verified | [M6 validation/fault result](../tests/results/linux/2026-09-27-m6-validation-faults.json) |
 | Espruino Pico | Build verified for reduced product profile | [Pico feasibility build](../tests/results/pico/2026-09-26-feasibility-build.json) |
 | MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
-| Original ESP32 IDF5 | Build verified; eighteen portable suites and the host-lifecycle tests pass; depth-32/65-action construction fails for stock-profile memory | [M6 host-lifecycle result](../tests/results/esp32-xtensa/2026-09-27-m6-host-lifecycle.json) |
+| Original ESP32 IDF5 | Build verified; compact strict validation and focused regressions pass; depth-32/65-action construction fails for stock-profile memory | [M6 validation/runtime result](../tests/results/esp32-xtensa/2026-09-27-m6-validation-runtime.json) |
 | ESP32-C3 IDF5 | Not yet verified | Stock-build capacity established from upstream Actions; XFSM build pending |
 | ESP32-S3 IDF5 | Not yet verified | Later expansion target; not required for Version 1 qualification |
 
@@ -232,6 +253,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-27 | M6 batch 7 passed twenty-two normal Linux suites, deterministic allocation-fault coverage, production/test API separation, disabled/enabled builds, and 66 sanitizer checks; the production ESP32 image passed compact strict validation plus focused runtime regressions |
 | 2026-09-27 | M6 batch 6 passed a nineteen-suite Linux regression plus physical original ESP32 cross-actor/GC, deferred-save, hard-reboot restoration, lifecycle-state retention, and reset-without-exit tests |
 | 2026-09-27 | Original ESP32 passed transition-domain, complete lifecycle/fault, and subscriber suites; the depth-32/65-action fixture reproducibly failed clean-boot construction with `E_NO_MEMORY` on the stock 2,803-block runtime, leaving target status at Build verified pending a product `Board.py` memory decision |
 | 2026-09-27 | Complete lifecycle-state, callback-fault, busy-call, and subscriber behavior passed an eighteen-suite Linux regression, the 66-check sanitizer suite, and pinned XState 4.38.3/5.33.2 references; current ESP32 IDF5 image builds with a 30,304-byte (2.03%) delta |

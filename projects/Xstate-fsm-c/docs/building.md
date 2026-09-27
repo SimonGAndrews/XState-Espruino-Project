@@ -2,13 +2,14 @@
 
 ## Status
 
-- Build-document status: M6 batches 1 through 6 verified on Linux and original
-  ESP32, including physical save/reboot/reset; transition domains pass on both,
-  while the stock ESP32 profile cannot construct the depth-32/65-action
-  fixture; reduced-profile Pico build verified; MDBT42Q size check blocked
+- Build-document status: all seven M6 batches verified for their applicable
+  Linux scope; production ESP32 compact validation and focused regressions,
+  save/reboot/reset, and transition domains pass, while its stock profile
+  cannot construct the depth-32/65-action fixture; reduced-profile Pico build
+  verified; MDBT42Q size check blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `2b31e01c0`
+- Current implementation revision: `319adfef5`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -163,6 +164,32 @@ Verify portable M6 cross-actor and broader GC behavior with:
 bin/espruino --test libs/xfsm/tests/test_cross_actor_gc.js
 ```
 
+Verify the M6 strict-validation and byte-limit batch with a normal production
+build:
+
+```bash
+bin/espruino --test libs/xfsm/tests/test_strict_validation.js
+bin/espruino --test libs/xfsm/tests/test_strict_validation_embedded.js
+bin/espruino --test libs/xfsm/tests/test_limits.js
+```
+
+`test_limits.js` is a Linux-host suite because it constructs strings at the
+65,535-byte boundary. Deterministic allocation failures use a separate build;
+the private method is absent from production firmware:
+
+```bash
+env -u DEBUG make clean
+env -u DEBUG make USE_XFSM=1 XFC_TEST=1 -j2
+bin/espruino --test libs/xfsm/tests/test_fault_injection.js
+```
+
+The complete batch 7 record is the [Linux validation/fault
+result](../tests/results/linux/2026-09-27-m6-validation-faults.json). The
+[ESP32 validation/runtime
+result](../tests/results/esp32-xtensa/2026-09-27-m6-validation-runtime.json)
+records its production build, compact validation smoke, and focused runtime
+regressions.
+
 The Espruino whole-interpreter lifecycle is physical-device-only. Run
 `test_save_restore.js` followed, after its scheduled `reset(true)`, by
 `test_reset_lifecycle.js` using the paced direct serial procedure below. The
@@ -266,7 +293,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | --- | --- | --- |
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
-| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; eighteen portable suites, physical save/reboot/reset, and implemented M5 evidence pass; depth-32/65-action fixture fails stock-profile construction memory |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; compact strict validation, focused M6.7 regressions, earlier portable coverage, physical save/reboot/reset, and M5 evidence pass; depth-32/65-action fixture fails stock-profile construction memory |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Secondary architecture qualification; stock capacity established |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 

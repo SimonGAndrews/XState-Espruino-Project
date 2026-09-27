@@ -1,0 +1,79 @@
+{
+  "kind": "xfsm-m6-validation-runtime-esp32",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-BUILD-004",
+    "XFC-CF-CONFIG-003",
+    "XFC-CF-DIAG-005",
+    "XFC-CF-LIFE-001",
+    "XFC-CF-SUB-001"
+  ],
+  "xstateEspruinoProjectRevision": "fd32f8671b5d65fb2749707745a7f829ae13e877",
+  "specificationVersion": "0.50",
+  "implementationRevision": "319adfef5d74890deedc11ce140bb32ca5e0fce1",
+  "implementationState": "tested from the exact pre-commit source subsequently committed at the implementation revision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": "ESP32-D0WD-V3 revision 3.1, 4 MB flash",
+  "serialPort": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+  "build": {
+    "espIdf": "5.5.3",
+    "compiler": "Xtensa GCC 14.2.0",
+    "result": "pass",
+    "appImageBytes": 1523392,
+    "appPartitionBytes": 2048000,
+    "appPartitionFreeBytes": 524608,
+    "appPartitionFreePercent": 25.615625
+  },
+  "firmware": {
+    "version": "2v29.438",
+    "reportedGitCommit": "2b31e01c0",
+    "sourceIdentityNote": "the working tree used for the build is exactly the implementation later committed as 319adfef5; Espruino's generated version field records the then-current parent commit",
+    "xfsmCreateMachine": "function",
+    "measurementApi": "undefined",
+    "faultInjectionApi": "undefined"
+  },
+  "runner": {
+    "path": "/home/simon/MaBecker/ESP32_SGATest/tools/repl/run_test.py",
+    "transport": "direct paced serial",
+    "baud": 115200
+  },
+  "tests": [
+    {
+      "suite": "test_strict_validation_embedded.js",
+      "result": "pass",
+      "coverage": "compact strict-schema, accessor-safety, diagnostic-detail and production-API smoke"
+    },
+    {
+      "suite": "test_runtime.js",
+      "result": "pass"
+    },
+    {
+      "suite": "test_subscriptions.js",
+      "result": "pass"
+    },
+    {
+      "suite": "test_completion.js",
+      "result": "pass"
+    },
+    {
+      "suite": "test_lifecycle_complete.js",
+      "result": "pass"
+    }
+  ],
+  "reasonedNonRun": {
+    "suite": "test_strict_validation.js",
+    "status": "resource-limited test harness",
+    "observation": "the full desktop-oriented source exhausted the stock 2803-block JavaScript heap before emitting its DONE marker",
+    "interpretation": "not an engine conformance result; the compact embedded suite covers the target smoke while full strict and boundary coverage runs on Linux",
+    "relatedKnownConstraint": "the separately recorded depth-32/65-action fixture also exceeds the stock profile's JavaScript-variable headroom"
+  },
+  "faultInjection": {
+    "classification": "not present in production firmware",
+    "reason": "deterministic allocation faults use a private XFC_TEST=1 build and are covered by the linked Linux result"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass for applicable M6 batch 7 physical smoke and regression scope",
+  "scope": "Production ESP32 build, compact strict-validation smoke, and focused runtime, subscription, completion and lifecycle regressions. This does not change the target to Conformance verified or resolve the stock-profile depth fixture constraint."
+}

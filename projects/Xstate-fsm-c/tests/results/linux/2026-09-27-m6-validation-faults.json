@@ -1,0 +1,100 @@
+{
+  "kind": "xfsm-m6-validation-faults-linux",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-CONFIG-003",
+    "XFC-CF-CONTEXT-003",
+    "XFC-CF-CONTEXT-004",
+    "XFC-CF-DIAG-005",
+    "XFC-CF-LIFE-002",
+    "XFC-CF-LIMIT-004",
+    "XFC-CF-SUB-002"
+  ],
+  "xstateEspruinoProjectRevision": "fd32f8671b5d65fb2749707745a7f829ae13e877",
+  "specificationVersion": "0.50",
+  "implementationRevision": "319adfef5d74890deedc11ce140bb32ca5e0fce1",
+  "implementationState": "committed M6 strict-validation and deterministic-fault implementation",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "compiler": "GCC 13.3.0",
+  "productionBuildChecks": {
+    "disabledCommand": "env -u DEBUG make clean; env -u DEBUG make USE_XFSM=0 -j2",
+    "disabledResult": "pass",
+    "enabledCommand": "env -u DEBUG make clean; env -u DEBUG make USE_XFSM=1 -j2",
+    "enabledResult": "pass",
+    "privateMeasurementApi": "absent",
+    "privateFaultApi": "absent"
+  },
+  "normalSemanticSuites": {
+    "command": "bin/espruino --test libs/xfsm/tests/<suite>.js",
+    "count": 22,
+    "result": "pass",
+    "newSuites": [
+      "test_strict_validation.js",
+      "test_strict_validation_embedded.js",
+      "test_limits.js"
+    ],
+    "retainedRecordsAfterGcPerSuite": 0
+  },
+  "strictValidationCoverage": {
+    "schemaAndExcludedProperties": "pass",
+    "accessorPropertiesRejectedWithoutInvocation": "pass",
+    "constructionDetailLimitBytes": 48,
+    "constructionDetailUtf8Boundary": "pass",
+    "symbolAndEventLengthsUseUtf8Bytes": "pass",
+    "hierarchyDepth32": "pass",
+    "hierarchyDepth33Rejected": "pass",
+    "symbolBytes65535": "pass",
+    "symbolBytes65536Rejected": "pass",
+    "unicodeByteBoundary": "pass",
+    "oversizeRuntimeEventRejectedWithoutFaultingActor": "pass"
+  },
+  "faultInjectionBuild": {
+    "command": "env -u DEBUG make clean; env -u DEBUG make USE_XFSM=1 XFC_TEST=1 -j2",
+    "result": "pass",
+    "suite": "test_fault_injection.js",
+    "testApi": "XFSM._failNext(point)",
+    "productionAvailability": "absent",
+    "points": [
+      "compile.arena",
+      "createActor",
+      "start.context",
+      "start.event",
+      "send.event",
+      "assign.context",
+      "completion.event",
+      "notify.snapshot",
+      "getSnapshot",
+      "stop.event",
+      "subscribe"
+    ],
+    "verified": [
+      "construction and actor allocation failures do not publish partial objects",
+      "startup allocation failures run no entry actions and retain not-started state",
+      "send and assignment allocation failures fault with the last stable state and context",
+      "completion-event allocation failure rolls back the pending transition",
+      "subscriber snapshot allocation occurs before state and context commit",
+      "failed publication does not call listeners",
+      "snapshot, stop-event and subscription allocation failures retain their specified stable state",
+      "invalid fault-point names reject without arming a failure",
+      "exact thrown error identity is retained"
+    ],
+    "retainedRecordsAfterGc": 0
+  },
+  "nativeSanitizer": {
+    "command": "make -C libs/xfsm/tests/native clean test",
+    "checks": 66,
+    "result": "pass"
+  },
+  "xstateDifferential": {
+    "xstateV5Version": "5.33.2",
+    "xstateV5ReferenceRegression": "pass",
+    "xstateV4Version": "4.38.3",
+    "xstateV4ReferenceRegression": "pass",
+    "batch7Classification": "not applicable to strict host validation and allocation failure mechanics",
+    "reason": "XState does not expose XFSM native allocation points, arena limits, Espruino GC ownership, or Profile-specific diagnostic byte budgets"
+  },
+  "relatedPhysicalEvidence": "../esp32-xtensa/2026-09-27-m6-validation-runtime.json",
+  "result": "pass",
+  "scope": "M6 batch 7 applicable Linux semantic, validation, limit, fault, native-format, sanitizer, enabled-build and disabled-build checks. M0 traceability, M5 resource decisions, and final physical qualification remain open."
+}

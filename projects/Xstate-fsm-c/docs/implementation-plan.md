@@ -3,8 +3,8 @@
 ## Status
 
 - Plan status: Initial implementation baseline
-- Current milestone: M6 - complete Profile 1 behaviour; M0 requirement
-  inventory and M5 evidence decisions remain open
+- Current milestone: post-M6 whole-build resource review; M0 requirement
+  inventory and M5 evidence decisions remain open before M7 qualification
 - Normative authority: [Profile 1 specification](specification.md)
 - Physical format: [Native Format Version 1](native-format-v1.md)
 - Living progress: [Implementation Status](implementation-status.md)
@@ -170,6 +170,12 @@ Complete the remaining implementation in reviewed behavioural batches:
 
 Exit gate: the complete applicable Linux semantic, validation, native-format,
 fault, diagnostic, and differential suites pass.
+
+Exit-gate status: satisfied for M6 in implementation revision `319adfef5`.
+Twenty-two normal Linux JavaScript suites, the separate deterministic fault-
+injection suite, and the 66-check native sanitizer suite pass. The continuing
+M0 traceability, M5 resource decisions, and M7 physical-target work are not
+part of this behavioural exit gate and remain open.
 
 After the M6 behavior exit gate, perform a whole-build resource review before
 changing target profiles or beginning final physical qualification. Review
