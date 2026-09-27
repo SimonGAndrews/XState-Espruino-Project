@@ -216,7 +216,14 @@ Immediate tasks:
 2. select explicit M7 product `Board.py` profiles and physical targets from the
    completed [resource review](reports/2026-09-27-post-m6-resource-review.md);
 3. execute M7 physical qualification, beginning with the original ESP32 and a
-   physical Pico, and measure ESP32-C3 when hardware is available.
+   physical Pico, and measure ESP32-C3 when hardware is available;
+4. produce an XFSM memory architecture and lifetime diagram that distinguishes
+   firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
+   actor storage, native heap, and the single native C stack. Show their use
+   during module loading, `createMachine` compilation, `createActor`,
+   `start`/`send`/`stop`, guards, actions, assignments, snapshots,
+   subscriptions, GC, save/restoration, and cleanup, including which storage is
+   persistent, temporary, shared, or application-owned.
 
 ## Open Issues And Blockers
 
