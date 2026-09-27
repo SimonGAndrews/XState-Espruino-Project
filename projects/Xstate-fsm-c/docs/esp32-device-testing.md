@@ -222,6 +222,18 @@ python3 tools/repl/run_test.py \
   --show-raw
 ```
 
+The M7.2 production-memory and event-serialization fixtures use the same
+runner and require no private firmware instrumentation:
+
+```bash
+python3 tools/repl/run_test.py \
+  "$ESPRUINO_XFSM_ROOT/libs/xfsm/tests/test_host_memory_cleanup.js" \
+  --port "$ESP32_PORT" --baud 115200 --timeout 60 --show-raw
+python3 tools/repl/run_test.py \
+  "$ESPRUINO_XFSM_ROOT/libs/xfsm/tests/test_host_event_serialization.js" \
+  --port "$ESP32_PORT" --baud 115200 --timeout 60 --show-raw
+```
+
 ## Test Program Contract
 
 A device test must be standalone, bounded, and machine-readable:

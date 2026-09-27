@@ -219,8 +219,16 @@ source `1589218d3` and the physical fixture committed at `21154897f` under
 flash-backed module and native callback cases, representative GPIO output,
 timer-driven event ingress, flash-callback exception, and safe cleanup are
 recorded in the [M7.1 report](reports/2026-09-27-m7-original-esp32-application-integration.md).
-The target remains `Build verified` until its remaining product-profile,
-allocation/cleanup, and release-candidate evidence is complete.
+At that checkpoint the target remained `Build verified`, pending its remaining
+product-profile, allocation/cleanup, and release-candidate evidence.
+
+M7.2 original-ESP32 memory lifecycle and event serialization also pass. Two
+complete eight-actor shared-machine graphs, six repeated construction and
+cleanup cycles, and a faulted graph return exactly to the warmed production
+baseline; a queued timer observes the fully published result only after 128
+synchronous sends finish. See the [M7.2 report](reports/2026-09-27-m7-original-esp32-memory-serialization.md).
+Physical allocation-pressure closure, the product-headroom decision, and the
+release-candidate rerun remain open for this target.
 
 ### M8 - Format Freeze And Release Readiness
 

@@ -1,0 +1,108 @@
+{
+  "kind": "xfsm-m7-memory-serialization-esp32",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-HOST-001",
+    "XFC-CF-HOST-002",
+    "XFC-CF-HOST-003",
+    "XFC-CF-HOST-006",
+    "XFC-CF-LIFE-001"
+  ],
+  "xstateEspruinoProjectBaseRevision": "60a79d51e010f2e500fadd5b9d26de61eab7583c",
+  "specificationVersion": "0.50",
+  "implementationBaseRevision": "21154897f3c5a76864989ade0c5ac959e35bd8f7",
+  "implementationTestRevision": "b7b6d88d79ab8602574f1551804bd1baa672f96f",
+  "implementationState": "production firmware uses engine source 1589218d3; the two M7.2 physical fixtures were subsequently committed at the implementation test revision",
+  "testSourceSha256": {
+    "test_host_memory_cleanup.js": "3f9daae2f6eadd2807088b2a034848e311c8a0fb4fc6caf27df88a860385306c",
+    "test_host_event_serialization.js": "c2a486fa4be8a3282995f4c591e5f22372b05cf151e9829b9fc83eca7b39f78d"
+  },
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": "ESP32-D0WD-V3 revision 3.1, 4 MB flash",
+  "cpuArchitecture": "Xtensa LX6",
+  "jsVarBlockBytes": 14,
+  "serialPort": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+  "firmware": {
+    "version": "2v29.439",
+    "gitCommit": "319adfef5",
+    "sourceIdentityNote": "the generated version records the parent commit because the production image was built immediately before committing the exact tested engine source as 1589218d3",
+    "measurementApi": "absent",
+    "faultInjectionApi": "absent"
+  },
+  "runner": {
+    "path": "/home/simon/MaBecker/ESP32_SGATest/tools/repl/run_test.py",
+    "transport": "direct paced serial",
+    "baud": 115200,
+    "timeoutSeconds": 60
+  },
+  "memoryCleanupTest": {
+    "suite": "libs/xfsm/tests/test_host_memory_cleanup.js",
+    "finalSourceRuns": 2,
+    "result": "pass",
+    "checksPerRun": 8,
+    "identicalMetricsOnBothRuns": true,
+    "actorCountPerSharedGraph": 8,
+    "fullSharedGraphRuns": 2,
+    "repeatedConstructionCycles": 6,
+    "totalBlocks": 2803,
+    "preStressUsageBlocks": 1811,
+    "settledBaselineBlocks": 1819,
+    "oneTimeWarmDeltaBlocks": 8,
+    "oneTimeWarmDeltaBytes": 112,
+    "sampledLiveUsageBlocks": 2309,
+    "sampledLiveUsagePercent": 82.376026,
+    "sampledLiveFreeBlocks": 494,
+    "sampledLiveFreeBytes": 6916,
+    "sampledLiveFreePercent": 17.623974,
+    "secondSharedCleanupBlocks": 1819,
+    "repeatCleanupMaximumBlocks": 1819,
+    "faultCleanupBlocks": 1819,
+    "finalUsageBlocks": 1819,
+    "verified": [
+      "eight actors shared one compiled machine while retaining isolated factory contexts, subscriptions, snapshots, actions, guards, and exit behavior",
+      "the complete live graph remained usable after an explicit garbage-collection and relocation request",
+      "a second complete eight-actor graph returned exactly to the settled baseline",
+      "six subsequent construction, start, send, stop, unsubscribe, release, and collection cycles did not accumulate blocks",
+      "a faulted actor retained exact exception and last-stable state/context identity, then released back to the same baseline",
+      "the final production-firmware JsVar usage equalled the settled baseline"
+    ],
+    "warmupNote": "The first full multi-actor path established a repeatable eight-block increase over the one-actor and fault-path pre-warm level. The fixture records this separately and requires every later full graph and failure path to return exactly to the resulting settled baseline.",
+    "developmentHarnessRuns": {
+      "classification": "fixture-baseline failures, not engine behavioral failures",
+      "summary": "Early runs compared against a baseline taken before later test-scope and full-path lazy state existed. They reported stable 12-block and then 8-block deltas. The final fixture warms all ordinary and fault paths, records the remaining first-full-graph delta explicitly, and proves non-accumulation with a second identical graph."
+    }
+  },
+  "eventSerializationTest": {
+    "suite": "libs/xfsm/tests/test_host_event_serialization.js",
+    "runs": 2,
+    "result": "pass",
+    "checksPerRun": 3,
+    "timerDelayMilliseconds": 1,
+    "synchronousSends": 128,
+    "timerObservedCount": 128,
+    "notifications": 129,
+    "synchronousElapsedMilliseconds": [
+      666.302,
+      669.998
+    ],
+    "verified": [
+      "the synchronous sequence lasted far longer than the timer delay, so the timer became due while JavaScript remained busy",
+      "the queued timer callback did not interleave with the synchronous send loop",
+      "the timer observed the fully committed count after all 128 sends",
+      "the startup publication and every send publication completed before the timer callback"
+    ]
+  },
+  "postTestRegression": {
+    "suite": "test_shell.js",
+    "result": "pass"
+  },
+  "xstateDifferential": {
+    "classification": "not applicable",
+    "reason": "Espruino garbage collection, JsVar accounting, timer scheduling, and interpreter serialization are host-integration behavior rather than shared XState semantics"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass for M7.2 original-ESP32 memory lifecycle and event serialization",
+  "report": "../../../docs/reports/2026-09-27-m7-original-esp32-memory-serialization.md"
+}

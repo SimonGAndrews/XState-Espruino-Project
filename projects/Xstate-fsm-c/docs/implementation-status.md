@@ -2,10 +2,10 @@
 
 - Last reviewed: 2026-09-27
 - Overall status: all seven M6 behavioural batches, the post-M6 whole-build
-  resource review, and M7.1 original-ESP32 application integration pass their
-  applicable scope; the stock ESP32 constructs depth 32 with a compact harness
-  but has little headroom for an action-heavy model and large test source
-  together
+  resource review, and M7.1-M7.2 original-ESP32 application, memory-lifecycle,
+  and event-serialization integration pass their applicable scope; the stock
+  ESP32 constructs depth 32 with a compact harness but has little headroom for
+  an action-heavy model and large test source together
 - Current milestone: M0 normative requirement inventory and M7 product-profile
   and physical-target qualification
 - Implementation code status: M4 runtime plus final/completion behavior, full
@@ -15,7 +15,8 @@
   actor isolation, host save/restoration/reset behavior, strict schema and
   byte-limit validation, transactional allocation-failure handling, M5
   instrumentation, enforced stack reserve, and physical flash/native callback,
-  GPIO, timer-ingress, and cleanup coverage
+  GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
+  and event-serialization coverage
 - Next gate: select the remaining M7 product profiles, complete the original
   ESP32 release-candidate evidence, and qualify a physical Pico while
   completing M0 traceability
@@ -33,19 +34,20 @@ and outstanding tests for final project review.
 | Specification project path | `projects/Xstate-fsm-c/` |
 | Current specification version | `0.50` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
-| Project base for this evidence | `f88a595` |
+| Project base for this evidence | `60a79d5` |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `21154897f` |
+| Current implementation HEAD | `b7b6d88d7` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
 The complete M6 implementation is committed through `319adfef5`; post-M6
 measurement support and the revised coordinator reserve are committed in
 implementation revision `1589218d3`, and the M7.1 physical application fixture
-is committed in `21154897f`.
+is committed in `21154897f`. The M7.2 production-memory and event-serialization
+fixtures are committed in `b7b6d88d7`.
 
 ## Completed Foundation Work
 
@@ -146,6 +148,12 @@ is committed in `21154897f`.
   module guard/actions, a native guard, bound native GPIO actions, timer-driven
   synchronous dispatch, subscription publication, exact flash-callback fault
   identity, Storage/module-cache cleanup, and a safe low output all pass.
+- M7.2 passes twice with identical production-memory results. Two full
+  eight-actor shared-machine graphs, six later construction/cleanup cycles,
+  and a faulted graph all return to a 1,819-block settled baseline after the
+  first full-path warm-up. A separate timer test observes all 128 synchronous
+  sends and 129 publications only after the uninterrupted 666-670 ms loop
+  completes, despite its one-millisecond delay.
 - The same lifecycle/subscriber coverage and complete transition-domain corpus
   pass on the original ESP32. The maximum-depth 65-action fixture instead
   reports `E_NO_MEMORY` during `createMachine` after a clean hardware reboot;
@@ -203,16 +211,16 @@ is committed in `21154897f`.
 
 ## Current Work
 
-All seven M6 behavioural batches, the post-M6 resource review, and M7.1
-original-ESP32 application integration are complete. Shared behavior is
-checked against pinned XState 4.38.3 and 5.33.2 references; strict native
-validation, allocation failures, Espruino GC, save/reset, Storage-backed
-callbacks, GPIO, and timer integration have no direct Node XState equivalent.
-The resource review retains the current arena, depth, microstep, lazy-snapshot,
-and diagnostic designs provisionally and raises the default stack reserve to
-1,024 bytes. The original ESP32 passes a compact depth-32 fixture, while the
-action-heavy all-in-one source still demonstrates limited application and
-test-loading headroom.
+All seven M6 behavioural batches, the post-M6 resource review, and M7.1-M7.2
+original-ESP32 integration are complete. Shared behavior is checked against
+pinned XState 4.38.3 and 5.33.2 references; strict native validation,
+allocation failures, Espruino GC, save/reset, Storage-backed callbacks, GPIO,
+timer integration, and interpreter scheduling have no direct Node XState
+equivalent. The resource review retains the current arena, depth, microstep,
+lazy-snapshot, and diagnostic designs provisionally and raises the default
+stack reserve to 1,024 bytes. The original ESP32 passes a compact depth-32
+fixture, while the action-heavy all-in-one source still demonstrates limited
+application and test-loading headroom.
 
 A reduced-profile Pico image passes its size gate, but no physical Pico runtime
 evidence has been collected. The stock MDBT42Q release/DFU image passes, while
@@ -263,7 +271,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Linux Espruino | Build verified | [Post-M6 resource result](../tests/results/linux/2026-09-27-post-m6-resource-review.json) |
 | Espruino Pico | Build verified for reduced product profile | [Pico feasibility build](../tests/results/pico/2026-09-26-feasibility-build.json) |
 | MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
-| Original ESP32 IDF5 | Build verified; M7.1 application integration, compact strict validation, focused regressions and compact depth 32 pass; action-heavy test/application headroom remains constrained | [M7.1 application-integration result](../tests/results/esp32-xtensa/2026-09-27-m7-application-integration.json) |
+| Original ESP32 IDF5 | Build verified; M7.1-M7.2 application integration, exact settled-baseline cleanup, event serialization, compact strict validation, focused regressions and compact depth 32 pass; action-heavy test/application headroom remains constrained | [M7.2 memory/serialization result](../tests/results/esp32-xtensa/2026-09-27-m7-memory-serialization.json) |
 | ESP32-C3 IDF5 | Not yet verified | Stock-build capacity established from upstream Actions; XFSM build pending |
 | ESP32-S3 IDF5 | Not yet verified | Later expansion target; not required for Version 1 qualification |
 
@@ -274,6 +282,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-27 | M7.2 original-ESP32 memory lifecycle and event serialization passed twice: shared, repeated and faulted graphs return exactly to the settled production baseline, and queued timer work waits for 128 synchronous sends and publications |
 | 2026-09-27 | M7.1 original-ESP32 application integration passed twice with retained outer-scope, closure, flash-backed and native callbacks, GPIO output/readback, timer-driven dispatch, exact callback-fault rollback, and safe Storage/cache/pin cleanup |
 | 2026-09-27 | Post-M6 whole-build review measured matched Linux and original ESP32 production images, complete-engine allocations, native heap, depth-32 headroom, completion timing, stack and test loading; retained the current designs provisionally and raised the coordinator reserve to 1,024 bytes |
 | 2026-09-27 | M6 batch 7 passed twenty-two normal Linux suites, deterministic allocation-fault coverage, production/test API separation, disabled/enabled builds, and 66 sanitizer checks; the production ESP32 image passed compact strict validation plus focused runtime regressions |
