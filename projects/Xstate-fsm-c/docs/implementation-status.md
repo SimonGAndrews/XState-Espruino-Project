@@ -1,15 +1,21 @@
 # Xstate-fsm-c Implementation Status
 
-- Last reviewed: 2026-09-25
-- Overall status: M5 Linux and original ESP32 IDF5 physical evidence recorded;
-  M5 exit gate remains open
-- Current milestone: M0 evidence completion and M5 resource evaluation
-- Implementation code status: M4 runtime plus build-only M5 instrumentation,
-  direct on-device measurement harnesses, and enforced coordinator stack reserve
-- Next gate: constrained-target evidence and completion-chain measurement
+- Last reviewed: 2026-09-26
+- Overall status: M6 batch 2 context initialization, assignment forms, and
+  actor isolation pass on Linux and original ESP32 IDF5; a reduced-profile
+  Pico build passes, while the M5 constrained-target runtime gate remains open
+- Current milestone: M6 complete Profile 1 behaviour, with M0/M5 evidence work
+  continuing alongside it
+- Implementation code status: M4 runtime plus final/completion behavior, full
+  Profile 1 target forms, wildcard event lookup, v4 migration aliases, all
+  Profile 1 context and assignment forms, M5 instrumentation, and enforced
+  stack reserve
+- Next gate: M6 batch 3 complete transition-domain and re-entry coverage
 
 This is the living status dashboard. The stable milestone definitions and exit
-criteria are in the [Implementation Plan](implementation-plan.md).
+criteria are in the [Implementation Plan](implementation-plan.md). The [test
+inventory](../tests/test-inventory.md) is the consolidated record of completed
+and outstanding tests for final project review.
 
 ## Current Revisions And Locations
 
@@ -78,25 +84,55 @@ revision was confirmed pushed before M5 work began.
 - Stable hierarchical snapshots, `matches`, snapshot identity rules, ordered
   subscription mutation, unhandled-event notification, controlled stop, and
   callback exception paths pass focused Linux tests.
-- Six Espruino tests pass with zero retained memory records after cleanup and
-  garbage collection; the disabled build and 66-check sanitizer suite remain
-  green.
+- Fourteen Espruino tests pass with zero retained memory records after cleanup
+  and garbage collection; the disabled build and 66-check sanitizer suite
+  remain green.
+- Final states, compound `onDone`, XState v5 completion-event spelling,
+  targetless completion, terminal `done`, completion ordering, and stable-only
+  publication pass the pinned Node differential and focused semantic tests.
+- The 256th microstep completes and an attempted 257th faults before its
+  actions, retaining the last stable state and context.
+- Bare exact and segmented targets, dot-relative descendants, explicit and
+  implicit effective IDs, escaped punctuation, and ambiguity detection pass
+  focused construction and runtime tests.
+- Exact event candidates fall through to full wildcard candidates after guard
+  rejection, forbidden transitions block wildcard and parent fallback, and
+  event lookup verifies length and bytes after its one-per-send hash.
+- The `cond` and `internal` aliases, inert true v4 ordering flags, and empty
+  compatibility maps pass against pinned XState 4.38.3 behavior; conflicts and
+  unsupported nonempty maps reject with stable diagnostics.
+- Pinned XState 5.33.2 traces also cover shared hierarchy, wildcard,
+  forbidden-transition, targetless, and self-transition behavior.
+- Omitted, literal, and factory contexts now pass their startup timing,
+  ownership, shared-template, stopped-before-start, and actor-isolation cases.
+- Partial-function, property-map, fixed-value, and empty assignments pass in
+  entry, exit, initial, event, and completion action positions with ordered
+  visibility, shallow identity, source-map independence, and rollback.
+- Invalid context and assignment forms, invalid factory and partial results,
+  accessor maps, and callback exceptions pass their category, path, exact
+  thrown-value, no-entry, and last-stable-context checks.
+- Pinned XState 5.33.2 confirms the shared context and assignment semantics;
+  its context factory runs during `createActor`, while Profile 1 intentionally
+  defers that call to first `start` to avoid pre-start MCU allocation.
 - Build-only M5 instrumentation measures construction block high-water and
   synchronous coordinator stack without changing normal firmware API or cost.
 - Linux firmware size, arena, retained values, construction, actor, snapshot,
   subscription, dispatch, hierarchy, diagnostics, GC, and relocation evidence
   is recorded in the [M5 report](reports/2026-09-25-m5-first-evidence.md).
-- A 512-byte coordinator reserve plus Espruino's 512-byte safety allowance is
+- A 768-byte coordinator reserve plus Espruino's 512-byte safety allowance is
   enforced before an actor operation marks the actor busy.
 - All XFSM sources compile for 32-bit ARM with the pinned MDBT42Q toolchain.
 - Clean disabled and XFSM-enabled original ESP32 builds pass with ESP-IDF 5.5.3
   and Xtensa GCC 14.2.0; the enabled image leaves 528,128 app-partition bytes.
-- Fork-local XFSM CI covers disabled/enabled Linux builds, six JavaScript test
-  suites, 66 native sanitizer checks, and the enabled original ESP32 IDF5
+- Matching disabled and XFSM-enabled `PICO_R1_3` reduced-profile builds pass
+  with ARM GCC 13.2.1; XFSM adds 23,528 bytes and leaves 16,288 bytes in the
+  application region without changing the stock board definition.
+- Fork-local XFSM CI covers disabled/enabled Linux builds, fourteen JavaScript
+  test suites, 66 native sanitizer checks, and the enabled original ESP32 IDF5
   build without changing any stock board definition.
-- A physical ESP32-D0WD-V3 running the `ESP32_IDF5` build passed all six M4
-  JavaScript suites, the M5 resource and timing harness, and a dedicated GC and
-  `E.defrag()` relocation check.
+- A physical ESP32-D0WD-V3 running the `ESP32_IDF5` build passed all fourteen
+  JavaScript suites, including M6 batches 1 and 2, completion semantics, and the exact
+  microstep limit, plus the M5 resource, timing, and GC relocation harnesses.
 - Physical depth-32 construction passed from a clean runtime with a 4,393-byte
   arena, a 2,062-block construction peak, and 224 bytes of maximum measured
   coordinator stack; a later depth-32 construction after smaller measurements
@@ -107,31 +143,32 @@ revision was confirmed pushed before M5 work began.
 
 ## Current Work
 
-The Linux part of M5 is measured, but the M5 exit gate is not satisfied. The
-stock MDBT42Q release/DFU image passes, while the XFSM-enabled ELF links but
-overlaps reserved Storage by 22,176 bytes and fails the target size check. The
-original ESP32 IDF5 image now builds with XFSM and has ample flash headroom,
-and its implemented M4 and M5 slices now run on physical hardware. The M4
-slice cannot yet supply completion-chain timing. M0's full normative
-requirement inventory also remains documentation work.
+M6 batches 1 and 2 are implemented and pass on Linux and the original ESP32,
+with shared behavior checked against pinned XState 4.38.3 and 5.33.2
+references.
+The M5 exit gate is not satisfied. A reduced-profile Pico image passes its size
+gate, but no physical Pico runtime evidence has been collected. The stock
+MDBT42Q release/DFU image passes, while the XFSM-enabled ELF links but overlaps
+reserved Storage by 22,176 bytes and fails the target size check. M0's full
+normative requirement inventory also remains documentation work.
 
 Immediate tasks:
 
 1. establish the product `Board.py` selection for original ESP32 IDF5 without
    changing the stock board definition;
-2. decide whether a reduced MDBT42Q product configuration is worthwhile;
-3. implement the minimum final-state/`onDone` slice needed to measure
-   completion chains approaching 256 microsteps;
-4. close the native-layout, depth, microstep, stack, snapshot, and diagnostic
-   review decisions; and
-5. expand the M0 normative requirement inventory.
+2. decide whether physical Pico qualification and a reduced MDBT42Q product
+   configuration are worthwhile;
+3. close the native-layout, depth, stack, snapshot, and diagnostic
+   review decisions;
+4. expand the M0 normative requirement inventory while maintaining the
+   consolidated [test inventory](../tests/test-inventory.md); and
+5. implement M6 batch 3 complete transition-domain and re-entry coverage.
 
 ## Open Issues And Blockers
 
 | Issue | Repository | Effect | Status |
 | --- | --- | --- | --- |
 | XFSM adds 22,288 flash bytes to an MDBT42Q baseline with only 112 bytes before reserved Storage | Espruino implementation | Enabled ELF overlaps Storage by 22,176 bytes, preventing a valid DFU and runtime measurement | Select a viable target library/Storage budget without changing the stock board build |
-| M4 does not implement final-state completion cascades | Espruino implementation | Prevents the required near-256-microstep timing measurement | Implement bounded measurement slice before closing M5 |
 
 ## Evidence-Dependent Decisions
 
@@ -141,8 +178,8 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | --- | --- | --- |
 | Freeze or revise native record layout | Linux evidence supports provisional retention; constrained target still required | M5 open |
 | Retain or revise hierarchy depth 32 | ESP32 passes from a clean runtime but uses 2,062 of 2,800 blocks and is allocation-order sensitive; constrained evidence remains required | M5 open |
-| Retain or revise microstep budget 256 | Completion-chain time and watchdog impact | M5 |
-| Select per-target stack reserve | Linux and original ESP32 support 512 bytes plus host safety; remaining physical families pending | M5/M7 |
+| Retain or revise microstep budget 256 | Retained: Linux and original ESP32 enforce the boundary; the ESP32 median 256-step chain is 763.553 ms | M5 closed for represented targets |
+| Select per-target stack reserve | Default raised to 768 bytes after Linux measured 672 bytes and original ESP32 measured 448 bytes; remaining physical families pending | M5/M7 |
 | Retain or revise snapshot materialization | Lazy snapshots retained provisionally; ESP32 measured and constrained-target RAM pending | M5 open |
 | Retain or revise diagnostic detail | Current detail retained provisionally; ESP32 measured and constrained-target RAM pending | M5 open |
 | Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected, build verified, and physically exercised for the implemented M4/M5 slice | M5/M7 |
@@ -151,10 +188,10 @@ These are specified review gates, not unresolved Profile 1 semantics:
 
 | Target | Current status | Latest evidence |
 | --- | --- | --- |
-| Linux Espruino | Build verified | [M5 first-evidence report](reports/2026-09-25-m5-first-evidence.md) |
-| Espruino Pico | Not yet verified | None |
+| Linux Espruino | Build verified | [M6.2 result](../tests/results/linux/2026-09-26-m6-context-assignment.json) |
+| Espruino Pico | Build verified for reduced product profile | [Pico feasibility build](../tests/results/pico/2026-09-26-feasibility-build.json) |
 | MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
-| Original ESP32 IDF5 | Build verified; M4/M5 physical slice passed | [M5 physical evidence](../tests/results/esp32-xtensa/2026-09-25-m5-physical-evidence.json) |
+| Original ESP32 IDF5 | Build verified; runtime, M5, M6.1, and M6.2 physical slices passed | [M6.2 result](../tests/results/esp32-xtensa/2026-09-26-m6-context-assignment.json) |
 | ESP32-C3 IDF5 | Not yet verified | Stock-build capacity established from upstream Actions; XFSM build pending |
 | ESP32-S3 IDF5 | Not yet verified | Later expansion target; not required for Version 1 qualification |
 
@@ -165,6 +202,10 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-26 | M6 batch 2 omitted/literal/factory context ownership, all assignment forms and locations, actor isolation, strict diagnostics, and transactional rollback passed fourteen-suite Linux and physical original ESP32 regressions plus the pinned XState 5.33.2 context/assignment reference |
+| 2026-09-26 | M6 batch 1 target forms, escaped paths, effective IDs, wildcard event selection, collision-safe lookup, v4 aliases, and strict diagnostics passed eleven-suite Linux and physical original ESP32 regressions plus pinned XState 4.38.3/5.33.2 references |
+| 2026-09-26 | Reduced-profile Pico disabled/enabled builds passed; XFSM adds 23,528 bytes and leaves 16,288 bytes in the application region, advancing that explicit configuration to Build verified |
+| 2026-09-26 | Final-state and `onDone` execution, stable completion cascades, terminal `done`, and the 256/257 microstep boundary passed on Linux and physical original ESP32; the default coordinator reserve increased to 768 bytes |
 | 2026-09-25 | Added the project-local original ESP32 device-testing procedure derived from the successful physical M5 workflow |
 | 2026-09-25 | Physical original ESP32 IDF5 passed the six M4 JavaScript suites, M5 runtime measurements, depth-32 construction from a clean runtime, stack instrumentation, and GC relocation; allocation-order sensitivity was recorded |
 | 2026-09-25 | Added fork-development XFSM CI in implementation revision `8794dc1d7` and corrected workflow branch matching from `*` to `**`; local Linux-equivalent build and test commands passed |

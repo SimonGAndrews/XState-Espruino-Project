@@ -3,8 +3,8 @@
 ## Status
 
 - Build-document status: Linux runtime and M5 measurements verified; original
-  ESP32 IDF5 build and implemented physical slice verified; MDBT42Q enabled
-  size check blocked
+  ESP32 IDF5 build and implemented physical slice verified; reduced-profile
+  Pico build verified; MDBT42Q enabled size check blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
 - Current implementation revision: `4d4ef00b9`
@@ -120,9 +120,32 @@ Verify the M4 actor execution slice with:
 
 ```bash
 bin/espruino --test libs/xfsm/tests/test_runtime.js
+bin/espruino --test libs/xfsm/tests/test_completion.js
+bin/espruino --test libs/xfsm/tests/test_completion_cascade.js
 bin/espruino --test libs/xfsm/tests/test_runtime_errors.js
 bin/espruino --test libs/xfsm/tests/test_subscriptions.js
 ```
+
+Verify M6 batch 1 with:
+
+```bash
+bin/espruino --test libs/xfsm/tests/test_targets.js
+bin/espruino --test libs/xfsm/tests/test_events_migration.js
+bin/espruino --test libs/xfsm/tests/test_profile1_diagnostics.js
+```
+
+Verify M6 batch 2 with:
+
+```bash
+bin/espruino --test libs/xfsm/tests/test_context_ownership.js
+bin/espruino --test libs/xfsm/tests/test_assign_forms.js
+bin/espruino --test libs/xfsm/tests/test_context_diagnostics.js
+```
+
+The clean M6.2 Linux regression runs all fourteen JavaScript suites, checks an
+XFSM-disabled build for absence of the wrapper symbol, runs the 66-check
+sanitizer suite, and runs both pinned XState references. Its result is recorded
+in the [Linux M6.2 result](../tests/results/linux/2026-09-26-m6-context-assignment.json).
 
 At revision `c6505437a`, all six JavaScript tests passed and each returned to
 zero retained memory records after garbage collection. The construction
@@ -164,6 +187,7 @@ The verified Linux measurement command is:
 make clean
 make USE_XFSM=1 XFC_MEASURE=1 -j2
 bin/espruino --test libs/xfsm/tests/measure_m5.js
+bin/espruino --test libs/xfsm/tests/measure_m5_completion.js
 ```
 
 `XFC_MEASURE=1` adds two private measurement methods and native counters. They
@@ -176,10 +200,11 @@ make USE_XFSM=1 XFC_STACK_RESERVE=2000000 -j2
 bin/espruino --test libs/xfsm/tests/test_stack_reserve.js
 ```
 
-Normal builds default to a 512-byte XFSM coordinator reserve plus Espruino's
+Normal builds default to a 768-byte XFSM coordinator reserve plus Espruino's
 512-byte safety allowance. See the [M5
-report](reports/2026-09-25-m5-first-evidence.md) and [Linux
-result](../tests/results/linux/2026-09-25-m5-resource-evidence.json).
+report](reports/2026-09-25-m5-first-evidence.md), [completion
+report](reports/2026-09-26-completion.md), and [Linux completion
+result](../tests/results/linux/2026-09-26-completion.json).
 
 ## Physical Builds
 
@@ -187,15 +212,40 @@ Commands and required toolchain revisions will be recorded separately for:
 
 | Target | Board/build definition | Command status |
 | --- | --- | --- |
-| Espruino Pico | STM32F401 | Not established |
+| Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
-| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; implemented M4/M5 physical slice passed |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; fourteen semantic suites plus implemented M5, M6.1, and M6.2 physical slices passed |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Secondary architecture qualification; stock capacity established |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
 The library must be selected through Espruino's normal optional-library
 mechanism. Target-specific board files may select `XFSM`, but must not contain
 engine semantics or duplicate its source list.
+
+The Espruino Pico feasibility comparison uses the provisioned ARM GCC 13.2.1
+toolchain and the same reduced feature profile for its disabled and enabled
+builds. It omits JIT, debugger, tab completion, vector font, and
+JavaScript-backed networking. Bash process substitution supplies a one-line
+`SETDEFINES` file so `NO_VECTOR_FONT` is appended after the board definitions:
+
+```bash
+source scripts/provision.sh PICO_R1_3
+unset DEBUG
+make BOARD=PICO_R1_3 clean
+make BOARD=PICO_R1_3 RELEASE=1 USE_XFSM=0 USE_JIT=0 USE_DEBUGGER=0 \
+  USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 \
+  SETDEFINES=<(printf '%s\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2
+make BOARD=PICO_R1_3 clean
+make BOARD=PICO_R1_3 RELEASE=1 USE_XFSM=1 USE_JIT=0 USE_DEBUGGER=0 \
+  USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 \
+  SETDEFINES=<(printf '%s\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2
+```
+
+The enabled image is 311,392 bytes, adds 23,528 bytes (8.17%) to its
+matching 287,864-byte baseline, and passes the 327,680-byte size gate with
+16,288 bytes free. The stock board file was not changed. See the [Pico
+feasibility report](reports/2026-09-26-pico-feasibility-build.md) and [build
+record](../tests/results/pico/2026-09-26-feasibility-build.json).
 
 The 2026-09-25 MDBT42Q attempt used the target provisioning script, its pinned
 EspruinoBuildTools ARM GCC 13.2.1 archive, and the existing nRF5 SDK 12 tree.

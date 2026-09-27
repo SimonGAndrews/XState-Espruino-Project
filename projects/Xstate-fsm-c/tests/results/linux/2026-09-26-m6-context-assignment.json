@@ -1,0 +1,86 @@
+{
+  "kind": "xfsm-m6-context-assignment-linux",
+  "date": "2026-09-26",
+  "caseIds": [
+    "XFC-CF-CONTEXT-003",
+    "XFC-CF-CONTEXT-004",
+    "XFC-CF-COMPAT-003",
+    "XFC-CF-DIAG-004"
+  ],
+  "xstateEspruinoProjectRevision": "525a414e5b18cb5a1666defb145e97ad536ada9f",
+  "specificationVersion": "0.49",
+  "implementationBaseRevision": "4d4ef00b904e33618d2c75cf427d1d9af4b3292b",
+  "implementationState": "M6.2 candidate in working tree based on implementationBaseRevision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "compiler": "GCC 13.3.0",
+  "buildChecks": {
+    "disabledCommand": "make clean && make USE_XFSM=0 -j2",
+    "disabledXfsmWrapperSymbolAbsent": true,
+    "enabledCommand": "make clean && make USE_XFSM=1 -j2"
+  },
+  "semanticCommand": "bin/espruino --test libs/xfsm/tests/<suite>.js",
+  "semanticTests": {
+    "test_shell.js": "pass",
+    "test_compile.js": "pass",
+    "test_diagnostics.js": "pass",
+    "test_runtime.js": "pass",
+    "test_completion.js": "pass",
+    "test_completion_cascade.js": "pass",
+    "test_targets.js": "pass",
+    "test_events_migration.js": "pass",
+    "test_profile1_diagnostics.js": "pass",
+    "test_context_ownership.js": "pass",
+    "test_assign_forms.js": "pass",
+    "test_context_diagnostics.js": "pass",
+    "test_runtime_errors.js": "pass",
+    "test_subscriptions.js": "pass"
+  },
+  "m6Coverage": {
+    "omittedContextAllocatedPerActorAtStart": "pass",
+    "stoppedBeforeStartDoesNotAllocateOrCallFactory": "pass",
+    "literalTemplateAndShallowActorOwnership": "pass",
+    "factoryTimingCountAndActorIsolation": "pass",
+    "partialAndPropertyMapAssignmentForms": "pass",
+    "fixedObjectArrayAndFunctionValueIdentity": "pass",
+    "propertyExpressionsShareOldContext": "pass",
+    "compiledMapIndependentOfLaterMutation": "pass",
+    "emptyAssignmentCreatesNewContext": "pass",
+    "entryExitInitialEventAndCompletionLocations": "pass",
+    "orderedVisibilityAndOrdinaryReturnIgnored": "pass",
+    "invalidContextAndAssignmentDiagnostics": "pass",
+    "factoryAndAssignmentExceptionIdentity": "pass",
+    "transactionalContextAndStateRollback": "pass"
+  },
+  "implementationDefectsClosed": [
+    "omitted-context allocation failure is categorized as E_NO_MEMORY",
+    "assign property-map accessors are detected from Espruino's raw property value cell without invoking the getter"
+  ],
+  "xstateDifferential": {
+    "nodeVersion": "20.15.0",
+    "xstateV5Version": "5.33.2",
+    "command": "npm test in tests/reference/xstate-v5",
+    "sharedCoverage": [
+      "literal context is shared until one actor assigns",
+      "assignment makes a new shallow outer object and retains nested identity",
+      "partial and property-map assignments execute in order",
+      "all expressions in one property map see the old context",
+      "fixed values retain identity and empty assignment makes a new context",
+      "factory results isolate actors when the factory creates fresh graphs"
+    ],
+    "intentionalDifference": "XState 5.33.2 calls the context factory during createActor; Profile 1 defers it until first start to avoid pre-start allocation"
+  },
+  "xstateV4Regression": {
+    "version": "4.38.3",
+    "command": "npm test in tests/reference/xstate-v4",
+    "result": "pass"
+  },
+  "nativeSanitizer": {
+    "command": "make -C libs/xfsm/tests/native clean test",
+    "checks": 66,
+    "result": "pass"
+  },
+  "retainedRecordsAfterGcPerSemanticSuite": 0,
+  "result": "pass",
+  "scope": "M6 batch 2 context and assignment behavior on Linux; deterministic allocation-fault injection remains assigned to M6 batch 7."
+}

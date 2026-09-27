@@ -1,0 +1,79 @@
+{
+  "kind": "xfsm-m6-target-events-linux",
+  "date": "2026-09-26",
+  "caseIds": [
+    "XFC-CF-TRANS-002",
+    "XFC-CF-TRANS-003",
+    "XFC-CF-COMPAT-002",
+    "XFC-CF-DIAG-003"
+  ],
+  "xstateEspruinoProjectRevision": "525a414e5b18cb5a1666defb145e97ad536ada9f",
+  "specificationVersion": "0.49",
+  "implementationBaseRevision": "4d4ef00b904e33618d2c75cf427d1d9af4b3292b",
+  "implementationState": "M6.1 candidate in working tree based on implementationBaseRevision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "compiler": "GCC 13.3.0",
+  "buildCommand": "make clean && make USE_XFSM=1 -j2",
+  "semanticCommand": "bin/espruino --test libs/xfsm/tests/<suite>.js",
+  "semanticTests": {
+    "test_shell.js": "pass",
+    "test_compile.js": "pass",
+    "test_diagnostics.js": "pass",
+    "test_runtime.js": "pass",
+    "test_completion.js": "pass",
+    "test_completion_cascade.js": "pass",
+    "test_targets.js": "pass",
+    "test_events_migration.js": "pass",
+    "test_profile1_diagnostics.js": "pass",
+    "test_runtime_errors.js": "pass",
+    "test_subscriptions.js": "pass"
+  },
+  "m6Coverage": {
+    "bareExactAndHierarchicalTargets": "pass",
+    "dotRelativeDescendantTargets": "pass",
+    "explicitAndImplicitEffectiveIds": "pass",
+    "escapedPeriodBackslashAndLeadingPunctuation": "pass",
+    "ambiguousMalformedUnknownAndDuplicateTargets": "pass",
+    "exactBeforeWildcardAndGuardFallback": "pass",
+    "forbiddenTransitionBlocking": "pass",
+    "parentFallbackAfterLocalWildcardRejects": "pass",
+    "eventHashCollisionRequiresByteComparison": "pass",
+    "condAndInternalAliases": "pass",
+    "inertV4FlagsAndEmptyMaps": "pass",
+    "aliasConflictAndUnsupportedMapRejection": "pass"
+  },
+  "xstateDifferential": {
+    "nodeVersion": "20.15.0",
+    "xstateV5Version": "5.33.2",
+    "xstateV5Command": "npm test in tests/reference/xstate-v5",
+    "xstateV5Coverage": [
+      "hierarchical boundaries and relative targets",
+      "explicit ID cross-hierarchy target",
+      "exact-to-wildcard guard fallback",
+      "forbidden transition blocking",
+      "targetless, preserved self, and re-entering self transitions"
+    ],
+    "xstateV4Version": "4.38.3",
+    "xstateV4Command": "npm test in tests/reference/xstate-v4",
+    "xstateV4Coverage": [
+      "cond alias",
+      "internal false re-entry",
+      "internal true preservation",
+      "predictableActionArguments and preserveActionOrder"
+    ],
+    "profileSpecificCoverage": [
+      "hybrid exact-key target resolution",
+      "backslash escaping",
+      "construction diagnostic categories and paths"
+    ]
+  },
+  "nativeSanitizer": {
+    "command": "make -C libs/xfsm/tests/native clean test",
+    "checks": 66,
+    "result": "pass"
+  },
+  "retainedRecordsAfterGcPerSemanticSuite": 0,
+  "result": "pass",
+  "scope": "M6 batch 1 behavior on Linux; not complete Profile 1 conformance."
+}

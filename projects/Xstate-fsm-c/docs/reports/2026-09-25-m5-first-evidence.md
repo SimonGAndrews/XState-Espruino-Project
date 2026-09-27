@@ -1,5 +1,12 @@
 # M5 First Vertical-Slice Evidence Report
 
+## Follow-Up
+
+The completion-chain gap recorded below was closed on 2026-09-26. See the
+[final-state and completion evidence](2026-09-26-completion.md). The original
+measurements and conclusions in this dated report remain unchanged as a record
+of the earlier implementation slice.
+
 ## Scope
 
 This report records the first M5 measurements for the M4 construction and

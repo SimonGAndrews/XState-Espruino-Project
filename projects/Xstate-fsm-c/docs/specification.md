@@ -4,9 +4,9 @@
 
 - Status: Profile 1 implementation candidate
 - Version: 0.49
-- Implementation status: M5 Linux and original ESP32 IDF5 physical evidence
-  recorded; constrained-target runtime and completion-chain evidence remain
-  required
+- Implementation status: M5 Linux and original ESP32 IDF5 completion evidence
+  and reduced-profile Pico build evidence recorded; constrained-target runtime
+  evidence remains required
 
 This document is the normative implementation candidate for Xstate-fsm-c
 Profile 1. Only requirements stated explicitly in this document are accepted.

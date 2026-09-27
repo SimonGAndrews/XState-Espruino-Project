@@ -2,12 +2,14 @@
 
 This directory owns the Profile 1 conformance definitions, differential
 runners, expected traces, and reviewed result records defined by the
-[specification](../docs/specification.md). Start with the
-[conformance matrix](conformance-matrix.md); recorded evidence is indexed under
-[`results/`](results/).
+[specification](../docs/specification.md). Start with the [test
+inventory](test-inventory.md) for completed and outstanding test work, then use
+the [conformance matrix](conformance-matrix.md) for requirement traceability.
+Recorded evidence is indexed under [`results/`](results/).
 
 The primary differential environment is pinned under
-[`reference/xstate-v5/`](reference/xstate-v5/).
+[`reference/xstate-v5/`](reference/xstate-v5/). The migration-alias reference
+is pinned under [`reference/xstate-v4/`](reference/xstate-v4/).
 
 The suite will distinguish normative Profile 1 cases, pinned Node XState
 differential cases, intentional compatibility differences, native-format and
@@ -38,3 +40,17 @@ The first M5 Linux measurements and MDBT42Q build attempt are recorded in the
 Original ESP32 IDF5 build and device measurements are recorded in the
 [ESP32 build result](results/esp32-xtensa/2026-09-25-m5-idf5-build.json) and
 [physical result](results/esp32-xtensa/2026-09-25-m5-physical-evidence.json).
+Final-state, nested-completion, and exact microstep-boundary evidence is
+recorded in the [Linux completion result](results/linux/2026-09-26-completion.json)
+and [ESP32 completion result](results/esp32-xtensa/2026-09-26-completion.json).
+Reduced-profile Espruino Pico build feasibility is recorded in the [Pico build
+result](results/pico/2026-09-26-feasibility-build.json); it contains no
+physical-device runtime claim.
+M6 target resolution, wildcard lookup, migration-alias, and strict diagnostic
+evidence is recorded in the [Linux M6.1
+result](results/linux/2026-09-26-m6-target-events.json) and [ESP32 M6.1
+result](results/esp32-xtensa/2026-09-26-m6-target-events.json).
+M6 context initialization, assignment-form, actor-isolation, rollback, and
+diagnostic evidence is recorded in the [Linux M6.2
+result](results/linux/2026-09-26-m6-context-assignment.json) and [ESP32 M6.2
+result](results/esp32-xtensa/2026-09-26-m6-context-assignment.json).
