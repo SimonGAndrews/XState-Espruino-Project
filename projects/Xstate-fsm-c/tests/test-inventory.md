@@ -3,8 +3,8 @@
 ## Status And Purpose
 
 - Inventory status: living execution register
-- Last reviewed: 2026-09-26
-- Specification: Profile 1 version 0.49
+- Last reviewed: 2026-09-27
+- Specification: Profile 1 version 0.50
 - Normative authority: [Profile 1 specification](../docs/specification.md)
 - Requirement mapping: [conformance matrix](conformance-matrix.md)
 
@@ -39,8 +39,9 @@ comparison where one is required.
 ## Completed Executable Suites
 
 These test programs exist in the implementation repository under
-`libs/xfsm/tests/`. All fourteen JavaScript semantic suites below pass on Linux
-Espruino and the original ESP32 IDF5 M6.2 candidate.
+`libs/xfsm/tests/`. All sixteen JavaScript semantic suites below pass on Linux
+Espruino. The first fourteen also pass on the original ESP32 IDF5 M6.2
+candidate; the two M6.3 suites await the current physical run.
 
 | Executable suite | Principal coverage | Linux | Original ESP32 | Evidence |
 | --- | --- | --- | --- | --- |
@@ -58,6 +59,8 @@ Espruino and the original ESP32 IDF5 M6.2 candidate.
 | `test_context_ownership.js` | Omitted, literal, and factory context timing, ownership, shallow sharing, stopped-before-start behavior, and actor isolation | Pass | Pass | [Linux M6.2 result](results/linux/2026-09-26-m6-context-assignment.json), [ESP32 M6.2 result](results/esp32-xtensa/2026-09-26-m6-context-assignment.json) |
 | `test_assign_forms.js` | Partial, property-map, fixed-value, and empty assignments across entry, exit, initial, event, and completion positions with identity and ordered visibility | Pass | Pass | [Linux M6.2 result](results/linux/2026-09-26-m6-context-assignment.json), [ESP32 M6.2 result](results/esp32-xtensa/2026-09-26-m6-context-assignment.json) |
 | `test_context_diagnostics.js` | Invalid context/assignment forms and results, accessors, callback/property exceptions, exact thrown identity, no-entry startup failure, and transactional rollback | Pass | Pass | [Linux M6.2 result](results/linux/2026-09-26-m6-context-assignment.json), [ESP32 M6.2 result](results/esp32-xtensa/2026-09-26-m6-context-assignment.json) |
+| `test_transition_domains.js` | Targetless and forbidden transitions; atomic and compound self-transition defaults and re-entry; descendant, ancestor, sibling, root, and cross-branch domains; initial-action boundaries | Pass | Planned | [Linux M6.3 result](results/linux/2026-09-27-m6-transition-domains.json) |
+| `test_transition_depth.js` | Depth-32 exit, transition, and entry traversal with 65 ordered actions and an active-ancestor target | Pass | Planned | [Linux M6.3 result](results/linux/2026-09-27-m6-transition-domains.json) |
 
 Each Linux semantic suite returned to zero retained Espruino records after its
 explicit cleanup and garbage collection. The original ESP32 results are
@@ -73,7 +76,7 @@ is still planned, that limitation remains.
 | `measure_m5_completion.js` | Five-trial 256-step completion timing, rejected step 257, stack, rollback and cleanup | Pass on Linux and ESP32: [completion report](../docs/reports/2026-09-26-completion.md) |
 | `measure_m5_gc_relocation.js` | Machine and actor survival across Espruino GC relocation | Pass for the implemented slice on Linux and ESP32: [ESP32 physical result](results/esp32-xtensa/2026-09-25-m5-physical-evidence.json) |
 | `test_stack_reserve.js` | Operation rejection before mutation when the configured coordinator reserve is unavailable | Pass on Linux; normal reserve measured on ESP32: [Linux resource result](results/linux/2026-09-25-m5-resource-evidence.json) |
-| `reference/xstate-v5/verify-reference.mjs` | Pinned XState 5.33.2 basic transition, completion, hierarchy, wildcard, forbidden-transition, self-transition, context-ownership, and ordered-assignment traces | Pass: [Linux M6.2 result](results/linux/2026-09-26-m6-context-assignment.json) |
+| `reference/xstate-v5/verify-reference.mjs` | Pinned XState 5.33.2 basic transition, completion, hierarchy, wildcard, forbidden-transition, context/assignment, 16 transition-domain, and maximum-depth traces | Pass: [Linux M6.3 result](results/linux/2026-09-27-m6-transition-domains.json) |
 | `reference/xstate-v4/verify-reference.mjs` | Pinned XState 4.38.3 `cond`, `internal`, ordered-action flags, and action-boundary trace | Pass: [Linux M6.1 result](results/linux/2026-09-26-m6-target-events.json) |
 
 ## Functional Coverage Register
@@ -96,7 +99,7 @@ the third column pass, but the fourth column must still be closed.
 | Context assignment (`CONTEXT-001/002/004`) | Partial | Partial, property-map, fixed-value, and empty forms; all action locations; new properties; retained object/array/function identity; source-map independence; same-old-context expressions; ordered visibility; invalid results; callback/property-read/expression exceptions; transactional rollback | Deterministic pending-context and merge allocation failures; final repetition on remaining qualified targets |
 | Action definition and ordering (`ACTION-001`) | Partial | Named entry, exit and transition actions; arrays; `assign`; stop exits; ordered context observations; action exception and remaining-action suppression | Every accepted action representation and location, unresolved/invalid descriptors, initial-transition actions, final callback metadata contract and native/flash-backed callback cases |
 | Guards and candidate selection (`TRANS-001`) | Partial | Named guards, false then true ordered candidates and context/event visibility | Guard exceptions, invalid return/binding forms, all-false candidates, parent fallback after local candidate rejection, completion guards and parameterless-reference rules |
-| Transition domains and re-entry (`TRANS-001/002`) | Partial | Targetless, forbidden, sibling, descendant path, parent handler, non-reentering self, `reenter: true`, v4 `internal` equivalence, compound exit/re-entry and explicit-ID cross-branch cases | Ancestor, root and deep least-common-ancestor action ordering across all target forms |
+| Transition domains and re-entry (`TRANS-001/002/004`) | Pass for implemented Linux scope | Targetless, forbidden, atomic/compound self, source-to-descendant, root-to-descendant, descendant-to-active-ancestor, sibling and cross-branch domains with default/re-entering action boundaries; nested initial-action boundary; v4 `internal` equivalence; depth-32 traversal | Repeat the portable cases on remaining qualified targets and add deterministic traversal allocation/fault cases where applicable |
 | Actor lifecycle (`LIFE-001`) | Partial | Not-started, active, stopped, done and error snapshots; repeated start while active; stop before/after start; ignored terminal sends; busy and fault terminality | Complete invalid-state operation matrix, nested calls between different actors, all callback-operation combinations, reset/restoration lifecycle and lifecycle allocation failures |
 | Event dispatch (`TRANS-001`, `LIFE-001`) | Partial | Synchronous string/object dispatch, handled/unhandled publication and same-actor busy rejection | Generated deep lookup, exact/wildcard lookup cost and precedence, interrupt-context prohibition evidence and cross-actor nested dispatch |
 | Snapshots and `matches` (`SNAP-001`) | Partial | All five statuses, flat/hierarchical values, context/error, string/object `matches`, identity reuse and change, stable-only completion publication | Complete invalid `matches` inputs, all hierarchy shapes, lazy-allocation failure, caching after every lifecycle state and physical RAM accounting |
@@ -105,7 +108,7 @@ the third column pass, but the fourth column must still be closed.
 | Final states and completion (`FINAL-001/002`) | Pass for implemented Linux/ESP32 scope | Validation, v5 event names, action order, targetless `onDone`, nested cascades, initial final, terminal `done`, stable publication and limit rollback | Run the same portable cases on remaining qualified targets; add complete negative grammar and failure-in-each-completion-phase cases during strict-validation work |
 | Construction diagnostics (`DIAG-001/003`) | Partial | Missing/unknown initial, unknown/ambiguous/malformed targets, duplicate IDs, partial wildcards, alias conflicts, compatibility flags/maps, unresolved actions, invalid context, cyclic graph, selected final/`onDone` errors and unsupported `output` | Every remaining construction category, exact object-graph path, length budget, truncation boundary and cleanup for every rejected grammar form |
 | Runtime diagnostics (`DIAG-002/004`) | Partial | Invalid event/receiver, busy/fault categories, action/factory/assignment identity, invalid context/assignment categories and paths, rollback, and microstep diagnostic | Every public method/state/category combination, path and length budget, allocation errors, guard failures and physical diagnostic-cost measurements |
-| Depth and microstep limits (`LIMIT-001/002`) | Partial | Depth-32 construction measurement; exact step 256 success and attempted step 257 transactional failure on Linux/ESP32 | Automated depth 31/32/33 semantic and rejection cases; remaining targets; generated deep XState comparison for supported depths |
+| Depth and microstep limits (`LIMIT-001/002`) | Partial | Depth-32 construction measurement and exact 65-action transition trace matched to XState 5.33.2; exact step 256 success and attempted step 257 transactional failure on Linux/ESP32 | Automated depth 31 and 33 boundary/rejection cases; remaining targets |
 | Stack reserve (`LIMIT-003`) | Partial | Linux reserve negative path; Linux and ESP32 measured maxima; default raised to 768 bytes | Select and verify reserve on Pico, MDBT42Q and ESP32-C3; rerun after complete runtime implementation |
 | GC, save and reset (`HOST-001/002/003`) | Partial | GC cleanup in Linux suites and relocation for implemented Linux/ESP32 slice | Whole-interpreter `save()`, restoration and reset in every relevant actor state; final cleanup accounting; relocation during broader behaviours and failure paths |
 | Native callbacks, pins and timers (`HOST`) | Planned | JavaScript callback boundary passes; implementation design uses the common Espruino callable path | Representative flash-backed/native action and guard functions, pin output, timer-driven event ingress, cleanup and safe hardware reset |
@@ -134,7 +137,7 @@ limit, or absence of equivalent XState behaviour.
 | Context isolation between actors | XState 5.33.2 | Matching shared literal template, first-assign isolation, nested identity, and fresh factory graph isolation; factory call timing is an intentional Profile difference | Pass for shared semantics |
 | Targetless and self transitions | XState 5.33.2 | Matching targetless, preserved self and explicit re-entry trace | Pass |
 | Relative, explicit-ID and cross-hierarchy targets | XState 5.33.2 | Matching relative reset and explicit-ID cross-hierarchy action-boundary trace; XFSM escaping is Profile-specific | Pass for shared forms |
-| Deep hierarchy and least-common-ancestor ordering | XState 5.33.2 | Shallow XFSM cases and depth measurement exist | Planned |
+| Deep hierarchy and least-common-ancestor ordering | XState 5.33.2 | Matching 16-case domain corpus and 32-level, 65-action exit-transition-entry trace | Pass |
 | String and object event visibility | XState 5.33.2 | XFSM forms pass locally | Planned differential |
 | Committed snapshots and notification timing | XState 5.33.2 | XFSM local timing tests pass | Planned differential |
 | v4 migration aliases | XState 4.38.3 and XState 5.33.2 | `cond` and `internal` trace matches pinned v4; canonical behavior is covered by v5 | Pass for implemented aliases |
@@ -148,8 +151,8 @@ conformance cases rather than treated as missing comparison data.
 
 | Target | Build status | Tests completed | Outstanding or blocker |
 | --- | --- | --- | --- |
-| Linux Espruino | Build verified | Fourteen semantic suites, 66-check sanitizer suite, pinned XState 4.38.3/5.33.2 references, M5 resource and completion measurements | Complete later M6 batches, full differential corpus, allocation faults, save/reset where applicable, final full-suite rerun |
-| Original ESP32 IDF5 | Build verified; implemented physical slices pass | Fourteen semantic suites, completion boundary, timing, stack and GC relocation on physical ESP32-D0WD-V3 | Later M6 suites, native/flash callback, pins/timers, save/reset, final RAM/cleanup and release-image run |
+| Linux Espruino | Build verified | Sixteen semantic suites, 66-check sanitizer suite, pinned XState 4.38.3/5.33.2 references including complete M6.3 domains/depth, M5 resource and completion measurements | Complete later M6 batches, remaining differential corpus, allocation faults, save/reset where applicable, final full-suite rerun |
+| Original ESP32 IDF5 | Build verified; implemented physical slices pass | Fourteen semantic suites, completion boundary, timing, stack and GC relocation on physical ESP32-D0WD-V3 | M6.3 physical run; later M6 suites, native/flash callback, pins/timers, save/reset, final RAM/cleanup and release-image run |
 | Espruino Pico | Reduced-profile build verified | Matching disabled/enabled size comparison | Physical board execution, complete portable suite, stack/RAM/timing, save/reset and hardware callbacks |
 | MDBT42Q | Not yet verified | Stock DFU passes; XFSM compiles and links | Blocked by 22,176-byte Storage overlap; select and document a viable product profile before runtime testing |
 | ESP32-C3 IDF5 | Not yet verified | Upstream stock-build capacity reviewed | Build with XFSM, then complete RISC-V physical qualification |

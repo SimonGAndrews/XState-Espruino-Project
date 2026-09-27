@@ -408,6 +408,257 @@ assert.notEqual(
   factoryActorB.getSnapshot().context.nested
 );
 
+const transitionDomainTrace = [];
+const domainActionNames = [
+  "enterRoot", "exitRoot", "enterParent", "exitParent", "initParent",
+  "enterA", "exitA", "enterB", "exitB", "initB", "enterDeep",
+  "exitDeep", "enterSibling", "exitSibling", "enterOther", "exitOther",
+  "enterC", "exitC", "enterLeaf", "exitLeaf", "targetless", "wrong",
+  "atomicSelf", "atomicReenter", "compoundSelf", "compoundReenter",
+  "toDescendant", "toDescendantReenter", "rootToDescendant",
+  "rootReenterDescendant", "toAncestor", "toAncestorReenter",
+  "toSibling", "cross", "crossReenter"
+];
+const transitionDomainMachine = createMachine({
+  id: "domains",
+  initial: "Parent",
+  entry: "enterRoot",
+  exit: "exitRoot",
+  states: {
+    Parent: {
+      entry: "enterParent",
+      exit: "exitParent",
+      initial: { target: "A", actions: "initParent" },
+      states: {
+        A: {
+          entry: "enterA",
+          exit: "exitA",
+          on: {
+            TARGETLESS: { reenter: true, actions: "targetless" },
+            BLOCK: {},
+            ATOMIC_SELF: { target: "A", actions: "atomicSelf" },
+            ATOMIC_REENTER: {
+              target: "A", reenter: true, actions: "atomicReenter"
+            }
+          }
+        },
+        B: {
+          entry: "enterB",
+          exit: "exitB",
+          initial: { target: "Deep", actions: "initB" },
+          states: {
+            Deep: {
+              entry: "enterDeep",
+              exit: "exitDeep",
+              on: {
+                TO_ANCESTOR: {
+                  target: "#domains.Parent", actions: "toAncestor"
+                },
+                TO_ANCESTOR_REENTER: {
+                  target: "#domains.Parent", reenter: true,
+                  actions: "toAncestorReenter"
+                },
+                TO_SIBLING: {
+                  target: "Sibling", actions: "toSibling"
+                },
+                CROSS: {
+                  target: "#domains.Other.C.Leaf", actions: "cross"
+                },
+                CROSS_REENTER: {
+                  target: "#domains.Other.C.Leaf", reenter: true,
+                  actions: "crossReenter"
+                }
+              }
+            },
+            Sibling: { entry: "enterSibling", exit: "exitSibling" }
+          }
+        }
+      },
+      on: {
+        COMPOUND_SELF: {
+          target: "Parent", actions: "compoundSelf"
+        },
+        COMPOUND_REENTER: {
+          target: "Parent", reenter: true, actions: "compoundReenter"
+        },
+        TO_DESCENDANT: {
+          target: ".B.Deep", actions: "toDescendant"
+        },
+        TO_DESCENDANT_REENTER: {
+          target: ".B.Deep", reenter: true,
+          actions: "toDescendantReenter"
+        }
+      }
+    },
+    Other: {
+      entry: "enterOther",
+      exit: "exitOther",
+      initial: "C",
+      states: {
+        C: {
+          entry: "enterC",
+          exit: "exitC",
+          initial: "Leaf",
+          states: {
+            Leaf: { entry: "enterLeaf", exit: "exitLeaf" }
+          }
+        }
+      }
+    }
+  },
+  on: {
+    BLOCK: { actions: "wrong" },
+    ROOT_TO_DESCENDANT: {
+      target: ".Parent.B.Deep", actions: "rootToDescendant"
+    },
+    ROOT_REENTER_DESCENDANT: {
+      target: ".Parent.B.Deep", reenter: true,
+      actions: "rootReenterDescendant"
+    }
+  }
+}, {
+  actions: Object.fromEntries(domainActionNames.map((name) => [
+    name, () => transitionDomainTrace.push(name)
+  ]))
+});
+
+function runTransitionDomain(event, setup) {
+  const actor = createActor(transitionDomainMachine).start();
+  transitionDomainTrace.length = 0;
+  if (setup) {
+    actor.send({ type: setup });
+    transitionDomainTrace.length = 0;
+  }
+  actor.send({ type: event });
+  const observed = {
+    trace: transitionDomainTrace.join("|"),
+    value: actor.getSnapshot().value
+  };
+  transitionDomainTrace.length = 0;
+  actor.stop();
+  return observed;
+}
+
+const transitionDomainExpected = [
+  ["TARGETLESS", undefined, "targetless", { Parent: "A" }],
+  ["BLOCK", undefined, "", { Parent: "A" }],
+  ["ATOMIC_SELF", undefined, "atomicSelf", { Parent: "A" }],
+  ["ATOMIC_REENTER", undefined,
+    "exitA|atomicReenter|enterA", { Parent: "A" }],
+  ["COMPOUND_SELF", undefined,
+    "exitA|compoundSelf|enterA", { Parent: "A" }],
+  ["COMPOUND_REENTER", undefined,
+    "exitA|exitParent|compoundReenter|enterParent|initParent|enterA",
+    { Parent: "A" }],
+  ["TO_DESCENDANT", undefined,
+    "exitA|toDescendant|enterB|enterDeep", { Parent: { B: "Deep" } }],
+  ["TO_DESCENDANT_REENTER", undefined,
+    "exitA|exitParent|toDescendantReenter|enterParent|enterB|enterDeep",
+    { Parent: { B: "Deep" } }],
+  ["ROOT_TO_DESCENDANT", undefined,
+    "exitA|exitParent|rootToDescendant|enterParent|enterB|enterDeep",
+    { Parent: { B: "Deep" } }],
+  ["ROOT_REENTER_DESCENDANT", undefined,
+    "exitA|exitParent|exitRoot|rootReenterDescendant|enterRoot|" +
+    "enterParent|enterB|enterDeep", { Parent: { B: "Deep" } }],
+  ["TO_ANCESTOR", "TO_DESCENDANT",
+    "exitDeep|exitB|exitParent|toAncestor|enterParent|initParent|enterA",
+    { Parent: "A" }],
+  ["TO_ANCESTOR_REENTER", "TO_DESCENDANT",
+    "exitDeep|exitB|exitParent|toAncestorReenter|enterParent|" +
+    "initParent|enterA", { Parent: "A" }],
+  ["TO_SIBLING", "TO_DESCENDANT",
+    "exitDeep|toSibling|enterSibling", { Parent: { B: "Sibling" } }],
+  ["CROSS", "TO_DESCENDANT",
+    "exitDeep|exitB|exitParent|cross|enterOther|enterC|enterLeaf",
+    { Other: { C: "Leaf" } }],
+  ["CROSS_REENTER", "TO_DESCENDANT",
+    "exitDeep|exitB|exitParent|crossReenter|enterOther|enterC|enterLeaf",
+    { Other: { C: "Leaf" } }]
+];
+const transitionDomainResults = transitionDomainExpected.map(
+  ([event, setup, expectedTrace, expectedValue]) => {
+    const observed = runTransitionDomain(event, setup);
+    assert.equal(observed.trace, expectedTrace, event);
+    assert.deepEqual(observed.value, expectedValue, event);
+    return [event, observed.trace];
+  }
+);
+
+const nestedInitialTrace = [];
+const nestedInitialMachine = createMachine({
+  id: "nestedInitial",
+  initial: "Parent",
+  states: {
+    Parent: {
+      initial: { target: "Nested", actions: "initParentNested" },
+      states: {
+        Nested: {
+          initial: { target: "Leaf", actions: "initNested" },
+          states: { Leaf: {} }
+        }
+      },
+      on: {
+        NESTED_COMPOUND_SELF: {
+          target: "Parent", actions: "nestedCompoundSelf"
+        }
+      }
+    }
+  }
+}, {
+  actions: Object.fromEntries([
+    "initParentNested", "initNested", "nestedCompoundSelf"
+  ].map((name) => [name, () => nestedInitialTrace.push(name)]))
+});
+const nestedInitialActor = createActor(nestedInitialMachine).start();
+nestedInitialTrace.length = 0;
+nestedInitialActor.send({ type: "NESTED_COMPOUND_SELF" });
+assert.deepEqual(nestedInitialTrace, ["nestedCompoundSelf", "initNested"]);
+assert.deepEqual(nestedInitialActor.getSnapshot().value, {
+  Parent: { Nested: "Leaf" }
+});
+transitionDomainResults.push([
+  "NESTED_COMPOUND_SELF", nestedInitialTrace.join("|")
+]);
+
+const maximumDepthTrace = [];
+let maximumDepthLeaf = {
+  id: "deepLeaf",
+  entry: "enter",
+  exit: "exit",
+  on: { RESET: { target: "#deep.L1", actions: "reset" } }
+};
+for (let depth = 31; depth >= 1; depth--) {
+  const child = `L${depth + 1}`;
+  maximumDepthLeaf = {
+    initial: child,
+    entry: "enter",
+    exit: "exit",
+    states: { [child]: maximumDepthLeaf }
+  };
+}
+const maximumDepthMachine = createMachine({
+  id: "deep",
+  initial: "L1",
+  states: { L1: maximumDepthLeaf }
+}, {
+  actions: {
+    enter: () => maximumDepthTrace.push("enter"),
+    exit: () => maximumDepthTrace.push("exit"),
+    reset: () => maximumDepthTrace.push("reset")
+  }
+});
+const maximumDepthActor = createActor(maximumDepthMachine).start();
+assert.deepEqual(maximumDepthTrace, Array(32).fill("enter"));
+maximumDepthTrace.length = 0;
+maximumDepthActor.send({ type: "RESET" });
+assert.deepEqual(maximumDepthTrace, [
+  ...Array(32).fill("exit"),
+  "reset",
+  ...Array(32).fill("enter")
+]);
+assert.equal(maximumDepthActor.getSnapshot().matches("L1"), true);
+
 console.log(JSON.stringify({
   reference: "xstate",
   version: packageMetadata.version,
@@ -424,5 +675,7 @@ console.log(JSON.stringify({
     oldCount,
     fromPartial
   })),
-  factoryCallsAfterCreateActor
+  factoryCallsAfterCreateActor,
+  transitionDomainResults,
+  maximumDepthTransitionActions: maximumDepthTrace.length
 }));

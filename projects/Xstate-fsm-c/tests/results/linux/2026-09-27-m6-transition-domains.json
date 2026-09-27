@@ -1,0 +1,81 @@
+{
+  "kind": "xfsm-m6-transition-domains-linux",
+  "date": "2026-09-27",
+  "caseIds": [
+    "XFC-CF-TRANS-004",
+    "XFC-CF-COMPAT-004"
+  ],
+  "xstateEspruinoProjectRevision": "8c2b7d04602733c2205460f40e9b62fce2ea08d6",
+  "specificationVersion": "0.50",
+  "implementationBaseRevision": "69a32ab303b09b140522c382f3c45329ace449ee",
+  "implementationRevision": "c91f441a8",
+  "implementationState": "M6.3 committed implementation; tests were rerun against the identical pre-commit tree",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "compiler": "GCC 13.3.0",
+  "buildChecks": {
+    "disabledCommand": "env -u DEBUG make clean && env -u DEBUG make USE_XFSM=0 -j2",
+    "disabledResult": "pass",
+    "enabledCommand": "env -u DEBUG make clean && env -u DEBUG make USE_XFSM=1 -j2",
+    "enabledResult": "pass"
+  },
+  "semanticCommand": "bin/espruino --test libs/xfsm/tests/<suite>.js",
+  "semanticTests": {
+    "test_shell.js": "pass",
+    "test_compile.js": "pass",
+    "test_diagnostics.js": "pass",
+    "test_runtime.js": "pass",
+    "test_completion.js": "pass",
+    "test_completion_cascade.js": "pass",
+    "test_targets.js": "pass",
+    "test_events_migration.js": "pass",
+    "test_profile1_diagnostics.js": "pass",
+    "test_context_ownership.js": "pass",
+    "test_assign_forms.js": "pass",
+    "test_context_diagnostics.js": "pass",
+    "test_transition_domains.js": "pass",
+    "test_transition_depth.js": "pass",
+    "test_runtime_errors.js": "pass",
+    "test_subscriptions.js": "pass"
+  },
+  "m6Coverage": {
+    "targetlessReenterIsInert": "pass",
+    "forbiddenTransitionBlocksRootFallback": "pass",
+    "atomicSelfDefaultAndReenter": "pass",
+    "compoundSelfDefaultAndReenter": "pass",
+    "sourceToDescendantDefaultAndReenter": "pass",
+    "rootSourceToDescendantDefaultAndReenter": "pass",
+    "descendantToActiveAncestorDefaultAndReenter": "pass",
+    "siblingAndCrossBranchDomains": "pass",
+    "maximumDepth32ExitTransitionEntryTrace": "pass"
+  },
+  "semanticCorrection": {
+    "case": "non-reentering targeted compound self-transition",
+    "previousCandidateTrace": "exitA|compoundSelf|initParent|enterA",
+    "profile050Trace": "exitA|compoundSelf|enterA",
+    "reason": "the preserved compound source is not entered, so its own initial-transition action does not execute; newly entered compound descendants still execute theirs",
+    "compatibility": "matches pinned XState 5.33.2"
+  },
+  "xstateDifferential": {
+    "nodeVersion": "20.15.0",
+    "xstateV5Version": "5.33.2",
+    "command": "npm ci --ignore-scripts && node verify-reference.mjs in tests/reference/xstate-v5",
+    "transitionDomainCases": 16,
+    "maximumDepth": 32,
+    "maximumDepthTransitionActions": 65,
+    "result": "pass"
+  },
+  "xstateV4Regression": {
+    "version": "4.38.3",
+    "command": "npm ci --ignore-scripts && node verify-reference.mjs in tests/reference/xstate-v4",
+    "result": "pass"
+  },
+  "nativeSanitizer": {
+    "command": "make -C libs/xfsm/tests/native clean test",
+    "checks": 66,
+    "result": "pass"
+  },
+  "retainedRecordsAfterGcPerSemanticSuite": 0,
+  "result": "pass",
+  "scope": "M6 batch 3 complete transition-domain and re-entry coverage on Linux; remaining target families and later M6 batches are outside this result."
+}

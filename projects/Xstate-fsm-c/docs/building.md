@@ -2,12 +2,12 @@
 
 ## Status
 
-- Build-document status: Linux runtime and M5 measurements verified; original
-  ESP32 IDF5 build and implemented physical slice verified; reduced-profile
-  Pico build verified; MDBT42Q enabled size check blocked
+- Build-document status: M6.3 Linux runtime verified; original ESP32 IDF5
+  build and M6.2 physical slice verified; reduced-profile Pico build verified;
+  MDBT42Q enabled size check blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `4d4ef00b9`
+- Current implementation revision: `c91f441a8`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -142,6 +142,18 @@ bin/espruino --test libs/xfsm/tests/test_assign_forms.js
 bin/espruino --test libs/xfsm/tests/test_context_diagnostics.js
 ```
 
+Verify M6 batch 3 with:
+
+```bash
+bin/espruino --test libs/xfsm/tests/test_transition_domains.js
+bin/espruino --test libs/xfsm/tests/test_transition_depth.js
+```
+
+The clean M6.3 Linux regression runs all sixteen JavaScript suites, disabled
+and enabled builds, the 66-check sanitizer suite, and the pinned XState 4.38.3
+and 5.33.2 references. Its result is recorded in the [Linux M6.3
+result](../tests/results/linux/2026-09-27-m6-transition-domains.json).
+
 The clean M6.2 Linux regression runs all fourteen JavaScript suites, checks an
 XFSM-disabled build for absence of the wrapper symbol, runs the 66-check
 sanitizer suite, and runs both pinned XState references. Its result is recorded
@@ -214,7 +226,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | --- | --- | --- |
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
-| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; fourteen semantic suites plus implemented M5, M6.1, and M6.2 physical slices passed |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; fourteen semantic suites plus implemented M5, M6.1, and M6.2 physical slices passed; M6.3 physical run pending |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Secondary architecture qualification; stock capacity established |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 

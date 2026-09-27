@@ -1,16 +1,17 @@
 # Xstate-fsm-c Implementation Status
 
-- Last reviewed: 2026-09-26
-- Overall status: M6 batch 2 context initialization, assignment forms, and
-  actor isolation pass on Linux and original ESP32 IDF5; a reduced-profile
-  Pico build passes, while the M5 constrained-target runtime gate remains open
+- Last reviewed: 2026-09-27
+- Overall status: M6 batch 3 transition-domain and re-entry coverage passes on
+  Linux; its original ESP32 IDF5 run is pending, while the M5
+  constrained-target runtime gate remains open
 - Current milestone: M6 complete Profile 1 behaviour, with M0/M5 evidence work
   continuing alongside it
 - Implementation code status: M4 runtime plus final/completion behavior, full
   Profile 1 target forms, wildcard event lookup, v4 migration aliases, all
-  Profile 1 context and assignment forms, M5 instrumentation, and enforced
-  stack reserve
-- Next gate: M6 batch 3 complete transition-domain and re-entry coverage
+  Profile 1 context and assignment forms, complete transition-domain and
+  re-entry traversal, M5 instrumentation, and enforced stack reserve
+- Next gate: M6 batch 3 original ESP32 regression, then M6 batch 5 lifecycle,
+  fault, busy-actor, and subscriber completion
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -23,19 +24,19 @@ and outstanding tests for final project review.
 | --- | --- |
 | Specification repository | `SimonGAndrews/XState-Espruino-Project` |
 | Specification project path | `projects/Xstate-fsm-c/` |
-| Current specification version | `0.49` |
+| Current specification version | `0.50` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
+| M6.3 specification evidence base | `8c2b7d046` |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `4d4ef00b9` |
+| Current implementation HEAD | `c91f441a8` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
-The branch is three local commits ahead of its tracked remote: the M5 evidence
-instrumentation, fork-development CI, and ESP32 measurement harness. The M4
-revision was confirmed pushed before M5 work began.
+The M6 batch 3 implementation is committed locally at `c91f441a8`. This
+dashboard records the matching specification and evidence update.
 
 ## Completed Foundation Work
 
@@ -84,9 +85,9 @@ revision was confirmed pushed before M5 work began.
 - Stable hierarchical snapshots, `matches`, snapshot identity rules, ordered
   subscription mutation, unhandled-event notification, controlled stop, and
   callback exception paths pass focused Linux tests.
-- Fourteen Espruino tests pass with zero retained memory records after cleanup
-  and garbage collection; the disabled build and 66-check sanitizer suite
-  remain green.
+- Sixteen Espruino tests pass on Linux with zero retained memory records after
+  cleanup and garbage collection; the disabled build and 66-check sanitizer
+  suite remain green.
 - Final states, compound `onDone`, XState v5 completion-event spelling,
   targetless completion, terminal `done`, completion ordering, and stable-only
   publication pass the pinned Node differential and focused semantic tests.
@@ -114,6 +115,9 @@ revision was confirmed pushed before M5 work began.
 - Pinned XState 5.33.2 confirms the shared context and assignment semantics;
   its context factory runs during `createActor`, while Profile 1 intentionally
   defers that call to first `start` to avoid pre-start MCU allocation.
+- Sixteen transition-domain cases and a depth-32, 65-action traversal match
+  pinned XState 5.33.2, covering targetless, forbidden, self, descendant,
+  ancestor, sibling, root, cross-branch, and nested-initial boundaries.
 - Build-only M5 instrumentation measures construction block high-water and
   synchronous coordinator stack without changing normal firmware API or cost.
 - Linux firmware size, arena, retained values, construction, actor, snapshot,
@@ -127,7 +131,7 @@ revision was confirmed pushed before M5 work began.
 - Matching disabled and XFSM-enabled `PICO_R1_3` reduced-profile builds pass
   with ARM GCC 13.2.1; XFSM adds 23,528 bytes and leaves 16,288 bytes in the
   application region without changing the stock board definition.
-- Fork-local XFSM CI covers disabled/enabled Linux builds, fourteen JavaScript
+- Fork-local XFSM CI covers disabled/enabled Linux builds, sixteen JavaScript
   test suites, 66 native sanitizer checks, and the enabled original ESP32 IDF5
   build without changing any stock board definition.
 - A physical ESP32-D0WD-V3 running the `ESP32_IDF5` build passed all fourteen
@@ -143,8 +147,9 @@ revision was confirmed pushed before M5 work began.
 
 ## Current Work
 
-M6 batches 1 and 2 are implemented and pass on Linux and the original ESP32,
-with shared behavior checked against pinned XState 4.38.3 and 5.33.2
+M6 batches 1 through 4 are implemented. Batches 1, 2, and 4 pass on Linux and
+the original ESP32; batch 3 passes on Linux and awaits its current original
+ESP32 run. Shared behavior is checked against pinned XState 4.38.3 and 5.33.2
 references.
 The M5 exit gate is not satisfied. A reduced-profile Pico image passes its size
 gate, but no physical Pico runtime evidence has been collected. The stock
@@ -162,7 +167,7 @@ Immediate tasks:
    review decisions;
 4. expand the M0 normative requirement inventory while maintaining the
    consolidated [test inventory](../tests/test-inventory.md); and
-5. implement M6 batch 3 complete transition-domain and re-entry coverage.
+5. complete the M6 batch 3 original ESP32 run, then implement M6 batch 5.
 
 ## Open Issues And Blockers
 
@@ -188,7 +193,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 
 | Target | Current status | Latest evidence |
 | --- | --- | --- |
-| Linux Espruino | Build verified | [M6.2 result](../tests/results/linux/2026-09-26-m6-context-assignment.json) |
+| Linux Espruino | Build verified | [M6.3 result](../tests/results/linux/2026-09-27-m6-transition-domains.json) |
 | Espruino Pico | Build verified for reduced product profile | [Pico feasibility build](../tests/results/pico/2026-09-26-feasibility-build.json) |
 | MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
 | Original ESP32 IDF5 | Build verified; runtime, M5, M6.1, and M6.2 physical slices passed | [M6.2 result](../tests/results/esp32-xtensa/2026-09-26-m6-context-assignment.json) |
@@ -202,6 +207,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-27 | M6 batch 3 transition-domain, re-entry, nested-initial, and depth-32 traces passed sixteen-suite Linux regression, the 66-check sanitizer suite, and pinned XState 5.33.2 differential |
 | 2026-09-26 | M6 batch 2 omitted/literal/factory context ownership, all assignment forms and locations, actor isolation, strict diagnostics, and transactional rollback passed fourteen-suite Linux and physical original ESP32 regressions plus the pinned XState 5.33.2 context/assignment reference |
 | 2026-09-26 | M6 batch 1 target forms, escaped paths, effective IDs, wildcard event selection, collision-safe lookup, v4 aliases, and strict diagnostics passed eleven-suite Linux and physical original ESP32 regressions plus pinned XState 4.38.3/5.33.2 references |
 | 2026-09-26 | Reduced-profile Pico disabled/enabled builds passed; XFSM adds 23,528 bytes and leaves 16,288 bytes in the application region, advancing that explicit configuration to Build verified |

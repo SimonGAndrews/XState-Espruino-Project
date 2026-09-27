@@ -54,3 +54,5 @@ M6 context initialization, assignment-form, actor-isolation, rollback, and
 diagnostic evidence is recorded in the [Linux M6.2
 result](results/linux/2026-09-26-m6-context-assignment.json) and [ESP32 M6.2
 result](results/esp32-xtensa/2026-09-26-m6-context-assignment.json).
+M6 transition-domain, re-entry, and maximum-depth evidence is recorded in the
+[Linux M6.3 result](results/linux/2026-09-27-m6-transition-domains.json).

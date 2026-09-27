@@ -3,8 +3,8 @@
 ## Status
 
 - Plan status: Initial implementation baseline
-- Current milestone: M5 - first vertical-slice evidence; M0 requirement
-  inventory remains open
+- Current milestone: M6 - complete Profile 1 behaviour; M0 requirement
+  inventory and M5 evidence decisions remain open
 - Normative authority: [Profile 1 specification](specification.md)
 - Physical format: [Native Format Version 1](native-format-v1.md)
 - Living progress: [Implementation Status](implementation-status.md)

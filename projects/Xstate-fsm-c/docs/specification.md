@@ -3,7 +3,7 @@
 ## Document Status
 
 - Status: Profile 1 implementation candidate
-- Version: 0.49
+- Version: 0.50
 - Implementation status: M5 Linux and original ESP32 IDF5 completion evidence
   and reduced-profile Pico build evidence recorded; constrained-target runtime
   evidence remains required
@@ -1737,7 +1737,10 @@ and continue to one atomic or final leaf. Entry and initial-transition actions
 MUST use the interleaving specified under
 [State node and initial-transition grammar](#state-node-and-initial-transition-grammar).
 This initial descent is required even when `T` or the same descendant
-path was active before the transition.
+path was active before the transition. When `D == S == T`, the preserved
+compound source's own initial-transition actions MUST NOT execute because the
+source is not entered. Initial-transition actions on any newly entered
+compound descendants MUST execute normally.
 
 These rules have the following required consequences:
 
@@ -1745,7 +1748,8 @@ These rules have the following required consequences:
   transition actions;
 - a non-reentering targeted compound self-transition preserves the source but
   exits its active descendants and enters the source's initial descendant
-  path;
+  path without executing the preserved source's own initial-transition
+  actions;
 - a re-entering targeted self-transition exits and enters the source as well
   as the affected descendants;
 - a non-reentering source-to-descendant transition preserves the source but
