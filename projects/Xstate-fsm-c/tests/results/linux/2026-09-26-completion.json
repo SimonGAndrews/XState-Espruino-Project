@@ -1,0 +1,88 @@
+{
+  "kind": "xfsm-final-state-completion-linux",
+  "date": "2026-09-26",
+  "caseIds": [
+    "XFC-CF-FINAL-001",
+    "XFC-CF-FINAL-002",
+    "XFC-CF-LIMIT-002",
+    "XFC-CF-COMPAT-001"
+  ],
+  "xstateEspruinoProjectRevision": "525a414e5b18cb5a1666defb145e97ad536ada9f",
+  "specificationVersion": "0.49",
+  "implementationBaseRevision": "4d4ef00b904e33618d2c75cf427d1d9af4b3292b",
+  "implementationState": "completion candidate in working tree based on implementationBaseRevision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "compiler": "GCC 13.3.0",
+  "build": {
+    "normalCommand": "make clean && make USE_XFSM=1 -j2",
+    "measurementCommand": "make clean && make USE_XFSM=1 XFC_MEASURE=1 -j2",
+    "coordinatorReserveBytes": 768,
+    "espruinoSafetyAllowanceBytes": 512
+  },
+  "semanticTests": {
+    "command": "bin/espruino --test libs/xfsm/tests/<suite>.js",
+    "suites": {
+      "test_shell.js": "pass",
+      "test_compile.js": "pass",
+      "test_diagnostics.js": "pass",
+      "test_runtime.js": "pass",
+      "test_completion.js": "pass",
+      "test_completion_cascade.js": "pass",
+      "test_runtime_errors.js": "pass",
+      "test_subscriptions.js": "pass"
+    },
+    "retainedRecordsAfterGcPerSuite": 0
+  },
+  "completionCoverage": {
+    "statelyEditorWorkflowExample": "pass",
+    "completionEventTypeAndActionOrder": "pass",
+    "targetlessOnDoneOfferedOnce": "pass",
+    "nestedAncestorCascade": "pass",
+    "initialTopLevelFinal": "pass",
+    "terminalDoneAndAutomaticUnsubscription": "pass",
+    "stableOnlySnapshotPublication": "pass",
+    "attempted257thMicrostepRollback": "pass"
+  },
+  "measurement": {
+    "command": "bin/espruino --test libs/xfsm/tests/measure_m5_completion.js",
+    "trials": 5,
+    "boundaryMicrosteps": 256,
+    "boundaryMicroseconds": [
+      18996.95396423339,
+      17937.89863586425,
+      18818.85528564453,
+      18443.82286071777,
+      18489.83764648437
+    ],
+    "boundaryMedianMicroseconds": 18489.83764648437,
+    "rejectedMicrostep": 257,
+    "limitMicroseconds": [
+      18974.06578063964,
+      18054.00848388671,
+      18591.88079833984,
+      16242.98095703125,
+      18094.06280517578
+    ],
+    "limitMedianMicroseconds": 18094.06280517578,
+    "maximumCoordinatorStackBytes": 672,
+    "arenaBytes": 432,
+    "boundaryContextCount": 255,
+    "diagnostic": "Error: XFC E_MICROSTEP_LIMIT @ actor.send: max=256",
+    "lastStableStateAndContextRetained": true,
+    "retainedRecordsAfterGc": 0
+  },
+  "xstateDifferential": {
+    "version": "5.33.2",
+    "command": "npm test",
+    "workflowTrace": "exact match",
+    "nestedCascadeTrace": "exact match",
+    "initialTopLevelFinalTrace": "exact match"
+  },
+  "nativeSanitizer": {
+    "command": "make -C libs/xfsm/tests/native clean test",
+    "checks": 66,
+    "result": "pass"
+  },
+  "result": "pass"
+}

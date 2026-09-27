@@ -1,0 +1,99 @@
+{
+  "kind": "xfsm-final-state-completion-esp32-idf5",
+  "date": "2026-09-26",
+  "caseIds": [
+    "XFC-CF-FINAL-001",
+    "XFC-CF-FINAL-002",
+    "XFC-CF-LIMIT-002"
+  ],
+  "xstateEspruinoProjectRevision": "525a414e5b18cb5a1666defb145e97ad536ada9f",
+  "specificationVersion": "0.49",
+  "implementationBaseRevision": "4d4ef00b904e33618d2c75cf427d1d9af4b3292b",
+  "implementationState": "completion candidate in working tree based on implementationBaseRevision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Original ESP32 IDF5",
+  "board": "ESP32_IDF5",
+  "device": {
+    "chip": "ESP32-D0WD-V3 revision 3.1",
+    "cpu": "dual-core Xtensa LX6 at 240 MHz",
+    "flashBytes": 4194304,
+    "serialPath": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+    "serialPathResolvedTo": "/dev/ttyUSB0",
+    "runtimeVersion": "2v29.433",
+    "runtimeGitCommit": "4d4ef00b9"
+  },
+  "build": {
+    "provisionCommand": "source scripts/provision.sh ESP32_IDF5",
+    "measurementCommand": "make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 XFC_MEASURE=1 -j2",
+    "measurementAppImageBytes": 1521984,
+    "measurementAppPartitionFreeBytes": 526016,
+    "normalCommand": "make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2",
+    "normalAppImageBytes": 1521168,
+    "normalAppPartitionBytes": 2048000,
+    "normalAppPartitionFreeBytes": 526832,
+    "finalCoordinatorReserveBytes": 768,
+    "espruinoSafetyAllowanceBytes": 512,
+    "normalInstrumentationApiAbsent": true,
+    "flashHashesVerified": true
+  },
+  "runner": {
+    "repository": "/home/simon/MaBecker/ESP32_SGATest",
+    "revision": "1b740f5e3cb2a0ace6c57bd729a24c9c71b875d3",
+    "transport": "direct paced serial",
+    "command": "python3 tools/repl/run_test.py <test> --port /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 --baud 115200 --timeout 120"
+  },
+  "normalFirmwareSemanticTests": {
+    "test_shell.js": "pass",
+    "test_compile.js": "pass",
+    "test_diagnostics.js": "pass",
+    "test_runtime.js": "pass",
+    "test_completion.js": "pass",
+    "test_completion_cascade.js": "pass",
+    "test_runtime_errors.js": "pass",
+    "test_subscriptions.js": "pass"
+  },
+  "completionCoverage": {
+    "statelyEditorWorkflowExample": "pass",
+    "completionEventTypeAndActionOrder": "pass",
+    "targetlessOnDoneOfferedOnce": "pass",
+    "nestedAncestorCascade": "pass",
+    "initialTopLevelFinal": "pass",
+    "terminalDoneAndAutomaticUnsubscription": "pass",
+    "stableOnlySnapshotPublication": "pass",
+    "attempted257thMicrostepRollback": "pass"
+  },
+  "measurement": {
+    "trials": 5,
+    "boundaryMicrosteps": 256,
+    "boundaryMicroseconds": [
+      765044,
+      764063,
+      763077.00000006658,
+      762131,
+      763553
+    ],
+    "boundaryMedianMicroseconds": 763553,
+    "rejectedMicrostep": 257,
+    "limitMicroseconds": [
+      738298,
+      735698,
+      738276.00000004167,
+      736341.00000003853,
+      738181
+    ],
+    "limitMedianMicroseconds": 738181,
+    "maximumCoordinatorStackBytes": 448,
+    "arenaBytes": 432,
+    "boundaryContextCount": 255,
+    "diagnostic": "Error: XFC E_MICROSTEP_LIMIT @ actor.send: max=256",
+    "lastStableStateAndContextRetained": true
+  },
+  "postTestState": {
+    "normalFirmwareRestored": true,
+    "normalInstrumentationApi": "undefined",
+    "allEightSemanticSuitesRepeatedOnNormalFirmware": true
+  },
+  "targetStatus": "Build verified",
+  "result": "pass",
+  "scope": "Physical completion semantics and M5 microstep evidence; not full Profile 1 target conformance."
+}

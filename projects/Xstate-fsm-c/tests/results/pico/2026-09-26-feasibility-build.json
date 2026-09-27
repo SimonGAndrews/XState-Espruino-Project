@@ -1,0 +1,77 @@
+{
+  "kind": "xfsm-pico-reduced-profile-feasibility-build",
+  "date": "2026-09-26",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-BUILD-005"
+  ],
+  "xstateEspruinoProjectRevision": "525a414e5b18cb5a1666defb145e97ad536ada9f",
+  "specificationVersion": "0.49",
+  "espruinoRevision": "4d4ef00b904e33618d2c75cf427d1d9af4b3292b",
+  "implementationState": "completion candidate in working tree based on espruinoRevision",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Espruino Pico",
+  "board": "PICO_R1_3",
+  "cpu": "STMicroelectronics STM32F401CDU6 ARM Cortex-M4F",
+  "pointerBits": 32,
+  "byteOrder": "little-endian",
+  "processMemoryBlockSize": null,
+  "processMemoryBlockSizeReason": "Build-only evidence; no physical Pico runtime was executed",
+  "toolchain": {
+    "cc": "arm-none-eabi-gcc 13.2.1 20231009",
+    "source": "scripts/provision.sh PICO_R1_3 selected the local pinned EspruinoBuildTools ARM GNU Toolchain 13.2.Rel1 archive"
+  },
+  "build": {
+    "commonFlags": "BOARD=PICO_R1_3 RELEASE=1 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 SETDEFINES=<(printf '%s\\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2",
+    "environmentControl": "DEBUG was unset after provisioning so the release optimization remained selected",
+    "optimization": "-Os with section garbage collection and link-time optimization selected by the PICO_R1_3 release build",
+    "profile": "Reduced product-feasibility profile omitting JIT, debugger, tab completion, vector font, and JavaScript-backed networking",
+    "xfsmCoordinatorStackReserveBytes": 768,
+    "espruinoStackSafetyBytes": 512,
+    "applicationRegionBytes": 327680,
+    "disabledCommand": "make BOARD=PICO_R1_3 clean && make BOARD=PICO_R1_3 RELEASE=1 USE_XFSM=0 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 SETDEFINES=<(printf '%s\\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2",
+    "disabledResult": "pass: firmware linked and passed the target size check",
+    "disabledSize": {
+      "binaryBytes": 287864,
+      "text": 287556,
+      "data": 304,
+      "bss": 71616,
+      "decimal": 359476,
+      "applicationRegionFreeBytes": 39816
+    },
+    "enabledCommand": "make BOARD=PICO_R1_3 clean && make BOARD=PICO_R1_3 RELEASE=1 USE_XFSM=1 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 SETDEFINES=<(printf '%s\\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2",
+    "enabledResult": "pass: XFSM and wrapper sources compiled, linked, and passed the target size check",
+    "enabledSize": {
+      "binaryBytes": 311392,
+      "text": 311084,
+      "data": 304,
+      "bss": 71620,
+      "decimal": 383008,
+      "applicationRegionFreeBytes": 16288,
+      "applicationRegionUsedPercent": 95.029297
+    },
+    "delta": {
+      "binaryBytes": 23528,
+      "binaryPercentOfBaseline": 8.173304,
+      "applicationRegionPercent": 7.180176,
+      "text": 23528,
+      "data": 0,
+      "bss": 4,
+      "decimal": 23532
+    }
+  },
+  "boardIntegration": {
+    "stockBoardFileModified": false,
+    "selection": "USE_XFSM=1 and the reduced product features were selected only on the build command line",
+    "setDefinesReason": "SETDEFINES appends NO_VECTOR_FONT after board declarations; assigning DEFINES on the make command line would replace required board definitions"
+  },
+  "artifacts": {
+    "enabledBinarySha256": "48812f0ee11d724e9b9c4e5b583fe55ed5bdb28e282e2da8bd787d144cbbef6e",
+    "enabledElfSha256": "09f650ddc7f6cd97eda870762791f89ba113cfe5b924d2568cd0458b9ca6e5e1",
+    "retention": "Transient local build artifacts; not committed"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass",
+  "scope": "Reduced-profile build feasibility only. No physical Pico runtime, semantic, RAM, timing, stack, GC, save/restore, or hardware-action conformance is claimed."
+}
