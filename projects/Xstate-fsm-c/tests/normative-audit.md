@@ -54,7 +54,7 @@ meaningful registry drift when line wrapping changes.
 ## Baseline And Progress
 
 Baseline date: 2026-09-28  
-Specification: Profile 1 version 0.51  
+Specification: Profile 1 version 0.52
 Normative requirement units: **707**
 
 | Specification section | Total | Reviewed | Pending |
@@ -74,8 +74,8 @@ The completed review has this result:
 
 | Classification | Count | Meaning |
 | --- | ---: | --- |
-| Mapped, passing evidence | 499 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
-| Mapped, partial evidence | 188 | Existing evidence demonstrates part of the obligation, while a focused input, negative surface, target or completeness check remains. |
+| Mapped, passing evidence | 620 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
+| Mapped, partial evidence | 67 | Existing evidence demonstrates part of the obligation, while a focused input, negative surface, target or completeness check remains. |
 | Mapped, planned evidence | 17 | The requirement has a stable planned case but no adequate completed evidence yet. |
 | Not applicable to Version 1 execution evidence | 3 | The statement constrains application use or future API evolution rather than observable Version 1 engine behavior. |
 
@@ -83,14 +83,14 @@ The completed review has this result:
 | --- | ---: | ---: | ---: | ---: |
 | Scope | 5 | 0 | 0 | 0 |
 | Compatibility Target | 2 | 3 | 4 | 0 |
-| Machine Model | 126 | 25 | 0 | 0 |
-| Runtime Semantics | 292 | 12 | 0 | 1 |
+| Machine Model | 151 | 0 | 0 | 0 |
+| Runtime Semantics | 304 | 0 | 0 | 1 |
 | Public Interfaces | 20 | 5 | 0 | 2 |
-| Host Integration | 37 | 55 | 0 | 0 |
-| Validation and Error Behavior | 10 | 40 | 0 | 0 |
+| Host Integration | 81 | 11 | 0 | 0 |
+| Validation and Error Behavior | 50 | 0 | 0 | 0 |
 | Resource and Performance Requirements | 0 | 16 | 0 | 0 |
 | Conformance Requirements | 7 | 32 | 13 | 0 |
-| **Total** | **499** | **188** | **17** | **3** |
+| **Total** | **620** | **67** | **17** | **3** |
 
 All 704 applicable requirements map to one or more stable conformance case IDs.
 All 62 conformance cases map back to at least one normative requirement. This
@@ -127,13 +127,13 @@ XState 5.33.2 reference; Profile-only callback ABI, event validation,
 diagnostics and lazy caching are classified separately.
 
 The canonical portable trace foundation is implemented and used by the first
-six closure cases. The remaining cross-cutting work is conversion of the
+seven closure cases. The remaining cross-cutting work is conversion of the
 portable behavioral and pinned Node corpus to that streamed, normalized form.
 
-Native layout, host ownership, diagnostics, and resource evidence are broad
-but need formal closure around maximum record boundaries, complete static
-inspection, exhaustive diagnostic positions, physical Pico qualification, and
-the MDBT42Q product-profile decision.
+Native layout, host ownership, and diagnostics pass their formal closure
+package. Format Version 1 is frozen. Remaining target/resource work is physical
+Pico qualification, the MDBT42Q product-profile decision, and complete target
+result metadata.
 
 These findings are audit outputs, not newly invented semantics. The associated
 requirements already exist in the Profile 1 specification.
@@ -160,8 +160,8 @@ The review added fourteen stable cases to make the remaining work explicit:
 | `XFC-CF-COMPAT-007` | Bidirectional requirement traceability |
 
 `XFC-CF-COMPAT-007`, `API-002`, `CONFIG-004`, `ACTION-002`, `SNAP-002`,
-`TRANS-005`, and the applicable Espruino surface of `CONFIG-005` pass. Seven
-closure cases remain; `COMPAT-006` is partial because its common trace
-foundation and six accepted traces exist.
+`TRANS-005`, `FORMAT-003`, `HOST-007`, `DIAG-006`, and the applicable Espruino
+surface of `CONFIG-005` pass. Four closure cases remain; `COMPAT-006` is partial
+because its common trace foundation and seven accepted traces exist.
 Implemented evidence must update the mapping, conformance matrix and test
 inventory together.

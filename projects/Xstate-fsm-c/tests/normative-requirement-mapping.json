@@ -1100,158 +1100,158 @@
     {
       "id": "XFC-REQ-0108",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0109",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0110",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0111",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0112",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0113",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0114",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0115",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0116",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0117",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0118",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0119",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0120",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-LIMIT-004"
       ],
-      "notes": "Core widths and checked operations pass; near-maximum table and offset closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0121",
@@ -1520,123 +1520,123 @@
     {
       "id": "XFC-REQ-0144",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0145",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0146",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0147",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0148",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0149",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0150",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0151",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0152",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0153",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0154",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003"
       ],
-      "notes": "Physical layout and corruption checks pass; final format and portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen."
     },
     {
       "id": "XFC-REQ-0155",
@@ -1741,11 +1741,11 @@
     {
       "id": "XFC-REQ-0165",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-007"
       ],
-      "notes": "Separation exists in source; formal static boundary review remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0166",
@@ -5023,146 +5023,146 @@
     {
       "id": "XFC-REQ-0459",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0460",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0461",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0462",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0463",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0464",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0465",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0466",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0467",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0468",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0469",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0470",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-006",
         "XFC-CF-HOST-007",
         "XFC-CF-ACTION-001",
         "XFC-CF-CONTEXT-004"
       ],
-      "notes": "Single native coordination and ordered callbacks work; formal no-allocation/static boundary closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0471",
@@ -5515,254 +5515,254 @@
     {
       "id": "XFC-REQ-0505",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0506",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0507",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0508",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0509",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0510",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0511",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0512",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0513",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0514",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0515",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0516",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0517",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0518",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0519",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0520",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0521",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0522",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0523",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0524",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0525",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-002",
         "XFC-CF-HOST-003",
         "XFC-CF-HOST-007",
         "XFC-CF-API-002"
       ],
-      "notes": "Shared hidden host representation and GC pass; exhaustive private-brand/static closure remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0526",
@@ -6080,269 +6080,269 @@
     {
       "id": "XFC-REQ-0556",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005",
         "XFC-CF-HOST-007"
       ],
-      "notes": "GC ownership and flash callbacks pass; complete lock/static and example-policy inspection remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0557",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005",
         "XFC-CF-HOST-007"
       ],
-      "notes": "GC ownership and flash callbacks pass; complete lock/static and example-policy inspection remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0558",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005",
         "XFC-CF-HOST-007"
       ],
-      "notes": "GC ownership and flash callbacks pass; complete lock/static and example-policy inspection remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0559",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005",
         "XFC-CF-HOST-007"
       ],
-      "notes": "GC ownership and flash callbacks pass; complete lock/static and example-policy inspection remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0560",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005",
         "XFC-CF-HOST-007"
       ],
-      "notes": "GC ownership and flash callbacks pass; complete lock/static and example-policy inspection remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0561",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005",
         "XFC-CF-HOST-007"
       ],
-      "notes": "GC ownership and flash callbacks pass; complete lock/static and example-policy inspection remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0562",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005",
         "XFC-CF-HOST-007"
       ],
-      "notes": "GC ownership and flash callbacks pass; complete lock/static and example-policy inspection remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0563",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005",
         "XFC-CF-HOST-007"
       ],
-      "notes": "GC ownership and flash callbacks pass; complete lock/static and example-policy inspection remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0564",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005",
         "XFC-CF-HOST-007"
       ],
-      "notes": "GC ownership and flash callbacks pass; complete lock/static and example-policy inspection remains planned."
+      "notes": "Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0565",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0566",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0567",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0568",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0569",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0570",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0571",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0572",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0573",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0574",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0575",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0576",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0577",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0578",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-FORMAT-003",
         "XFC-CF-HOST-007"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Near-limit native checks, complete layout assertions and representative architecture review pass; Format Version 1 is frozen. Automated static contract checks and formal ownership/lock review pass with existing runtime, GC and physical evidence."
     },
     {
       "id": "XFC-REQ-0579",
@@ -6351,10 +6351,9 @@
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
-        "XFC-CF-FORMAT-003",
-        "XFC-CF-HOST-007"
+        "XFC-CF-BUILD-006"
       ],
-      "notes": "C99/multi-architecture builds and byte-order rejection pass; final static portability closure remains planned."
+      "notes": "Complete per-result target metadata remains part of BUILD-006 target-matrix closure."
     },
     {
       "id": "XFC-REQ-0580",
@@ -6489,7 +6488,7 @@
     {
       "id": "XFC-REQ-0590",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6497,12 +6496,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0591",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6510,12 +6509,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0592",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6523,12 +6522,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0593",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6536,12 +6535,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0594",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6549,12 +6548,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0595",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6562,12 +6561,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0596",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6575,12 +6574,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0597",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6588,12 +6587,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0598",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6601,12 +6600,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0599",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6614,12 +6613,12 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0600",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
@@ -6627,7 +6626,7 @@
         "XFC-CF-LIFE-002",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Transactional construction and tested fault seams pass; exhaustive allocation/count closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0601",
@@ -6732,199 +6731,199 @@
     {
       "id": "XFC-REQ-0611",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0612",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0613",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0614",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0615",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0616",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0617",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0618",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0619",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0620",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0621",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0622",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0623",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0624",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0625",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0626",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-001",
         "XFC-CF-DIAG-003",
         "XFC-CF-DIAG-005",
         "XFC-CF-DIAG-006"
       ],
-      "notes": "Stable paths, compact grammar and bounded details pass; exhaustive category/path closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0627",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -6932,12 +6931,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0628",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -6945,12 +6944,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0629",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -6958,12 +6957,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0630",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -6971,12 +6970,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0631",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -6984,12 +6983,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0632",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -6997,12 +6996,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0633",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -7010,12 +7009,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0634",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -7023,12 +7022,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0635",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -7036,12 +7035,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0636",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -7049,12 +7048,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0637",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -7062,12 +7061,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0638",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -7075,12 +7074,12 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0639",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-DIAG-002",
         "XFC-CF-DIAG-004",
@@ -7088,7 +7087,7 @@
         "XFC-CF-DIAG-006",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Runtime types, exact callback errors, rollback and allocation fallback pass; exhaustive position closure remains planned."
+      "notes": "Diagnostic matrix, deterministic fault suite and rollback evidence pass in the structural-contract closure package."
     },
     {
       "id": "XFC-REQ-0640",

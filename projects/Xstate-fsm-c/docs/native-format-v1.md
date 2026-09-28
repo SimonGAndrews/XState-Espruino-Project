@@ -2,21 +2,19 @@
 
 ## Status
 
-- Status: Provisional physical layout for the first vertical slice
+- Status: Frozen private physical layout for Profile 1
 - Arena format version: 1
 - Public API status: Private implementation format
-- Review status: post-M6 Linux and original ESP32 evidence supports
-  provisional retention; constrained-target M7 evidence is still required
-  before freeze
+- Review status: frozen by the 2026-09-28 M8 structural-contract review after
+  Linux, 32-bit ARM, physical Xtensa, and physical RISC-V evidence
 
 This appendix defines the physical native representation required by the
 Xstate-fsm-c Profile 1 specification. It is normative for the Version 1 C
 implementation but is not part of the public JavaScript API.
 
-The first vertical slice MUST measure this layout before it is frozen. Any
-revision made before that review MUST update this appendix and its compile-time
-assertions. After the format is declared frozen, an incompatible physical
-change MUST increment the arena format version.
+The first vertical slice measured and reviewed this layout before the freeze.
+An incompatible physical change after the freeze MUST increment the arena
+format version. Compatible implementation optimisation remains permitted.
 
 ## Common Types
 
@@ -460,5 +458,5 @@ Native-format tests MUST include:
 - a golden decoded arena report for representative little-endian builds.
 
 Golden tests MUST compare decoded field values rather than raw compiler object
-files. Raw arenas are private and are not promised to remain compatible before
-the Version 1 format-freeze review.
+files. Raw arenas remain private even though their Version 1 physical format is
+now frozen.

@@ -23,16 +23,17 @@ actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
 conformance strategy.
 
-M0 normative traceability is complete. The first two grouped M8 closure
-packages pass six canonical public/configuration and runtime-contract traces;
-current work is closing the seven remaining cases, remaining physical-target
+M0 normative traceability is complete. The first three grouped M8 closure
+packages pass seven canonical traces and close public/configuration,
+runtime-contract, diagnostics, native-format, and host-boundary review;
+current work is closing the four remaining cases, remaining physical-target
 qualification, and M8 release readiness. The stock full-feature 70 KB original
 ESP32 and ESP32-C3 profiles are Conformance verified after matched builds,
 portable and target-specific runtime suites, deterministic allocation faults,
 maximum-depth execution, cleanup, save/restoration, native/flash callback and
-timer integration, and combined XFSM/BLE/WiFi/TLS service tests. The current
-format and limits remain provisional pending the final cross-target and M8
-reviews.
+timer integration, and combined XFSM/BLE/WiFi/TLS service tests. Private arena
+Format Version 1 is frozen; the hierarchy and microstep limits retain their
+separate resource-review status.
 
 Current work, revisions, and next tasks are recorded in the
 [implementation status](docs/implementation-status.md). The
@@ -71,7 +72,7 @@ relevant behavior and constraints.
 
 - [docs/specification.md](docs/specification.md) - Profile 1 normative
   implementation candidate
-- [docs/native-format-v1.md](docs/native-format-v1.md) - provisional native
+- [docs/native-format-v1.md](docs/native-format-v1.md) - frozen private native
   arena and actor layout
 - [docs/implementation-plan.md](docs/implementation-plan.md) - implementation
   milestones and evidence gates

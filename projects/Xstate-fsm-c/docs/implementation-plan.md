@@ -5,8 +5,8 @@
 - Plan status: M0 evidence foundation and normative traceability, M6 behavior,
   post-M6 resource review, original-ESP32 M7.1-M7.4, stock-profile ESP32
   compiler-capacity optimization, ESP32-C3 C3-A through C3-D qualification,
-  and the first two grouped M8 public/configuration and runtime-contract
-  closure packages complete
+  and the first three grouped M8 public/configuration, runtime-contract, and
+  structural-contract closure packages complete
 - Current milestone: M7 remaining product-profile qualification and M8
   conformance-case closure and release readiness
 - Normative authority: [Profile 1 specification](specification.md)
@@ -325,7 +325,8 @@ Deliverables:
 
 - reviewed vertical-slice and target reports;
 - complete requirement-to-evidence matrix;
-- frozen arena format or a documented version increment;
+- frozen arena format or a documented version increment (Format Version 1 was
+  frozen by the 2026-09-28 structural-contract review);
 - user-facing Espruino example and module documentation;
 - licensing and provenance review;
 - clean enabled and disabled firmware builds; and

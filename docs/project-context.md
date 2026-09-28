@@ -19,7 +19,7 @@ or obsolescence.
 | --- | --- | --- | --- |
 | [Stage 1: `xstate-fsm-espruino`](../projects/xstate-fsm-espruino/) | Compact flat FSM port and embedded baseline | Its submodule README, source, and tests | The `@xstate/fsm` and XState v4-era behaviour from which it was adapted |
 | [Stage 2: `xstate-fsmPlus`](../projects/xstate-fsmPlus/) | Working hierarchical JavaScript engine and parallel deployable option | FSMPlus source, tests, [status](governance/fsmPlus-status-01.md), and applicable ADRs | XState v4 and SCXML evidence as recorded by the FSMPlus documents |
-| [Stage 3: `Xstate-fsm-c`](../projects/Xstate-fsm-c/), public module `XFSM` | Native C hierarchical engine; current active development focus | [Profile 1 specification](../projects/Xstate-fsm-c/docs/specification.md), its conformance corpus, and the provisional [native format](../projects/Xstate-fsm-c/docs/native-format-v1.md) | XState v5.33.2 primary differential reference and XState v4.38.3 secondary reference, as specified by Profile 1 |
+| [Stage 3: `Xstate-fsm-c`](../projects/Xstate-fsm-c/), public module `XFSM` | Native C hierarchical engine; current active development focus | [Profile 1 specification](../projects/Xstate-fsm-c/docs/specification.md), its conformance corpus, and the frozen private [native format](../projects/Xstate-fsm-c/docs/native-format-v1.md) | XState v5.33.2 primary differential reference and XState v4.38.3 secondary reference, as specified by Profile 1 |
 
 A reference that is authoritative or useful for one direction does not
 automatically govern another. Shared examples, traces, and tools may be reused
@@ -36,8 +36,9 @@ work are recorded in the implementation status.
 Current revisions, progress, and next tasks are recorded in its
 [implementation status](../projects/Xstate-fsm-c/docs/implementation-status.md).
 
-The current implementation step is M0 normative traceability, remaining M7
-physical-target qualification, and M8 release readiness. The stock
+M0 normative traceability and the first three grouped M8 closure packages are
+complete. The current implementation step is the four remaining closure cases,
+remaining M7 physical-target qualification, and M8 release readiness. The stock
 full-feature 70 KB original ESP32 and ESP32-C3 profiles are Conformance
 verified; Espruino Pico remains build-verified pending physical execution, and
 MDBT42Q remains blocked by its Storage-overlap size constraint. The repeatable
@@ -71,8 +72,8 @@ is the normative behavioural and public-interface authority. In particular:
 1. A conflict with an expected conformance result is resolved in favour of the
    specification.
 2. The [native-format document](../projects/Xstate-fsm-c/docs/native-format-v1.md)
-   is normative for the provisional physical C representation, subject to its
-   first-vertical-slice review gate.
+   is normative for frozen private arena Format Version 1. An incompatible
+   physical change requires a version increment.
 3. Stately exports, pinned Node XState runs, SCXML, existing ADRs, FSMPlus
    traces, Stage 1 behaviour, and archived sources are evidence. They do not
    silently add or change a Profile 1 requirement.

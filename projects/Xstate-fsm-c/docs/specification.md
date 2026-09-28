@@ -3,15 +3,16 @@
 ## Document Status
 
 - Status: Profile 1 implementation candidate
-- Version: 0.51
+- Version: 0.52
 - Implementation status: M6 behaviour and selected M7 original-ESP32 and
   ESP32-C3 qualification evidence recorded; remaining target and release-
   candidate evidence remains required
 
 This document is the normative implementation candidate for Xstate-fsm-c
 Profile 1. Only requirements stated explicitly in this document are accepted.
-The hierarchy and microstep limits and the native physical layout remain
-subject to their explicitly identified first-vertical-slice review gates.
+The hierarchy and microstep limits remain subject to their explicitly
+identified resource-review gates. Native arena Format Version 1 is frozen;
+an incompatible physical change requires a format-version increment.
 
 ## Contents
 
@@ -966,10 +967,12 @@ The arena MUST begin with a header containing a format identifier, internal
 format version, total byte size, flags, and an offset and count for each native
 table. Table starts MUST be naturally aligned for their record type.
 
-[Native Format Version 1](native-format-v1.md) defines the normative
-provisional physical layout, record sizes, flag meanings, actor native block,
-and validation invariants. The first vertical-slice measurements MUST review
-that layout before it is declared frozen.
+[Native Format Version 1](native-format-v1.md) defines the normative physical
+layout, record sizes, flag meanings, actor native block, and validation
+invariants. The first vertical-slice measurements MUST review that layout
+before it is declared frozen. That review is complete, Format Version 1 is
+frozen, and the decision is recorded in the
+[M8 structural-contract report](reports/2026-09-28-m8-structural-contract-closure.md).
 
 Version 1 of the internal representation consists of the following contiguous
 record tables and a byte-string pool:

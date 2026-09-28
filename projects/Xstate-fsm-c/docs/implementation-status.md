@@ -4,8 +4,8 @@
 - Overall status: all seven M6 behavioural batches and the post-M6 whole-build
   resource review pass; compact compiler metadata removes the maximum-depth
   capacity gap, and complete release-candidate qualification passes on the
-  stock 70 KB original-ESP32 and ESP32-C3 profiles; the first two grouped M8
-  public/configuration and runtime-contract closure packages pass on Linux
+  stock 70 KB original-ESP32 and ESP32-C3 profiles; the first three grouped M8
+  closure packages pass on Linux and Format Version 1 is frozen
 - Current milestone: M7 remaining product-profile qualification and M8
   conformance-case closure and release readiness
 - Implementation code status: M4 runtime plus final/completion behavior, full
@@ -18,9 +18,9 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Next gate: implement the seven remaining audit-derived closure cases, qualify
-  a physical Pico, and progress the M8 format-freeze and release-readiness
-  review
+- Next gate: implement the four remaining audit-derived closure cases, qualify
+  a physical Pico, resolve the MDBT42Q product profile, and progress M8 release
+  readiness
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -33,14 +33,14 @@ and outstanding tests for final project review.
 | --- | --- |
 | Specification repository | `SimonGAndrews/XState-Espruino-Project` |
 | Specification project path | `projects/Xstate-fsm-c/` |
-| Current specification version | `0.51` |
+| Current specification version | `0.52` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
-| Project base for this evidence | `3a0fd04` |
+| Project base for this evidence | `257b829` |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `ba0f27533` |
+| Current implementation HEAD | `02c8a054f` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -74,11 +74,16 @@ The second grouped M8 closure package is committed in `ba0f27533`. It closes
 fixes side-effect-free accessor rejection in `snapshot.matches(...)`, and
 extends the pinned XState 5.33.2 reference for shared action, event-identity,
 guard-fallback, and snapshot-value behaviour.
+The third grouped M8 closure package is committed in `02c8a054f`. It closes
+`DIAG-006`, `FORMAT-003`, and `HOST-007` with the canonical diagnostic trace,
+73 sanitizer-backed native checks, complete physical-layout assertions, and a
+reproducible static source audit. The reviewed result freezes private arena
+Format Version 1.
 
 ## Completed Foundation Work
 
 - Profile 1 specification promoted to implementation candidate.
-- Native Format Version 1 defined provisionally for the first vertical slice.
+- Native Format Version 1 frozen after the structural-contract review.
 - Licensing, contribution, and third-party provenance rules recorded.
 - Public module and build identity fixed as `XFSM` and `USE_XFSM`.
 - Fresh Espruino clone created without reusing an existing local checkout.
@@ -96,7 +101,7 @@ guard-fallback, and snapshot-value behaviour.
   engine estimate.
 - Version 1 structures, compile-time layout assertions, checked arithmetic,
   FNV-1a lookup support, and arena and actor-block validators implemented.
-- Sixty-six portable native-format checks passed with address and
+- Seventy-three portable native-format checks pass with address and
   undefined-behaviour sanitizers.
 - Native-format coverage includes all context kinds, handler forms, required
   transition-domain shapes, action-range forms, and corrupt-record rejection.
@@ -123,8 +128,8 @@ guard-fallback, and snapshot-value behaviour.
   subscription mutation, unhandled-event notification, controlled stop, and
   callback exception paths pass focused Linux tests.
 - Twenty-two normal Espruino tests pass on Linux with zero retained memory
-  records after cleanup and garbage collection; the disabled build and 66-
-  check sanitizer suite remain green.
+  records after cleanup and garbage collection; the disabled build and current
+  73-check sanitizer suite remain green.
 - Final states, compound `onDone`, XState v5 completion-event spelling,
   targetless completion, terminal `done`, completion ordering, and stable-only
   publication pass the pinned Node differential and focused semantic tests.
@@ -246,9 +251,9 @@ guard-fallback, and snapshot-value behaviour.
   with ARM GCC 13.2.1; XFSM adds 23,528 bytes and leaves 16,288 bytes in the
   application region without changing the stock board definition.
 - Fork-local XFSM CI covers disabled/enabled Linux builds, twenty-two normal
-  JavaScript suites, the private allocation-fault suite, 66 native sanitizer
-  checks, and the enabled original ESP32 IDF5 build without changing any stock
-  board definition.
+  JavaScript suites, seven canonical traces, the private allocation-fault
+  suite, 73 native sanitizer checks, the static contract audit, and the enabled
+  original ESP32 IDF5 build without changing any stock board definition.
 - A physical ESP32-D0WD-V3 running the selected `ESP32_IDF5` profile passes all
   nineteen portable JavaScript suites, including the formerly constrained
   depth fixture, plus save/reboot/reset host-lifecycle tests and the M5
@@ -326,7 +331,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 
 | Decision | Required evidence | Review milestone |
 | --- | --- | --- |
-| Freeze or revise native record layout | Complete Linux/original-ESP32 review retains Version 1 provisionally; constrained target still required | M7 open |
+| Freeze or revise native record layout | Format Version 1 frozen after Linux, 32-bit ARM compilation, physical Xtensa/RISC-V, near-limit, sanitizer, and static review | Closed in M8 structural-contract package |
 | Retain or revise hierarchy depth 32 | Retained provisionally: direct and Storage-backed 65-action fixtures pass on stock 70 KB original-ESP32 and ESP32-C3 profiles after compiler optimization | M7 open for remaining targets |
 | Retain or revise microstep budget 256 | Retained: Linux and original ESP32 enforce the boundary; current ESP32 observation is 807.461 ms | Closed for represented targets |
 | Select per-target stack reserve | Default raised to 1,024 bytes after complete-runtime Linux measured 704 bytes and original ESP32 measured 448 bytes; remaining physical families pending | M7 |
@@ -353,6 +358,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-28 | M8 structural-contract closure passed `DIAG-006`, `FORMAT-003`, and `HOST-007`; froze private native arena Format Version 1; expanded the native sanitizer suite to 73 checks; and reconciled the ledger to 620 pass, 67 partial, 17 planned, and 3 not applicable |
 | 2026-09-28 | M8 runtime-contract closure passed `ACTION-002`, `SNAP-002`, and `TRANS-005` as canonical traces, matched shared XState 5.33.2 behavior, and fixed accessor evaluation in `snapshot.matches(...)` |
 | 2026-09-28 | Original ESP32 M7.4 passed matched builds, 20 embedded portable suites, deterministic physical fault injection, maximum-depth, cleanup, host integration, save/restoration, and combined-service reruns; target advanced to Conformance verified |
 | 2026-09-28 | ESP32-C3 C3-D passed matched builds, 20 embedded portable suites, deterministic physical fault injection, maximum-depth, cleanup, host integration, save/restoration, and combined-service reruns; target advanced to Conformance verified |

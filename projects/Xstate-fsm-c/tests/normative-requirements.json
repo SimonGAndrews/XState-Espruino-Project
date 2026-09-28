@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "docs/specification.md",
-  "sourceSha256": "bf1c73d1058e075afee4dd74c623b0be27f1c08c6b65fcdb7fe333e8fe063034",
+  "sourceSha256": "281599f6b62b45bf9140aa0e5a7b104047f066e4eb3dbba32eb21ccf191e7f2c",
   "extractionRule": "MUST and MUST NOT occurrences outside fenced code in normative sections",
   "requirementCount": 707,
   "requirements": [
@@ -1458,11 +1458,11 @@
     {
       "section": "Machine Model",
       "subsection": "Record organisation",
-      "line": 971,
+      "line": 972,
       "keyword": "MUST",
       "occurrence": 1,
-      "text": "[Native Format Version 1](native-format-v1.md) defines the normative provisional physical layout, record sizes, flag meanings, actor native block, and validation invariants. The first vertical-slice measurements MUST review that layout before it is declared frozen.",
-      "fingerprint": "77e0bd524aa095472a5a",
+      "text": "[Native Format Version 1](native-format-v1.md) defines the normative physical layout, record sizes, flag meanings, actor native block, and validation invariants. The first vertical-slice measurements MUST review that layout before it is declared frozen. That review is complete, Format Version 1 is frozen, and the decision is recorded in the [M8 structural-contract report](reports/2026-09-28-m8-structural-contract-closure.md).",
+      "fingerprint": "a894236eb6b551af6d53",
       "id": "XFC-REQ-0146"
     },
     {

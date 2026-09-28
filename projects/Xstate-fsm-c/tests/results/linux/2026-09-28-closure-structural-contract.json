@@ -1,0 +1,81 @@
+{
+  "kind": "xfsm-closure-structural-contract-linux",
+  "date": "2026-09-28",
+  "caseIds": [
+    "XFC-CF-DIAG-006",
+    "XFC-CF-FORMAT-003",
+    "XFC-CF-HOST-007"
+  ],
+  "xstateEspruinoProjectBaseRevision": "257b829002929c3316a3097fdeac49a632267556",
+  "specificationVersion": "0.52",
+  "implementationRevision": "02c8a054feea4999f21c477978bc46637b4b645e",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "board": "LINUX",
+  "cpuArchitecture": "x86-64",
+  "pointerBits": 64,
+  "byteOrder": "little-endian",
+  "jsVarBlockBytes": 27,
+  "coordinatorStackReserveBytes": 1024,
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "python": "Python 3.12.3",
+    "nativeLanguage": "C99",
+    "nativeFlags": "-std=c99 -O1 -g3 -Wall -Wextra -Werror -Wconversion -Wsign-conversion -Wshadow -Wstrict-prototypes -pedantic -fsanitize=address,undefined -fno-omit-frame-pointer"
+  },
+  "diagnostics": {
+    "canonicalTraceRecords": 58,
+    "canonicalTraceResult": "pass",
+    "constructionCategories": 11,
+    "allocationFaultSuite": "pass",
+    "boundedDetailBytes": 48,
+    "result": "pass"
+  },
+  "nativeFormat": {
+    "formatVersion": 1,
+    "decision": "frozen",
+    "nativeSanitizerChecks": 73,
+    "sanitizerFindings": 0,
+    "compileTimeLayoutAssertions": "all record sizes and normative field offsets",
+    "representativeArchitectures": [
+      "Linux x86-64",
+      "32-bit ARM compilation",
+      "physical Xtensa ESP32",
+      "physical RISC-V ESP32-C3"
+    ],
+    "bigEndianExecution": "not claimed; mismatched flag rejection passes",
+    "result": "pass"
+  },
+  "staticContract": {
+    "sourceFiles": 12,
+    "functionsChecked": 188,
+    "fixedArrayDeclarations": 14,
+    "hiddenHostNames": 29,
+    "publicWrappers": [
+      "assign",
+      "createActor",
+      "createMachine"
+    ],
+    "recursiveCycles": 0,
+    "mutableProductionGlobals": 0,
+    "prohibitedNativeAllocations": 0,
+    "result": "pass"
+  },
+  "regression": {
+    "normalJavaScriptSuites": 22,
+    "normalJavaScriptResult": "pass",
+    "canonicalTraceCases": 7,
+    "canonicalTraceResult": "pass",
+    "deterministicFaultSuite": "pass",
+    "retainedRecordsAfterGc": 0,
+    "productionBuildRestored": true
+  },
+  "ledgerCorrection": {
+    "requirement": "XFC-REQ-0579",
+    "case": "XFC-CF-BUILD-006",
+    "status": "partial",
+    "reason": "complete per-result target metadata belongs to target-matrix closure"
+  },
+  "report": "docs/reports/2026-09-28-m8-structural-contract-closure.md",
+  "result": "pass"
+}

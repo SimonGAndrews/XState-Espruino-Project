@@ -72,7 +72,7 @@ its own compatibility authority and decides which shared cases it adopts.
 - [Testing strategy and ownership](docs/governance/testing-strategy.md)
 - [FSMPlus status and backlog](docs/governance/fsmPlus-status-01.md)
 - [Xstate-fsm-c Profile 1 specification](projects/Xstate-fsm-c/docs/specification.md)
-- [Xstate-fsm-c provisional native format](projects/Xstate-fsm-c/docs/native-format-v1.md)
+- [Xstate-fsm-c frozen private native format](projects/Xstate-fsm-c/docs/native-format-v1.md)
 - [Xstate-fsm-c implementation status](projects/Xstate-fsm-c/docs/implementation-status.md)
 - [Xstate-fsm-c implementation plan](projects/Xstate-fsm-c/docs/implementation-plan.md)
 - [Xstate-fsm-c build guide](projects/Xstate-fsm-c/docs/building.md)
@@ -90,9 +90,10 @@ native-format regression remains sanitizer-clean, and the post-M6 whole-build
 resource review passes on Linux. The stock full-feature 70 KB original ESP32
 IDF5 and ESP32-C3 IDF5 profiles are Conformance verified by their physical
 release-candidate suites.
-Current work is M0 normative traceability, remaining M7 physical-target
-qualification, and M8 release readiness. Stage 1 remains the flat embedded
-baseline.
+M0 normative traceability and the first three M8 grouped closure packages are
+complete; current work is the four remaining closure cases, remaining M7
+physical-target qualification, and M8 release readiness. Stage 1 remains the
+flat embedded baseline.
 
 The [current project context](docs/project-context.md) identifies the authority
 and compatibility references for each direction.
