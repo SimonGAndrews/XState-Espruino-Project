@@ -8,7 +8,7 @@ Create target-specific result directories as evidence becomes available:
 - `linux/`
 - `pico/`
 - `mdbt42q/`
-- `esp32-c3/`
+- `esp32-riscv/` (ESP32-C3 with ESP-IDF 5)
 - `esp32-xtensa/` (original ESP32 with ESP-IDF 5)
 
 ## Result Records
@@ -20,7 +20,9 @@ Each committed result record must identify:
   [conformance matrix](../conformance-matrix.md);
 - XState-Espruino-Project revision and specification version;
 - Espruino implementation revision and upstream base;
-- target, board definition, compiler, version, and build flags;
+- target, board definition, compiler and version, relevant build and
+  optimization flags, CPU architecture, pointer width, byte order,
+  `process.memory().blocksize`, and XFSM stack-reserve setting;
 - exact command or runner invocation;
 - expected and observed outcome;
 - retained artifact or report paths; and

@@ -1,0 +1,80 @@
+{
+  "kind": "xfsm-pico-current-product-profile-build",
+  "date": "2026-09-29",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-BUILD-005",
+    "XFC-CF-BUILD-006",
+    "XFC-CF-RESOURCE-003"
+  ],
+  "xstateEspruinoProjectBaseRevision": "59efe41efe86b47c08606b7541cac28e4b4a58ad",
+  "specificationVersion": "0.52",
+  "espruinoRevision": "6ed09d5d2444f5355e1573bcbd46094c362c6edf",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "Espruino Pico",
+  "board": "PICO_R1_3",
+  "cpu": "STMicroelectronics STM32F401CDU6 ARM Cortex-M4F",
+  "pointerBits": 32,
+  "byteOrder": "little-endian",
+  "processMemoryBlockSize": null,
+  "processMemoryBlockSizeReason": "Build-only evidence; no physical Pico was attached, so process.memory() was not executed",
+  "toolchain": {
+    "cc": "arm-none-eabi-gcc 13.2.1 20231009",
+    "source": "scripts/provision.sh PICO_R1_3 selected the local pinned EspruinoBuildTools ARM GNU Toolchain 13.2.Rel1 archive"
+  },
+  "build": {
+    "commonFlags": "BOARD=PICO_R1_3 RELEASE=1 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 SETDEFINES=<(printf '%s\\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2",
+    "environmentControl": "DEBUG was unset after provisioning so the release optimization remained selected",
+    "optimization": "-Os with section garbage collection and link-time optimization selected by the PICO_R1_3 release build",
+    "profile": "Reduced product profile omitting JIT, debugger, tab completion, vector font, and JavaScript-backed networking",
+    "xfsmCoordinatorStackReserveBytes": 1024,
+    "espruinoStackSafetyBytes": 512,
+    "applicationRegionBytes": 327680,
+    "disabledCommand": "make BOARD=PICO_R1_3 clean && make BOARD=PICO_R1_3 RELEASE=1 USE_XFSM=0 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 SETDEFINES=<(printf '%s\\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2",
+    "disabledResult": "pass: firmware linked and passed the target size check",
+    "disabledSize": {
+      "binaryBytes": 287864,
+      "text": 287556,
+      "data": 304,
+      "bss": 71616,
+      "decimal": 359476,
+      "applicationRegionFreeBytes": 39816
+    },
+    "enabledCommand": "make BOARD=PICO_R1_3 clean && make BOARD=PICO_R1_3 RELEASE=1 USE_XFSM=1 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 SETDEFINES=<(printf '%s\\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2",
+    "enabledResult": "pass: XFSM and wrapper sources compiled, linked, and passed the target size check",
+    "enabledSize": {
+      "binaryBytes": 314792,
+      "text": 314484,
+      "data": 304,
+      "bss": 71620,
+      "decimal": 386408,
+      "applicationRegionFreeBytes": 12888,
+      "applicationRegionUsedPercent": 96.066895
+    },
+    "delta": {
+      "binaryBytes": 26928,
+      "binaryPercentOfBaseline": 9.354417,
+      "applicationRegionPercent": 8.217773,
+      "text": 26928,
+      "data": 0,
+      "bss": 4,
+      "decimal": 26932
+    }
+  },
+  "boardIntegration": {
+    "stockBoardFileModified": false,
+    "selection": "USE_XFSM=1 and the reduced product features were selected only on the build command line",
+    "setDefinesReason": "SETDEFINES appends NO_VECTOR_FONT after board declarations; assigning DEFINES on the make command line would replace required board definitions"
+  },
+  "artifacts": {
+    "disabledBinarySha256": "b4a80110b66d1260acd09ceb5b105d7013704ec865047bb2e8305d8a215037b5",
+    "disabledElfSha256": "2df3cb73415fe79b248b6729aa1a44d67510c68d82db840fe1c5c729d1879b4d",
+    "enabledBinarySha256": "084db218b859a3c633d1ba03825f0a0d522097facb183f4cbfcd4487f9549c59",
+    "enabledElfSha256": "566b7534d47780749c3ad84304335a7305e5bd8ad1c80e9f8e9ac920baf70386",
+    "retention": "Transient local build artifacts; not committed"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass",
+  "scope": "Current reduced-profile build capacity only. Physical Pico runtime, semantic, RAM, timing, stack, GC, save/restore, and hardware-action conformance remain unverified."
+}

@@ -94,6 +94,9 @@ M0 normative traceability and the first four M8 grouped closure packages are
 complete; current work is the two remaining target/resource closure cases,
 remaining M7 physical-target qualification, and M8 release readiness. Stage 1
 remains the flat embedded baseline.
+Current matched builds also establish viable reduced product profiles for the
+Pico and Bluetooth-capable MDBT42Q; both remain Build verified pending
+physical qualification.
 
 The [current project context](docs/project-context.md) identifies the authority
 and compatibility references for each direction.

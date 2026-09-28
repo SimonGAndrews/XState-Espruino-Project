@@ -50,14 +50,14 @@
     {
       "id": "XFC-REQ-0006",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
         "XFC-CF-COMPAT-003",
         "XFC-CF-COMPAT-004"
       ],
-      "notes": "Pinned comparisons exist for major semantics, but the audit has not shown a current-XState review for every decision."
+      "notes": "The compatibility register reviews every supported decision against pinned XState 5.33.2, XState 4.38.3 where applicable, Stately exports, and documented exclusions."
     },
     {
       "id": "XFC-REQ-0007",
@@ -83,12 +83,12 @@
     {
       "id": "XFC-REQ-0009",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-COMPAT-002"
       ],
-      "notes": "Strict validation and migration differences are explicit for implemented cases; completeness awaits the remaining audit."
+      "notes": "Strict unsupported-feature validation and the complete intentional-difference register make every implemented compatibility departure explicit."
     },
     {
       "id": "XFC-REQ-0010",
@@ -104,12 +104,12 @@
     {
       "id": "XFC-REQ-0011",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-API-001",
         "XFC-CF-FORMAT-001"
       ],
-      "notes": "The arena format is private and the machine enumerates no public data, but the complete negative public surface is not tested."
+      "notes": "The API-002 canonical trace verifies the opaque machine surface and absence of public arena access."
     },
     {
       "id": "XFC-REQ-0012",
@@ -5185,11 +5185,11 @@
     {
       "id": "XFC-REQ-0473",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-API-001"
       ],
-      "notes": "Required exports are tested; absence of legacy aliases is not."
+      "notes": "The API-002 canonical trace verifies the required exports and absence of legacy or unsupported module aliases."
     },
     {
       "id": "XFC-REQ-0474",
@@ -5305,13 +5305,13 @@
     {
       "id": "XFC-REQ-0485",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-002",
         "XFC-CF-HOST-001",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Source isolation, cleanup, and releasing application options provide evidence; exact non-retention of both option maps needs a focused assertion."
+      "notes": "CONFIG-005 verifies exact implementation-map ownership, including unused-entry acceptance and non-retention plus release of the source options object."
     },
     {
       "id": "XFC-REQ-0486",
@@ -5336,12 +5336,12 @@
     {
       "id": "XFC-REQ-0488",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-API-001",
         "XFC-CF-HOST-002"
       ],
-      "notes": "Machine identity and opaque native representation exist; the private brand is not directly covered by a negative API case."
+      "notes": "API-002 verifies private machine identity and rejects ordinary, forged, detached, and incompatible receivers."
     },
     {
       "id": "XFC-REQ-0489",
@@ -5366,12 +5366,12 @@
     {
       "id": "XFC-REQ-0491",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-API-001",
         "XFC-CF-HOST-002"
       ],
-      "notes": "The machine has no enumerable public members, but every forbidden named member is not explicitly checked."
+      "notes": "API-002 checks the complete forbidden public machine-member list and verifies no enumerable public members."
     },
     {
       "id": "XFC-REQ-0492",
@@ -5390,12 +5390,12 @@
     {
       "id": "XFC-REQ-0494",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-002",
         "XFC-CF-HOST-001"
       ],
-      "notes": "Source independence and cleanup support the rule; a focused source-retention check remains desirable."
+      "notes": "CONFIG-004/005 verify source independence and release of configuration and options graphs after compilation."
     },
     {
       "id": "XFC-REQ-0495",
@@ -6358,7 +6358,7 @@
     {
       "id": "XFC-REQ-0580",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6366,12 +6366,12 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "All Version 1 targets now have evidence-based Conformance verified or Build verified statuses."
     },
     {
       "id": "XFC-REQ-0581",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6379,12 +6379,12 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "Pico and MDBT42Q are explicitly Build verified only; no compile result is described as runtime conformance."
     },
     {
       "id": "XFC-REQ-0582",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6392,12 +6392,12 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "Linux runs the complete portable semantic, validation, diagnostic, allocation-fault and 73-check sanitizer/native-format corpus on a 64-bit host."
     },
     {
       "id": "XFC-REQ-0583",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6405,12 +6405,12 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "Pico, MDBT42Q, original ESP32 and ESP32-C3 have separate board, build, resource and status records."
     },
     {
       "id": "XFC-REQ-0584",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6418,7 +6418,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "Original ESP32 Xtensa and ESP32-C3 RISC-V each have independent physical release-candidate qualification."
     },
     {
       "id": "XFC-REQ-0585",
@@ -6431,7 +6431,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "Original ESP32 and ESP32-C3 pass the full applicable target suite; physical Pico and MDBT42Q machine, callback, fault, lifecycle and resource execution remains."
     },
     {
       "id": "XFC-REQ-0586",
@@ -6444,7 +6444,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "Original ESP32 and ESP32-C3 pass canonical clean-baseline depth-32 execution; physical Pico and MDBT42Q execution remains."
     },
     {
       "id": "XFC-REQ-0587",
@@ -6457,7 +6457,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "The verified ESP32 target fixtures enter depth 32 and perform the reviewed 65-action traversal; physical Pico and MDBT42Q evidence remains."
     },
     {
       "id": "XFC-REQ-0588",
@@ -6470,12 +6470,12 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "Verified ESP32 results record total/free blocks and source loading; equivalent physical Pico and MDBT42Q metadata remains."
     },
     {
       "id": "XFC-REQ-0589",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6483,7 +6483,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Target statuses are evidence-based; Pico physical and MDBT42Q disposition remain open."
+      "notes": "The target matrix and status documents make no Version 1 support claim for excluded boards or architectures."
     },
     {
       "id": "XFC-REQ-0590",
@@ -7092,7 +7092,7 @@
     {
       "id": "XFC-REQ-0640",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7101,12 +7101,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Construction and steady-state dispatch are separately implemented, instrumented and reported."
     },
     {
       "id": "XFC-REQ-0641",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7115,12 +7115,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Static audit, sanitizer checks and runtime measurements verify no structural native-heap allocation or JavaScript collection construction during steady-state dispatch."
     },
     {
       "id": "XFC-REQ-0642",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7129,12 +7129,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Limit tests and resource reports explicitly distinguish fixed representational limits from momentary target capacity."
     },
     {
       "id": "XFC-REQ-0643",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7143,12 +7143,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Boundary and pressure tests distinguish E_LIMIT_EXCEEDED from E_NO_MEMORY."
     },
     {
       "id": "XFC-REQ-0644",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7157,12 +7157,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Depth and service-coexistence reports identify material source, harness, callback and service values present during createMachine."
     },
     {
       "id": "XFC-REQ-0645",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7171,12 +7171,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "The M5 and post-M6 resource reports cover every required firmware, arena, retained-value, JsVar, runtime, diagnostic, stack and dispatch-time measure."
     },
     {
       "id": "XFC-REQ-0646",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7185,7 +7185,7 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Every complete runtime resource result records process.memory().blocksize; build-only constrained records explicitly identify the unavailable runtime value."
     },
     {
       "id": "XFC-REQ-0647",
@@ -7199,7 +7199,7 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Representative Linux and ESP32 measurements pass; runtime resource measurement on a specification-designated constrained Pico or MDBT42Q remains."
     },
     {
       "id": "XFC-REQ-0648",
@@ -7213,12 +7213,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Existing timings identify JavaScript-guard-inclusive cases, but constrained-target structural versus application-callback timing remains to be recorded explicitly."
     },
     {
       "id": "XFC-REQ-0649",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7227,12 +7227,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "The M5 vertical slice produced the required early resource baseline before the compiler workspace, diagnostics, snapshot and stack-reserve designs were finalized."
     },
     {
       "id": "XFC-REQ-0650",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7241,12 +7241,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "M5 and post-M6 fixtures measure bounded hierarchy workspace and native/JsVar use through depth 32."
     },
     {
       "id": "XFC-REQ-0651",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7255,12 +7255,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Depth traversal and completion chains through the 256-microstep boundary have documented timing on Linux and physical ESP32."
     },
     {
       "id": "XFC-REQ-0652",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7269,12 +7269,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "The post-M6 review explicitly retains depth 32 and microstep 256 after measurement."
     },
     {
       "id": "XFC-REQ-0653",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7283,12 +7283,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "The retained limits remain fixed compile-time bounds; Version 1 exposes no per-machine overrides."
     },
     {
       "id": "XFC-REQ-0654",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7297,12 +7297,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Static inspection, ownership tests and resource measurements verify one compiled arena retained for the machine lifetime."
     },
     {
       "id": "XFC-REQ-0655",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7311,7 +7311,7 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Construction/dispatch resources and provisional limits are measured and retained; constrained-target closure remains planned."
+      "notes": "Static and runtime evidence verifies dispatch does not recreate typed arrays, flat strings or other structural buffers."
     },
     {
       "id": "XFC-REQ-0656",
@@ -7400,7 +7400,7 @@
       "caseIds": [
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "The complete index exists, but partial and planned requirements prevent a complete evidence-coverage claim."
+      "notes": "The complete bidirectional index exists; the 11 remaining partial requirements prevent the final complete-evidence claim."
     },
     {
       "id": "XFC-REQ-0665",
@@ -7409,7 +7409,7 @@
       "caseIds": [
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "The complete index exists, but partial and planned requirements prevent a complete evidence-coverage claim."
+      "notes": "Every requirement is classified, but the 11 constrained-target and final-coverage requirements remain partial."
     },
     {
       "id": "XFC-REQ-0666",
@@ -7418,7 +7418,7 @@
       "caseIds": [
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "The complete index exists, but partial and planned requirements prevent a complete evidence-coverage claim."
+      "notes": "Every conformance case maps back to requirements; final evidence completeness awaits the two constrained-target closure cases."
     },
     {
       "id": "XFC-REQ-0667",
@@ -7844,37 +7844,37 @@
         "XFC-CF-COMPAT-007",
         "XFC-CF-BUILD-006"
       ],
-      "notes": "Results identify revisions and outcomes broadly; the complete target metadata audit remains planned."
+      "notes": "Build records identify unavailable runtime fields explicitly; complete physical Pico and MDBT42Q runtime metadata remains."
     },
     {
       "id": "XFC-REQ-0705",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-007",
         "XFC-CF-BUILD-006"
       ],
-      "notes": "Results identify revisions and outcomes broadly; the complete target metadata audit remains planned."
+      "notes": "Reviewed result records identify passes, failures, limitations and reasoned skips for their declared scope."
     },
     {
       "id": "XFC-REQ-0706",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-002",
         "XFC-CF-RESOURCE-003"
       ],
-      "notes": "Measured results are assessed against limits; final constrained-target acceptance remains planned."
+      "notes": "Resource results are assessed against structural limits, target flash/RAM capacity, stack reserve and service coexistence rather than completion alone."
     },
     {
       "id": "XFC-REQ-0707",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-002",
         "XFC-CF-RESOURCE-003"
       ],
-      "notes": "Measured results are assessed against limits; final constrained-target acceptance remains planned."
+      "notes": "The post-M6 review explicitly retains depth 32 and microstep 256, raises the stack reserve, and records the evidence behind each decision."
     }
   ]
 }

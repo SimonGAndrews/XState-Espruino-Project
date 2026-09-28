@@ -40,12 +40,14 @@ M0 normative traceability and the first four grouped M8 closure packages are
 complete. The current implementation step is the two remaining target/resource
 closure cases, remaining M7 physical-target qualification, and M8 release
 readiness. The stock full-feature 70 KB original ESP32 and ESP32-C3 profiles
-are Conformance verified; Espruino Pico remains build-verified pending physical execution, and
-MDBT42Q remains blocked by its Storage-overlap size constraint. The repeatable
+are Conformance verified. Current reduced product profiles for Espruino Pico
+and Bluetooth-capable MDBT42Q both fit and are Build verified; each remains
+pending physical execution. The repeatable
 original-ESP32 procedure is recorded in the
 [device-testing guide](../projects/Xstate-fsm-c/docs/esp32-device-testing.md),
 and the completed measurements are interpreted in the [post-M6 resource
-report](../projects/Xstate-fsm-c/docs/reports/2026-09-27-post-m6-resource-review.md).
+report](../projects/Xstate-fsm-c/docs/reports/2026-09-27-post-m6-resource-review.md)
+and [constrained-target build report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-constrained-target-builds.md).
 
 Canonical implementation code is developed under `libs/xfsm/` in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).

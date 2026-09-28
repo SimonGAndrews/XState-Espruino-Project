@@ -1,0 +1,86 @@
+{
+  "kind": "xfsm-mdbt42q-product-profile-build",
+  "date": "2026-09-29",
+  "caseIds": [
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-BUILD-003",
+    "XFC-CF-BUILD-006",
+    "XFC-CF-RESOURCE-003"
+  ],
+  "xstateEspruinoProjectBaseRevision": "59efe41efe86b47c08606b7541cac28e4b4a58ad",
+  "specificationVersion": "0.52",
+  "espruinoRevision": "6ed09d5d2444f5355e1573bcbd46094c362c6edf",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "branch": "feature/xfsm-profile1",
+  "target": "MDBT42Q",
+  "board": "MDBT42Q",
+  "cpu": "Nordic nRF52832 ARM Cortex-M4F",
+  "pointerBits": 32,
+  "byteOrder": "little-endian",
+  "processMemoryBlockSize": null,
+  "processMemoryBlockSizeReason": "Build-only evidence; no physical MDBT42Q was attached, so process.memory() was not executed",
+  "toolchain": {
+    "cc": "arm-none-eabi-gcc 13.2.1 20231009",
+    "source": "scripts/provision.sh MDBT42Q selected the local pinned EspruinoBuildTools ARM GNU Toolchain 13.2.Rel1 archive"
+  },
+  "build": {
+    "commonFlags": "BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 USE_NFC=0 SETDEFINES=<(printf '%s\\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2",
+    "environmentControl": "DEBUG was unset after provisioning so the release optimization remained selected",
+    "optimization": "-Os with section garbage collection and link-time optimization selected by the MDBT42Q release build",
+    "profile": "Constrained Bluetooth product profile retaining Bluetooth, filesystem, graphics, network/HTTP, crypto/SHA-256, and NeoPixel while omitting JIT, debugger, tab completion, vector font, JavaScript-backed networking, and NFC",
+    "xfsmCoordinatorStackReserveBytes": 1024,
+    "espruinoStackSafetyBytes": 512,
+    "storageStart": "0x6c000",
+    "disabledCommand": "make BOARD=MDBT42Q clean && make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=0 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 USE_NFC=0 SETDEFINES=<(printf '%s\\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2",
+    "disabledResult": "pass: ELF linked, target size check passed, and DFU ZIP was created",
+    "disabledSize": {
+      "text": 284848,
+      "data": 144,
+      "bss": 44080,
+      "decimal": 329072,
+      "codeBytesBeforeStorage": 284840,
+      "headroomBeforeStorageBytes": 30400
+    },
+    "enabledCommand": "make BOARD=MDBT42Q clean && make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 USE_NFC=0 SETDEFINES=<(printf '%s\\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2",
+    "enabledResult": "pass: XFSM and wrapper sources compiled, linked, passed the Storage boundary check, and produced a DFU ZIP",
+    "enabledSize": {
+      "text": 311952,
+      "data": 144,
+      "bss": 44080,
+      "decimal": 356176,
+      "codeBytesBeforeStorage": 311944,
+      "headroomBeforeStorageBytes": 3296
+    },
+    "delta": {
+      "text": 27104,
+      "data": 0,
+      "bss": 0,
+      "decimal": 27104,
+      "flashBytes": 27104,
+      "flashPercentOfBaseline": 9.515517
+    }
+  },
+  "tradeStudy": {
+    "stockProfile": "fails: overlaps reserved Storage by 22176 bytes at the earlier M5 implementation",
+    "withoutJit": "fails: overlaps reserved Storage by 14840 bytes",
+    "picoStyleOmissions": "fails: overlaps reserved Storage by 2472 bytes while retaining NFC",
+    "selectedProfile": "passes after NFC is also omitted; Bluetooth remains enabled"
+  },
+  "boardIntegration": {
+    "stockBoardFileModified": false,
+    "selection": "USE_XFSM=1 and all product-profile feature choices were selected only on the build command line",
+    "status": "The reduced profile is a viable optional build; it is not proposed as a change to the stock MDBT42Q board"
+  },
+  "artifacts": {
+    "disabledAppHexSha256": "fd251141f406578c850abb1c4a7124f58fc700be22cf605703c4fff1d254617e",
+    "disabledElfSha256": "62accc70d11207ceb66de6c46ef8f879d18288778e4bfaec07fbcf5c4fe40dfb",
+    "disabledDfuZipSha256": "96cb02e7d4c6c9d0add8a355bb32274c4fafbebd02a7b345b3e3f15b6de61199",
+    "enabledAppHexSha256": "d174cb0983d087517b0889c7f426665fc19b9a689a302d3ce50e25188b3a42f4",
+    "enabledElfSha256": "323f82c8d5c997bb7214c317c9da0752ebd091e3ec398a4b121bb037447ff098",
+    "enabledDfuZipSha256": "d0948443999e42038a4782e4ecaaaeec9c698a5c935e5d8c8be16f2f7a7aa243",
+    "retention": "Transient local build artifacts; not committed"
+  },
+  "targetStatus": "Build verified",
+  "result": "pass",
+  "scope": "Current constrained Bluetooth product-profile build capacity only. Physical MDBT42Q runtime, semantic, RAM, timing, stack, GC, save/restore, and hardware-action conformance remain unverified."
+}

@@ -33,7 +33,9 @@ verified after matched builds, portable and target-specific runtime suites, dete
 maximum-depth execution, cleanup, save/restoration, native/flash callback and
 timer integration, and combined XFSM/BLE/WiFi/TLS service tests. Private arena
 Format Version 1 is frozen; the hierarchy and microstep limits retain their
-separate resource-review status.
+separate resource-review status. Current matched builds establish viable
+reduced product profiles for Pico and Bluetooth-capable MDBT42Q, both Build
+verified pending physical qualification.
 
 Current work, revisions, and next tasks are recorded in the
 [implementation status](docs/implementation-status.md). The

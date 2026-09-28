@@ -17,11 +17,11 @@ conformance matrix defines stable aggregate evidence cases. All three documents
 must be updated together when a case is added or its status changes.
 
 This inventory covers the complete test plan currently known. The completed M0
-audit froze and reviewed 707 normative units: 499 have passing evidence, 188
-have partial evidence, 17 depend on planned evidence, and three are explicitly
-non-applicable to Version 1 execution evidence. It added fourteen stable
-closure cases to the conformance matrix; seven now pass, including traceability,
-and the canonical trace foundation is partial. Future specification changes
+audit froze and reviewed 707 normative units: 693 have passing evidence, 11
+have partial evidence, none depend on merely planned evidence, and three are
+explicitly non-applicable to Version 1 execution evidence. It added fourteen
+stable closure cases to the conformance matrix; twelve now pass, while the two
+constrained-target cases remain partial. Future specification changes
 must update the registry, mapping, matrix and this inventory together.
 
 ## Status Vocabulary
@@ -146,10 +146,10 @@ the third column pass, but the fourth column must still be closed.
 | GC, save and reset (`HOST-001/002/003/004`) | Partial | Linux suites clean to zero records; broader machine/actor/callback/snapshot/subscription relocation passes on Linux and ESP32; original ESP32 shared, repeated and faulted graphs return exactly to a settled production baseline; callback-requested save, hard-reboot restoration of all actor states, and reset-without-exit pass | Failure-path relocation stress and repetition on remaining save-capable qualified targets |
 | Native callbacks, pins and timers (`HOST-005`) | Partial | Original ESP32 passes retained outer-scope, closure, flash-module, native guard and bound native GPIO callbacks; LED1 readback; timer-driven event ingress; exception rollback; Storage/cache cleanup; and safe low pin state | Repeat applicable integration cases on the remaining qualified physical targets |
 | Interrupt and concurrency boundary (`HOST-006`, `LIFE`) | Partial | Same-actor synchronous re-entry is rejected; nested operations on different actors use independent state/context and retain committed inner work across outer faults; original ESP32 timer ingress uses normal interpreter dispatch and waits for a 128-send synchronous sequence; static inspection finds no public ISR/task coordinator or XFSM mailbox | Repeat applicable serialization evidence on remaining targets |
-| Compiler and target contract (`BUILD`, `FORMAT-001/002/003`, `HOST-007`) | Partial | C99 native suite on 64-bit Linux; successful 32-bit ARM, Xtensa, and ESP32-C3 RISC-V compilation; physical Xtensa/RISC-V runtime; frozen Version 1 layout; byte-order rejection; static portability and host-boundary review | Complete the `BUILD-006` Pico/MDBT42Q target matrix and per-result metadata |
+| Compiler and target contract (`BUILD`, `FORMAT-001/002/003`, `HOST-007`) | Partial | C99 native suite on 64-bit Linux; successful current matched Pico and MDBT42Q 32-bit ARM builds; physical Xtensa/RISC-V runtime; frozen Version 1 layout; byte-order rejection; static portability and host-boundary review | Complete `BUILD-006` with physical Pico/MDBT42Q execution and runtime metadata |
 | Canonical portable trace and runner contract (`COMPAT-006`) | Pass | Nine reviewed XFSM traces; paired 56-record XState 5.33.2 and 11-record XState 4.38.3 outputs; parsed/canonicalized noisy serial comparison; streamed v4 trace pass on Xtensa and RISC-V; complete differential coverage/exclusion register | Preserve pins and accepted trace hashes during reference updates |
 | Normative requirement traceability (`COMPAT-007`) | Pass | All 707 normative units are reviewed; all 704 applicable units map to stable cases; three are explicitly non-applicable; every case maps back to a requirement; the drift/orphan checker passes | Maintain the registry and mapping with every normative specification or case change |
-| Resource and performance (`RESOURCE-001/002/003`) | Partial | Complete-runtime Linux and ESP32 flash, JsVar, native-heap, arena/binding, actor/allocation, stack, diagnostic, timing and test-loading review; [compiler optimization](../docs/reports/2026-09-27-compiler-jsvar-optimization.md) reduces the compact C3 depth-32 peak by 40.5% and passes action-heavy depth 32 on stock 70 KB classic and C3 profiles with 37-39% headroom; [C3 service coexistence](../docs/reports/2026-09-28-m7-esp32-c3-service-coexistence.md) passes four combined XFSM/BLE/WiFi/TLS runs with a 40,480-byte native-heap minimum; Pico and C3 size comparisons; MDBT42Q size failure; Format Version 1 frozen | `RESOURCE-003`: Pico runtime, viable MDBT42Q product profile or disposition, and any resulting optimization rerun |
+| Resource and performance (`RESOURCE-001/002/003`) | Partial | Complete-runtime Linux and ESP32 flash, JsVar, native-heap, arena/binding, actor/allocation, stack, diagnostic, timing and test-loading review; [compiler optimization](../docs/reports/2026-09-27-compiler-jsvar-optimization.md) reduces the compact C3 depth-32 peak by 40.5% and passes action-heavy depth 32 on stock 70 KB classic and C3 profiles with 37-39% headroom; [C3 service coexistence](../docs/reports/2026-09-28-m7-esp32-c3-service-coexistence.md) passes four combined XFSM/BLE/WiFi/TLS runs with a 40,480-byte native-heap minimum; current matched Pico and MDBT42Q profile builds pass; Format Version 1 frozen | `RESOURCE-003`: constrained-target physical RAM, stack, timing, callbacks, cleanup and lifecycle measurements |
 
 ## Differential Test Register
 
@@ -187,8 +187,8 @@ conformance cases rather than treated as missing comparison data.
 | --- | --- | --- | --- |
 | Linux Espruino | Build verified | Twenty-two normal suites, separate deterministic fault suite, 73-check sanitizer suite, nine canonical traces, complete pinned differentials, static contract audit, broader GC/cross-actor behavior, complete post-M6 resource review, frozen format, and completed normative traceability | Two target/resource closure cases and release-candidate rerun |
 | Original ESP32 IDF5 | [M7.4 release-candidate result](results/esp32-xtensa/2026-09-28-m7-release-candidate.json) passes; Conformance verified | Matched builds; 20 embedded portable suites; deterministic physical allocation seams; direct and Storage-backed maximum depth; exact cleanup, GC, serialization, native callbacks/GPIO/timer, save/restoration/reset; and combined XFSM/BLE/WiFi/TLS service rerun | No target-specific Profile 1 blocker; project-wide closure cases and release review remain |
-| Espruino Pico | Reduced-profile build verified | Matching disabled/enabled size comparison | Physical board execution, complete portable suite, stack/RAM/timing, save/reset and hardware callbacks |
-| MDBT42Q | Not yet verified | Stock DFU passes; XFSM compiles and links | Blocked by 22,176-byte Storage overlap; select and document a viable product profile before runtime testing |
+| Espruino Pico | Current reduced-profile build verified | Matched build adds 26,928 bytes and leaves 12,888 application bytes | Physical board execution, complete portable suite, stack/RAM/timing, save/reset and hardware callbacks |
+| MDBT42Q | Constrained Bluetooth profile build verified | Matched build adds 27,104 bytes, retains Bluetooth, leaves 3,296 bytes before Storage, and produces a DFU ZIP | Physical board execution, applicable portable suite, stack/RAM/timing, save/reset and hardware callbacks |
 | ESP32-C3 IDF5 | [C3-D release-candidate result](results/esp32-riscv/2026-09-28-m7-release-candidate.json) passes; Conformance verified | Matched builds; 20 embedded portable suites; deterministic physical allocation seams; direct and Storage-backed maximum depth; exact cleanup, GC, serialization, native callbacks/GPIO/timer, save/restoration/reset; and combined XFSM/BLE/WiFi/TLS service rerun | No target-specific Profile 1 blocker; project-wide closure cases and release review remain |
 | ESP32-S3 IDF5 | Later expansion target | None required for Profile 1 | Optional after the Espruino port reaches the required maturity |
 
@@ -201,7 +201,7 @@ conformance cases rather than treated as missing comparison data.
 | Linux semantic, fault, sanitizer and static CI | Configured on fork branch | Preserve all 22 normal suites, nine canonical traces, the 73-check sanitizer suite, static audit, separate `XFC_TEST=1` fault build, and disabled build |
 | Original ESP32 IDF5 enabled CI build | Configured on fork branch; M7.4 matched build and physical qualification pass; normal image leaves 522,752 app-partition bytes free | Retain as fork-development coverage |
 | Pico reduced-profile build | Pass locally | Decide whether to add fork CI; run on physical Pico |
-| MDBT42Q enabled build | Fails size gate | Do not claim support; retry only after product-profile decision |
+| MDBT42Q constrained Bluetooth build | Pass locally | Keep stock board unchanged; run the explicit profile on physical hardware |
 | ESP32-C3 IDF5 enabled build | C3-D matched build and physical qualification pass; normal image leaves 332,880 app-partition bytes free | Optional fork CI remains useful but is not part of the target's local conformance result |
 
 ## Final Review Closure Checklist

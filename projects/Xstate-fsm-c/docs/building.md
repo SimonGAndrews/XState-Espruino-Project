@@ -5,7 +5,8 @@
 - Build-document status: all seven M6 batches and the post-M6 whole-build
   resource review are verified for their applicable scope; original ESP32
   M7.4 and ESP32-C3 C3-D are Conformance verified, the reduced-profile Pico
-  build is verified, and the MDBT42Q size check is blocked
+  and constrained Bluetooth MDBT42Q builds are verified, and both constrained
+  targets await physical qualification
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
 - Current implementation revision: `6ed09d5d2`
@@ -316,8 +317,8 @@ Commands and required toolchain revisions will be recorded separately for:
 
 | Target | Board/build definition | Command status |
 | --- | --- | --- |
-| Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
-| MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
+| Espruino Pico | `PICO_R1_3`, STM32F401 | Current reduced-profile build verified; physical runtime not tested |
+| MDBT42Q | nRF52832 | Constrained Bluetooth product-profile build and DFU verified; physical runtime not tested |
 | Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Conformance verified on the optimized stock 70 KB full-feature profile |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Conformance verified on the optimized stock 70 KB full-feature profile |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
@@ -326,7 +327,7 @@ The library must be selected through Espruino's normal optional-library
 mechanism. Target-specific board files may select `XFSM`, but must not contain
 engine semantics or duplicate its source list.
 
-The Espruino Pico feasibility comparison uses the provisioned ARM GCC 13.2.1
+The current Espruino Pico comparison uses the provisioned ARM GCC 13.2.1
 toolchain and the same reduced feature profile for its disabled and enabled
 builds. It omits JIT, debugger, tab completion, vector font, and
 JavaScript-backed networking. Bash process substitution supplies a one-line
@@ -345,30 +346,38 @@ make BOARD=PICO_R1_3 RELEASE=1 USE_XFSM=1 USE_JIT=0 USE_DEBUGGER=0 \
   SETDEFINES=<(printf '%s\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2
 ```
 
-The enabled image is 311,392 bytes, adds 23,528 bytes (8.17%) to its
-matching 287,864-byte baseline, and passes the 327,680-byte size gate with
-16,288 bytes free. The stock board file was not changed. See the [Pico
-feasibility report](reports/2026-09-26-pico-feasibility-build.md) and [build
-record](../tests/results/pico/2026-09-26-feasibility-build.json).
+At implementation revision `6ed09d5d2`, the enabled image is 314,792 bytes,
+adds 26,928 bytes (9.35%) to its matching 287,864-byte baseline, and passes the
+327,680-byte size gate with 12,888 bytes free. The stock board file was not
+changed. See the [constrained-target report](reports/2026-09-29-m8-constrained-target-builds.md)
+and [current build record](../tests/results/pico/2026-09-29-product-profile-build.json).
 
-The 2026-09-25 MDBT42Q attempt used the target provisioning script, its pinned
+The current MDBT42Q build uses the target provisioning script, its pinned
 EspruinoBuildTools ARM GCC 13.2.1 archive, and the existing nRF5 SDK 12 tree.
 `DEBUG` is removed because the Codex host exports `DEBUG=release`, which GNU
 Make otherwise treats as enabled and uses to replace `-Os` with `-g`:
 
 ```bash
 source scripts/provision.sh MDBT42Q
-env -u DEBUG make clean
-env -u DEBUG make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=0 -j2
-env -u DEBUG make clean
-env -u DEBUG make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 -j2
+unset DEBUG
+make BOARD=MDBT42Q clean
+make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=0 \
+  USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 USE_NFC=0 \
+  SETDEFINES=<(printf '%s\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2
+make BOARD=MDBT42Q clean
+make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 \
+  USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 USE_NFC=0 \
+  SETDEFINES=<(printf '%s\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2
 ```
 
-The stock build passed and created its DFU ZIP with 112 bytes before reserved
-Storage. The XFSM-enabled ELF linked, adding 22,288 flash bytes (7.07%), but
-failed Espruino's size check because it overlapped Storage by 22,176 bytes.
-XFSM was therefore not added to the stock board definition. Exact results are
-in the [MDBT42Q build record](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json).
+The selected profile retains Bluetooth, filesystem, graphics, network/HTTP,
+crypto/SHA-256, and NeoPixel while omitting JIT, debugger, tab completion,
+vector font, JavaScript-backed networking, and NFC. The enabled build adds
+27,104 bytes (9.52%) to its matched 284,840-byte baseline, passes the target
+size check with 3,296 bytes before reserved Storage, and produces a DFU ZIP.
+The stock board definition remains unchanged. Exact results and the preceding
+feature trade study are in the [constrained-target report](reports/2026-09-29-m8-constrained-target-builds.md)
+and [current build record](../tests/results/mdbt42q/2026-09-29-product-profile-build.json).
 
 The original ESP32 comparison uses ESP-IDF 5.5.3 and the provisioned Xtensa
 GCC 14.2.0 toolchain. Both builds use the same implementation revision and

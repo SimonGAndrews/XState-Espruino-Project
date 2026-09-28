@@ -74,23 +74,23 @@ The completed review has this result:
 
 | Classification | Count | Meaning |
 | --- | ---: | --- |
-| Mapped, passing evidence | 662 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
-| Mapped, partial evidence | 42 | Existing evidence demonstrates part of the obligation, while a target or resource-completeness check remains. |
+| Mapped, passing evidence | 693 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
+| Mapped, partial evidence | 11 | Existing evidence demonstrates part of the obligation, while constrained-target runtime or final evidence-completeness work remains. |
 | Mapped, planned evidence | 0 | No applicable requirement lacks implementation evidence; remaining work extends partial target/resource coverage. |
 | Not applicable to Version 1 execution evidence | 3 | The statement constrains application use or future API evolution rather than observable Version 1 engine behavior. |
 
 | Specification section | Pass | Partial | Planned | Not applicable |
 | --- | ---: | ---: | ---: | ---: |
 | Scope | 5 | 0 | 0 | 0 |
-| Compatibility Target | 6 | 3 | 0 | 0 |
+| Compatibility Target | 9 | 0 | 0 | 0 |
 | Machine Model | 151 | 0 | 0 | 0 |
 | Runtime Semantics | 304 | 0 | 0 | 1 |
-| Public Interfaces | 20 | 5 | 0 | 2 |
-| Host Integration | 81 | 11 | 0 | 0 |
+| Public Interfaces | 25 | 0 | 0 | 2 |
+| Host Integration | 87 | 5 | 0 | 0 |
 | Validation and Error Behavior | 50 | 0 | 0 | 0 |
-| Resource and Performance Requirements | 0 | 16 | 0 | 0 |
-| Conformance Requirements | 45 | 7 | 0 | 0 |
-| **Total** | **662** | **42** | **0** | **3** |
+| Resource and Performance Requirements | 14 | 2 | 0 | 0 |
+| Conformance Requirements | 48 | 4 | 0 | 0 |
+| **Total** | **693** | **11** | **0** | **3** |
 
 All 704 applicable requirements map to one or more stable conformance case IDs.
 All 62 conformance cases map back to at least one normative requirement. This
@@ -132,9 +132,11 @@ traces. Pinned XState 5.33.2 and 4.38.3 reference models reproduce reviewed
 trace matches through noisy serial capture on physical Xtensa and RISC-V.
 
 Native layout, host ownership, and diagnostics pass their formal closure
-package. Format Version 1 is frozen. Remaining target/resource work is physical
-Pico qualification, the MDBT42Q product-profile decision, and complete target
-result metadata.
+package. Format Version 1 is frozen. Current matched builds also close the
+product-profile capacity decision: Pico leaves 12,888 application bytes and a
+Bluetooth-capable MDBT42Q profile leaves 3,296 bytes before Storage. Both
+remain Build verified. Remaining target/resource work is their physical
+qualification and complete runtime target metadata.
 
 These findings are audit outputs, not newly invented semantics. The associated
 requirements already exist in the Profile 1 specification.
