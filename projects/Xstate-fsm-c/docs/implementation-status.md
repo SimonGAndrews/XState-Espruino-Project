@@ -32,7 +32,7 @@ and outstanding tests for final project review.
 | --- | --- |
 | Specification repository | `SimonGAndrews/XState-Espruino-Project` |
 | Specification project path | `projects/Xstate-fsm-c/` |
-| Current specification version | `0.50` |
+| Current specification version | `0.51` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
 | Project base for this evidence | `4819be0` |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
@@ -323,6 +323,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-28 | Specification 0.51 clarifies that structural maxima are not memory reservations for arbitrary combinations, retains depth 32, distinguishes valid-shape `E_NO_MEMORY` from `E_LIMIT_EXCEEDED`, and requires the canonical depth-32/65-action fixture for a target's Conformance verified claim |
 | 2026-09-28 | C3-C passed four consecutive stock-profile combined runs: XFSM coordinated BLE GATT, WiFi association and TLS 1.2 HTTPS while exercising a depth-24, 49-action transition; minimum native heap was 40,480 bytes and every run passed correlated target, peer, endpoint and cleanup checks |
 | 2026-09-27 | Compact GC-owned state metadata and on-demand derived paths reduced the C3 compact depth-32 compiler peak by 910 blocks (40.5%); stock 70 KB original-ESP32 and C3 builds now pass direct and Storage-backed action-heavy depth 32 with 37-39% measured JsVar headroom, so the 65 KB override is no longer selected |
 | 2026-09-27 | Instrumented stock-profile ESP32-C3 measurement found a 2,245-block compiler peak for the compact depth-32 model and an action-heavy pass/fail boundary between depths 30 and 31; the resulting trade study recommends compiler metadata reduction before any Profile 1 limit reduction |

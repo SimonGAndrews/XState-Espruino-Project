@@ -3,10 +3,10 @@
 ## Document Status
 
 - Status: Profile 1 implementation candidate
-- Version: 0.50
-- Implementation status: M5 Linux and original ESP32 IDF5 completion evidence
-  and reduced-profile Pico build evidence recorded; constrained-target runtime
-  evidence remains required
+- Version: 0.51
+- Implementation status: M6 behaviour and selected M7 original-ESP32 and
+  ESP32-C3 qualification evidence recorded; remaining target and release-
+  candidate evidence remains required
 
 This document is the normative implementation candidate for Xstate-fsm-c
 Profile 1. Only requirements stated explicitly in this document are accepted.
@@ -85,7 +85,7 @@ precedence if a summary phrase is incomplete or ambiguous.
 | Memory | Arenas, actor blocks, and retained JavaScript values remain Espruino GC-owned. The engine uses no persistent native JavaScript pointers, native heap allocation, global actor registry, or structural JavaScript collection allocation during dispatch. |
 | Failure model | State and context publication is transactional across an operation. Application or hardware side effects from actions that already ran cannot be reversed if a later callback or engine operation fails. |
 | Concurrency | A public operation cannot re-enter the same actor. A callback may synchronously operate a different idle actor, and Version 1 provides no application-event mailbox or cross-actor transaction. |
-| Limits and evidence | Hierarchy depth, microsteps, stack, flash, RAM, and representative timings are bounded or measured through the first vertical slice and target qualification matrix. |
+| Limits and evidence | Structural limits define accepted shapes but do not reserve target memory for every possible combination. Hierarchy depth, microsteps, stack, flash, RAM, and representative timings are bounded or measured through the first vertical slice and target qualification matrix. |
 | Evolution | The public machine is opaque and the private arena is versioned, allowing later profiles and implementation revisions without exposing the physical record layout as API. |
 
 The intended Espruino integration is a self-contained optional `libs`
@@ -904,6 +904,22 @@ array or recurse without a verified bound during dispatch.
 
 The depth limit is fixed for all machines in a Version 1 build and MUST NOT
 have a per-machine override.
+
+This structural limit defines the validation and native-representation
+boundary; it is not a reservation of enough Espruino memory for every machine
+that combines depth 32 with other maximum-sized collections. A configuration
+within the structural limits MAY still fail construction with `E_NO_MEMORY`
+when its live source object graph, retained JavaScript values, compiler
+workspace, compiled arena, and other application-owned values cannot coexist
+in the target's available memory. Such a failure MUST NOT be reported as
+`E_LIMIT_EXCEEDED` merely because the target lacks capacity.
+
+Conversely, a target cannot claim support for depth 32 solely because the
+record fields and traversal arrays can represent it. The target-qualification
+requirements below define the canonical maximum-depth fixture that MUST fit
+for a `Conformance verified` claim. Failure of a larger or differently
+combined within-limit application is a documented resource-envelope result,
+not by itself a reduction of the Profile 1 hierarchy-depth limit.
 
 ### Compiled arena and ownership
 
@@ -2317,6 +2333,15 @@ paths feasible on that target, save/restoration tests where the host provides
 remains Build verified or Not yet verified until all applicable evidence for
 Conformance verified has been recorded.
 
+For a `Conformance verified` claim, each candidate product target MUST also
+construct and execute the canonical maximum-depth fixture from a documented
+clean-runtime baseline. That fixture MUST enter a depth-32 active chain and
+perform the reviewed 65-action exit-transition-entry traversal. Its result
+MUST record the target's total and initial free variable blocks and the source-
+loading method. This fixture establishes minimum depth-32 target evidence; it
+does not require every possible configuration that combines several
+independent structural maxima to fit simultaneously.
+
 ESP8266, nRF51, nRF54/Zephyr, Emscripten, big-endian processors, and other
 Espruino boards are not Version 1 qualification targets. The portable-C rules
 deliberately leave room for later ports, but Version 1 MUST NOT imply support
@@ -2606,6 +2631,14 @@ separate performance profiles. Construction MAY perform validation, hashing,
 counting, exact-sized allocation, and one optional defragmentation retry.
 Steady-state structural dispatch MUST perform no native heap allocation and no
 JavaScript collection construction.
+
+Fixed structural limits and available target capacity MUST be reported
+separately. A structural limit determines whether a value or configuration
+shape is representable and valid. Capacity determines whether the complete
+construction working set fits at a particular moment on a particular target.
+Resource reports MUST therefore distinguish `E_LIMIT_EXCEEDED` from
+`E_NO_MEMORY` and MUST identify material application, source-loading, and test-
+harness values that coexist with `createMachine()`.
 
 Resource measurements MUST report at least:
 
