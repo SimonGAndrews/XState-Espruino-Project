@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "authority": "../specification.md",
+  "references": {
+    "primary": {
+      "engine": "xstate",
+      "version": "5.33.2",
+      "package": "../../tests/reference/xstate-v5/package-lock.json"
+    },
+    "secondary": {
+      "engine": "xstate",
+      "version": "4.38.3",
+      "package": "../../tests/reference/xstate-v4/package-lock.json",
+      "archive": "../../../../archive/xstate-xstate-4.38.3"
+    }
+  },
+  "intentionalDifferences": [
+    { "id": "XFC-CD-001", "title": "Ordered context assignment", "caseIds": ["XFC-CF-COMPAT-003"] },
+    { "id": "XFC-CD-002", "title": "Escaping action exceptions", "caseIds": ["XFC-CF-LIFE-002"] },
+    { "id": "XFC-CD-003", "title": "Transition re-entry defaults", "caseIds": ["XFC-CF-TRANS-003", "XFC-CF-COMPAT-002"] },
+    { "id": "XFC-CD-004", "title": "Positional implementation arguments", "caseIds": ["XFC-CF-ACTION-002"] },
+    { "id": "XFC-CD-005", "title": "Construction-time implementation binding", "caseIds": ["XFC-CF-CONFIG-005"] },
+    { "id": "XFC-CD-006", "title": "Completion-event type", "caseIds": ["XFC-CF-FINAL-001"] },
+    { "id": "XFC-CD-007", "title": "Embedded event ingress", "caseIds": ["XFC-CF-TRANS-005", "XFC-CF-HOST-006"] },
+    { "id": "XFC-CD-008", "title": "Exit actions on explicit stop", "caseIds": ["XFC-CF-LIFE-001"] },
+    { "id": "XFC-CD-009", "title": "Initialization begins at start", "caseIds": ["XFC-CF-LIFE-001", "XFC-CF-CONTEXT-002"] },
+    { "id": "XFC-CD-010", "title": "Subscriber exceptions", "caseIds": ["XFC-CF-SUB-002"] },
+    { "id": "XFC-CD-011", "title": "Initial-context factory boundary", "caseIds": ["XFC-CF-CONTEXT-002"] },
+    { "id": "XFC-CD-012", "title": "Event wildcard scope", "caseIds": ["XFC-CF-TRANS-002", "XFC-CF-TRANS-005"] },
+    { "id": "XFC-CD-013", "title": "Parameterless guard references", "caseIds": ["XFC-CF-ACTION-002", "XFC-CF-TRANS-005"] },
+    { "id": "XFC-CD-014", "title": "Strict state-node and initial-transition shape", "caseIds": ["XFC-CF-CONFIG-004"] },
+    { "id": "XFC-CD-015", "title": "Exact-key-first target resolution", "caseIds": ["XFC-CF-TRANS-001"] },
+    { "id": "XFC-CD-016", "title": "Opaque compiled machine", "caseIds": ["XFC-CF-API-002"] },
+    { "id": "XFC-CD-017", "title": "Function-only subscriptions", "caseIds": ["XFC-CF-SUB-001"] },
+    { "id": "XFC-CD-018", "title": "Categorised synchronous runtime diagnostics", "caseIds": ["XFC-CF-DIAG-006"] },
+    { "id": "XFC-CD-019", "title": "Subscription method receiver", "caseIds": ["XFC-CF-API-002", "XFC-CF-SUB-001"] }
+  ],
+  "statelyExamples": [
+    {
+      "id": "stately-editor-new-machine",
+      "producer": "XState Editor web application",
+      "producerVersion": null,
+      "versionStatus": "not reported by generated source",
+      "captured": "2026-09-22",
+      "exports": ["v4.js", "v5.js"],
+      "assessment": "accepted-after-normalization",
+      "adaptations": ["remove imports and exports", "use Profile 1 callback ABI", "bind implementations through createMachine options"],
+      "caseIds": ["XFC-CF-CONFIG-004", "XFC-CF-COMPAT-002"]
+    },
+    {
+      "id": "stately-editor-self-transition",
+      "producer": "XState Editor web application",
+      "producerVersion": null,
+      "versionStatus": "not reported by generated source",
+      "captured": "2026-09-22",
+      "exports": ["v4.js", "v5.js", "v5-manual-reenter.js"],
+      "assessment": "accepted-after-normalization",
+      "adaptations": ["remove imports and exports", "use Profile 1 callback ABI", "add explicit reenter true when preserving v4 default behavior"],
+      "caseIds": ["XFC-CF-TRANS-003", "XFC-CF-COMPAT-002"]
+    },
+    {
+      "id": "stately-editor-context-ordered-assign",
+      "producer": "XState Editor web application and Sources panel",
+      "producerVersion": null,
+      "versionStatus": "not reported by generated source",
+      "captured": "2026-09-22",
+      "exports": ["v4.js", "v5.js"],
+      "assessment": "accepted-after-normalization",
+      "adaptations": ["remove imports and exports", "convert the v5 destructured assign callback to positional context", "bind the named assign descriptor through createMachine options"],
+      "caseIds": ["XFC-CF-CONTEXT-003", "XFC-CF-COMPAT-003"]
+    },
+    {
+      "id": "stately-editor-hierarchical-boundaries",
+      "producer": "XState Editor web application",
+      "producerVersion": null,
+      "versionStatus": "not reported by generated source",
+      "captured": "2026-09-22",
+      "exports": ["v4.js", "v5.js"],
+      "assessment": "accepted-after-normalization",
+      "adaptations": ["remove imports and exports", "use Profile 1 callback ABI", "apply Profile 1 and XState v5 active-child target semantics"],
+      "caseIds": ["XFC-CF-TRANS-003", "XFC-CF-COMPAT-004"]
+    },
+    {
+      "id": "stately-editor-targetless-transition",
+      "producer": "XState Editor web application",
+      "producerVersion": null,
+      "versionStatus": "not reported by generated source",
+      "captured": "2026-09-22",
+      "exports": ["v4.js", "v5.js"],
+      "assessment": "accepted-after-normalization",
+      "adaptations": ["remove imports and exports", "use Profile 1 callback ABI", "add explicit reenter true when preserving v4 targeted-self behavior"],
+      "caseIds": ["XFC-CF-TRANS-003", "XFC-CF-COMPAT-002"]
+    },
+    {
+      "id": "stately-editor-cross-hierarchy-targets",
+      "producer": "XState Editor web application",
+      "producerVersion": null,
+      "versionStatus": "not reported by generated source",
+      "captured": "2026-09-22",
+      "exports": ["v4.js", "v5.js"],
+      "assessment": "accepted-after-normalization",
+      "adaptations": ["remove imports and exports"],
+      "caseIds": ["XFC-CF-TRANS-001", "XFC-CF-COMPAT-004"]
+    },
+    {
+      "id": "stately-editor-final-state",
+      "producer": "XState Editor web application",
+      "producerVersion": null,
+      "versionStatus": "not reported by generated source",
+      "captured": "2026-09-22",
+      "exports": ["v4.js", "v5.js"],
+      "assessment": "accepted-after-normalization",
+      "adaptations": ["remove imports and exports", "use Profile 1 callback ABI", "use the XState v5 completion-event type"],
+      "caseIds": ["XFC-CF-FINAL-001", "XFC-CF-COMPAT-001"]
+    }
+  ],
+  "differentialCoverage": [
+    {
+      "area": "ordered transition candidates, guards, parent fallback and exact/wildcard selection",
+      "reference": "xstate@5.33.2",
+      "trace": "../../tests/reference/xstate-v5/trace-compat-006.mjs",
+      "expected": "../../tests/results/linux/2026-09-29-closure-compatibility.json",
+      "caseIds": ["XFC-CF-TRANS-002", "XFC-CF-TRANS-005"]
+    },
+    {
+      "area": "exit, transition and entry action ordering",
+      "reference": "xstate@5.33.2",
+      "trace": "../../tests/reference/xstate-v5/trace-compat-006.mjs",
+      "expected": "../../tests/results/linux/2026-09-29-closure-compatibility.json",
+      "caseIds": ["XFC-CF-ACTION-001", "XFC-CF-COMPAT-004"]
+    },
+    {
+      "area": "ordered assignment, context visibility and actor context isolation",
+      "reference": "xstate@5.33.2",
+      "trace": "../../tests/reference/xstate-v5/trace-compat-006.mjs",
+      "expected": "../../tests/results/linux/2026-09-29-closure-compatibility.json",
+      "caseIds": ["XFC-CF-CONTEXT-002", "XFC-CF-CONTEXT-003", "XFC-CF-COMPAT-003"]
+    },
+    {
+      "area": "startup, initial descent, initial actions and initial context creation",
+      "reference": "xstate@5.33.2",
+      "trace": "../../tests/reference/xstate-v5/trace-compat-006.mjs",
+      "expected": "../../tests/results/linux/2026-09-29-closure-compatibility.json",
+      "caseIds": ["XFC-CF-LIFE-001", "XFC-CF-CONTEXT-002"]
+    },
+    {
+      "area": "targetless, self, re-entering, relative, ID, descendant, ancestor, sibling and cross-hierarchy transitions",
+      "reference": "xstate@5.33.2",
+      "trace": "../../tests/reference/xstate-v5/verify-reference.mjs",
+      "expected": "../../tests/results/linux/2026-09-27-m6-transition-domains.json",
+      "caseIds": ["XFC-CF-TRANS-001", "XFC-CF-TRANS-003", "XFC-CF-COMPAT-004"]
+    },
+    {
+      "area": "final states, onDone, completion cascades and final actor status",
+      "reference": "xstate@5.33.2",
+      "trace": "../../tests/reference/xstate-v5/verify-reference.mjs",
+      "expected": "../../tests/results/linux/2026-09-26-completion.json",
+      "caseIds": ["XFC-CF-FINAL-001", "XFC-CF-FINAL-002"]
+    },
+    {
+      "area": "string and object event visibility",
+      "reference": "xstate@5.33.2",
+      "trace": "../../tests/reference/xstate-v5/trace-compat-006.mjs",
+      "expected": "../../tests/results/linux/2026-09-29-closure-compatibility.json",
+      "caseIds": ["XFC-CF-TRANS-005"]
+    },
+    {
+      "area": "committed snapshots and subscription notification timing",
+      "reference": "xstate@5.33.2",
+      "trace": "../../tests/reference/xstate-v5/trace-compat-006.mjs",
+      "expected": "../../tests/results/linux/2026-09-29-closure-compatibility.json",
+      "caseIds": ["XFC-CF-SNAP-002", "XFC-CF-SUB-001"]
+    },
+    {
+      "area": "shallow and depth-32 hierarchy with least-common-ancestor paths",
+      "reference": "xstate@5.33.2",
+      "trace": "../../tests/reference/xstate-v5/verify-reference.mjs",
+      "expected": "../../tests/results/linux/2026-09-27-m6-transition-domains.json",
+      "caseIds": ["XFC-CF-COMPAT-004", "XFC-CF-LIMIT-001"]
+    },
+    {
+      "area": "retained cond and internal migration aliases",
+      "reference": "xstate@4.38.3",
+      "trace": "../../tests/reference/xstate-v4/trace-compat-006.mjs",
+      "expected": "../../tests/results/linux/2026-09-29-closure-compatibility.json",
+      "caseIds": ["XFC-CF-COMPAT-002", "XFC-CF-COMPAT-006"]
+    }
+  ],
+  "differentialExclusions": [
+    {
+      "area": "diagnostics and construction strictness",
+      "reason": "Profile-specific categories, paths and stricter validation have no equivalent public XState contract",
+      "caseIds": ["XFC-CF-CONFIG-003", "XFC-CF-DIAG-006"]
+    },
+    {
+      "area": "native format, resource and Profile limit rejection",
+      "reason": "The private arena, MCU resource budgets and rejection beyond supported limits have no Node XState equivalent",
+      "caseIds": ["XFC-CF-FORMAT-003", "XFC-CF-LIMIT-004", "XFC-CF-RESOURCE-003"]
+    },
+    {
+      "area": "Espruino ownership, firmware integration, save, pins and timers",
+      "reason": "These are Espruino host contracts rather than portable XState behavior",
+      "caseIds": ["XFC-CF-BUILD-006", "XFC-CF-HOST-001", "XFC-CF-HOST-005", "XFC-CF-HOST-007"]
+    }
+  ],
+  "legacyEvidence": [
+    {
+      "id": "xstate-v4-source",
+      "source": "archive/xstate-xstate-4.38.3",
+      "revision": "xstate@4.38.3 release archive",
+      "classification": "legacy-evidence",
+      "adoptedCaseIds": []
+    },
+    {
+      "id": "fsmplus",
+      "source": "projects/xstate-fsmPlus",
+      "revision": "repository-controlled project history",
+      "classification": "legacy-evidence",
+      "adoptedCaseIds": []
+    },
+    {
+      "id": "scxml-1.0",
+      "source": "https://www.w3.org/TR/scxml/",
+      "revision": "W3C Recommendation 1 September 2015",
+      "classification": "compatibility-evidence",
+      "adoptedCaseIds": []
+    }
+  ]
+}

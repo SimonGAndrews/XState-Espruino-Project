@@ -80,22 +80,21 @@ The example supports Profile 1's ordered-assignment semantics: an earlier
 ordinary action sees the incoming context and a later ordinary action sees the
 result of the assignment.
 
-It also exposes two requirements not resolved by the current specification:
+It exposed two questions that are now resolved by Profile 1:
 
-1. `options.actions` must be able to bind a name to a supported built-in
+1. `options.actions` can bind a name to a supported built-in
    `assign(...)` descriptor, not only to an ordinary JavaScript function.
    Construction can resolve and compile the descriptor into an assignment
    record with no additional dispatch-time lookup.
 2. The v5 assignment expression authored for this example uses the object
    callback argument and destructuring syntax. Profile 1 currently uses
    positional `(context, event)` action callbacks, and Espruino cannot parse
-   destructuring. A documented source-adaptation step or a revised
-   assignment-expression ABI is therefore required; accepting the machine
-   structure alone does not solve this source incompatibility.
+   destructuring. The registered adaptation converts that expression to
+   `context => context.count + 1`; it does not alter the state topology,
+   event sequence or intended context change.
 
 Recommended classification:
 
-- v5 export: **semantically valid, requiring documented host/callback
-  adaptation and support for named built-in assignments**;
-- v4 export: **not executable under v4 because the manually supplied assigner
-  uses the v5 callback convention and is preserved verbatim**.
+- v5 export: **accepted after documented construction-time normalization**;
+- v4 export: **accepted after the same documented callback normalization**,
+  while its raw preserved Sources form remains non-executable under XState v4.

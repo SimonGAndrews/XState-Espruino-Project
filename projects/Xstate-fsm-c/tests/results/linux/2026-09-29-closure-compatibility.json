@@ -1,0 +1,76 @@
+{
+  "kind": "xfsm-closure-compatibility",
+  "date": "2026-09-29",
+  "caseIds": [
+    "XFC-CF-COMPAT-005",
+    "XFC-CF-COMPAT-006"
+  ],
+  "xstateEspruinoProjectBaseRevision": "2b40cd22cbff84684d1b0fbd77b4c6bac89c3aa3",
+  "specificationVersion": "0.52",
+  "implementationRevision": "6ed09d5d2444f5355e1573bcbd46094c362c6edf",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "environment": {
+    "linuxBoard": "LINUX",
+    "linuxCpuArchitecture": "x86-64",
+    "linuxEspruinoVersion": "2v29.448",
+    "linuxBuildFlags": "USE_XFSM=1",
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "node": "v20.15.0",
+    "python": "Python 3.12.3"
+  },
+  "governance": {
+    "intentionalDifferences": 19,
+    "statelyExamples": 7,
+    "differentialAreas": 10,
+    "differentialExclusionGroups": 3,
+    "legacyEvidenceSources": 3,
+    "primaryReference": "xstate@5.33.2",
+    "secondaryReference": "xstate@4.38.3",
+    "audit": "pass"
+  },
+  "canonicalDifferential": {
+    "xstate5332Records": 56,
+    "xstate4383Records": 11,
+    "nodeResults": "pass",
+    "linuxXfsmResults": "pass",
+    "normalJavaScriptSuites": 22,
+    "normalJavaScriptResult": "pass",
+    "allCanonicalTraces": 9,
+    "allCanonicalTraceResult": "pass",
+    "nativeSanitizerChecks": 73,
+    "nativeSanitizerResult": "pass",
+    "staticContractAudit": "pass",
+    "expectedTraceSha256": {
+      "xstate5332": "f2e10d225f851021706704757f147af9d8922cc4616c4f463986dc3983d284a1",
+      "xstate4383": "b71c4e26d0f4ea72ae55cbb028dca23a3c50f2d7df565a19cbfe073bca56bc91"
+    },
+    "referenceSourceSha256": {
+      "xstate5332": "1b26e399334ef8624bd8ef45cd7df034ae2fe46e919f918ce57ae0231498f8bf",
+      "xstate4383": "1428853160674ff8c6af0a97308648b22397d2e41bad9ba6c13f09fe43e7341e"
+    }
+  },
+  "physicalCanonicalTrace": {
+    "artifact": "retained XState 4.38.3 migration aliases",
+    "recordsPerTarget": 11,
+    "esp32Xtensa": {
+      "board": "ESP32_IDF5",
+      "runtimeVersion": "2v29.446",
+      "firmwareRevision": "c25a1c32dd07369e8a7ec42d6c853ada641019d6",
+      "result": "pass",
+      "buildMetadata": "tests/results/esp32-xtensa/2026-09-28-m7-release-candidate.json"
+    },
+    "esp32Riscv": {
+      "board": "ESP32C3_IDF5",
+      "runtimeVersion": "2v29.445",
+      "firmwareRevision": "aded959ada37449c59b4a79e67133cd4cc4cbd2b",
+      "result": "pass",
+      "buildMetadata": "tests/results/esp32-riscv/2026-09-28-m7-release-candidate.json"
+    },
+    "compositeXstate5332Artifact": {
+      "classification": "host-only aggregate",
+      "reason": "The aggregate source bundle exceeds the classic ESP32 JsVar pool; its component semantics already pass the target release-candidate suites, while the smaller canonical artifact proves streamed target comparison."
+    }
+  },
+  "report": "docs/reports/2026-09-29-m8-compatibility-closure.md",
+  "result": "pass"
+}

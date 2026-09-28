@@ -36,7 +36,9 @@ licensing question before implementation when the status is uncertain.
 
 Compatibility tests should use project-authored minimal machine definitions.
 When a fixture is exported from Stately tooling or adapted from an external
-example, record the tool or source, version where known, and all adaptations.
+example, record the tool or source, version where known, and all adaptations in
+`docs/compatibility/register.json`, then run
+`tests/audit_compatibility_governance.py`.
 
 ## Project Boundaries
 

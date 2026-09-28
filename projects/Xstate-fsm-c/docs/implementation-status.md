@@ -1,11 +1,11 @@
 # Xstate-fsm-c Implementation Status
 
-- Last reviewed: 2026-09-28
+- Last reviewed: 2026-09-29
 - Overall status: all seven M6 behavioural batches and the post-M6 whole-build
   resource review pass; compact compiler metadata removes the maximum-depth
   capacity gap, and complete release-candidate qualification passes on the
-  stock 70 KB original-ESP32 and ESP32-C3 profiles; the first three grouped M8
-  closure packages pass on Linux and Format Version 1 is frozen
+  stock 70 KB original-ESP32 and ESP32-C3 profiles; the first four grouped M8
+  closure packages pass and Format Version 1 is frozen
 - Current milestone: M7 remaining product-profile qualification and M8
   conformance-case closure and release readiness
 - Implementation code status: M4 runtime plus final/completion behavior, full
@@ -18,9 +18,9 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Next gate: implement the four remaining audit-derived closure cases, qualify
-  a physical Pico, resolve the MDBT42Q product profile, and progress M8 release
-  readiness
+- Next gate: close the two remaining target/resource cases by qualifying a
+  physical Pico and resolving the MDBT42Q product profile, then complete M8
+  release readiness
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -35,12 +35,12 @@ and outstanding tests for final project review.
 | Specification project path | `projects/Xstate-fsm-c/` |
 | Current specification version | `0.52` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
-| Project base for this evidence | `257b829` |
+| Project base for this evidence | `2b40cd2` |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `02c8a054f` |
+| Current implementation HEAD | `6ed09d5d2` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -79,6 +79,10 @@ The third grouped M8 closure package is committed in `02c8a054f`. It closes
 73 sanitizer-backed native checks, complete physical-layout assertions, and a
 reproducible static source audit. The reviewed result freezes private arena
 Format Version 1.
+The fourth grouped M8 closure package is committed in `6ed09d5d2`. It closes
+`COMPAT-005` and `COMPAT-006` with a machine-checked governance register,
+pinned XState 5.33.2 and 4.38.3 canonical traces, complete Linux regression,
+and streamed trace comparison on physical Xtensa and RISC-V targets.
 
 ## Completed Foundation Work
 
@@ -251,7 +255,7 @@ Format Version 1.
   with ARM GCC 13.2.1; XFSM adds 23,528 bytes and leaves 16,288 bytes in the
   application region without changing the stock board definition.
 - Fork-local XFSM CI covers disabled/enabled Linux builds, twenty-two normal
-  JavaScript suites, seven canonical traces, the private allocation-fault
+  JavaScript suites, nine canonical traces, the private allocation-fault
   suite, 73 native sanitizer checks, the static contract audit, and the enabled
   original ESP32 IDF5 build without changing any stock board definition.
 - A physical ESP32-D0WD-V3 running the selected `ESP32_IDF5` profile passes all
@@ -296,22 +300,18 @@ combined-service evidence at the preserved 70 KB native reserve. The stock
 MDBT42Q release/DFU image passes,
 while the XFSM-enabled ELF links but overlaps reserved Storage by 22,176 bytes
 and fails the target size check. M0 normative traceability is complete: the
-drift- and orphan-checking registry covers all 707 normative units, with 499
-passing, 188 partial, 17 planned-evidence, and three explicitly non-applicable
-dispositions. All 704 applicable requirements map to stable conformance cases,
-and every case maps back to at least one requirement. The audit added fourteen
-focused closure cases; `COMPAT-007` traceability and the first six grouped
-public/configuration and runtime-contract closures now pass, leaving seven
-closure cases.
+drift- and orphan-checking registry covers all 707 normative units, with 662
+passing, 42 partial, no planned-evidence entries, and three explicitly
+non-applicable dispositions. All 704 applicable requirements map to stable
+conformance cases, and every case maps back to at least one requirement. Twelve
+of the fourteen audit-derived closure cases now pass; only `BUILD-006` and
+`RESOURCE-003` remain.
 
 Immediate tasks:
 
-1. sequence and implement the seven open cases identified by the completed
-   [normative requirement audit](../tests/normative-audit.md), continuing with
-   the structural/static package before final compatibility, target and
-   resource reviews;
-2. qualify a physical Pico and review the MDBT42Q product-profile constraint;
-3. produce an XFSM memory architecture and lifetime diagram that distinguishes
+1. close `BUILD-006` and `RESOURCE-003` through physical Pico qualification
+   and a documented viable MDBT42Q profile or exclusion;
+2. produce an XFSM memory architecture and lifetime diagram that distinguishes
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
    actor storage, native heap, and the single native C stack. Show their use
    during module loading, `createMachine` compilation, `createActor`,
@@ -358,6 +358,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-29 | M8 compatibility closure passed `COMPAT-005` and `COMPAT-006`: 19 intentional differences, seven Stately specimens, ten differential areas and three exclusions are machine checked; pinned v5/v4 canonical traces match XFSM; and the embedded v4 trace matches on Xtensa and RISC-V |
 | 2026-09-28 | M8 structural-contract closure passed `DIAG-006`, `FORMAT-003`, and `HOST-007`; froze private native arena Format Version 1; expanded the native sanitizer suite to 73 checks; and reconciled the ledger to 620 pass, 67 partial, 17 planned, and 3 not applicable |
 | 2026-09-28 | M8 runtime-contract closure passed `ACTION-002`, `SNAP-002`, and `TRANS-005` as canonical traces, matched shared XState 5.33.2 behavior, and fixed accessor evaluation in `snapshot.matches(...)` |
 | 2026-09-28 | Original ESP32 M7.4 passed matched builds, 20 embedded portable suites, deterministic physical fault injection, maximum-depth, cleanup, host integration, save/restoration, and combined-service reruns; target advanced to Conformance verified |

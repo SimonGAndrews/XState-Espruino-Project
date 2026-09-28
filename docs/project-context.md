@@ -1,6 +1,6 @@
 # Current Project Context
 
-- Last reviewed: 2026-09-28
+- Last reviewed: 2026-09-29
 - Current development focus: Xstate-fsm-c Profile 1
 
 This document is the umbrella repository's current navigation and authority
@@ -36,11 +36,11 @@ work are recorded in the implementation status.
 Current revisions, progress, and next tasks are recorded in its
 [implementation status](../projects/Xstate-fsm-c/docs/implementation-status.md).
 
-M0 normative traceability and the first three grouped M8 closure packages are
-complete. The current implementation step is the four remaining closure cases,
-remaining M7 physical-target qualification, and M8 release readiness. The stock
-full-feature 70 KB original ESP32 and ESP32-C3 profiles are Conformance
-verified; Espruino Pico remains build-verified pending physical execution, and
+M0 normative traceability and the first four grouped M8 closure packages are
+complete. The current implementation step is the two remaining target/resource
+closure cases, remaining M7 physical-target qualification, and M8 release
+readiness. The stock full-feature 70 KB original ESP32 and ESP32-C3 profiles
+are Conformance verified; Espruino Pico remains build-verified pending physical execution, and
 MDBT42Q remains blocked by its Storage-overlap size constraint. The repeatable
 original-ESP32 procedure is recorded in the
 [device-testing guide](../projects/Xstate-fsm-c/docs/esp32-device-testing.md),

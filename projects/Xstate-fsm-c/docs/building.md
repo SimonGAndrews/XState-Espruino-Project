@@ -8,7 +8,7 @@
   build is verified, and the MDBT42Q size check is blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `02c8a054f`
+- Current implementation revision: `6ed09d5d2`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a

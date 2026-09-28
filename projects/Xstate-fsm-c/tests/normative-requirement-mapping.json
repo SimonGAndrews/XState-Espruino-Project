@@ -74,11 +74,11 @@
     {
       "id": "XFC-REQ-0008",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005"
       ],
-      "notes": "Compatibility-governance static closure is planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0009",
@@ -114,29 +114,29 @@
     {
       "id": "XFC-REQ-0012",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005"
       ],
-      "notes": "Compatibility-governance static closure is planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0013",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005"
       ],
-      "notes": "Compatibility-governance static closure is planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0014",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005"
       ],
-      "notes": "Compatibility-governance static closure is planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0015",
@@ -7316,82 +7316,82 @@
     {
       "id": "XFC-REQ-0656",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Pinned evidence and reviewed corpus exist; complete governance static closure remains planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0657",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Pinned evidence and reviewed corpus exist; complete governance static closure remains planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0658",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Pinned evidence and reviewed corpus exist; complete governance static closure remains planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0659",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Pinned evidence and reviewed corpus exist; complete governance static closure remains planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0660",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Pinned evidence and reviewed corpus exist; complete governance static closure remains planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0661",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Pinned evidence and reviewed corpus exist; complete governance static closure remains planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0662",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Pinned evidence and reviewed corpus exist; complete governance static closure remains planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0663",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Pinned evidence and reviewed corpus exist; complete governance static closure remains planned."
+      "notes": "The machine-checked register covers every intentional difference, Stately specimen, pin, adaptation and legacy-evidence disposition."
     },
     {
       "id": "XFC-REQ-0664",
@@ -7459,27 +7459,27 @@
     {
       "id": "XFC-REQ-0671",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Existing cases identify inputs and references, but canonical trace conversion is incomplete."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0672",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Existing cases identify inputs and references, but canonical trace conversion is incomplete."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0673",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7488,12 +7488,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0674",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7502,12 +7502,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0675",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7516,12 +7516,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0676",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7530,12 +7530,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0677",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7544,12 +7544,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0678",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7558,12 +7558,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0679",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7572,12 +7572,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0680",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7586,12 +7586,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0681",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7600,12 +7600,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0682",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7614,12 +7614,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0683",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7628,12 +7628,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0684",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7642,12 +7642,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0685",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7656,12 +7656,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0686",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7670,12 +7670,12 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0687",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-001",
         "XFC-CF-COMPAT-002",
@@ -7684,7 +7684,7 @@
         "XFC-CF-COMPAT-005",
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "Pinned comparisons cover major semantics; the complete differential corpus and normalized trace remain planned."
+      "notes": "Machine-checked compatibility governance and the complete pinned canonical differential corpus pass."
     },
     {
       "id": "XFC-REQ-0688",
@@ -7722,119 +7722,119 @@
     {
       "id": "XFC-REQ-0691",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0692",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0693",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0694",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0695",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0696",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0697",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0698",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0699",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0700",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0701",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0702",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0703",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-006"
       ],
-      "notes": "The specified canonical newline-delimited JSON trace and normalized comparator are not yet implemented."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0704",

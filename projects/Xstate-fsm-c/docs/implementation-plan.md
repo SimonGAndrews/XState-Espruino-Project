@@ -5,8 +5,8 @@
 - Plan status: M0 evidence foundation and normative traceability, M6 behavior,
   post-M6 resource review, original-ESP32 M7.1-M7.4, stock-profile ESP32
   compiler-capacity optimization, ESP32-C3 C3-A through C3-D qualification,
-  and the first three grouped M8 public/configuration, runtime-contract, and
-  structural-contract closure packages complete
+  and the first four grouped M8 public/configuration, runtime-contract,
+  structural-contract, and compatibility closure packages complete
 - Current milestone: M7 remaining product-profile qualification and M8
   conformance-case closure and release readiness
 - Normative authority: [Profile 1 specification](specification.md)

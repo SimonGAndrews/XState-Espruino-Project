@@ -10,6 +10,11 @@ Recorded evidence is indexed under [`results/`](results/).
 The primary differential environment is pinned under
 [`reference/xstate-v5/`](reference/xstate-v5/). The migration-alias reference
 is pinned under [`reference/xstate-v4/`](reference/xstate-v4/).
+Compatibility provenance, pins, adaptations and exclusions are checked with:
+
+```bash
+python3 projects/Xstate-fsm-c/tests/audit_compatibility_governance.py
+```
 
 The suite will distinguish normative Profile 1 cases, pinned Node XState
 differential cases, intentional compatibility differences, native-format and
@@ -83,7 +88,7 @@ in the [C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json).
 The corresponding stock full-feature original-ESP32 release qualification is
 recorded in the [M7.4
 result](results/esp32-xtensa/2026-09-28-m7-release-candidate.json).
-The first three M8 grouped closure packages and their seven canonical streamed
+The first four M8 grouped closure packages and their nine canonical streamed
 traces are recorded in the [public/configuration
 result](results/linux/2026-09-28-closure-public-configuration.json) and the
 [runtime-contract
@@ -91,3 +96,6 @@ result](results/linux/2026-09-28-closure-runtime-contract.json). The diagnostic,
 native-format, and host-boundary package is recorded in the
 [structural-contract
 result](results/linux/2026-09-28-closure-structural-contract.json).
+The compatibility governance and pinned differential package is recorded in
+the [compatibility closure
+result](results/linux/2026-09-29-closure-compatibility.json).

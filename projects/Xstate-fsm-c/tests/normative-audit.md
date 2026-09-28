@@ -74,23 +74,23 @@ The completed review has this result:
 
 | Classification | Count | Meaning |
 | --- | ---: | --- |
-| Mapped, passing evidence | 620 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
-| Mapped, partial evidence | 67 | Existing evidence demonstrates part of the obligation, while a focused input, negative surface, target or completeness check remains. |
-| Mapped, planned evidence | 17 | The requirement has a stable planned case but no adequate completed evidence yet. |
+| Mapped, passing evidence | 662 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
+| Mapped, partial evidence | 42 | Existing evidence demonstrates part of the obligation, while a target or resource-completeness check remains. |
+| Mapped, planned evidence | 0 | No applicable requirement lacks implementation evidence; remaining work extends partial target/resource coverage. |
 | Not applicable to Version 1 execution evidence | 3 | The statement constrains application use or future API evolution rather than observable Version 1 engine behavior. |
 
 | Specification section | Pass | Partial | Planned | Not applicable |
 | --- | ---: | ---: | ---: | ---: |
 | Scope | 5 | 0 | 0 | 0 |
-| Compatibility Target | 2 | 3 | 4 | 0 |
+| Compatibility Target | 6 | 3 | 0 | 0 |
 | Machine Model | 151 | 0 | 0 | 0 |
 | Runtime Semantics | 304 | 0 | 0 | 1 |
 | Public Interfaces | 20 | 5 | 0 | 2 |
 | Host Integration | 81 | 11 | 0 | 0 |
 | Validation and Error Behavior | 50 | 0 | 0 | 0 |
 | Resource and Performance Requirements | 0 | 16 | 0 | 0 |
-| Conformance Requirements | 7 | 32 | 13 | 0 |
-| **Total** | **620** | **67** | **17** | **3** |
+| Conformance Requirements | 45 | 7 | 0 | 0 |
+| **Total** | **662** | **42** | **0** | **3** |
 
 All 704 applicable requirements map to one or more stable conformance case IDs.
 All 62 conformance cases map back to at least one normative requirement. This
@@ -103,10 +103,10 @@ The Scope behavior now has passing evidence. The focused construction trace
 proves that a compiled machine supplied as a nested state-node configuration
 rejects rather than being mistaken for a state definition.
 
-Compatibility evidence is pinned and the Stately corpus records its known
-provenance, but governance is not yet mechanically complete. Static checks are
-needed for compatibility-difference registration, corpus producer/version and
-assessment fields, and recorded adaptations.
+Compatibility governance is mechanically complete. The checked register covers
+all 19 intentional differences, all seven Stately specimens, both exact package
+pins, every recorded adaptation, ten differential areas, three reasoned
+exclusion groups, and the disposition of legacy evidence.
 
 The required public functions, negative surface, receiver validation and
 private brands now have a focused canonical trace. That trace exposed and
@@ -126,9 +126,10 @@ action, event-identity, guard-fallback and snapshot shapes pass the pinned
 XState 5.33.2 reference; Profile-only callback ABI, event validation,
 diagnostics and lazy caching are classified separately.
 
-The canonical portable trace foundation is implemented and used by the first
-seven closure cases. The remaining cross-cutting work is conversion of the
-portable behavioral and pinned Node corpus to that streamed, normalized form.
+The canonical portable trace foundation is implemented and used by nine XFSM
+traces. Pinned XState 5.33.2 and 4.38.3 reference models reproduce reviewed
+56-record and 11-record traces, XFSM matches both on Linux, and the compact v4
+trace matches through noisy serial capture on physical Xtensa and RISC-V.
 
 Native layout, host ownership, and diagnostics pass their formal closure
 package. Format Version 1 is frozen. Remaining target/resource work is physical
@@ -160,8 +161,7 @@ The review added fourteen stable cases to make the remaining work explicit:
 | `XFC-CF-COMPAT-007` | Bidirectional requirement traceability |
 
 `XFC-CF-COMPAT-007`, `API-002`, `CONFIG-004`, `ACTION-002`, `SNAP-002`,
-`TRANS-005`, `FORMAT-003`, `HOST-007`, `DIAG-006`, and the applicable Espruino
-surface of `CONFIG-005` pass. Four closure cases remain; `COMPAT-006` is partial
-because its common trace foundation and seven accepted traces exist.
-Implemented evidence must update the mapping, conformance matrix and test
-inventory together.
+`TRANS-005`, `FORMAT-003`, `HOST-007`, `DIAG-006`, `COMPAT-005`, `COMPAT-006`,
+and the applicable Espruino surface of `CONFIG-005` pass. Two closure cases
+remain: `BUILD-006` and `RESOURCE-003`. Implemented evidence must update the
+mapping, conformance matrix and test inventory together.

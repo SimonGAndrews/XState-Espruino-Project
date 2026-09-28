@@ -23,13 +23,13 @@ actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
 conformance strategy.
 
-M0 normative traceability is complete. The first three grouped M8 closure
-packages pass seven canonical traces and close public/configuration,
-runtime-contract, diagnostics, native-format, and host-boundary review;
-current work is closing the four remaining cases, remaining physical-target
-qualification, and M8 release readiness. The stock full-feature 70 KB original
-ESP32 and ESP32-C3 profiles are Conformance verified after matched builds,
-portable and target-specific runtime suites, deterministic allocation faults,
+M0 normative traceability is complete. The first four grouped M8 closure
+packages pass nine canonical traces and close public/configuration,
+runtime-contract, diagnostics, native-format, host-boundary, and compatibility
+review; current work is closing the two remaining target/resource cases,
+remaining physical-target qualification, and M8 release readiness. The stock
+full-feature 70 KB original ESP32 and ESP32-C3 profiles are Conformance
+verified after matched builds, portable and target-specific runtime suites, deterministic allocation faults,
 maximum-depth execution, cleanup, save/restoration, native/flash callback and
 timer integration, and combined XFSM/BLE/WiFi/TLS service tests. Private arena
 Format Version 1 is frozen; the hierarchy and microstep limits retain their
