@@ -76,3 +76,7 @@ the [Linux post-M6 resource
 result](results/linux/2026-09-27-post-m6-resource-review.json) and [original
 ESP32 post-M6 resource
 result](results/esp32-xtensa/2026-09-27-post-m6-resource-review.json).
+The stock full-feature ESP32-C3 release candidate's matched builds, portable
+runtime, maximum-depth, deterministic allocation-fault, cleanup,
+host-integration, save/restoration, and combined-service evidence is recorded
+in the [C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json).

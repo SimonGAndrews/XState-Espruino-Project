@@ -3,8 +3,8 @@
 ## Status
 
 - Plan status: M6 behavior, post-M6 resource review, original-ESP32 M7.1-M7.3,
-  stock-profile ESP32 compiler-capacity optimization, and ESP32-C3 C3-C
-  loaded-service qualification complete
+  stock-profile ESP32 compiler-capacity optimization, and ESP32-C3 C3-A
+  through C3-D qualification complete
 - Current milestone: M0 requirement inventory and M7 product-profile and
   physical-target qualification
 - Normative authority: [Profile 1 specification](specification.md)
@@ -275,7 +275,12 @@ profile is not assumed to suit the RISC-V target:
 4. **C3-D, release-candidate rerun:** repeat clean disabled/enabled builds and
    the agreed portable, target, resource, cleanup, and service-coexistence
    suite against the selected C3 profile. Advance from `Build verified` to
-   `Conformance verified` only when this physical evidence passes.
+   `Conformance verified` only when this physical evidence passes. This gate
+   passes at revision `aded959ad`: matched builds, all 20 embedded-applicable
+   portable suites, deterministic physical allocation faults, direct and
+   Storage-backed maximum depth, host integration, save/restoration, cleanup,
+   and the combined wireless-service rerun pass. See the [C3-D release-
+   candidate report](reports/2026-09-28-m7-esp32-c3-release-candidate.md).
 
 The first C3-B physical slice is recorded in the [C3 physical baseline
 report](reports/2026-09-27-m7-esp32-c3-physical-baseline.md). The stock
@@ -301,7 +306,8 @@ depth-32 compiler peak fell from 2,245 to 1,335 blocks (40.5%), and the direct
 and Storage-backed action-heavy fixtures pass on the stock 70 KB profile with
 1,174 measured blocks of construction headroom. C3-B's capacity gate is
 closed. C3-C subsequently passed four combined-service runs on that stock
-profile; C3-D remains open.
+profile. C3-D passed the final release-candidate rerun and advances ESP32-C3
+IDF5 to `Conformance verified` for Profile 1.
 
 ### M8 - Format Freeze And Release Readiness
 

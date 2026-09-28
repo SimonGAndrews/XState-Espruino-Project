@@ -4,11 +4,11 @@
 
 - Build-document status: all seven M6 batches and the post-M6 whole-build
   resource review are verified for their applicable Linux and original ESP32
-  scope; ESP32-C3 loaded-service qualification and reduced-profile Pico build
-  verified; MDBT42Q size check blocked
+  scope; ESP32-C3 C3-D is Conformance verified, the reduced-profile Pico build
+  is verified, and the MDBT42Q size check is blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `aded959ad`
+- Current implementation revision: `c25a1c32d`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -183,6 +183,22 @@ env -u DEBUG make USE_XFSM=1 XFC_TEST=1 -j2
 bin/espruino --test libs/xfsm/tests/test_fault_injection.js
 ```
 
+For constrained physical targets, build the same test seam and run the compact
+sequential fixture with the paced direct runner:
+
+```bash
+env -u DEBUG make BOARD=ESP32C3_IDF5 clean
+env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 XFC_TEST=1 -j2
+python3 tools/repl/run_test.py \
+  /home/simon/Espruino-XFSM-Profile1/libs/xfsm/tests/test_fault_injection_embedded.js \
+  --port /dev/ttyACM0 --timeout 60
+```
+
+Restore the normal release image afterward and rerun
+`test_strict_validation_embedded.js` to verify that `_failNext` and measurement
+helpers are absent. C3-D used the preserved production artifact whose SHA-256
+is recorded in its result rather than treating the test build as a candidate.
+
 The complete batch 7 record is the [Linux validation/fault
 result](../tests/results/linux/2026-09-27-m6-validation-faults.json). The
 [ESP32 validation/runtime
@@ -303,7 +319,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
 | Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; optimized stock 70 KB full-feature profile passes action-heavy depth 32, Storage-backed execution, cleanup, GC, and serialization |
-| ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Build verified; optimized stock 70 KB full-feature profile passes focused resource/runtime checks and C3-C combined XFSM/BLE/WiFi/TLS service qualification |
+| ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Conformance verified on the optimized stock 70 KB full-feature profile |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
 The library must be selected through Espruino's normal optional-library
@@ -385,12 +401,12 @@ env -u DEBUG make BOARD=ESP32C3_IDF5 clean
 env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 -j2
 ```
 
-At implementation revision `8ce408fb5`, the disabled image is 1,678,240 bytes
-and the enabled image is 1,713,264 bytes. XFSM adds 35,024 bytes (2.09%) and
-the enabled image passes ESP-IDF's generated 2,048,000-byte app-partition check
-with 334,736 bytes free. This advances the target only to `Build verified`.
-See the [C3 build report](reports/2026-09-27-m7-esp32-c3-build-feasibility.md)
-and [result](../tests/results/esp32-riscv/2026-09-27-m7-build-feasibility.json).
+At release-candidate revision `aded959ad`, the matched disabled image is
+1,678,240 bytes and the enabled image is 1,715,120 bytes. XFSM adds 36,880
+bytes (2.20%), and the enabled image passes ESP-IDF's generated 2,048,000-byte
+app-partition check with 332,880 bytes free. The exact enabled candidate then
+passed C3-D physical qualification. See the [C3-D report](reports/2026-09-28-m7-esp32-c3-release-candidate.md)
+and [result](../tests/results/esp32-riscv/2026-09-28-m7-release-candidate.json).
 
 Before compiler optimization, physical C3 testing found that the stock
 70,000-byte native-heap reserve failed both direct and Storage-backed depth-32

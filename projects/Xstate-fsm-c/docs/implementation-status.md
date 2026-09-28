@@ -4,8 +4,8 @@
 - Overall status: all seven M6 behavioural batches, the post-M6 whole-build
   resource review, and M7.1-M7.3 original-ESP32 integration pass their
   applicable scope; compact compiler metadata removes the maximum-depth
-  capacity gap on stock 70 KB original-ESP32 and ESP32-C3 profiles, and C3-C
-  wireless-service coexistence passes on the stock C3 profile
+  capacity gap on stock 70 KB original-ESP32 and ESP32-C3 profiles, and the
+  complete C3-D release-candidate qualification passes on the stock C3 profile
 - Current milestone: M0 normative requirement inventory and M7 product-profile
   and physical-target qualification
 - Implementation code status: M4 runtime plus final/completion behavior, full
@@ -18,8 +18,8 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Next gate: complete the original-ESP32 and ESP32-C3 release-candidate
-  reruns, then continue M0 traceability and remaining target qualification
+- Next gate: complete the original-ESP32 M7.4 release-candidate rerun, then
+  continue M0 traceability and remaining target qualification
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -34,12 +34,12 @@ and outstanding tests for final project review.
 | Specification project path | `projects/Xstate-fsm-c/` |
 | Current specification version | `0.51` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
-| Project base for this evidence | `4819be0` |
+| Project base for this evidence | `e6239e6` |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `aded959ad` |
+| Current implementation HEAD | `c25a1c32d` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -57,6 +57,10 @@ optimization report](reports/2026-09-27-compiler-jsvar-optimization.md).
 The C3 physical service fixtures are committed in `aded959ad`; four
 consecutive combined-service passes are recorded in the [C3 service-
 coexistence report](reports/2026-09-28-m7-esp32-c3-service-coexistence.md).
+The same revision's final stock-profile physical rerun is recorded in the
+[C3-D release-candidate report](reports/2026-09-28-m7-esp32-c3-release-candidate.md).
+The constrained-target deterministic fault fixture and strengthened production
+private-API check are committed in `c25a1c32d`.
 
 ## Completed Foundation Work
 
@@ -192,6 +196,13 @@ coexistence report](reports/2026-09-28-m7-esp32-c3-service-coexistence.md).
   events plus a depth-24, 49-action traversal. The lowest observed native heap
   is 40,480 bytes; all runs clean to 460 used JsVars and pass their correlated
   target, peer, endpoint, lifecycle, and Storage-cleanup assertions.
+- The C3-D release candidate adds matched disabled/enabled builds, all 20
+  embedded-applicable portable suites, an eight-case physical deterministic
+  allocation-fault smoke, direct and Storage-backed maximum depth, exact
+  cleanup, GC, serialization, native GPIO/timer/flash callbacks,
+  save/reboot/restore/reset, and a further combined-service pass. The exact
+  production image was restored after the test-only fault build and advances
+  ESP32-C3 IDF5 to `Conformance verified`.
 - Build-only M5 instrumentation measures construction block high-water and
   synchronous coordinator stack without changing normal firmware API or cost.
 - Linux firmware size, arena, retained values, construction, actor, snapshot,
@@ -261,10 +272,10 @@ feature sets and stock 70 KB native-heap reserve.
 
 A reduced-profile Pico image passes its size gate, but no physical Pico runtime
 evidence has been collected. The optimized stock full-feature ESP32-C3 image
-passes compact and action-heavy depth 32, direct and Storage-backed execution,
-exact cleanup, GC relocation, event serialization, and four consecutive
-combined XFSM, BLE, WiFi, and HTTPS/TLS service runs at the preserved 70 KB
-native reserve. The stock MDBT42Q release/DFU image passes,
+is now `Conformance verified` after C3-D repeated its build, portable,
+maximum-depth, resource, cleanup, host-lifecycle, allocation-fault, and
+combined-service evidence at the preserved 70 KB native reserve. The stock
+MDBT42Q release/DFU image passes,
 while the XFSM-enabled ELF links but overlaps reserved Storage by 22,176 bytes
 and fails the target size check. M0's full normative requirement inventory
 also remains documentation work.
@@ -273,8 +284,7 @@ Immediate tasks:
 
 1. expand the M0 normative requirement inventory while
    maintaining the consolidated [test inventory](../tests/test-inventory.md);
-2. complete the original-ESP32 M7.4 and ESP32-C3 C3-D release-candidate
-   reruns and qualify a
+2. complete the original-ESP32 M7.4 release-candidate rerun and qualify a
    physical Pico;
 3. produce an XFSM memory architecture and lifetime diagram that distinguishes
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
@@ -303,7 +313,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Retain or revise snapshot materialization | Lazy snapshots retained provisionally after Linux and ESP32 allocation measurement; constrained-target evidence pending | M7 open |
 | Retain or revise diagnostic detail | The 48-byte detail budget is retained provisionally after complete Linux and compact ESP32 validation; constrained-target evidence pending | M7 open |
 | Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected; full-feature stock 70 KB profile and M7.1-M7.3 physical slices pass after compiler optimization | M7.4 release-candidate rerun |
-| Select ESP32-C3 JsVar/native-heap profile | Stock 70 KB reserve selected; optimized action-heavy depth 32 passes with 1,174 measured blocks of headroom and C3-C combined services pass with a 40,480-byte native-heap minimum | C3-D release-candidate rerun |
+| Select ESP32-C3 JsVar/native-heap profile | Stock 70 KB reserve selected; optimized action-heavy depth 32 passes with 1,174 measured blocks of headroom, combined services retain at least 40,480 native-heap bytes, and C3-D passes | Closed for ESP32-C3 |
 
 ## Target Status
 
@@ -313,7 +323,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Espruino Pico | Build verified for reduced product profile | [Pico feasibility build](../tests/results/pico/2026-09-26-feasibility-build.json) |
 | MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
 | Original ESP32 IDF5 | Build verified; M7.1-M7.3 integration and stock 70 KB compact/action-heavy depth, Storage-backed execution, exact cleanup, GC and serialization pass; M7.4 pending | [Compiler optimization result](../tests/results/esp32-xtensa/2026-09-27-compiler-jsvar-optimization.json) |
-| ESP32-C3 IDF5 | Build verified; optimized stock 70 KB profile passes compact/action-heavy depth, Storage-backed execution, exact cleanup, GC, serialization, and C3-C combined XFSM/BLE/WiFi/TLS service qualification; C3-D pending | [C3 service-coexistence result](../tests/results/esp32-riscv/2026-09-28-m7-service-coexistence.json) |
+| ESP32-C3 IDF5 | Conformance verified on the stock full-feature 70 KB profile | [C3-D release-candidate result](../tests/results/esp32-riscv/2026-09-28-m7-release-candidate.json) |
 | ESP32-S3 IDF5 | Not yet verified | Later expansion target; not required for Version 1 qualification |
 
 Statuses have the meanings defined in the Profile 1 specification. A successful
@@ -323,6 +333,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-28 | ESP32-C3 C3-D passed matched builds, 20 embedded portable suites, deterministic physical fault injection, maximum-depth, cleanup, host integration, save/restoration, and combined-service reruns; target advanced to Conformance verified |
 | 2026-09-28 | Specification 0.51 clarifies that structural maxima are not memory reservations for arbitrary combinations, retains depth 32, distinguishes valid-shape `E_NO_MEMORY` from `E_LIMIT_EXCEEDED`, and requires the canonical depth-32/65-action fixture for a target's Conformance verified claim |
 | 2026-09-28 | C3-C passed four consecutive stock-profile combined runs: XFSM coordinated BLE GATT, WiFi association and TLS 1.2 HTTPS while exercising a depth-24, 49-action transition; minimum native heap was 40,480 bytes and every run passed correlated target, peer, endpoint and cleanup checks |
 | 2026-09-27 | Compact GC-owned state metadata and on-demand derived paths reduced the C3 compact depth-32 compiler peak by 910 blocks (40.5%); stock 70 KB original-ESP32 and C3 builds now pass direct and Storage-backed action-heavy depth 32 with 37-39% measured JsVar headroom, so the 65 KB override is no longer selected |

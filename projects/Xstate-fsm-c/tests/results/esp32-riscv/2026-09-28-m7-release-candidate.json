@@ -1,0 +1,218 @@
+{
+  "kind": "xfsm-m7-esp32-c3-release-candidate",
+  "date": "2026-09-28",
+  "caseIds": [
+    "XFC-CF-BUILD-001",
+    "XFC-CF-BUILD-002",
+    "XFC-CF-API-001",
+    "XFC-CF-CONFIG-003",
+    "XFC-CF-LIFE-001",
+    "XFC-CF-LIFE-002",
+    "XFC-CF-TRANS-004",
+    "XFC-CF-ACTION-001",
+    "XFC-CF-SUB-001",
+    "XFC-CF-HOST-001",
+    "XFC-CF-HOST-002",
+    "XFC-CF-HOST-003",
+    "XFC-CF-HOST-004",
+    "XFC-CF-HOST-005",
+    "XFC-CF-HOST-006",
+    "XFC-CF-RESOURCE-001",
+    "XFC-CF-RESOURCE-002",
+    "XFC-CF-LIMIT-001",
+    "XFC-CF-LIMIT-002",
+    "XFC-CF-LIMIT-003"
+  ],
+  "xstateEspruinoProjectBaseRevision": "e6239e64d6647c933ae2d08598b9e1b8aaef2325",
+  "specificationVersion": "0.51",
+  "implementationRevision": "aded959ada37449c59b4a79e67133cd4cc4cbd2b",
+  "engineImplementationRevision": "cb5d74e8953ac7b4290aaba64f2aabe7714a3a05",
+  "fixtureImplementationRevision": "c25a1c32dd07369e8a7ec42d6c853ada641019d6",
+  "benchRevision": "7572baf654c284417b80dc7c0c068a601bada5f4",
+  "branch": "feature/xfsm-profile1",
+  "target": {
+    "board": "ESP32C3_IDF5",
+    "chip": "ESP32-C3 QFN32 revision 0.3",
+    "cpuArchitecture": "RISC-V RV32IMC",
+    "pointerWidthBits": 32,
+    "byteOrder": "little-endian",
+    "flashBytes": 4194304,
+    "controlPort": "/dev/ttyACM0",
+    "persistentPort": "/dev/serial/by-path/pci-0000:00:14.0-usb-0:2.3:1.0"
+  },
+  "toolchain": {
+    "espIdf": "5.5.3",
+    "compiler": "RISC-V GCC 14.2.0",
+    "optimization": "O3 release",
+    "buildFlags": "BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1",
+    "setDefinesOverride": false
+  },
+  "profile": {
+    "nativeHeapReserveBytes": 70000,
+    "jsVarBlocks": 3027,
+    "jsVarBlockBytes": 13,
+    "xfsmStackReserveBytes": 1024,
+    "featuresRemoved": []
+  },
+  "runtimeIdentity": {
+    "version": "2v29.445",
+    "gitCommit": "aded959ad",
+    "xfsmCreateMachine": "function"
+  },
+  "matchedBuilds": {
+    "appPartitionBytes": 2048000,
+    "disabled": {
+      "appImageBytes": 1678240,
+      "freeAppPartitionBytes": 369760,
+      "appImageSha256": "e767d19ef8d940b05b39a69a5df8bcb4b2d9508229733d131f7a159b2b4868c1",
+      "xfsmWrapperInGeneratedSourceList": false,
+      "result": "pass"
+    },
+    "enabled": {
+      "appImageBytes": 1715120,
+      "freeAppPartitionBytes": 332880,
+      "appImageSha256": "e0f6411a84fff281d469170f607e0811027dcf6fd2488a44ce425062436a7371",
+      "elfTextBytes": 1511385,
+      "elfDataBytes": 227312,
+      "elfBssBytes": 1581344,
+      "xfsmLinked": true,
+      "result": "pass"
+    },
+    "xfsmDeltaBytes": 36880,
+    "xfsmDeltaPercent": 2.19754
+  },
+  "portableEmbeddedSuites": {
+    "count": 20,
+    "result": "pass",
+    "suites": [
+      "test_shell.js",
+      "test_compile.js",
+      "test_diagnostics.js",
+      "test_runtime.js",
+      "test_completion.js",
+      "test_completion_cascade.js",
+      "test_targets.js",
+      "test_events_migration.js",
+      "test_profile1_diagnostics.js",
+      "test_context_ownership.js",
+      "test_assign_forms.js",
+      "test_context_diagnostics.js",
+      "test_transition_domains.js",
+      "test_transition_depth.js",
+      "test_lifecycle_complete.js",
+      "test_subscriber_complete.js",
+      "test_cross_actor_gc.js",
+      "test_runtime_errors.js",
+      "test_subscriptions.js",
+      "test_strict_validation_embedded.js"
+    ]
+  },
+  "maximumDepth": {
+    "depth": 32,
+    "startupActions": 32,
+    "transitionActions": 65,
+    "directTransitionUsageBlocks": 1126,
+    "directResult": "pass",
+    "storageBackedCompiledUsageBlocks": 1083,
+    "storageBackedFinalUsageBlocks": 302,
+    "storageBackedNativeFreeHeapBytes": 67136,
+    "storageBackedNativeMinimumHeapBytes": 66564,
+    "storageCleanup": true,
+    "storageBackedResult": "pass"
+  },
+  "resourceAndHostChecks": {
+    "exactCleanup": {
+      "settledBaselineBlocks": 1973,
+      "finalUsageBlocks": 1973,
+      "actorCount": 8,
+      "repeatCount": 6,
+      "result": "pass"
+    },
+    "gcRelocation": "pass",
+    "eventSerialization": {
+      "synchronousSends": 128,
+      "timerObservedCount": 128,
+      "elapsedMilliseconds": 579.85210418701,
+      "result": "pass"
+    },
+    "applicationIntegration": {
+      "checks": 13,
+      "outerScopeAndClosure": true,
+      "flashModule": true,
+      "nativeGuardAndBoundGpio": true,
+      "timerIngress": true,
+      "faultRollback": true,
+      "cleanup": true,
+      "result": "pass"
+    },
+    "saveRestore": {
+      "interpreterBytes": 39351,
+      "compressedFlashBytes": 7654,
+      "restoreWithoutReplay": true,
+      "resetWithoutExit": true,
+      "savedImageErased": true,
+      "result": "pass"
+    }
+  },
+  "deterministicFaultBuild": {
+    "buildFlags": "BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 XFC_TEST=1",
+    "appImageBytes": 1715712,
+    "checkedFaults": 8,
+    "passedFaults": [
+      "compile.workspace",
+      "compile.arena",
+      "createActor",
+      "start.context",
+      "assign.context",
+      "notify.snapshot",
+      "getSnapshot",
+      "subscribe"
+    ],
+    "fixtureSha256": "25da9dfcc23c4440815e6add10c7879d2f91b08385ee4b3ad9a9c174b711e911",
+    "result": "pass"
+  },
+  "productionRestore": {
+    "appImageSha256": "e0f6411a84fff281d469170f607e0811027dcf6fd2488a44ce425062436a7371",
+    "runtimeIdentityVerified": true,
+    "privateFaultApiAbsent": true,
+    "measurementApiAbsent": true,
+    "compactValidationAfterRestore": "pass"
+  },
+  "serviceCoexistence": {
+    "runId": "20260928T112243Z",
+    "targetChecks": 11,
+    "peerChecks": 7,
+    "httpsStatus": 200,
+    "httpsBytes": 744,
+    "nativeMinimumFreeHeapBytes": 40612,
+    "maximumRuntimeJsVarsUsed": 1125,
+    "cleanupJsVarsUsed": 460,
+    "storageCleanup": true,
+    "result": "pass"
+  },
+  "embeddedExclusions": [
+    {
+      "suite": "test_strict_validation.js",
+      "reason": "desktop source exhausts the constrained test heap; compact embedded strict-validation suite passed"
+    },
+    {
+      "suite": "test_limits.js",
+      "reason": "Linux-host 65,535-byte boundary harness; target-sized depth and microstep boundaries passed"
+    },
+    {
+      "suite": "test_host_allocation_pressure.js and test_host_diagnostic_pressure.js",
+      "reason": "older large transient physical stress graphs do not complete within the C3 runner window; deterministic embedded allocation seams passed instead"
+    }
+  ],
+  "sourceSha256": {
+    "xfsm_compile.c": "689c6c81cb443a25f300ce5e5b43a27ec4f85f68a6edd11b63e6cf814b9e2cd9",
+    "xfsm_runtime.c": "5d5403c3e96d3533e965bf6fa310036763a37fe255ec0823487567c3108fbc3d",
+    "test_fault_injection_embedded.js": "25da9dfcc23c4440815e6add10c7879d2f91b08385ee4b3ad9a9c174b711e911",
+    "xfsm_profile1_bench_config.json": "dc84661981f025d35b7c0880db4b96d11f0c398fd662eb07b020845d5fed9898",
+    "run_ble_https_test.py": "37305d8ab48fba4caeb29936eea05642b57dacd444ca3aaab23c931f786c6396"
+  },
+  "decision": "The stock full-feature 70 KB ESP32-C3 IDF5 profile satisfies the applicable Profile 1 physical-target criteria.",
+  "targetStatus": "Conformance verified",
+  "result": "pass",
+  "report": "../../../docs/reports/2026-09-28-m7-esp32-c3-release-candidate.md"
+}

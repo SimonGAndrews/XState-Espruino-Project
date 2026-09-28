@@ -46,7 +46,9 @@ portable suites, including the maximum-depth action trace on the optimized
 stock 70 KB profile, plus the compact strict-validation smoke and focused
 batch 7 regressions. The
 full desktop strict-validation and large-limit sources are not classified as
-portable embedded suites.
+portable embedded suites. The ESP32-C3 C3-D candidate passes all 20
+embedded-applicable portable suites; its complete target evidence is in the
+[C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json).
 
 | Executable suite | Principal coverage | Linux | Physical target(s) | Evidence |
 | --- | --- | --- | --- | --- |
@@ -101,6 +103,7 @@ is still planned, that limitation remains.
 | `measure_post_m6_depth.js` | Compact depth-32 construction separated from large all-in-one test-source loading | Pass on Linux, original ESP32, and ESP32-C3; optimized physical results are in the [compiler optimization report](../docs/reports/2026-09-27-compiler-jsvar-optimization.md) |
 | `test_stack_reserve.js` | Operation rejection before mutation when the configured coordinator reserve is unavailable | Pass on Linux; normal reserve measured on ESP32: [Linux resource result](results/linux/2026-09-25-m5-resource-evidence.json) |
 | `test_fault_injection.js` | Deterministic construction, actor, context, event, assignment, completion, publication, snapshot, stop and subscription allocation failures with rollback and exact error identity | Pass in a separate `XFC_TEST=1` Linux build; `_failNext` is absent from production firmware: [validation/fault result](results/linux/2026-09-27-m6-validation-faults.json) |
+| `test_fault_injection_embedded.js` | Sequential constrained-target smoke for compiler workspace/arena, actor, startup, assignment, publication, snapshot and subscription allocation seams | Pass on ESP32-C3 in a temporary `XFC_TEST=1` build; exact production image restored afterward: [C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json) |
 | `reference/xstate-v5/verify-reference.mjs` | Pinned XState 5.33.2 basic transition, completion, hierarchy, wildcard, forbidden-transition, context/assignment, 16 transition-domain, and maximum-depth traces | Pass: [Linux M6.3 result](results/linux/2026-09-27-m6-transition-domains.json) |
 | `reference/xstate-v4/verify-reference.mjs` | Pinned XState 4.38.3 `cond`, `internal`, ordered-action flags, and action-boundary trace | Pass: [Linux M6.1 result](results/linux/2026-09-26-m6-target-events.json) |
 
@@ -180,7 +183,7 @@ conformance cases rather than treated as missing comparison data.
 | Original ESP32 IDF5 | [Compiler optimization result](results/esp32-xtensa/2026-09-27-compiler-jsvar-optimization.json) passes; target remains Build verified | Earlier portable and host coverage plus direct and Storage-backed action-heavy depth 32, exact cleanup, GC relocation, and serialization on the stock 70 KB profile; measured construction headroom is 1,040 blocks and the normal image leaves 522,752 app bytes free | Final M7.4 release-candidate run and evidence review |
 | Espruino Pico | Reduced-profile build verified | Matching disabled/enabled size comparison | Physical board execution, complete portable suite, stack/RAM/timing, save/reset and hardware callbacks |
 | MDBT42Q | Not yet verified | Stock DFU passes; XFSM compiles and links | Blocked by 22,176-byte Storage overlap; select and document a viable product profile before runtime testing |
-| ESP32-C3 IDF5 | [C3 service-coexistence result](results/esp32-riscv/2026-09-28-m7-service-coexistence.json) passes; target remains Build verified | Stock full-feature RISC-V build and physical functional baseline; optimized stock 70 KB profile passes direct and Storage-backed action-heavy depth 32, exact cleanup, GC relocation, serialization, compiler measurement with 1,174 blocks of headroom, and four combined XFSM/BLE/WiFi/TLS service runs | Complete remaining portable coverage and run the C3-D release candidate |
+| ESP32-C3 IDF5 | [C3-D release-candidate result](results/esp32-riscv/2026-09-28-m7-release-candidate.json) passes; Conformance verified | Matched builds; 20 embedded portable suites; deterministic physical allocation seams; direct and Storage-backed maximum depth; exact cleanup, GC, serialization, native callbacks/GPIO/timer, save/restoration/reset; and combined XFSM/BLE/WiFi/TLS service rerun | No target-specific Profile 1 blocker; project-wide M0 and release review remain |
 | ESP32-S3 IDF5 | Later expansion target | None required for Profile 1 | Optional after the Espruino port reaches the required maturity |
 
 ## Build And CI Register
@@ -193,7 +196,7 @@ conformance cases rather than treated as missing comparison data.
 | Original ESP32 IDF5 enabled CI build | Configured on fork branch; local optimized stock 70 KB build and focused resource tests pass | Ensure CI uses the stock profile and retain as fork-development coverage |
 | Pico reduced-profile build | Pass locally | Decide whether to add fork CI; run on physical Pico |
 | MDBT42Q enabled build | Fails size gate | Do not claim support; retry only after product-profile decision |
-| ESP32-C3 IDF5 enabled build | Pass locally with optimized stock full-feature profile and 332,880 app-partition bytes free; loaded-service qualification passes | Decide whether to add fork CI for release-candidate coverage |
+| ESP32-C3 IDF5 enabled build | C3-D matched build and physical qualification pass; normal image leaves 332,880 app-partition bytes free | Optional fork CI remains useful but is not part of the target's local conformance result |
 
 ## Final Review Closure Checklist
 
