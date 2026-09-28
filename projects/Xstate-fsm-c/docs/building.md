@@ -4,10 +4,11 @@
 
 - Build-document status: all seven M6 batches and the post-M6 whole-build
   resource review are verified for their applicable Linux and original ESP32
-  scope; reduced-profile Pico build verified; MDBT42Q size check blocked
+  scope; ESP32-C3 loaded-service qualification and reduced-profile Pico build
+  verified; MDBT42Q size check blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `1589218d3`
+- Current implementation revision: `aded959ad`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -64,6 +65,7 @@ The current machine may use these convenience variables:
 ```bash
 export XSTATE_ESPRUINO_ROOT=/home/simon/XState-Espruino-Project
 export ESPRUINO_XFSM_ROOT=/home/simon/Espruino-XFSM-Profile1
+export ESP32_SGA_BENCH_ROOT=/home/simon/MaBecker/ESP32_SGATest
 ```
 
 Scripts and committed tests must derive repository-relative paths or accept an
@@ -301,7 +303,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
 | Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; optimized stock 70 KB full-feature profile passes action-heavy depth 32, Storage-backed execution, cleanup, GC, and serialization |
-| ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Build verified; optimized stock 70 KB full-feature profile passes the same focused resource and runtime checks; loaded-service qualification pending |
+| ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Build verified; optimized stock 70 KB full-feature profile passes focused resource/runtime checks and C3-C combined XFSM/BLE/WiFi/TLS service qualification |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
 The library must be selected through Espruino's normal optional-library
@@ -409,10 +411,34 @@ At revision `cb5d74e89`, compact compiler metadata makes both depth fixtures
 pass on the normal stock build with 1,174 measured blocks of construction
 headroom. The stock 70 KB native reserve exists to support Bluetooth plus
 HTTPS under memory pressure, as discussed in [Espruino issue
-#2746](https://github.com/espruino/Espruino/issues/2746). Preserve it while
-qualifying service coexistence. See the [compiler optimization
-report](reports/2026-09-27-compiler-jsvar-optimization.md) and earlier
+#2746](https://github.com/espruino/Espruino/issues/2746). The subsequent C3-C
+service-coexistence test retains that reserve and passes. See the [compiler
+optimization report](reports/2026-09-27-compiler-jsvar-optimization.md) and earlier
 [physical baseline report](reports/2026-09-27-m7-esp32-c3-physical-baseline.md).
+
+With the XFSM image flashed on the C3 and the matching classic ESP32 connected
+as its GATT peer, verify the exact bench configuration and run the combined
+service test from the external bench repository:
+
+```bash
+cd "$ESP32_SGA_BENCH_ROOT"
+python3 tools/repl/verify_bench_config.py \
+  tests/WIFI_BLE/xfsm_profile1_bench_config.json
+python3 tools/repl/run_ble_https_test.py \
+  --config tests/WIFI_BLE/xfsm_profile1_bench_config.json \
+  --direction c3-target \
+  --target-preload-script \
+    "$ESPRUINO_XFSM_ROOT/libs/xfsm/tests/prepare_host_service_coexistence.js" \
+  --target-script \
+    "$ESPRUINO_XFSM_ROOT/libs/xfsm/tests/test_host_service_coexistence.js" \
+  --target-script-storage \
+  --local-server-address 192.168.50.101 \
+  --timeout 90
+```
+
+The LAN address is local-bench data and must be replaced when the host uses a
+different address. The four-run result is in the [C3 service-coexistence
+report](reports/2026-09-28-m7-esp32-c3-service-coexistence.md).
 
 At complete implementation revision `1589218d3`, the same clean comparison
 produces a 1,491,968-byte disabled image and 1,523,424-byte enabled image. XFSM

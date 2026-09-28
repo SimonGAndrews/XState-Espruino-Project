@@ -1,0 +1,150 @@
+{
+  "kind": "xfsm-m7-esp32-c3-service-coexistence",
+  "date": "2026-09-28",
+  "caseIds": [
+    "XFC-CF-RESOURCE-002",
+    "XFC-CF-HOST-001",
+    "XFC-CF-HOST-006"
+  ],
+  "xstateEspruinoProjectRevision": "4819be0eee23faefb4746b9a7bafa007c17f655e",
+  "specificationVersion": "0.50",
+  "firmwareImplementationRevision": "cb5d74e8953ac7b4290aaba64f2aabe7714a3a05",
+  "fixtureImplementationRevision": "aded959ada37449c59b4a79e67133cd4cc4cbd2b",
+  "benchRevision": "049f58123340f5a27cafde78078a920ad1926687",
+  "sourceSha256": {
+    "prepare_host_service_coexistence.js": "8163c87a46a3670be599287ea11e2cc2951f820720c0b0b8b224a9f328a16ee1",
+    "test_host_service_coexistence.js": "3f5c408e44a30cc6ab4b3ec9a8b4c3a13015778160801f8657ad56d9f5676304",
+    "run_ble_https_test.py": "37305d8ab48fba4caeb29936eea05642b57dacd444ca3aaab23c931f786c6396",
+    "xfsm_profile1_bench_config.json": "ab14977f8d33ccc4c26f689d9ea3e1caa00752758f2dd0782d77e9f719e03abf"
+  },
+  "target": {
+    "board": "ESP32C3_IDF5",
+    "cpuArchitecture": "RISC-V RV32IMC",
+    "runtimeVersion": "2v29.444",
+    "runtimeGitCommit": "cb5d74e89",
+    "controlPort": "/dev/ttyACM0",
+    "persistentPort": "/dev/serial/by-path/pci-0000:00:14.0-usb-0:2.3:1.0"
+  },
+  "peer": {
+    "board": "ESP32_IDF5",
+    "runtimeVersion": "2v29.444",
+    "runtimeGitCommit": "cb5d74e89",
+    "role": "BLE GATT central",
+    "controlPort": "/dev/ttyUSB0",
+    "persistentPort": "/dev/serial/by-path/pci-0000:00:14.0-usb-0:2.2:1.0-port0"
+  },
+  "host": {
+    "wifiSsid": "SHED",
+    "lanAddress": "192.168.50.101",
+    "opensslVersion": "3.0.13",
+    "tlsVersion": "TLS 1.2",
+    "credentialsLogged": false
+  },
+  "profile": {
+    "nativeHeapReserveBytes": 70000,
+    "jsVarBlocks": 3027,
+    "jsVarBlockBytes": 13,
+    "setDefinesOverride": false,
+    "featuresRemoved": []
+  },
+  "xfsmWorkload": {
+    "serviceStates": 6,
+    "hierarchyDepth": 24,
+    "depthTransitionActions": 49,
+    "serviceEvents": 5,
+    "contextSteps": 5,
+    "snapshotPublications": 7,
+    "finalStatus": "done",
+    "finalValue": "Complete",
+    "trace": "BLE_CONNECTED:1|GATT_ACK:2|WIFI_CONNECTED:3|HTTPS_COMPLETE:4|BLE_CONFIRMED:5"
+  },
+  "transport": {
+    "preload": "paced REPL upload",
+    "serviceRole": "temporary Espruino Storage file evaluated after the actor was compiled",
+    "storageCleanup": true,
+    "reason": "avoid overlapping the retained actor with the transient multi-line REPL parser representation"
+  },
+  "nonXfsmReverseDirectionBaseline": {
+    "runId": "20260928T083446Z",
+    "result": "pass",
+    "targetChecks": 10,
+    "peerChecks": 7,
+    "httpsRequests": 1
+  },
+  "qualifiedRuns": [
+    {
+      "runId": "20260928T085853Z",
+      "targetChecks": 11,
+      "peerChecks": 7,
+      "httpsStatus": 200,
+      "httpsBytes": 744,
+      "nativeMinimumFreeHeapBytes": 40624,
+      "nativeFreeHeapAfterCleanupBytes": 58312,
+      "jsVarsUsedAfterCleanup": 460,
+      "result": "pass"
+    },
+    {
+      "runId": "20260928T085946Z",
+      "targetChecks": 11,
+      "peerChecks": 7,
+      "httpsStatus": 200,
+      "httpsBytes": 744,
+      "nativeMinimumFreeHeapBytes": 40580,
+      "nativeFreeHeapAfterCleanupBytes": 58332,
+      "jsVarsUsedAfterCleanup": 460,
+      "result": "pass"
+    },
+    {
+      "runId": "20260928T090045Z",
+      "targetChecks": 11,
+      "peerChecks": 7,
+      "httpsStatus": 200,
+      "httpsBytes": 744,
+      "nativeMinimumFreeHeapBytes": 40480,
+      "nativeFreeHeapAfterCleanupBytes": 58316,
+      "jsVarsUsedAfterCleanup": 460,
+      "result": "pass"
+    },
+    {
+      "runId": "20260928T090952Z",
+      "targetChecks": 11,
+      "peerChecks": 7,
+      "httpsStatus": 200,
+      "httpsBytes": 744,
+      "nativeMinimumFreeHeapBytes": 40600,
+      "nativeFreeHeapAfterCleanupBytes": 58336,
+      "jsVarsUsedAfterCleanup": 460,
+      "storageCrc32Verified": true,
+      "result": "pass"
+    }
+  ],
+  "resourceEnvelope": {
+    "compiledActorReadyJsVarsUsed": 1520,
+    "compiledActorReadyJsVarsFree": 1507,
+    "maximumRuntimeJsVarsUsed": 1125,
+    "minimumNativeFreeHeapBytes": 40480,
+    "minimumLargestNativeBlockBytes": 43008,
+    "cleanupNativeFreeHeapBytesRange": [58312, 58336],
+    "cleanupJsVarsUsed": 460
+  },
+  "correlatedAssertions": {
+    "bleConnectedBeforeHttps": true,
+    "bleConnectedAfterHttps": true,
+    "gattReadAndWriteBeforeHttps": true,
+    "gattWriteAfterHttps": true,
+    "wifiDhcp": true,
+    "exactlyOneHostHttpsRequestPerRun": true,
+    "xfsmLifecycleAndOrderedActions": true,
+    "temporaryStorageErased": true
+  },
+  "capacityBoundary": {
+    "depth32Standalone": "pass in the existing direct and Storage-backed 65-action fixtures",
+    "depth32PlusSixServiceStates": "E_NO_MEMORY at createMachine before radio-service execution",
+    "depth24PlusSixServiceStates": "pass",
+    "interpretation": "The combined fixture is a service-coexistence stress case, not a reduction of the Profile 1 depth-32 limit. The exact combined-depth maximum was not sought."
+  },
+  "decision": "Retain the stock 70 KB native-heap reserve. ESP32-C3 WiFi, TLS 1.2 HTTPS, BLE GATT and XFSM execution coexist with useful native-heap and JsVar margin in the tested combined workload.",
+  "targetStatus": "Build verified",
+  "result": "pass",
+  "scope": "Completes C3-C loaded-service coexistence. It does not replace the remaining portable coverage or C3-D release-candidate rerun required for Conformance verified."
+}

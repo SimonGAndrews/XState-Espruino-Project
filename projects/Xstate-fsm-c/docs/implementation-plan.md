@@ -3,7 +3,8 @@
 ## Status
 
 - Plan status: M6 behavior, post-M6 resource review, original-ESP32 M7.1-M7.3,
-  and stock-profile ESP32 compiler-capacity optimization complete
+  stock-profile ESP32 compiler-capacity optimization, and ESP32-C3 C3-C
+  loaded-service qualification complete
 - Current milestone: M0 requirement inventory and M7 product-profile and
   physical-target qualification
 - Normative authority: [Profile 1 specification](specification.md)
@@ -266,8 +267,11 @@ profile is not assumed to suit the RISC-V target:
    stock 70,000-byte native-heap reserve as the product constraint, reduce
    XFSM's peak compiler-side JsVar demand, and repeat memory and lifecycle
    checks during WiFi association, HTTP and HTTPS/TLS work, BLE activity, and
-   combined WiFi/BLE coexistence. The compiler reduction is complete; loaded-
-   service qualification remains open.
+   combined WiFi/BLE coexistence. This gate passes at fixture revision
+   `aded959ad`: four consecutive combined XFSM, BLE GATT, WiFi, and TLS 1.2
+   runs pass with at least 40,480 native-heap bytes and 1,902 free JsVars at
+   the sampled runtime high-water point. See the [C3 service-coexistence
+   report](reports/2026-09-28-m7-esp32-c3-service-coexistence.md).
 4. **C3-D, release-candidate rerun:** repeat clean disabled/enabled builds and
    the agreed portable, target, resource, cleanup, and service-coexistence
    suite against the selected C3 profile. Advance from `Build verified` to
@@ -296,7 +300,8 @@ That optimization is now complete at revision `cb5d74e89`. The compact C3
 depth-32 compiler peak fell from 2,245 to 1,335 blocks (40.5%), and the direct
 and Storage-backed action-heavy fixtures pass on the stock 70 KB profile with
 1,174 measured blocks of construction headroom. C3-B's capacity gate is
-closed; C3-C service coexistence remains open.
+closed. C3-C subsequently passed four combined-service runs on that stock
+profile; C3-D remains open.
 
 ### M8 - Format Freeze And Release Readiness
 
