@@ -659,6 +659,107 @@ assert.deepEqual(maximumDepthTrace, [
 ]);
 assert.equal(maximumDepthActor.getSnapshot().matches("L1"), true);
 
+const closureActionTrace = [];
+let closureEvent;
+let closureGuardEvent;
+let closureActionEvent;
+let closureThenObserved = false;
+const closureActionMachine = createMachine({
+  context: { count: 0 },
+  initial: {
+    target: "Active",
+    actions: ["initialAction", assign({ count: 1 })]
+  },
+  states: {
+    Active: {
+      entry: "activeEntry",
+      exit: "activeExit",
+      on: {
+        GO: {
+          target: "Done",
+          guard: "captureGuard",
+          actions: [
+            "ignoredReturn",
+            assign({ count: ({ context }) => context.count + 1 }),
+            "afterAssign"
+          ]
+        }
+      }
+    },
+    Done: { type: "final", entry: "doneEntry" }
+  }
+}, {
+  actions: {
+    initialAction: ({ context, event }) =>
+      closureActionTrace.push(`initial:${event.type}:${context.count}`),
+    activeEntry: ({ context, event }) =>
+      closureActionTrace.push(`entry:${event.type}:${context.count}`),
+    activeExit: ({ context, event }) =>
+      closureActionTrace.push(`exit:${event.type}:${context.count}`),
+    ignoredReturn: ({ context, event }) => {
+      closureActionEvent = event;
+      closureActionTrace.push(`ordinary:${event.type}:${context.count}`);
+      return { then: () => { closureThenObserved = true; } };
+    },
+    afterAssign: ({ context, event }) =>
+      closureActionTrace.push(`after:${event.type}:${context.count}`),
+    doneEntry: ({ context, event }) =>
+      closureActionTrace.push(`done:${event.type}:${context.count}`)
+  },
+  guards: {
+    captureGuard: ({ event }) => {
+      closureGuardEvent = event;
+      return {};
+    }
+  }
+});
+const closureActionActor = createActor(closureActionMachine).start();
+closureEvent = { type: "GO", payload: 9 };
+closureActionActor.send(closureEvent);
+assert.deepEqual(closureActionTrace, [
+  "initial:xstate.init:0",
+  "entry:xstate.init:1",
+  "exit:GO:1",
+  "ordinary:GO:1",
+  "after:GO:2",
+  "done:GO:2"
+]);
+assert.equal(closureGuardEvent, closureEvent);
+assert.equal(closureActionEvent, closureEvent);
+assert.equal(closureThenObserved, false);
+
+const closureSnapshotMachine = createMachine({
+  initial: "Parent.With.Dot",
+  states: {
+    "Parent.With.Dot": {
+      initial: "Child",
+      states: {
+        Child: { on: { NEXT: "Grand" } },
+        Grand: { initial: "Leaf", states: { Leaf: {} } }
+      }
+    }
+  }
+});
+const closureSnapshotActor = createActor(closureSnapshotMachine).start();
+const closureSnapshotInitial = closureSnapshotActor.getSnapshot();
+assert.deepEqual(closureSnapshotInitial.value, { "Parent.With.Dot": "Child" });
+// XState parses a string match as a dotted path. Profile 1 deliberately treats
+// it as one literal top-level key and records that difference separately.
+assert.equal(closureSnapshotInitial.matches("Parent.With.Dot"), false);
+assert.equal(
+  closureSnapshotInitial.matches({ "Parent.With.Dot": "Child" }), true);
+assert.equal(closureSnapshotInitial.matches("Parent"), false);
+closureSnapshotActor.send({ type: "NEXT" });
+const closureSnapshotNested = closureSnapshotActor.getSnapshot();
+assert.deepEqual(closureSnapshotNested.value, {
+  "Parent.With.Dot": { Grand: "Leaf" }
+});
+assert.equal(
+  closureSnapshotNested.matches({ "Parent.With.Dot": "Grand" }), true);
+assert.equal(closureSnapshotNested.matches({
+  "Parent.With.Dot": { Grand: "Leaf" }
+}), true);
+
 console.log(JSON.stringify({
   reference: "xstate",
   version: packageMetadata.version,
@@ -677,5 +778,13 @@ console.log(JSON.stringify({
   })),
   factoryCallsAfterCreateActor,
   transitionDomainResults,
-  maximumDepthTransitionActions: maximumDepthTrace.length
+  maximumDepthTransitionActions: maximumDepthTrace.length,
+  closureActionTrace,
+  closureEventIdentity: closureGuardEvent === closureEvent &&
+    closureActionEvent === closureEvent,
+  closureSnapshotValues: [
+    closureSnapshotInitial.value,
+    closureSnapshotNested.value
+  ],
+  dottedStringMatchReference: false
 }));

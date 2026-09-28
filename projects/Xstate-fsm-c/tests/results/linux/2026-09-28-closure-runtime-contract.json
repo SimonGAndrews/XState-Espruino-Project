@@ -1,0 +1,110 @@
+{
+  "kind": "xfsm-closure-runtime-contract-linux",
+  "date": "2026-09-28",
+  "caseIds": [
+    "XFC-CF-ACTION-002",
+    "XFC-CF-SNAP-002",
+    "XFC-CF-TRANS-005"
+  ],
+  "xstateEspruinoProjectBaseRevision": "3a0fd04bd78b09e2c74160f3951a90aa99e87229",
+  "specificationVersion": "0.51",
+  "implementationRevision": "ba0f275334a9f30a007bda27fa62a40073e2aa18",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "python": "Python 3.12.3",
+    "node": "v20.15.0",
+    "xstate": "5.33.2"
+  },
+  "canonicalTrace": {
+    "schema": "xfc.trace",
+    "version": 1,
+    "format": "newline-delimited JSON",
+    "comparison": "parsed records with canonical object-property ordering; record and array order retained",
+    "streaming": "each record emitted when observed; complete trace not retained by the JavaScript harness",
+    "acceptedTraceUpdate": "explicit review only",
+    "physicalArtifact": "the host runner composes the same harness and case for paced physical execution"
+  },
+  "cases": {
+    "XFC-CF-ACTION-002": {
+      "records": 17,
+      "result": "pass",
+      "coverage": [
+        "direct, string and object-descriptor action forms",
+        "root, state, initial-transition, event-transition and final-state locations",
+        "exit-transition-entry ordering and ordered assignment visibility",
+        "repeated named implementation retention",
+        "ignored ordinary and thenable return values",
+        "exact external, initialization, stop and completion event objects",
+        "two callback arguments and bound-function receiver preservation",
+        "unresolved, parameterized, exec-bearing and malformed action rejection"
+      ],
+      "receiverObservation": "XFSM calls jspExecuteFunction with a null receiver. Espruino maps an unbound JavaScript call to the global object, including for a function containing a strict directive; no actor, machine, implementation map, descriptor, context or event is bound as this."
+    },
+    "XFC-CF-SNAP-002": {
+      "records": 17,
+      "result": "pass",
+      "coverage": [
+        "not-started, active, done, stopped and error snapshots",
+        "atomic-root, top-level, nested and deeper hierarchical values",
+        "partial matching with punctuated literal keys",
+        "total false behavior for malformed and accessor-bearing match input",
+        "ignored extra match arguments and receiver coverage through API-002",
+        "lazy snapshot allocation",
+        "cache reuse and state, context and lifecycle invalidation",
+        "previous-snapshot stability and exact fault identity"
+      ]
+    },
+    "XFC-CF-TRANS-005": {
+      "records": 17,
+      "result": "pass",
+      "coverage": [
+        "exact object identity through guard and action callbacks",
+        "one materialized object for string-event callbacks",
+        "event-type capture before callback mutation",
+        "JavaScript truthiness for guards",
+        "ordered exact candidates, wildcard fallback and parent fallback",
+        "present undefined handler blocking",
+        "malformed, empty and reserved public event rejection before dispatch",
+        "empty candidates, null targets, partial wildcards and guard params diagnostics"
+      ]
+    }
+  },
+  "implementationCorrections": [
+    "snapshot.matches now detects an accessor property from the raw Espruino name value before property resolution, so validation returns false without invoking user code",
+    "the raw-property check uses jsvGetValueOfName so Espruino inline integer and boolean name values are handled safely"
+  ],
+  "regression": {
+    "normalJavaScriptSuites": 22,
+    "normalJavaScriptResult": "pass",
+    "canonicalTraceCases": 6,
+    "canonicalTraceResult": "pass",
+    "deterministicFaultSuite": "pass",
+    "nativeSanitizerChecks": 66,
+    "nativeSanitizerResult": "pass",
+    "retainedRecordsAfterGc": 0
+  },
+  "xstateDifferential": {
+    "reference": "xstate@5.33.2",
+    "result": "pass-with-intentional-difference",
+    "matchingSharedSemantics": [
+      "initial-transition and state action order",
+      "ordered assignment visibility",
+      "ignored action return and thenable values",
+      "exact external event identity",
+      "guard truthiness and exact-to-wildcard fallback",
+      "hierarchical snapshot value and object-match shapes"
+    ],
+    "intentionalDifference": "XState parses a dotted string supplied to snapshot.matches as a path; Profile 1 treats it as one literal top-level state key. The equivalent nested object match is shared."
+  },
+  "profileOnlyEvidence": [
+    "two-argument callback ABI and Espruino receiver behavior",
+    "string event convenience and reserved public event namespaces",
+    "categorized diagnostics and exact paths",
+    "lazy snapshot allocation and private cache identity",
+    "malformed matches totality and no-allocation contract"
+  ],
+  "physicalTargets": "planned portable rerun after the grouped Linux closure packages stabilize",
+  "result": "pass"
+}

@@ -74,25 +74,25 @@ The completed review has this result:
 
 | Classification | Count | Meaning |
 | --- | ---: | --- |
-| Mapped, passing evidence | 374 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
-| Mapped, partial evidence | 314 | Existing evidence demonstrates part of the obligation, while a focused input, negative surface, target or completeness check remains. |
+| Mapped, passing evidence | 499 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
+| Mapped, partial evidence | 188 | Existing evidence demonstrates part of the obligation, while a focused input, negative surface, target or completeness check remains. |
 | Mapped, planned evidence | 17 | The requirement has a stable planned case but no adequate completed evidence yet. |
-| Not applicable to Version 1 execution evidence | 2 | The statement constrains application use or future API evolution rather than observable Version 1 engine behavior. |
+| Not applicable to Version 1 execution evidence | 3 | The statement constrains application use or future API evolution rather than observable Version 1 engine behavior. |
 
 | Specification section | Pass | Partial | Planned | Not applicable |
 | --- | ---: | ---: | ---: | ---: |
 | Scope | 5 | 0 | 0 | 0 |
 | Compatibility Target | 2 | 3 | 4 | 0 |
-| Machine Model | 105 | 46 | 0 | 0 |
-| Runtime Semantics | 188 | 117 | 0 | 0 |
+| Machine Model | 126 | 25 | 0 | 0 |
+| Runtime Semantics | 292 | 12 | 0 | 1 |
 | Public Interfaces | 20 | 5 | 0 | 2 |
 | Host Integration | 37 | 55 | 0 | 0 |
 | Validation and Error Behavior | 10 | 40 | 0 | 0 |
 | Resource and Performance Requirements | 0 | 16 | 0 | 0 |
 | Conformance Requirements | 7 | 32 | 13 | 0 |
-| **Total** | **374** | **314** | **17** | **2** |
+| **Total** | **499** | **188** | **17** | **3** |
 
-All 705 applicable requirements map to one or more stable conformance case IDs.
+All 704 applicable requirements map to one or more stable conformance case IDs.
 All 62 conformance cases map back to at least one normative requirement. This
 completes the M0 inventory and bidirectional orphan review; it does not convert
 partial or planned evidence into a conformance pass.
@@ -118,14 +118,16 @@ or inherited lookup, unused-entry acceptance and retained-container ownership.
 Symbol-keyed and non-enumerable properties are reasoned skips because Espruino
 does not represent those JavaScript constructs.
 
-The remaining sections confirmed that the strongest completed areas are actor
-lifecycle, subscriptions, context ownership and assignment, transition
-domains, completion, and bounded microstep behavior. Their principal remaining
-work is target repetition or common-trace conversion rather than unidentified
-engine semantics.
+The runtime-contract closure now covers the complete action and guard forms,
+callback arguments and events, snapshot value/matching/cache behavior, and the
+remaining event-selection and malformed-input rules on Linux. It exposed and
+closed one accessor-evaluation defect in `snapshot.matches(...)`. Shared
+action, event-identity, guard-fallback and snapshot shapes pass the pinned
+XState 5.33.2 reference; Profile-only callback ABI, event validation,
+diagnostics and lazy caching are classified separately.
 
 The canonical portable trace foundation is implemented and used by the first
-three closure cases. The remaining cross-cutting work is conversion of the
+six closure cases. The remaining cross-cutting work is conversion of the
 portable behavioral and pinned Node corpus to that streamed, normalized form.
 
 Native layout, host ownership, diagnostics, and resource evidence are broad
@@ -157,8 +159,9 @@ The review added fourteen stable cases to make the remaining work explicit:
 | `XFC-CF-COMPAT-006` | Complete differential corpus and canonical trace |
 | `XFC-CF-COMPAT-007` | Bidirectional requirement traceability |
 
-`XFC-CF-COMPAT-007`, `API-002`, `CONFIG-004`, and the applicable Espruino
-surface of `CONFIG-005` pass. Ten closure cases remain; `COMPAT-006` is now
-partial because its common trace foundation and first accepted traces exist.
+`XFC-CF-COMPAT-007`, `API-002`, `CONFIG-004`, `ACTION-002`, `SNAP-002`,
+`TRANS-005`, and the applicable Espruino surface of `CONFIG-005` pass. Seven
+closure cases remain; `COMPAT-006` is partial because its common trace
+foundation and six accepted traces exist.
 Implemented evidence must update the mapping, conformance matrix and test
 inventory together.

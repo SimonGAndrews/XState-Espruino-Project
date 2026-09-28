@@ -210,32 +210,32 @@
     {
       "id": "XFC-REQ-0022",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-005",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Bound callbacks work; exact undefined receiver behavior remains in the callback-contract case."
+      "notes": "XFSM supplies no meaningful receiver at the C call boundary and never binds engine values; Espruino exposes its normal global receiver for an unbound JavaScript call, while bound functions preserve their receiver."
     },
     {
       "id": "XFC-REQ-0023",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-005",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Bound callbacks work; exact undefined receiver behavior remains in the callback-contract case."
+      "notes": "XFSM supplies no meaningful receiver at the C call boundary and never binds engine values; Espruino exposes its normal global receiver for an unbound JavaScript call, while bound functions preserve their receiver."
     },
     {
       "id": "XFC-REQ-0024",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-HOST-005",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Bound callbacks work; exact undefined receiver behavior remains in the callback-contract case."
+      "notes": "XFSM supplies no meaningful receiver at the C call boundary and never binds engine values; Espruino exposes its normal global receiver for an unbound JavaScript call, while bound functions preserve their receiver."
     },
     {
       "id": "XFC-REQ-0025",
@@ -814,200 +814,200 @@
     {
       "id": "XFC-REQ-0082",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0083",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0084",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0085",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0086",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0087",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0088",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0089",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0090",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0091",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0092",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0093",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0094",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0095",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0096",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0097",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0098",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0099",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-003",
         "XFC-CF-CONFIG-003",
         "XFC-CF-TRANS-005"
       ],
-      "notes": "Selection behavior passes; exhaustive descriptor and malformed-input closure remains planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0100",
@@ -2120,453 +2120,449 @@
     {
       "id": "XFC-REQ-0203",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0204",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0205",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0206",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0207",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0208",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0209",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0210",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0211",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0212",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0213",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0214",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0215",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0216",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0217",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0218",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0219",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0220",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0221",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0222",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0223",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0224",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0225",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0226",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0227",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0228",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0229",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0230",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0231",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0232",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0233",
-      "coverage": "mapped",
-      "evidence": "partial",
-      "caseIds": [
-        "XFC-CF-SNAP-001",
-        "XFC-CF-SNAP-002",
-        "XFC-CF-LIFE-002"
-      ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "coverage": "not-applicable",
+      "evidence": "not-applicable",
+      "caseIds": [],
+      "notes": "Application read-only discipline is a usage constraint; Version 1 does not freeze or police application mutation."
     },
     {
       "id": "XFC-REQ-0234",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0235",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0236",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0237",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0238",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0239",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0240",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0241",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0242",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0243",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-SNAP-001",
         "XFC-CF-SNAP-002",
         "XFC-CF-LIFE-002"
       ],
-      "notes": "Core snapshots, identity and allocation behavior pass; exhaustive matches and cache closure remains planned."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0244",
@@ -2871,7 +2867,7 @@
     {
       "id": "XFC-REQ-0274",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2879,12 +2875,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0275",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2892,12 +2888,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0276",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2905,12 +2901,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0277",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2918,12 +2914,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0278",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2931,12 +2927,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0279",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2944,12 +2940,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0280",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2957,12 +2953,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0281",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2970,12 +2966,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0282",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2983,12 +2979,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0283",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -2996,12 +2992,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0284",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -3009,12 +3005,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0285",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -3022,12 +3018,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0286",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -3035,12 +3031,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0287",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -3048,12 +3044,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0288",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -3061,12 +3057,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0289",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -3074,12 +3070,12 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0290",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-TRANS-003",
@@ -3087,292 +3083,292 @@
         "XFC-CF-LIFE-001",
         "XFC-CF-HOST-006"
       ],
-      "notes": "Synchronous dispatch passes; remaining event-object, malformed-input and differential closure is planned."
+      "notes": "Canonical TRANS-005 trace plus existing lookup, validation and lifecycle suites pass; shared event identity, guard coercion and fallback semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0291",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0292",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0293",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0294",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0295",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0296",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0297",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0298",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0299",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0300",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0301",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0302",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Principal action forms and locations pass; exhaustive descriptor and callback closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0303",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0304",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0305",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0306",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0307",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0308",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0309",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0310",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0311",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0312",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0313",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0314",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0315",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0316",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0317",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-TRANS-001",
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002"
       ],
-      "notes": "Named and inline guard selection works; exhaustive binding, return and metadata cases remain planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0318",
@@ -3689,101 +3685,101 @@
     {
       "id": "XFC-REQ-0342",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Context/event visibility and callback types pass; exact metadata and receiver closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0343",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Context/event visibility and callback types pass; exact metadata and receiver closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0344",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Context/event visibility and callback types pass; exact metadata and receiver closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0345",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Context/event visibility and callback types pass; exact metadata and receiver closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0346",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Context/event visibility and callback types pass; exact metadata and receiver closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0347",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Context/event visibility and callback types pass; exact metadata and receiver closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0348",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Context/event visibility and callback types pass; exact metadata and receiver closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0349",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Context/event visibility and callback types pass; exact metadata and receiver closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0350",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-HOST-005"
       ],
-      "notes": "Context/event visibility and callback types pass; exact metadata and receiver closure is planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0351",
@@ -4269,123 +4265,123 @@
     {
       "id": "XFC-REQ-0388",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0389",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0390",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0391",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0392",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0393",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0394",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0395",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0396",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0397",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0398",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-ACTION-001",
         "XFC-CF-ACTION-002",
         "XFC-CF-TRANS-004"
       ],
-      "notes": "Exit-transition-entry order passes; complete initial-transition representation coverage remains planned."
+      "notes": "Canonical ACTION-002 trace plus the existing action, guard, ordering, completion and host-callback suites pass; shared semantics match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0399",
@@ -5430,7 +5426,7 @@
         "XFC-CF-API-002",
         "XFC-CF-SNAP-002"
       ],
-      "notes": "Canonical negative-surface and private identity-brand checks pass."
+      "notes": "Canonical SNAP-002 trace plus existing lifecycle and allocation suites pass, including complete values, total matches validation, lazy caching, identity/invalidation and terminal retention; shared shapes match pinned XState 5.33.2."
     },
     {
       "id": "XFC-REQ-0498",

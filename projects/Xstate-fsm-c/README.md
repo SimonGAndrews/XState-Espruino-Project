@@ -23,10 +23,10 @@ actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
 conformance strategy.
 
-M0 normative traceability is complete. The first grouped M8 closure package
-passes its canonical public/configuration traces; current work is closing the
-ten remaining cases, remaining physical-target qualification, and M8 release
-readiness. The stock full-feature 70 KB original
+M0 normative traceability is complete. The first two grouped M8 closure
+packages pass six canonical public/configuration and runtime-contract traces;
+current work is closing the seven remaining cases, remaining physical-target
+qualification, and M8 release readiness. The stock full-feature 70 KB original
 ESP32 and ESP32-C3 profiles are Conformance verified after matched builds,
 portable and target-specific runtime suites, deterministic allocation faults,
 maximum-depth execution, cleanup, save/restoration, native/flash callback and

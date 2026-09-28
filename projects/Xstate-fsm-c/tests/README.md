@@ -83,3 +83,8 @@ in the [C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json).
 The corresponding stock full-feature original-ESP32 release qualification is
 recorded in the [M7.4
 result](results/esp32-xtensa/2026-09-28-m7-release-candidate.json).
+The first two M8 grouped closure packages and their six canonical streamed
+traces are recorded in the [public/configuration
+result](results/linux/2026-09-28-closure-public-configuration.json) and the
+[runtime-contract
+result](results/linux/2026-09-28-closure-runtime-contract.json).

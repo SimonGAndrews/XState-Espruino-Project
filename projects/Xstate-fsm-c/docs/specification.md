@@ -450,6 +450,11 @@ completion event's `type` can differ when a completed state's implicit path
 contains either character; compiled `onDone` behaviour is unaffected. See
 [Transition target grammar and resolution](#transition-target-grammar-and-resolution).
 
+The same literal-key extension applies to string input for
+`snapshot.matches(...)`. XState 5.33.2 parses a string containing periods as a
+state path, while Profile 1 treats the complete string as one top-level state
+key. The equivalent nested object state-value form remains shared behaviour.
+
 ### XFC-CD-016: Opaque compiled machine
 
 Current XState exposes a rich actor-logic object and utilities for calculating
