@@ -10,8 +10,8 @@ the [test inventory](test-inventory.md).
 The checked-in [requirement registry](normative-requirements.json) freezes each
 normative `MUST` and `MUST NOT` occurrence with a stable requirement ID,
 section, source text and fingerprint. The reviewed
-[mapping](normative-requirement-mapping.json) links audited requirements to
-conformance cases or records a gap or a justified non-applicable result.
+[mapping](normative-requirement-mapping.json) links every audited requirement
+to one or more conformance cases or records a justified non-applicable result.
 
 Run the audit check from the umbrella repository root:
 
@@ -20,9 +20,9 @@ python3 projects/Xstate-fsm-c/tests/audit_normative_requirements.py
 ```
 
 The command fails if normative specification text drifts from the registry, a
-requirement ID is duplicated or unknown, or a mapping names an unknown
-conformance case. Pending human review is reported but does not fail the check
-while M0 remains in progress.
+requirement ID is duplicated or unknown, a requirement lacks a reviewed
+mapping, a mapping names an unknown conformance case, or a conformance case has
+no mapped requirement.
 
 The registry is bootstrapped only once. After a normative specification edit,
 reconcile the reported drift deliberately: retain IDs for unchanged
@@ -61,25 +61,43 @@ Normative requirement units: **707**
 | --- | ---: | ---: | ---: |
 | Scope | 5 | 5 | 0 |
 | Compatibility Target | 9 | 9 | 0 |
-| Machine Model | 151 | 0 | 151 |
-| Runtime Semantics | 305 | 0 | 305 |
+| Machine Model | 151 | 151 | 0 |
+| Runtime Semantics | 305 | 305 | 0 |
 | Public Interfaces | 27 | 27 | 0 |
-| Host Integration | 92 | 0 | 92 |
-| Validation and Error Behavior | 50 | 0 | 50 |
-| Resource and Performance Requirements | 16 | 0 | 16 |
-| Conformance Requirements | 52 | 0 | 52 |
-| **Total** | **707** | **41** | **666** |
+| Host Integration | 92 | 92 | 0 |
+| Validation and Error Behavior | 50 | 50 | 0 |
+| Resource and Performance Requirements | 16 | 16 | 0 |
+| Conformance Requirements | 52 | 52 | 0 |
+| **Total** | **707** | **707** | **0** |
 
-The first review batch has this result:
+The completed review has this result:
 
 | Classification | Count | Meaning |
 | --- | ---: | --- |
-| Mapped, passing evidence | 14 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
-| Mapped, partial evidence | 13 | A case covers part of the obligation, but an explicit input, negative surface, target or completeness check remains. |
-| Gap, planned evidence | 12 | No current conformance case adequately demonstrates the obligation. |
+| Mapped, passing evidence | 327 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
+| Mapped, partial evidence | 353 | Existing evidence demonstrates part of the obligation, while a focused input, negative surface, target or completeness check remains. |
+| Mapped, planned evidence | 25 | The requirement has a stable planned case but no adequate completed evidence yet. |
 | Not applicable to Version 1 execution evidence | 2 | The statement constrains application use or future API evolution rather than observable Version 1 engine behavior. |
 
-## Opening Findings
+| Specification section | Pass | Partial | Planned | Not applicable |
+| --- | ---: | ---: | ---: | ---: |
+| Scope | 4 | 0 | 1 | 0 |
+| Compatibility Target | 2 | 3 | 4 | 0 |
+| Machine Model | 71 | 80 | 0 | 0 |
+| Runtime Semantics | 188 | 117 | 0 | 0 |
+| Public Interfaces | 8 | 10 | 7 | 2 |
+| Host Integration | 37 | 55 | 0 | 0 |
+| Validation and Error Behavior | 10 | 40 | 0 | 0 |
+| Resource and Performance Requirements | 0 | 16 | 0 | 0 |
+| Conformance Requirements | 7 | 32 | 13 | 0 |
+| **Total** | **327** | **353** | **25** | **2** |
+
+All 705 applicable requirements map to one or more stable conformance case IDs.
+All 62 conformance cases map back to at least one normative requirement. This
+completes the M0 inventory and bidirectional orphan review; it does not convert
+partial or planned evidence into a conformance pass.
+
+## Audit Findings
 
 The Scope behavior is substantially covered. One focused construction case is
 missing: a compiled machine supplied as a nested state-node configuration must
@@ -100,20 +118,47 @@ full own/enumerable/string/data-property grammar is not yet explicit. Unused
 valid implementations need focused acceptance and retained-container
 non-retention assertions.
 
+The remaining sections confirmed that the strongest completed areas are actor
+lifecycle, subscriptions, context ownership and assignment, transition
+domains, completion, and bounded microstep behavior. Their principal remaining
+work is target repetition or common-trace conversion rather than unidentified
+engine semantics.
+
+The largest cross-cutting open item is the canonical portable trace. Existing
+Node and XFSM results cover important behavior, but they do not yet implement
+the specified versioned newline-delimited JSON stream and normalized
+comparison for every shared observable behavior.
+
+Native layout, host ownership, diagnostics, and resource evidence are broad
+but need formal closure around maximum record boundaries, complete static
+inspection, exhaustive diagnostic positions, physical Pico qualification, and
+the MDBT42Q product-profile decision.
+
 These findings are audit outputs, not newly invented semantics. The associated
 requirements already exist in the Profile 1 specification.
 
-## Remaining Review Order
+## Audit-Derived Closure Cases
 
-1. Machine Model, including construction, target grammar and native indexes.
-2. Runtime Semantics, split into lifecycle/events, callbacks/context,
-   transitions/completion, snapshots and subscriptions.
-3. Host Integration.
-4. Validation and Error Behavior.
-5. Resource and Performance Requirements.
-6. Conformance Requirements and a final bidirectional orphan check.
+The review added fourteen stable cases to make the remaining work explicit:
 
-For each batch, update the mapping, add newly discovered cases to the
-conformance matrix and test inventory, and rerun the checker. The audit is
-complete only when every registered requirement is reviewed and every
-applicable requirement has adequate evidence or an explicit planned case.
+| Case | Closure area |
+| --- | --- |
+| `XFC-CF-API-002` | Negative public surface and private-brand rejection |
+| `XFC-CF-CONFIG-004` | Complete state-node, initial-transition and composition grammar |
+| `XFC-CF-CONFIG-005` | Implementation-map property grammar and retention |
+| `XFC-CF-ACTION-002` | Complete action, guard and callback contract |
+| `XFC-CF-SNAP-002` | Complete snapshot, `matches`, cache and lazy-allocation contract |
+| `XFC-CF-TRANS-005` | Remaining event and guard inputs plus differential traces |
+| `XFC-CF-FORMAT-003` | Boundary records, portability and final format decision |
+| `XFC-CF-HOST-007` | Formal static host-boundary and ownership review |
+| `XFC-CF-BUILD-006` | Complete target matrix and result metadata |
+| `XFC-CF-DIAG-006` | Exhaustive diagnostic category, path and fallback matrix |
+| `XFC-CF-RESOURCE-003` | Final constrained-target resource acceptance |
+| `XFC-CF-COMPAT-005` | Compatibility and Stately-corpus governance |
+| `XFC-CF-COMPAT-006` | Complete differential corpus and canonical trace |
+| `XFC-CF-COMPAT-007` | Bidirectional requirement traceability |
+
+`XFC-CF-COMPAT-007` passes with the completed checker. The other thirteen cases
+remain planned closure work, although several already have substantial partial
+evidence. Implemented evidence must update the mapping, conformance matrix and
+test inventory together.

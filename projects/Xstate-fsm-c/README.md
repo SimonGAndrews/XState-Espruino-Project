@@ -23,8 +23,9 @@ actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
 conformance strategy.
 
-Current work is M0 normative traceability, remaining physical-target
-qualification, and M8 release readiness. The stock full-feature 70 KB original
+M0 normative traceability is complete. Current work is closing its focused
+conformance cases, remaining physical-target qualification, and M8 release
+readiness. The stock full-feature 70 KB original
 ESP32 and ESP32-C3 profiles are Conformance verified after matched builds,
 portable and target-specific runtime suites, deterministic allocation faults,
 maximum-depth execution, cleanup, save/restoration, native/flash callback and

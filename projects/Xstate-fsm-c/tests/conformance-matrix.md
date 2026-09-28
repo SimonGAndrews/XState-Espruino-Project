@@ -2,11 +2,12 @@
 
 ## Status
 
-- Matrix status: M0 requirement audit in progress
-- Requirement inventory: 707 normative units frozen; 41 reviewed and 666
-  pending
+- Matrix status: M0 requirement audit complete; evidence closure in progress
+- Requirement inventory: 707 normative units frozen and reviewed; 705 map to
+  cases and two are explicitly non-applicable to Version 1 execution evidence
 - Implemented cases: M1-M4 cases, all seven M6 behavioural batches, final-
-  state completion, and partial M5 resource evidence below
+  state completion, partial M5/M7 resource evidence, and `COMPAT-007`; thirteen
+  audit-derived closure cases remain planned
 - Normative authority: [Profile 1 specification](../docs/specification.md)
 
 The specification requires every normative `MUST` and `MUST NOT` to link to an
@@ -57,10 +58,10 @@ its identifier and is marked superseded with a link to its replacement.
 
 ## Conformance Cases
 
-The rows below define aggregate evidence cases. M0 must complete the separate
-requirement-level mapping before Profile 1 completion can be claimed; an
-aggregate case result must not be assumed to cover every normative statement
-in its area.
+The rows below define aggregate evidence cases. The completed M0 mapping
+identifies the precise requirements assigned to each case; an aggregate case
+result must not be assumed to cover an unimplemented or partially evidenced
+requirement in its area.
 
 | Case ID | Specification section and requirement | Classification | Evidence | Targets | Result |
 | --- | --- | --- | --- | --- | --- |
@@ -112,6 +113,20 @@ in its area.
 | `XFC-CF-COMPAT-004` | Transition-domain action traces match pinned XState 5.33.2 across the 16-case domain corpus and the depth-32, 65-action traversal | Differential evidence | [Linux M6.3 result](results/linux/2026-09-27-m6-transition-domains.json) | Node reference and Linux | Pass |
 | `XFC-CF-DIAG-004` | Context and assignment validation rejects invalid literals, helper inputs, accessors, named descriptors, and invalid runtime results; factory/assignment exceptions retain exact identity and rollback to the last published state/context | Profile 1 normative | [Linux M6.2 result](results/linux/2026-09-26-m6-context-assignment.json), [Linux allocation result](results/linux/2026-09-27-m6-validation-faults.json), [ESP32 M6.2 result](results/esp32-xtensa/2026-09-26-m6-context-assignment.json), and [C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json) | Linux, physical targets | Linux including deterministic allocation fault, original ESP32 semantic scope, and ESP32-C3: Pass; remaining targets: Planned |
 | `XFC-CF-DIAG-005` | Strict construction and runtime diagnostics retain stable categories and object-graph paths; construction detail is limited to 48 bytes without splitting UTF-8; allocation and limit failures retain their specified actor state | Profile 1 normative | [Linux validation/fault result](results/linux/2026-09-27-m6-validation-faults.json), [ESP32 compact validation result](results/esp32-xtensa/2026-09-27-m6-validation-runtime.json), [ESP32 M7.3 pressure result](results/esp32-xtensa/2026-09-27-m7-allocation-profile.json), and [C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json) | Linux, physical targets | Linux, original ESP32, and ESP32-C3 applicable compact/fault scope: Pass; remaining targets: Planned |
+| `XFC-CF-API-002` | Public negative surface: legacy aliases and unsupported members are absent; machine, actor, snapshot, subscription and assignment brands reject ordinary, forged, detached and incompatible values | M0 audit case | Not yet implemented | Linux, physical targets | Planned |
+| `XFC-CF-CONFIG-004` | Complete state-node, initial-transition and composition grammar, including compiled-machine-as-state rejection, explicit/inferred node combinations, initial descriptors and construction-only callbacks | M0 audit case | Existing partial coverage under `CONFIG-001/003`; focused closure pending | Linux, physical targets | Planned |
+| `XFC-CF-CONFIG-005` | Complete implementation-map property grammar and ownership: exact names, own enumerable string data properties, unused-entry acceptance/non-retention, and source options release | M0 audit case | Existing partial construction and ownership coverage; focused closure pending | Linux, physical targets | Planned |
+| `XFC-CF-ACTION-002` | Every accepted action and guard representation/location plus exact callback arguments, metadata, receiver, return-value and initial-transition behavior | M0 audit case | Existing partial action, guard, context and host-callback coverage; focused closure pending | Node reference, Linux, physical targets | Planned |
+| `XFC-CF-SNAP-002` | Complete snapshot and `matches` contract: every state-value shape, malformed input, receiver, cache identity/invalidation, lazy allocation and negative public surface | M0 audit case | Existing partial snapshot and allocation coverage; focused closure pending | Node reference where equivalent, Linux, physical targets | Planned |
+| `XFC-CF-TRANS-005` | Remaining event and guard contract: malformed descriptors/events, exact object identity and type capture, all-false fallback, callback return coercion and normalized differential traces | M0 audit case | Existing partial transition, dispatch and guard coverage; focused closure pending | Node reference, Linux, physical targets | Planned |
+| `XFC-CF-FORMAT-003` | Native-format closure: near-limit table/range/offset cases, compile-time representation assumptions, cross-architecture alignment review and final Version 1 format decision | M0 audit case | Existing native-format and multi-architecture build evidence; final closure pending | Linux and representative architectures | Planned |
+| `XFC-CF-HOST-007` | Static host-boundary review: generated private classes, hidden ownership, non-forgeable brands, no mutable global runtime state, lock cleanup, bounded workspaces and no prohibited native allocation or recursion | M0 audit case | Existing runtime, sanitizer, GC and source evidence; formal static review pending | Implementation and representative builds | Planned |
+| `XFC-CF-BUILD-006` | Complete Version 1 target matrix and claim discipline, including physical Pico qualification, a viable MDBT42Q product profile or recorded exclusion, and per-result compiler/build metadata | M0 audit case | Original ESP32 and ESP32-C3 conform; Pico and MDBT42Q remain open | All Version 1 candidate targets | Planned |
+| `XFC-CF-DIAG-006` | Exhaustive construction/runtime category, type, path, bounded-detail and allocation-fallback matrix for every audited diagnostic requirement | M0 audit case | Existing broad diagnostics and deterministic fault coverage; exhaustive closure pending | Linux, compact physical subset | Planned |
+| `XFC-CF-RESOURCE-003` | Final product-target resource acceptance: Pico runtime, MDBT42Q disposition, constrained-target stack/RAM/timing, and retained/revised format and limit decisions | M0 audit case | Existing Linux, original ESP32, ESP32-C3 and build-only constrained evidence; closure pending | Candidate product targets | Planned |
+| `XFC-CF-COMPAT-005` | Compatibility governance and Stately corpus: every difference, producer/version, assessment, adaptation and adopted legacy example is statically registered and reviewed | M0 audit case | Corpus and compatibility-difference records exist; completeness check pending | Repository static inspection | Planned |
+| `XFC-CF-COMPAT-006` | Complete pinned XState differential corpus and canonical versioned newline-delimited JSON trace with normalized host comparison and embedded streaming | M0 audit case | Existing pinned semantic traces and machine-readable test markers; canonical trace conversion pending | Node reference, Linux, physical targets | Planned |
+| `XFC-CF-COMPAT-007` | Bidirectional normative traceability: every requirement maps to a stable case and every case identifies specification scope, evidence, targets, results and reasoned skips | M0 audit case | [Completed audit](normative-audit.md), [normative registry](normative-requirements.json), [reviewed mapping](normative-requirement-mapping.json), and [checker](audit_normative_requirements.py) | Repository static inspection | Pass |
 
 ## Requirement Inventory Procedure
 

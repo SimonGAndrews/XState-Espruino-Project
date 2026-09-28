@@ -5,8 +5,8 @@
   resource review pass; compact compiler metadata removes the maximum-depth
   capacity gap, and complete release-candidate qualification passes on the
   stock 70 KB original-ESP32 and ESP32-C3 profiles
-- Current milestone: M0 normative requirement inventory and M7 product-profile
-  and physical-target qualification
+- Current milestone: M7 remaining product-profile qualification and M8
+  conformance-case closure and release readiness
 - Implementation code status: M4 runtime plus final/completion behavior, full
   Profile 1 target forms, wildcard event lookup, v4 migration aliases, all
   Profile 1 context and assignment forms, complete transition-domain and
@@ -17,8 +17,8 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Next gate: continue M0 traceability, qualify a physical Pico, and progress
-  the M8 format-freeze and release-readiness review
+- Next gate: implement the audit-derived closure cases, qualify a physical
+  Pico, and progress the M8 format-freeze and release-readiness review
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -279,18 +279,20 @@ maximum-depth, resource, cleanup, host-lifecycle, allocation-fault, and
 combined-service evidence at the preserved 70 KB native reserve. The stock
 MDBT42Q release/DFU image passes,
 while the XFSM-enabled ELF links but overlaps reserved Storage by 22,176 bytes
-and fails the target size check. M0 now has a frozen 707-unit normative
-registry and a drift-checking audit tool. The Scope, Compatibility Target and
-Public Interfaces sections account for 41 reviewed units; 666 units remain.
-The opening batch found 14 passing mappings, 13 partial mappings, 12 explicit
-gaps, and two Version 1 non-applicable governance or application constraints.
+and fails the target size check. M0 normative traceability is complete: the
+drift- and orphan-checking registry covers all 707 normative units, with 327
+passing, 353 partial, 25 planned-evidence, and two explicitly non-applicable
+dispositions. All 705 applicable requirements map to stable conformance cases,
+and every case maps back to at least one requirement. The audit added fourteen
+focused closure cases; `COMPAT-007` traceability passes and the other thirteen
+remain planned with varying amounts of existing partial evidence.
 
 Immediate tasks:
 
-1. continue the [M0 normative requirement
-   audit](../tests/normative-audit.md), beginning with the 151 Machine Model
-   units, while maintaining the conformance matrix and consolidated test
-   inventory;
+1. sequence and implement the thirteen open cases identified by the completed
+   [normative requirement audit](../tests/normative-audit.md), beginning with
+   focused public/configuration/runtime gaps before the canonical trace and
+   final static/resource reviews;
 2. qualify a physical Pico and review the MDBT42Q product-profile constraint;
 3. produce an XFSM memory architecture and lifetime diagram that distinguishes
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,

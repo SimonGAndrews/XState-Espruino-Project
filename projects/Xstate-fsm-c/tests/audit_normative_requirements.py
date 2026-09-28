@@ -255,6 +255,34 @@ def validate_mapping(
             )
         if item.get("coverage") == "mapped" and not case_ids:
             errors.append(f"{requirement_id} is mapped but has no conformance case")
+        if item.get("coverage") == "gap":
+            errors.append(f"{requirement_id} still has an unmapped coverage gap")
+        if item.get("coverage") == "not-applicable":
+            if item.get("evidence") != "not-applicable" or case_ids:
+                errors.append(
+                    f"{requirement_id} has inconsistent not-applicable disposition"
+                )
+        elif item.get("evidence") == "not-applicable":
+            errors.append(
+                f"{requirement_id} has not-applicable evidence without that coverage"
+            )
+
+    missing_requirements = sorted(known_requirements - set(by_id))
+    if missing_requirements:
+        errors.append(
+            "requirements without reviewed mappings: "
+            + ", ".join(missing_requirements[:20])
+            + (" ..." if len(missing_requirements) > 20 else "")
+        )
+    referenced_cases = {
+        case_id for item in by_id.values() for case_id in item.get("caseIds", [])
+    }
+    orphan_cases = sorted(known_cases - referenced_cases)
+    if orphan_cases:
+        errors.append(
+            "conformance cases without mapped requirements: "
+            + ", ".join(orphan_cases)
+        )
     return errors, by_id
 
 
