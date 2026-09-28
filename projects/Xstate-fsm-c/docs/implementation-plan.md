@@ -247,7 +247,13 @@ blocks of construction headroom. The override remains a diagnostic artifact,
 not the selected product profile. See the [compiler optimization
 report](reports/2026-09-27-compiler-jsvar-optimization.md).
 
-The M7.4 release-candidate rerun remains open for this target.
+M7.4 passes at implementation revision `c25a1c32d`: clean matched builds, all
+20 embedded-applicable portable suites, deterministic physical allocation
+faults, direct and Storage-backed maximum depth, cleanup, host integration,
+save/restoration, and combined XFSM/BLE/WiFi/TLS service coexistence pass on
+the stock 70 KB profile. Original ESP32 IDF5 advances to `Conformance
+verified`. See the [M7.4 release-candidate
+report](reports/2026-09-28-m7-original-esp32-release-candidate.md).
 
 ESP32-C3 follows its own qualification track so the classic ESP32 memory
 profile is not assumed to suit the RISC-V target:

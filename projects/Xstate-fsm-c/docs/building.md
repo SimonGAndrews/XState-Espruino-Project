@@ -3,9 +3,9 @@
 ## Status
 
 - Build-document status: all seven M6 batches and the post-M6 whole-build
-  resource review are verified for their applicable Linux and original ESP32
-  scope; ESP32-C3 C3-D is Conformance verified, the reduced-profile Pico build
-  is verified, and the MDBT42Q size check is blocked
+  resource review are verified for their applicable scope; original ESP32
+  M7.4 and ESP32-C3 C3-D are Conformance verified, the reduced-profile Pico
+  build is verified, and the MDBT42Q size check is blocked
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
 - Current implementation revision: `c25a1c32d`
@@ -318,7 +318,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | --- | --- | --- |
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Reduced-profile build verified; physical runtime not tested |
 | MDBT42Q | nRF52832 | Stock DFU verified; XFSM ELF links but fails the Storage-overlap size check |
-| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Build verified; optimized stock 70 KB full-feature profile passes action-heavy depth 32, Storage-backed execution, cleanup, GC, and serialization |
+| Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Conformance verified on the optimized stock 70 KB full-feature profile |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Conformance verified on the optimized stock 70 KB full-feature profile |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
 
@@ -387,6 +387,14 @@ bytes, a 27,904-byte or 1.87% increase, and passed the partition-size check
 with 528,128 bytes free. See the [ESP32 IDF5 build
 report](reports/2026-09-25-esp32-idf5-build.md) and [result
 record](../tests/results/esp32-xtensa/2026-09-25-m5-idf5-build.json).
+
+At M7.4 release-candidate revision `c25a1c32d`, clean matched stock-profile
+builds produced a 1,491,968-byte disabled image and a 1,525,248-byte enabled
+image. XFSM adds 33,280 bytes (2.23%), and the enabled image retains 522,752
+bytes in the generated 2,048,000-byte app partition. The exact enabled
+artifact passed the complete original-ESP32 physical qualification. See the
+[M7.4 report](reports/2026-09-28-m7-original-esp32-release-candidate.md) and
+[result](../tests/results/esp32-xtensa/2026-09-28-m7-release-candidate.json).
 
 The ESP32-C3 feasibility comparison also uses ESP-IDF 5.5.3, with the
 provisioned RISC-V GCC 14.2.0 toolchain. Start with the stock memory profile;

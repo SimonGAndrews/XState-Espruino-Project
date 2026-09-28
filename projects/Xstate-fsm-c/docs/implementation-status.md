@@ -1,11 +1,10 @@
 # Xstate-fsm-c Implementation Status
 
 - Last reviewed: 2026-09-28
-- Overall status: all seven M6 behavioural batches, the post-M6 whole-build
-  resource review, and M7.1-M7.3 original-ESP32 integration pass their
-  applicable scope; compact compiler metadata removes the maximum-depth
-  capacity gap on stock 70 KB original-ESP32 and ESP32-C3 profiles, and the
-  complete C3-D release-candidate qualification passes on the stock C3 profile
+- Overall status: all seven M6 behavioural batches and the post-M6 whole-build
+  resource review pass; compact compiler metadata removes the maximum-depth
+  capacity gap, and complete release-candidate qualification passes on the
+  stock 70 KB original-ESP32 and ESP32-C3 profiles
 - Current milestone: M0 normative requirement inventory and M7 product-profile
   and physical-target qualification
 - Implementation code status: M4 runtime plus final/completion behavior, full
@@ -18,8 +17,8 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Next gate: complete the original-ESP32 M7.4 release-candidate rerun, then
-  continue M0 traceability and remaining target qualification
+- Next gate: continue M0 traceability, qualify a physical Pico, and progress
+  the M8 format-freeze and release-readiness review
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -61,6 +60,9 @@ The same revision's final stock-profile physical rerun is recorded in the
 [C3-D release-candidate report](reports/2026-09-28-m7-esp32-c3-release-candidate.md).
 The constrained-target deterministic fault fixture and strengthened production
 private-API check are committed in `c25a1c32d`.
+The same revision's original-ESP32 M7.4 qualification is recorded in the
+[M7.4 release-candidate
+report](reports/2026-09-28-m7-original-esp32-release-candidate.md).
 
 ## Completed Foundation Work
 
@@ -284,8 +286,7 @@ Immediate tasks:
 
 1. expand the M0 normative requirement inventory while
    maintaining the consolidated [test inventory](../tests/test-inventory.md);
-2. complete the original-ESP32 M7.4 release-candidate rerun and qualify a
-   physical Pico;
+2. qualify a physical Pico and review the MDBT42Q product-profile constraint;
 3. produce an XFSM memory architecture and lifetime diagram that distinguishes
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
    actor storage, native heap, and the single native C stack. Show their use
@@ -312,7 +313,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Select per-target stack reserve | Default raised to 1,024 bytes after complete-runtime Linux measured 704 bytes and original ESP32 measured 448 bytes; remaining physical families pending | M7 |
 | Retain or revise snapshot materialization | Lazy snapshots retained provisionally after Linux and ESP32 allocation measurement; constrained-target evidence pending | M7 open |
 | Retain or revise diagnostic detail | The 48-byte detail budget is retained provisionally after complete Linux and compact ESP32 validation; constrained-target evidence pending | M7 open |
-| Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected; full-feature stock 70 KB profile and M7.1-M7.3 physical slices pass after compiler optimization | M7.4 release-candidate rerun |
+| Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected; full-feature stock 70 KB profile passes M7.4 matched-build, portable, resource, lifecycle, deterministic-fault, and combined-service qualification | Closed for original ESP32 |
 | Select ESP32-C3 JsVar/native-heap profile | Stock 70 KB reserve selected; optimized action-heavy depth 32 passes with 1,174 measured blocks of headroom, combined services retain at least 40,480 native-heap bytes, and C3-D passes | Closed for ESP32-C3 |
 
 ## Target Status
@@ -322,7 +323,7 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Linux Espruino | Build verified | [Post-M6 resource result](../tests/results/linux/2026-09-27-post-m6-resource-review.json) |
 | Espruino Pico | Build verified for reduced product profile | [Pico feasibility build](../tests/results/pico/2026-09-26-feasibility-build.json) |
 | MDBT42Q | Not yet verified | [M5 build attempt](../tests/results/mdbt42q/2026-09-25-m5-build-attempt.json) |
-| Original ESP32 IDF5 | Build verified; M7.1-M7.3 integration and stock 70 KB compact/action-heavy depth, Storage-backed execution, exact cleanup, GC and serialization pass; M7.4 pending | [Compiler optimization result](../tests/results/esp32-xtensa/2026-09-27-compiler-jsvar-optimization.json) |
+| Original ESP32 IDF5 | Conformance verified on the stock full-feature 70 KB profile | [M7.4 release-candidate result](../tests/results/esp32-xtensa/2026-09-28-m7-release-candidate.json) |
 | ESP32-C3 IDF5 | Conformance verified on the stock full-feature 70 KB profile | [C3-D release-candidate result](../tests/results/esp32-riscv/2026-09-28-m7-release-candidate.json) |
 | ESP32-S3 IDF5 | Not yet verified | Later expansion target; not required for Version 1 qualification |
 
@@ -333,6 +334,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-28 | Original ESP32 M7.4 passed matched builds, 20 embedded portable suites, deterministic physical fault injection, maximum-depth, cleanup, host integration, save/restoration, and combined-service reruns; target advanced to Conformance verified |
 | 2026-09-28 | ESP32-C3 C3-D passed matched builds, 20 embedded portable suites, deterministic physical fault injection, maximum-depth, cleanup, host integration, save/restoration, and combined-service reruns; target advanced to Conformance verified |
 | 2026-09-28 | Specification 0.51 clarifies that structural maxima are not memory reservations for arbitrary combinations, retains depth 32, distinguishes valid-shape `E_NO_MEMORY` from `E_LIMIT_EXCEEDED`, and requires the canonical depth-32/65-action fixture for a target's Conformance verified claim |
 | 2026-09-28 | C3-C passed four consecutive stock-profile combined runs: XFSM coordinated BLE GATT, WiFi association and TLS 1.2 HTTPS while exercising a depth-24, 49-action transition; minimum native heap was 40,480 bytes and every run passed correlated target, peer, endpoint and cleanup checks |

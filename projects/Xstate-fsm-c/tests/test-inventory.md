@@ -41,14 +41,13 @@ comparison where one is required.
 
 These test programs exist in the implementation repository under
 `libs/xfsm/tests/`. All twenty-two normal JavaScript suites below pass on Linux
-Espruino. The original ESP32 IDF5 candidate passes the earlier eighteen
-portable suites, including the maximum-depth action trace on the optimized
-stock 70 KB profile, plus the compact strict-validation smoke and focused
-batch 7 regressions. The
-full desktop strict-validation and large-limit sources are not classified as
-portable embedded suites. The ESP32-C3 C3-D candidate passes all 20
-embedded-applicable portable suites; its complete target evidence is in the
-[C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json).
+Espruino. The stock 70 KB original ESP32 M7.4 and ESP32-C3 C3-D candidates
+each pass all 20 embedded-applicable portable suites. Their complete target
+evidence is in the [M7.4
+result](results/esp32-xtensa/2026-09-28-m7-release-candidate.json) and [C3-D
+result](results/esp32-riscv/2026-09-28-m7-release-candidate.json). The full
+desktop strict-validation and large-limit sources are not classified as
+portable embedded suites.
 
 | Executable suite | Principal coverage | Linux | Physical target(s) | Evidence |
 | --- | --- | --- | --- | --- |
@@ -79,8 +78,8 @@ embedded-applicable portable suites; its complete target evidence is in the
 | `test_host_application.js` | Retained outer-scope, closure, flash-module and native callbacks; GPIO actions; timer-driven synchronous dispatch; subscription order; flash-callback fault rollback; Storage, module-cache and pin cleanup | Not applicable: physical host integration | Pass twice | [ESP32 M7.1 application-integration result](results/esp32-xtensa/2026-09-27-m7-application-integration.json) |
 | `test_host_memory_cleanup.js` | Shared-machine/eight-actor stress, context isolation, subscription and snapshot lifetime, live-graph relocation, repeated construction, fault rollback, and exact settled-baseline recovery | Not applicable: physical host integration | Pass twice | [ESP32 M7.2 memory/serialization result](results/esp32-xtensa/2026-09-27-m7-memory-serialization.json) |
 | `test_host_event_serialization.js` | A one-millisecond timer becomes due during a measured 128-send synchronous sequence, waits for every publication, and then observes the fully committed result | Not applicable: physical host integration | Pass twice | [ESP32 M7.2 memory/serialization result](results/esp32-xtensa/2026-09-27-m7-memory-serialization.json) |
-| `prepare_host_service_coexistence.js` | Retained service actor with ordered assignment, actions, guard, subscriptions, final state, and a depth-24 branch executing 49 ordered actions during HTTPS completion | Not applicable: physical service integration | ESP32-C3: Pass four times | [C3 service-coexistence result](results/esp32-riscv/2026-09-28-m7-service-coexistence.json) |
-| `test_host_service_coexistence.js` | BLE peripheral and retained GATT connection before/after WiFi association and TLS 1.2 HTTPS, correlated through the XFSM service actor and classic-ESP32 peer | Not applicable: physical service integration | ESP32-C3: Pass four times | [C3 service-coexistence result](results/esp32-riscv/2026-09-28-m7-service-coexistence.json) |
+| `prepare_host_service_coexistence.js` | Retained service actor with ordered assignment, actions, guard, subscriptions, final state, and a depth-24 branch executing 49 ordered actions during HTTPS completion | Not applicable: physical service integration | ESP32-C3: Pass four times; original ESP32: Pass | [C3 service result](results/esp32-riscv/2026-09-28-m7-service-coexistence.json), [M7.4 result](results/esp32-xtensa/2026-09-28-m7-release-candidate.json) |
+| `test_host_service_coexistence.js` | BLE peripheral and retained GATT connection before/after WiFi association and TLS 1.2 HTTPS, correlated through the XFSM service actor and peer | Not applicable: physical service integration | ESP32-C3: Pass four times; original ESP32: Pass | [C3 service result](results/esp32-riscv/2026-09-28-m7-service-coexistence.json), [M7.4 result](results/esp32-xtensa/2026-09-28-m7-release-candidate.json) |
 | `test_transition_depth_storage.js` | Storage-backed construction and execution of the depth-32/65-action trace, native-heap observation, and temporary-file cleanup | Not applicable: physical product profile | Pass on stock 70 KB classic and C3 profiles | [Classic optimization result](results/esp32-xtensa/2026-09-27-compiler-jsvar-optimization.json), [C3 optimization result](results/esp32-riscv/2026-09-27-compiler-jsvar-optimization.json) |
 | `test_host_allocation_pressure.js` | Production `E_NO_MEMORY`, failed-construction cleanup, and same-configuration retry after releasing pressure | Not applicable: physical host allocation | Pass twice | [ESP32 M7.3 allocation/profile result](results/esp32-xtensa/2026-09-27-m7-allocation-profile.json) |
 | `test_host_diagnostic_pressure.js` | Long diagnostic-path allocation pressure, compact fallback error, and repeat-attempt non-accumulation | Not applicable: physical host allocation | Pass twice | [ESP32 M7.3 allocation/profile result](results/esp32-xtensa/2026-09-27-m7-allocation-profile.json) |
@@ -103,7 +102,7 @@ is still planned, that limitation remains.
 | `measure_post_m6_depth.js` | Compact depth-32 construction separated from large all-in-one test-source loading | Pass on Linux, original ESP32, and ESP32-C3; optimized physical results are in the [compiler optimization report](../docs/reports/2026-09-27-compiler-jsvar-optimization.md) |
 | `test_stack_reserve.js` | Operation rejection before mutation when the configured coordinator reserve is unavailable | Pass on Linux; normal reserve measured on ESP32: [Linux resource result](results/linux/2026-09-25-m5-resource-evidence.json) |
 | `test_fault_injection.js` | Deterministic construction, actor, context, event, assignment, completion, publication, snapshot, stop and subscription allocation failures with rollback and exact error identity | Pass in a separate `XFC_TEST=1` Linux build; `_failNext` is absent from production firmware: [validation/fault result](results/linux/2026-09-27-m6-validation-faults.json) |
-| `test_fault_injection_embedded.js` | Sequential constrained-target smoke for compiler workspace/arena, actor, startup, assignment, publication, snapshot and subscription allocation seams | Pass on ESP32-C3 in a temporary `XFC_TEST=1` build; exact production image restored afterward: [C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json) |
+| `test_fault_injection_embedded.js` | Sequential constrained-target smoke for compiler workspace/arena, actor, startup, assignment, publication, snapshot and subscription allocation seams | Pass on original ESP32 and ESP32-C3 in temporary `XFC_TEST=1` builds; exact production images restored afterward: [M7.4 result](results/esp32-xtensa/2026-09-28-m7-release-candidate.json), [C3-D result](results/esp32-riscv/2026-09-28-m7-release-candidate.json) |
 | `reference/xstate-v5/verify-reference.mjs` | Pinned XState 5.33.2 basic transition, completion, hierarchy, wildcard, forbidden-transition, context/assignment, 16 transition-domain, and maximum-depth traces | Pass: [Linux M6.3 result](results/linux/2026-09-27-m6-transition-domains.json) |
 | `reference/xstate-v4/verify-reference.mjs` | Pinned XState 4.38.3 `cond`, `internal`, ordered-action flags, and action-boundary trace | Pass: [Linux M6.1 result](results/linux/2026-09-26-m6-target-events.json) |
 
@@ -180,7 +179,7 @@ conformance cases rather than treated as missing comparison data.
 | Target | Build status | Tests completed | Outstanding or blocker |
 | --- | --- | --- | --- |
 | Linux Espruino | Build verified | Twenty-two normal suites, separate deterministic fault suite, 66-check sanitizer suite, pinned XState references, broader GC/cross-actor behavior, and complete post-M6 resource review | Remaining differential corpus, M0 traceability and release-candidate rerun |
-| Original ESP32 IDF5 | [Compiler optimization result](results/esp32-xtensa/2026-09-27-compiler-jsvar-optimization.json) passes; target remains Build verified | Earlier portable and host coverage plus direct and Storage-backed action-heavy depth 32, exact cleanup, GC relocation, and serialization on the stock 70 KB profile; measured construction headroom is 1,040 blocks and the normal image leaves 522,752 app bytes free | Final M7.4 release-candidate run and evidence review |
+| Original ESP32 IDF5 | [M7.4 release-candidate result](results/esp32-xtensa/2026-09-28-m7-release-candidate.json) passes; Conformance verified | Matched builds; 20 embedded portable suites; deterministic physical allocation seams; direct and Storage-backed maximum depth; exact cleanup, GC, serialization, native callbacks/GPIO/timer, save/restoration/reset; and combined XFSM/BLE/WiFi/TLS service rerun | No target-specific Profile 1 blocker; project-wide M0 and release review remain |
 | Espruino Pico | Reduced-profile build verified | Matching disabled/enabled size comparison | Physical board execution, complete portable suite, stack/RAM/timing, save/reset and hardware callbacks |
 | MDBT42Q | Not yet verified | Stock DFU passes; XFSM compiles and links | Blocked by 22,176-byte Storage overlap; select and document a viable product profile before runtime testing |
 | ESP32-C3 IDF5 | [C3-D release-candidate result](results/esp32-riscv/2026-09-28-m7-release-candidate.json) passes; Conformance verified | Matched builds; 20 embedded portable suites; deterministic physical allocation seams; direct and Storage-backed maximum depth; exact cleanup, GC, serialization, native callbacks/GPIO/timer, save/restoration/reset; and combined XFSM/BLE/WiFi/TLS service rerun | No target-specific Profile 1 blocker; project-wide M0 and release review remain |
@@ -193,7 +192,7 @@ conformance cases rather than treated as missing comparison data.
 | Linux build with XFSM disabled | Pass | Repeat at release candidate |
 | Linux build with XFSM enabled | Pass | Repeat at release candidate |
 | Linux semantic, fault and sanitizer CI | Configured on fork branch | Preserve all 22 normal suites, the separate `XFC_TEST=1` fault build, and the disabled build |
-| Original ESP32 IDF5 enabled CI build | Configured on fork branch; local optimized stock 70 KB build and focused resource tests pass | Ensure CI uses the stock profile and retain as fork-development coverage |
+| Original ESP32 IDF5 enabled CI build | Configured on fork branch; M7.4 matched build and physical qualification pass; normal image leaves 522,752 app-partition bytes free | Retain as fork-development coverage |
 | Pico reduced-profile build | Pass locally | Decide whether to add fork CI; run on physical Pico |
 | MDBT42Q enabled build | Fails size gate | Do not claim support; retry only after product-profile decision |
 | ESP32-C3 IDF5 enabled build | C3-D matched build and physical qualification pass; normal image leaves 332,880 app-partition bytes free | Optional fork CI remains useful but is not part of the target's local conformance result |

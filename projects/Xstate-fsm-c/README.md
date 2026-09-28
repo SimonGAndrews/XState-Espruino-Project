@@ -23,19 +23,14 @@ actor and context ownership, transition and action semantics, diagnostics,
 Espruino build integration, target matrix, resource measurements, and
 conformance strategy.
 
-Current work is M0 normative traceability and M7 product-profile and physical-
-target qualification. Complete-engine Linux and original ESP32 sizing, memory,
-timing, stack, hierarchy, diagnostic, GC, and relocation measurements are
-recorded. M7.1 original-ESP32 application integration passes with retained
-outer-scope, closure, flash-backed and native callbacks, GPIO actions,
-timer-driven dispatch, and safe cleanup. M7.2 adds exact settled-baseline
-recovery across shared, repeated and faulted runtime graphs plus queued-timer
-serialization after a long synchronous send sequence. M7.3 provisionally
-selects a full-feature original-ESP32 memory profile with 3,160 JsVar blocks;
-the action-heavy depth-32 trace, Storage-backed execution, production
-allocation failure/retry, and compact diagnostic fallback all pass. The
-current format and limits are retained provisionally, pending the final
-release-candidate run and constrained-target M7 evidence.
+Current work is M0 normative traceability, remaining physical-target
+qualification, and M8 release readiness. The stock full-feature 70 KB original
+ESP32 and ESP32-C3 profiles are Conformance verified after matched builds,
+portable and target-specific runtime suites, deterministic allocation faults,
+maximum-depth execution, cleanup, save/restoration, native/flash callback and
+timer integration, and combined XFSM/BLE/WiFi/TLS service tests. The current
+format and limits remain provisional pending the final cross-target and M8
+reviews.
 
 Current work, revisions, and next tasks are recorded in the
 [implementation status](docs/implementation-status.md). The
