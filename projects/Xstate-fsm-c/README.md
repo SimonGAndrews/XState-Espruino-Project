@@ -83,6 +83,8 @@ relevant behavior and constraints.
 - [docs/reports/](docs/reports/) - reviewed measurements and qualification
   reports
 - [src/](src/) - implementation ownership and source-location note
+- [tests/normative-audit.md](tests/normative-audit.md) - requirement-level
+  Profile 1 traceability audit and current progress
 - [tests/](tests/) - conformance definitions, differential tooling, results,
   and evidence indexes
 

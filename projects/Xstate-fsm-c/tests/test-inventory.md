@@ -7,18 +7,22 @@
 - Specification: Profile 1 version 0.51
 - Normative authority: [Profile 1 specification](../docs/specification.md)
 - Requirement mapping: [conformance matrix](conformance-matrix.md)
+- Requirement audit: [707-unit normative audit](normative-audit.md), 41
+  reviewed and 666 pending
 
 This document is the single operational record of tests completed to date and
 tests still required for final Profile 1 review. It records executable suites,
 functional coverage, differential coverage, target execution, and outstanding
-work. The conformance matrix remains the requirement-by-requirement authority;
-the two documents must be updated together when a case is added or its status
-changes.
+work. The normative audit is the requirement-level authority, while the
+conformance matrix defines stable aggregate evidence cases. All three documents
+must be updated together when a case is added or its status changes.
 
-This inventory covers the complete test plan currently known. The outstanding
-M0 audit of every normative `MUST` and `MUST NOT` may identify additional
-cases. Any such case must be added here when discovered rather than being left
-only in an implementation note or issue.
+This inventory covers the complete test plan currently known. The M0 audit has
+frozen 707 normative units and reviewed the Scope, Compatibility Target and
+Public Interfaces sections. Its first batch identified 12 unmapped obligations
+and 13 with partial evidence. Any additional case discovered in the remaining
+666 reviews must be added here rather than being left only in an implementation
+note or issue.
 
 ## Status Vocabulary
 

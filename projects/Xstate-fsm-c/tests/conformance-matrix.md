@@ -2,18 +2,21 @@
 
 ## Status
 
-- Matrix status: Scaffolded
-- Requirement inventory: Not yet complete
+- Matrix status: M0 requirement audit in progress
+- Requirement inventory: 707 normative units frozen; 41 reviewed and 666
+  pending
 - Implemented cases: M1-M4 cases, all seven M6 behavioural batches, final-
   state completion, and partial M5 resource evidence below
 - Normative authority: [Profile 1 specification](../docs/specification.md)
 
 The specification requires every normative `MUST` and `MUST NOT` to link to an
-automated test, build or static-inspection check, or recorded measurement. This
-matrix is the bidirectional index between those requirements and their
-evidence. The [test inventory](test-inventory.md) is the companion operational
-register of completed suites, partial coverage, outstanding execution and final
-review conditions.
+automated test, build or static-inspection check, or recorded measurement. The
+[normative requirement audit](normative-audit.md) and its machine-readable
+registry are the requirement-level index. This matrix defines the stable,
+aggregate conformance cases to which reviewed requirements map. The [test
+inventory](test-inventory.md) is the companion operational register of
+completed suites, partial coverage, outstanding execution and final review
+conditions.
 
 ## Identifier Convention
 
@@ -52,10 +55,12 @@ its identifier and is marked superseded with a link to its replacement.
 - `Not applicable`: the requirement does not apply to the declared target or
   layer and records why.
 
-## Initial Matrix
+## Conformance Cases
 
-The rows below establish the format; M0 must expand this into a complete
-requirement inventory before Profile 1 completion can be claimed.
+The rows below define aggregate evidence cases. M0 must complete the separate
+requirement-level mapping before Profile 1 completion can be claimed; an
+aggregate case result must not be assumed to cover every normative statement
+in its area.
 
 | Case ID | Specification section and requirement | Classification | Evidence | Targets | Result |
 | --- | --- | --- | --- | --- | --- |

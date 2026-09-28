@@ -56,12 +56,14 @@ Deliverables:
 - reproducible Linux build instructions;
 - implementation-status dashboard;
 - conformance-matrix structure and stable case-ID convention;
+- complete normative-requirement registry and bidirectional evidence mapping;
 - pinned Node XState v5.33.2 primary reference and v4.38.3 secondary reference;
   and
 - baseline Espruino Linux build without XFSM.
 
 Exit gate: another developer can obtain both repositories, reproduce the
-baseline build, and identify the next case and implementation task without
+baseline build, trace every applicable normative requirement to evidence or an
+explicit planned case, and identify the next implementation task without
 requiring thread history.
 
 ### M1 - Espruino Library Shell

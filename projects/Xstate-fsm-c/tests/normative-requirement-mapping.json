@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "reviewed": [
+    {
+      "id": "XFC-REQ-0001",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-FINAL-001", "XFC-CF-FINAL-002"],
+      "notes": "Completion and nested completion traces run to stability before publication."
+    },
+    {
+      "id": "XFC-REQ-0002",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-CONFIG-003"],
+      "notes": "Strict validation rejects type parallel as E_UNSUPPORTED_FEATURE."
+    },
+    {
+      "id": "XFC-REQ-0003",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-CONFIG-003"],
+      "notes": "Strict validation exercises the recognized unsupported feature families."
+    },
+    {
+      "id": "XFC-REQ-0004",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-CONFIG-003"],
+      "notes": "Unsupported-feature fixtures require explicit rejection."
+    },
+    {
+      "id": "XFC-REQ-0005",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "No explicit test supplies a compiled machine as a nested state-node value."
+    },
+    {
+      "id": "XFC-REQ-0006",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-COMPAT-001", "XFC-CF-COMPAT-002", "XFC-CF-COMPAT-003", "XFC-CF-COMPAT-004"],
+      "notes": "Pinned comparisons exist for major semantics, but the audit has not shown a current-XState review for every decision."
+    },
+    {
+      "id": "XFC-REQ-0007",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-COMPAT-001", "XFC-CF-COMPAT-002", "XFC-CF-COMPAT-003", "XFC-CF-COMPAT-004"],
+      "notes": "Reference results pin XState 5.33.2 and 4.38.3."
+    },
+    {
+      "id": "XFC-REQ-0008",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "The specification records compatibility differences, but no static check proves that every deliberate difference is registered."
+    },
+    {
+      "id": "XFC-REQ-0009",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-CONFIG-003", "XFC-CF-COMPAT-002"],
+      "notes": "Strict validation and migration differences are explicit for implemented cases; completeness awaits the remaining audit."
+    },
+    {
+      "id": "XFC-REQ-0010",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-CONFIG-001", "XFC-CF-FORMAT-001", "XFC-CF-TRANS-001"],
+      "notes": "Construction records and runtime traces demonstrate compiled Profile 1 semantics."
+    },
+    {
+      "id": "XFC-REQ-0011",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-API-001", "XFC-CF-FORMAT-001"],
+      "notes": "The arena format is private and the machine enumerates no public data, but the complete negative public surface is not tested."
+    },
+    {
+      "id": "XFC-REQ-0012",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "Corpus READMEs record producer and known-version status, but no conformance case verifies that metadata."
+    },
+    {
+      "id": "XFC-REQ-0013",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "Corpus assessments exist, but no static check validates that every example has a required assessment category."
+    },
+    {
+      "id": "XFC-REQ-0014",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "Adaptations are described in corpus notes; a completeness check is still required."
+    },
+    {
+      "id": "XFC-REQ-0471",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-API-001"],
+      "notes": "Enabled builds load the XFSM module."
+    },
+    {
+      "id": "XFC-REQ-0472",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-API-001"],
+      "notes": "Shell and physical tests use require(\"XFSM\")."
+    },
+    {
+      "id": "XFC-REQ-0473",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-API-001"],
+      "notes": "Required exports are tested; absence of legacy aliases is not."
+    },
+    {
+      "id": "XFC-REQ-0474",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "No explicit test checks that interpret is absent."
+    },
+    {
+      "id": "XFC-REQ-0475",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-CONFIG-001", "XFC-CF-HOST-005"],
+      "notes": "Named action and guard implementations are supplied through createMachine's second argument in construction and physical callback tests."
+    },
+    {
+      "id": "XFC-REQ-0476",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "No explicit test checks that provide and withConfig are absent."
+    },
+    {
+      "id": "XFC-REQ-0477",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-CONFIG-003"],
+      "notes": "Valid configuration objects are pervasive, but all invalid root config shapes are not enumerated."
+    },
+    {
+      "id": "XFC-REQ-0478",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-CONFIG-003"],
+      "notes": "Omitted and object options are tested; the complete invalid-shape set is not."
+    },
+    {
+      "id": "XFC-REQ-0479",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-CONFIG-001", "XFC-CF-CONFIG-003"],
+      "notes": "Action and guard maps plus invalid accessors are tested; inherited, symbol and non-enumerable entries are not all explicit."
+    },
+    {
+      "id": "XFC-REQ-0480",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-CONFIG-001", "XFC-CF-CONFIG-003"],
+      "notes": "Callable map values and an invalid accessor are tested, but the full property-shape grammar is not."
+    },
+    {
+      "id": "XFC-REQ-0481",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-CONFIG-001", "XFC-CF-CONFIG-003"],
+      "notes": "Exact named lookup is exercised; an explicit path-like implementation-name case is missing."
+    },
+    {
+      "id": "XFC-REQ-0482",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-CONFIG-001", "XFC-CF-CONFIG-003", "XFC-CF-ACTION-001"],
+      "notes": "Referenced actions and guards resolve during construction and execute through retained bindings."
+    },
+    {
+      "id": "XFC-REQ-0483",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "No explicit fixture proves that unused valid implementation entries are accepted."
+    },
+    {
+      "id": "XFC-REQ-0484",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "No retained-container assertion includes an unused callback and proves its omission."
+    },
+    {
+      "id": "XFC-REQ-0485",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-CONFIG-002", "XFC-CF-HOST-001", "XFC-CF-HOST-005"],
+      "notes": "Source isolation, cleanup, and releasing application options provide evidence; exact non-retention of both option maps needs a focused assertion."
+    },
+    {
+      "id": "XFC-REQ-0486",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-CONFIG-003", "XFC-CF-DIAG-001"],
+      "notes": "Unknown option properties reject with category and path."
+    },
+    {
+      "id": "XFC-REQ-0487",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-CONFIG-003", "XFC-CF-DIAG-001"],
+      "notes": "Non-callable and accessor map values reject as E_CONFIG_TYPE at the option path."
+    },
+    {
+      "id": "XFC-REQ-0488",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-API-001", "XFC-CF-HOST-002"],
+      "notes": "Machine identity and opaque native representation exist; the private brand is not directly covered by a negative API case."
+    },
+    {
+      "id": "XFC-REQ-0489",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-HOST-001", "XFC-CF-HOST-002", "XFC-CF-HOST-003"],
+      "notes": "Arena ownership, retained callbacks, GC visibility, and shared-machine actors are tested."
+    },
+    {
+      "id": "XFC-REQ-0490",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "No complete ordinary, forged, incompatible-format and invalid-machine createActor rejection suite is recorded."
+    },
+    {
+      "id": "XFC-REQ-0491",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-API-001", "XFC-CF-HOST-002"],
+      "notes": "The machine has no enumerable public members, but every forbidden named member is not explicitly checked."
+    },
+    {
+      "id": "XFC-REQ-0492",
+      "coverage": "not-applicable",
+      "evidence": "not-applicable",
+      "caseIds": [],
+      "notes": "This is an application-use constraint rather than observable Version 1 engine behavior."
+    },
+    {
+      "id": "XFC-REQ-0493",
+      "coverage": "not-applicable",
+      "evidence": "not-applicable",
+      "caseIds": [],
+      "notes": "This governs future API evolution and cannot be demonstrated by a Version 1 implementation."
+    },
+    {
+      "id": "XFC-REQ-0494",
+      "coverage": "mapped",
+      "evidence": "partial",
+      "caseIds": ["XFC-CF-CONFIG-002", "XFC-CF-HOST-001"],
+      "notes": "Source independence and cleanup support the rule; a focused source-retention check remains desirable."
+    },
+    {
+      "id": "XFC-REQ-0495",
+      "coverage": "mapped",
+      "evidence": "pass",
+      "caseIds": ["XFC-CF-API-001", "XFC-CF-LIFE-001", "XFC-CF-SNAP-001", "XFC-CF-SUB-001"],
+      "notes": "All five actor operations are exercised across lifecycle, snapshot, and subscription suites."
+    },
+    {
+      "id": "XFC-REQ-0496",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "No explicit test checks that onTransition is absent."
+    },
+    {
+      "id": "XFC-REQ-0497",
+      "coverage": "gap",
+      "evidence": "planned",
+      "caseIds": [],
+      "notes": "No explicit test checks that snapshots omit state.actions."
+    }
+  ]
+}

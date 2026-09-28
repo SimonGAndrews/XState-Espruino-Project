@@ -279,13 +279,18 @@ maximum-depth, resource, cleanup, host-lifecycle, allocation-fault, and
 combined-service evidence at the preserved 70 KB native reserve. The stock
 MDBT42Q release/DFU image passes,
 while the XFSM-enabled ELF links but overlaps reserved Storage by 22,176 bytes
-and fails the target size check. M0's full normative requirement inventory
-also remains documentation work.
+and fails the target size check. M0 now has a frozen 707-unit normative
+registry and a drift-checking audit tool. The Scope, Compatibility Target and
+Public Interfaces sections account for 41 reviewed units; 666 units remain.
+The opening batch found 14 passing mappings, 13 partial mappings, 12 explicit
+gaps, and two Version 1 non-applicable governance or application constraints.
 
 Immediate tasks:
 
-1. expand the M0 normative requirement inventory while
-   maintaining the consolidated [test inventory](../tests/test-inventory.md);
+1. continue the [M0 normative requirement
+   audit](../tests/normative-audit.md), beginning with the 151 Machine Model
+   units, while maintaining the conformance matrix and consolidated test
+   inventory;
 2. qualify a physical Pico and review the MDBT42Q product-profile constraint;
 3. produce an XFSM memory architecture and lifetime diagram that distinguishes
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
