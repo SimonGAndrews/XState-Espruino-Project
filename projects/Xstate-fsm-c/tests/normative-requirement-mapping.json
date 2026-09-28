@@ -41,11 +41,11 @@
     {
       "id": "XFC-REQ-0005",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Focused complete-grammar construction case planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0006",
@@ -180,32 +180,32 @@
     {
       "id": "XFC-REQ-0019",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-005"
       ],
-      "notes": "Named binding works; focused proof of exact map-only lookup remains planned."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0020",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-005"
       ],
-      "notes": "Named binding works; focused proof of exact map-only lookup remains planned."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0021",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-005"
       ],
-      "notes": "Named binding works; focused proof of exact map-only lookup remains planned."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0022",
@@ -240,32 +240,32 @@
     {
       "id": "XFC-REQ-0025",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-002",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Compiled structure is source-independent; complete composition grammar remains planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0026",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-002",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Compiled structure is source-independent; complete composition grammar remains planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0027",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-002",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Compiled structure is source-independent; complete composition grammar remains planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0028",
@@ -314,282 +314,282 @@
     {
       "id": "XFC-REQ-0032",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0033",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0034",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0035",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0036",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0037",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0038",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0039",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0040",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0041",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0042",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0043",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0044",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0045",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0046",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0047",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0048",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0049",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0050",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0051",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0052",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0053",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0054",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0055",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0056",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0057",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0058",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0059",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-003",
         "XFC-CF-CONFIG-004"
       ],
-      "notes": "Strict grammar has broad passing coverage; exhaustive node and initial-transition closure is planned."
+      "notes": "Focused canonical grammar trace and the existing strict-validation suites pass."
     },
     {
       "id": "XFC-REQ-0060",
@@ -5198,11 +5198,11 @@
     {
       "id": "XFC-REQ-0474",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-API-002"
       ],
-      "notes": "Focused negative public-surface and brand case planned."
+      "notes": "Canonical negative-surface and private identity-brand checks pass."
     },
     {
       "id": "XFC-REQ-0475",
@@ -5217,59 +5217,64 @@
     {
       "id": "XFC-REQ-0476",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-API-002"
       ],
-      "notes": "Focused negative public-surface and brand case planned."
+      "notes": "Canonical negative-surface and private identity-brand checks pass."
     },
     {
       "id": "XFC-REQ-0477",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
-        "XFC-CF-CONFIG-003"
+        "XFC-CF-CONFIG-003",
+        "XFC-CF-CONFIG-005"
       ],
-      "notes": "Valid configuration objects are pervasive, but all invalid root config shapes are not enumerated."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0478",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
-        "XFC-CF-CONFIG-003"
+        "XFC-CF-CONFIG-003",
+        "XFC-CF-CONFIG-005"
       ],
-      "notes": "Omitted and object options are tested; the complete invalid-shape set is not."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0479",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
-        "XFC-CF-CONFIG-003"
+        "XFC-CF-CONFIG-003",
+        "XFC-CF-CONFIG-005"
       ],
-      "notes": "Action and guard maps plus invalid accessors are tested; inherited, symbol and non-enumerable entries are not all explicit."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0480",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
-        "XFC-CF-CONFIG-003"
+        "XFC-CF-CONFIG-003",
+        "XFC-CF-CONFIG-005"
       ],
-      "notes": "Callable map values and an invalid accessor are tested, but the full property-shape grammar is not."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0481",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-001",
-        "XFC-CF-CONFIG-003"
+        "XFC-CF-CONFIG-003",
+        "XFC-CF-CONFIG-005"
       ],
-      "notes": "Exact named lookup is exercised; an explicit path-like implementation-name case is missing."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0482",
@@ -5278,27 +5283,28 @@
       "caseIds": [
         "XFC-CF-CONFIG-001",
         "XFC-CF-CONFIG-003",
-        "XFC-CF-ACTION-001"
+        "XFC-CF-ACTION-001",
+        "XFC-CF-CONFIG-005"
       ],
-      "notes": "Referenced actions and guards resolve during construction and execute through retained bindings."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0483",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-005"
       ],
-      "notes": "Focused implementation-map ownership case planned."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0484",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-CONFIG-005"
       ],
-      "notes": "Focused implementation-map ownership case planned."
+      "notes": "Canonical map grammar and ownership checks pass; Symbol and non-enumerable inputs are reasoned skips because Espruino does not represent those value or property kinds."
     },
     {
       "id": "XFC-REQ-0485",
@@ -5355,11 +5361,11 @@
     {
       "id": "XFC-REQ-0490",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-API-002"
       ],
-      "notes": "Focused negative public-surface and brand case planned."
+      "notes": "Canonical negative-surface and private identity-brand checks pass."
     },
     {
       "id": "XFC-REQ-0491",
@@ -5410,21 +5416,21 @@
     {
       "id": "XFC-REQ-0496",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-API-002"
       ],
-      "notes": "Focused negative public-surface and brand case planned."
+      "notes": "Canonical negative-surface and private identity-brand checks pass."
     },
     {
       "id": "XFC-REQ-0497",
       "coverage": "mapped",
-      "evidence": "planned",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-API-002",
         "XFC-CF-SNAP-002"
       ],
-      "notes": "Snapshot negative-surface assertion is planned."
+      "notes": "Canonical negative-surface and private identity-brand checks pass."
     },
     {
       "id": "XFC-REQ-0498",

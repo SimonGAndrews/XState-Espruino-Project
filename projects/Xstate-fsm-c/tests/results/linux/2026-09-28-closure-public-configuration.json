@@ -1,0 +1,92 @@
+{
+  "kind": "xfsm-closure-public-configuration-linux",
+  "date": "2026-09-28",
+  "caseIds": [
+    "XFC-CF-API-002",
+    "XFC-CF-CONFIG-004",
+    "XFC-CF-CONFIG-005"
+  ],
+  "xstateEspruinoProjectBaseRevision": "70637e0be952e5ceaef30d979dba10d5e81bf4ed",
+  "specificationVersion": "0.51",
+  "implementationRevision": "9b813aa304407652828221e243acc51d81e5240a",
+  "espruinoUpstreamBase": "84c190da7feb10a976d7ca422be39adaa10fb3c2",
+  "target": "Linux Espruino",
+  "toolchain": {
+    "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "python": "Python 3.12.3"
+  },
+  "canonicalTrace": {
+    "schema": "xfc.trace",
+    "version": 1,
+    "format": "newline-delimited JSON",
+    "comparison": "parsed records with canonical object-property ordering; record and array order retained",
+    "streaming": "each record emitted when observed; complete trace not retained by the JavaScript harness",
+    "acceptedTraceUpdate": "explicit review only",
+    "physicalArtifact": "the host runner composes the same harness and case for paced physical execution"
+  },
+  "cases": {
+    "XFC-CF-API-002": {
+      "records": 24,
+      "result": "pass",
+      "coverage": [
+        "module factories and absent private hooks",
+        "absent v4 and unsupported machine and actor members",
+        "opaque machine and assignment objects",
+        "snapshot action-list absence",
+        "ordinary, cloned and incompatible machine rejection",
+        "actor, snapshot and subscription receiver rejection",
+        "forged assignment-descriptor rejection"
+      ]
+    },
+    "XFC-CF-CONFIG-004": {
+      "records": 53,
+      "result": "pass",
+      "coverage": [
+        "invalid root configuration shapes",
+        "explicit and inferred atomic, compound and final nodes",
+        "empty atomic states object",
+        "initial descriptor validation, event and action order",
+        "punctuated state keys",
+        "shared fragment composition and source independence",
+        "compiled-machine-as-state rejection",
+        "contradictory node forms and exact diagnostic paths"
+      ]
+    },
+    "XFC-CF-CONFIG-005": {
+      "records": 30,
+      "result": "pass-with-reasoned-skips",
+      "coverage": [
+        "options and implementation-map shapes",
+        "exact case-sensitive and path-like names",
+        "no lexical, global or inherited lookup",
+        "callable data-property validation",
+        "accessor rejection without invocation",
+        "referenced binding retention",
+        "unused binding and source option-graph non-retention"
+      ],
+      "reasonedSkips": [
+        "Espruino has no Symbol value type, so a symbol-keyed map entry cannot be constructed",
+        "Espruino does not represent the enumerable descriptor flag, so a non-enumerable own property cannot be constructed"
+      ]
+    }
+  },
+  "implementationCorrections": [
+    "assignment descriptors now use a private identity token instead of a writable string marker",
+    "compiled machine objects are rejected when supplied as nested state configurations",
+    "an empty states object is accepted and discarded on an atomic node"
+  ],
+  "regression": {
+    "normalJavaScriptSuites": 22,
+    "normalJavaScriptResult": "pass",
+    "deterministicFaultSuite": "pass",
+    "nativeSanitizerChecks": 66,
+    "nativeSanitizerResult": "pass",
+    "retainedRecordsAfterGc": 0
+  },
+  "xstateDifferential": {
+    "classification": "not required for this package",
+    "reason": "The package closes Profile-specific public-surface, host-brand, configuration-rejection and Espruino ownership rules. Shared runtime semantics continue under the differential packages."
+  },
+  "physicalTargets": "planned portable rerun after the grouped Linux closure packages stabilize",
+  "result": "pass-with-reasoned-skips"
+}

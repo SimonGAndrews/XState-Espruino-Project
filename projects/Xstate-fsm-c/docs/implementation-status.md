@@ -4,7 +4,8 @@
 - Overall status: all seven M6 behavioural batches and the post-M6 whole-build
   resource review pass; compact compiler metadata removes the maximum-depth
   capacity gap, and complete release-candidate qualification passes on the
-  stock 70 KB original-ESP32 and ESP32-C3 profiles
+  stock 70 KB original-ESP32 and ESP32-C3 profiles; the first grouped M8
+  public/configuration closure package passes on Linux
 - Current milestone: M7 remaining product-profile qualification and M8
   conformance-case closure and release readiness
 - Implementation code status: M4 runtime plus final/completion behavior, full
@@ -17,8 +18,9 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Next gate: implement the audit-derived closure cases, qualify a physical
-  Pico, and progress the M8 format-freeze and release-readiness review
+- Next gate: implement the ten remaining audit-derived closure cases, qualify
+  a physical Pico, and progress the M8 format-freeze and release-readiness
+  review
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -38,7 +40,7 @@ and outstanding tests for final project review.
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `c25a1c32d` |
+| Current implementation HEAD | `9b813aa30` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -63,6 +65,10 @@ private-API check are committed in `c25a1c32d`.
 The same revision's original-ESP32 M7.4 qualification is recorded in the
 [M7.4 release-candidate
 report](reports/2026-09-28-m7-original-esp32-release-candidate.md).
+The first grouped M8 closure package is committed in `9b813aa30`. It adds the
+canonical streamed trace harness and comparator, closes `API-002`,
+`CONFIG-004`, and the applicable Espruino surface of `CONFIG-005`, and records
+the remaining `Symbol` and property-enumerability inputs as reasoned skips.
 
 ## Completed Foundation Work
 
@@ -280,19 +286,19 @@ combined-service evidence at the preserved 70 KB native reserve. The stock
 MDBT42Q release/DFU image passes,
 while the XFSM-enabled ELF links but overlaps reserved Storage by 22,176 bytes
 and fails the target size check. M0 normative traceability is complete: the
-drift- and orphan-checking registry covers all 707 normative units, with 327
-passing, 353 partial, 25 planned-evidence, and two explicitly non-applicable
+drift- and orphan-checking registry covers all 707 normative units, with 374
+passing, 314 partial, 17 planned-evidence, and two explicitly non-applicable
 dispositions. All 705 applicable requirements map to stable conformance cases,
 and every case maps back to at least one requirement. The audit added fourteen
-focused closure cases; `COMPAT-007` traceability passes and the other thirteen
-remain planned with varying amounts of existing partial evidence.
+focused closure cases; `COMPAT-007` traceability and the first three grouped
+public/configuration closures now pass, leaving ten closure cases.
 
 Immediate tasks:
 
-1. sequence and implement the thirteen open cases identified by the completed
-   [normative requirement audit](../tests/normative-audit.md), beginning with
-   focused public/configuration/runtime gaps before the canonical trace and
-   final static/resource reviews;
+1. sequence and implement the ten open cases identified by the completed
+   [normative requirement audit](../tests/normative-audit.md), continuing with
+   the runtime contract package before final static, target and resource
+   reviews;
 2. qualify a physical Pico and review the MDBT42Q product-profile constraint;
 3. produce an XFSM memory architecture and lifetime diagram that distinguishes
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
