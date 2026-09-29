@@ -3,8 +3,9 @@
 This directory owns the Profile 1 conformance definitions, differential
 runners, expected traces, and reviewed result records defined by the
 [specification](../docs/specification.md). Start with the [test
-inventory](test-inventory.md) for completed and outstanding test work, then use
-the [conformance matrix](conformance-matrix.md) for requirement traceability.
+inventory](test-inventory.md) for completed evidence and release-maintenance
+work, then use the [conformance matrix](conformance-matrix.md) for requirement
+traceability.
 Recorded evidence is indexed under [`results/`](results/).
 
 The primary differential environment is pinned under
@@ -54,8 +55,10 @@ result](results/pico/2026-09-29-product-profile-build.json) and [MDBT42Q build
 result](results/mdbt42q/2026-09-29-product-profile-build.json). Physical Pico
 runtime, resource, canonical-trace, host-integration, and lifecycle evidence is
 recorded in the [Pico qualification
-result](results/pico/2026-09-29-m8-physical-qualification.json). MDBT42Q remains
-build-capacity evidence only and makes no physical-device runtime claim.
+result](results/pico/2026-09-29-m8-physical-qualification.json). Equivalent
+MDBT42Q physical runtime, resource, canonical-trace, host-integration, and
+lifecycle evidence is recorded in the [MDBT42Q qualification
+result](results/mdbt42q/2026-09-29-m8-physical-qualification.json).
 M6 target resolution, wildcard lookup, migration-alias, and strict diagnostic
 evidence is recorded in the [Linux M6.1
 result](results/linux/2026-09-26-m6-target-events.json) and [ESP32 M6.1
@@ -108,3 +111,5 @@ The build-only portion of the final constrained-target package is recorded in
 the [constrained-target build report](../docs/reports/2026-09-29-m8-constrained-target-builds.md).
 The Pico portion is completed by the [physical qualification
 report](../docs/reports/2026-09-29-m8-pico-physical-qualification.md).
+The MDBT42Q portion is completed by the [physical qualification
+report](../docs/reports/2026-09-29-m8-mdbt42q-physical-qualification.md).

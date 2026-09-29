@@ -18,9 +18,9 @@ and [MDBT42Q result](../../tests/results/mdbt42q/2026-09-29-product-profile-buil
 
 No Pico or MDBT42Q was physically attached during this matched-build run. This
 report therefore establishes build capacity and viable product profiles. The
-Pico was subsequently qualified physically in the [Pico qualification
-report](2026-09-29-m8-pico-physical-qualification.md); MDBT42Q remains
-build-only.
+targets were subsequently qualified physically in the [Pico qualification
+report](2026-09-29-m8-pico-physical-qualification.md) and the [MDBT42Q
+qualification report](2026-09-29-m8-mdbt42q-physical-qualification.md).
 
 ## Matched Builds
 
@@ -68,8 +68,11 @@ reduction. The result advances MDBT42Q from **Not yet verified** to **Build
 verified** for this explicit optional profile.
 
 The narrow 3,296-byte margin is acceptable for feasibility but must be
-rechecked after any engine or upstream Espruino change. Physical runtime and
-resource evidence is still required before a conformance claim.
+rechecked after any engine or upstream Espruino change. The subsequent
+physical qualification passes the portable semantic and validation corpus,
+all canonical traces, maximum-depth fixture, allocation-failure paths,
+callback/pin/timer integration, save/restoration, and resource, timing, stack,
+and cleanup measurements, advancing MDBT42Q to **Conformance verified**.
 
 ## Closure Assessment
 
@@ -80,9 +83,10 @@ matrix now has evidence-based status for all four product targets:
 - original ESP32 IDF5: Conformance verified;
 - ESP32-C3 IDF5: Conformance verified;
 - Pico reduced profile: Conformance verified by the subsequent physical run; and
-- MDBT42Q constrained Bluetooth profile: Build verified.
+- MDBT42Q constrained Bluetooth profile: Conformance verified by the subsequent
+  physical run.
 
-`XFC-CF-BUILD-006` and `XFC-CF-RESOURCE-003` remain open because their defined
-closure includes physical MDBT42Q qualification. The separate Pico result
-fills its runtime metadata, including `process.memory().blocksize`; this build
-report alone still makes no physical claim.
+The later physical runs close `XFC-CF-BUILD-006` and `XFC-CF-RESOURCE-003`.
+Their separate result records provide the runtime and resource evidence,
+including `process.memory().blocksize`; this matched-build report alone makes
+no physical claim.

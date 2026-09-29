@@ -6347,13 +6347,13 @@
     {
       "id": "XFC-REQ-0579",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-FORMAT-001",
         "XFC-CF-FORMAT-002",
         "XFC-CF-BUILD-006"
       ],
-      "notes": "Pico runtime metadata is complete; equivalent physical MDBT42Q metadata remains part of BUILD-006 target-matrix closure."
+      "notes": "Pico and MDBT42Q physical results record their 32-bit ARM runtime, compiler, build, memory, stack, timing and source-loading metadata."
     },
     {
       "id": "XFC-REQ-0580",
@@ -6366,7 +6366,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "All Version 1 targets now have evidence-based Conformance verified or Build verified statuses."
+      "notes": "All Version 1 physical targets now have evidence-based Conformance verified statuses."
     },
     {
       "id": "XFC-REQ-0581",
@@ -6379,7 +6379,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Pico is Conformance verified from physical evidence. MDBT42Q remains explicitly Build verified only; its compile result is not described as runtime conformance."
+      "notes": "Pico and MDBT42Q are Conformance verified from independent physical evidence; build-only records remain scoped as build evidence."
     },
     {
       "id": "XFC-REQ-0582",
@@ -6423,7 +6423,7 @@
     {
       "id": "XFC-REQ-0585",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6431,12 +6431,12 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Original ESP32, ESP32-C3, and Pico pass the full applicable target suite; physical MDBT42Q machine, callback, fault, lifecycle and resource execution remains."
+      "notes": "Original ESP32, ESP32-C3, Pico, and MDBT42Q pass their full applicable physical target suites, including machine, callback, fault, lifecycle and resource execution."
     },
     {
       "id": "XFC-REQ-0586",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6444,12 +6444,12 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Original ESP32, ESP32-C3, and Pico pass canonical clean-baseline depth-32 execution; physical MDBT42Q execution remains."
+      "notes": "Original ESP32, ESP32-C3, Pico, and MDBT42Q pass canonical clean-baseline depth-32 execution."
     },
     {
       "id": "XFC-REQ-0587",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6457,12 +6457,12 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "The verified ESP32 and Pico fixtures enter depth 32 and perform the reviewed 65-action traversal; physical MDBT42Q evidence remains."
+      "notes": "The verified ESP32, Pico, and MDBT42Q fixtures enter depth 32 and perform the reviewed 65-action traversal."
     },
     {
       "id": "XFC-REQ-0588",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-BUILD-003",
         "XFC-CF-BUILD-004",
@@ -6470,7 +6470,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Verified ESP32 and Pico results record total/free blocks and source loading; equivalent physical MDBT42Q metadata remains."
+      "notes": "Verified ESP32, Pico, and MDBT42Q results record total/free blocks and direct or Storage-backed source loading."
     },
     {
       "id": "XFC-REQ-0589",
@@ -7396,29 +7396,29 @@
     {
       "id": "XFC-REQ-0664",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "The complete bidirectional index exists; the 9 remaining partial requirements prevent the final complete-evidence claim."
+      "notes": "The complete bidirectional index exists and all applicable requirements have passing evidence."
     },
     {
       "id": "XFC-REQ-0665",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Every requirement is classified, but 9 MDBT42Q target-matrix and final-coverage requirements remain partial."
+      "notes": "Every requirement is classified as passing or explicitly not applicable; no requirement remains partial or planned."
     },
     {
       "id": "XFC-REQ-0666",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Every conformance case maps back to requirements; final evidence completeness awaits the two constrained-target closure cases."
+      "notes": "Every conformance case maps back to requirements, and the constrained-target closure cases have complete physical evidence."
     },
     {
       "id": "XFC-REQ-0667",
@@ -7464,7 +7464,7 @@
         "XFC-CF-COMPAT-006",
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux and embedded streaming passes on Xtensa and RISC-V."
+      "notes": "Pinned XState 5.33.2 and 4.38.3 models reproduce the reviewed canonical traces; XFSM matches on Linux, constrained ARM, Xtensa and RISC-V."
     },
     {
       "id": "XFC-REQ-0672",
@@ -7839,12 +7839,12 @@
     {
       "id": "XFC-REQ-0704",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-COMPAT-007",
         "XFC-CF-BUILD-006"
       ],
-      "notes": "Pico physical runtime metadata is complete; MDBT42Q build records identify unavailable runtime fields explicitly and physical metadata remains."
+      "notes": "Pico and MDBT42Q physical runtime records include compiler, optimization, memory model, execution method, stack/RAM/timing and target-specific unavailable fields."
     },
     {
       "id": "XFC-REQ-0705",

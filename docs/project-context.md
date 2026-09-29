@@ -37,19 +37,21 @@ Current revisions, progress, and next tasks are recorded in its
 [implementation status](../projects/Xstate-fsm-c/docs/implementation-status.md).
 
 M0 normative traceability and the first four grouped M8 closure packages are
-complete. The current implementation step is the two remaining target/resource
-closure cases, remaining M7 physical-target qualification, and M8 release
-readiness. The stock full-feature 70 KB original ESP32 and ESP32-C3 profiles
+complete. MDBT42Q physical qualification closes the final target/resource
+cases; the current implementation step is M8 release readiness. The stock
+full-feature 70 KB original ESP32 and ESP32-C3 profiles
 are Conformance verified. The reduced Espruino Pico profile also fits and is
 Conformance verified after physical ARM execution. The Bluetooth-capable
-MDBT42Q profile fits and remains Build verified pending physical execution. The repeatable
+MDBT42Q profile is also Conformance verified after physical ARM execution. The repeatable
 original-ESP32 procedure is recorded in the
 [device-testing guide](../projects/Xstate-fsm-c/docs/esp32-device-testing.md),
 and the completed measurements are interpreted in the [post-M6 resource
 report](../projects/Xstate-fsm-c/docs/reports/2026-09-27-post-m6-resource-review.md)
 and [constrained-target build report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-constrained-target-builds.md),
 with Pico details in the [physical qualification
-report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-pico-physical-qualification.md).
+report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-pico-physical-qualification.md)
+and MDBT42Q details in its [physical qualification
+report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-mdbt42q-physical-qualification.md).
 
 Canonical implementation code is developed under `libs/xfsm/` in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).

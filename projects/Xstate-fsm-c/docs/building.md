@@ -4,12 +4,11 @@
 
 - Build-document status: all seven M6 batches and the post-M6 whole-build
   resource review are verified for their applicable scope; original ESP32
-  M7.4, ESP32-C3 C3-D, and the reduced-profile Pico are Conformance verified,
-  the constrained Bluetooth MDBT42Q build is verified, and constrained
-  targets await physical qualification
+  M7.4, ESP32-C3 C3-D, reduced-profile Pico, and constrained Bluetooth
+  MDBT42Q are Conformance verified
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `6ed09d5d2`
+- Current implementation revision: `190d14a90`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -318,7 +317,7 @@ Commands and required toolchain revisions will be recorded separately for:
 | Target | Board/build definition | Command status |
 | --- | --- | --- |
 | Espruino Pico | `PICO_R1_3`, STM32F401 | Conformance verified on the current reduced product profile |
-| MDBT42Q | nRF52832 | Constrained Bluetooth product-profile build and DFU verified; physical runtime not tested |
+| MDBT42Q | nRF52832 | Conformance verified on the constrained Bluetooth product profile |
 | Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Conformance verified on the optimized stock 70 KB full-feature profile |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Conformance verified on the optimized stock 70 KB full-feature profile |
 | ESP32-S3 | `ESP32S3_IDF5`, 32-bit Xtensa | Later expansion target after sufficient Espruino port testing |
@@ -386,6 +385,15 @@ size check with 3,296 bytes before reserved Storage, and produces a DFU ZIP.
 The stock board definition remains unchanged. Exact results and the preceding
 feature trade study are in the [constrained-target report](reports/2026-09-29-m8-constrained-target-builds.md)
 and [current build record](../tests/results/mdbt42q/2026-09-29-product-profile-build.json).
+
+The same production profile is physically qualified in the [MDBT42Q
+result](../tests/results/mdbt42q/2026-09-29-m8-physical-qualification.json).
+It passes 20 portable suites, nine canonical traces, direct and Storage-backed
+maximum depth, production and deterministic allocation faults, callbacks,
+GPIO/timer integration, exact cleanup, GC, save/reboot/reset, and instrumented
+stack and timing measurements. Large trace source is temporarily loaded from
+Storage on this 2,950-block target and erased after execution. Production
+firmware was restored after the `XFC_MEASURE=1 XFC_TEST=1` run.
 
 The original ESP32 comparison uses ESP-IDF 5.5.3 and the provisioned Xtensa
 GCC 14.2.0 toolchain. Both builds use the same implementation revision and

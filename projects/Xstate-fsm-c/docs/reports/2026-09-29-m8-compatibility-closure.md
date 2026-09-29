@@ -11,8 +11,9 @@
 Both compatibility closure cases pass. Compatibility evidence is now governed
 by a machine-checked register, and the shared semantic corpus has reviewed
 canonical traces produced independently by pinned XState and XFSM execution.
-The two remaining audit-derived closure cases concern target acceptance rather
-than compatibility semantics.
+The two audit-derived cases that remained at this stage concerned target
+acceptance rather than compatibility semantics. They were subsequently closed
+by the Pico and MDBT42Q physical qualification runs.
 
 ## Governance Closure
 

@@ -74,9 +74,9 @@ The completed review has this result:
 
 | Classification | Count | Meaning |
 | --- | ---: | --- |
-| Mapped, passing evidence | 695 | The named conformance cases demonstrate the obligation for their recorded targets and revisions. |
-| Mapped, partial evidence | 9 | Existing evidence demonstrates part of the obligation, while MDBT42Q runtime or final evidence-completeness work remains. |
-| Mapped, planned evidence | 0 | No applicable requirement lacks implementation evidence; remaining work extends partial target/resource coverage. |
+| Mapped, passing evidence | 704 | The named conformance cases demonstrate every applicable obligation for their recorded targets and revisions. |
+| Mapped, partial evidence | 0 | No applicable obligation retains partial evidence. |
+| Mapped, planned evidence | 0 | No applicable obligation lacks implementation evidence. |
 | Not applicable to Version 1 execution evidence | 3 | The statement constrains application use or future API evolution rather than observable Version 1 engine behavior. |
 
 | Specification section | Pass | Partial | Planned | Not applicable |
@@ -86,16 +86,15 @@ The completed review has this result:
 | Machine Model | 151 | 0 | 0 | 0 |
 | Runtime Semantics | 304 | 0 | 0 | 1 |
 | Public Interfaces | 25 | 0 | 0 | 2 |
-| Host Integration | 87 | 5 | 0 | 0 |
+| Host Integration | 92 | 0 | 0 | 0 |
 | Validation and Error Behavior | 50 | 0 | 0 | 0 |
 | Resource and Performance Requirements | 16 | 0 | 0 | 0 |
-| Conformance Requirements | 48 | 4 | 0 | 0 |
-| **Total** | **695** | **9** | **0** | **3** |
+| Conformance Requirements | 52 | 0 | 0 | 0 |
+| **Total** | **704** | **0** | **0** | **3** |
 
 All 704 applicable requirements map to one or more stable conformance case IDs.
 All 62 conformance cases map back to at least one normative requirement. This
-completes the M0 inventory and bidirectional orphan review; it does not convert
-partial or planned evidence into a conformance pass.
+completes the M0 inventory, bidirectional orphan review, and evidence closure.
 
 ## Audit Findings
 
@@ -135,11 +134,11 @@ Native layout, host ownership, and diagnostics pass their formal closure
 package. Format Version 1 is frozen. Current matched builds also close the
 product-profile capacity decision: Pico leaves 12,888 application bytes and a
 Bluetooth-capable MDBT42Q profile leaves 3,296 bytes before Storage. Physical
-Pico execution now passes the applicable portable suites, nine canonical
-traces, depth and microstep limits, stack and timing measurements, allocation
-faults, callbacks, cleanup, and save/reset behavior. Pico is Conformance
-verified; remaining target/resource work is physical MDBT42Q qualification
-and its complete runtime target metadata.
+Pico and MDBT42Q execution now pass the applicable portable suites, nine
+canonical traces, depth and microstep limits, stack and timing measurements,
+allocation faults, callbacks, cleanup, and save/reset behavior. Both
+constrained ARM profiles are Conformance verified, completing `BUILD-006` and
+`RESOURCE-003`.
 
 These findings are audit outputs, not newly invented semantics. The associated
 requirements already exist in the Profile 1 specification.
@@ -167,6 +166,7 @@ The review added fourteen stable cases to make the remaining work explicit:
 
 `XFC-CF-COMPAT-007`, `API-002`, `CONFIG-004`, `ACTION-002`, `SNAP-002`,
 `TRANS-005`, `FORMAT-003`, `HOST-007`, `DIAG-006`, `COMPAT-005`, `COMPAT-006`,
-and the applicable Espruino surface of `CONFIG-005` pass. Two closure cases
-remain: `BUILD-006` and `RESOURCE-003`. Implemented evidence must update the
-mapping, conformance matrix and test inventory together.
+the applicable Espruino surface of `CONFIG-005`, `BUILD-006`, and
+`RESOURCE-003` pass. All fourteen closure cases are complete. Future evidence
+changes must update the mapping, conformance matrix and test inventory
+together.

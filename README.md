@@ -91,13 +91,12 @@ resource review passes on Linux. The stock full-feature 70 KB original ESP32
 IDF5 and ESP32-C3 IDF5 profiles are Conformance verified by their physical
 release-candidate suites.
 M0 normative traceability and the first four M8 grouped closure packages are
-complete; current work is the two remaining target/resource closure cases,
-remaining M7 physical-target qualification, and M8 release readiness. Stage 1
+complete; MDBT42Q physical qualification closes the final target/resource
+cases, and current work is M8 release readiness. Stage 1
 remains the flat embedded baseline.
 Current matched builds also establish viable reduced product profiles for the
-Pico and Bluetooth-capable MDBT42Q. Pico is Conformance verified after its
-physical ARM qualification; MDBT42Q remains Build verified pending physical
-qualification.
+Pico and Bluetooth-capable MDBT42Q. Both are Conformance verified after their
+physical ARM qualification suites.
 
 The [current project context](docs/project-context.md) identifies the authority
 and compatibility references for each direction.
