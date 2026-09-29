@@ -6353,7 +6353,7 @@
         "XFC-CF-FORMAT-002",
         "XFC-CF-BUILD-006"
       ],
-      "notes": "Complete per-result target metadata remains part of BUILD-006 target-matrix closure."
+      "notes": "Pico runtime metadata is complete; equivalent physical MDBT42Q metadata remains part of BUILD-006 target-matrix closure."
     },
     {
       "id": "XFC-REQ-0580",
@@ -6379,7 +6379,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Pico and MDBT42Q are explicitly Build verified only; no compile result is described as runtime conformance."
+      "notes": "Pico is Conformance verified from physical evidence. MDBT42Q remains explicitly Build verified only; its compile result is not described as runtime conformance."
     },
     {
       "id": "XFC-REQ-0582",
@@ -6431,7 +6431,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Original ESP32 and ESP32-C3 pass the full applicable target suite; physical Pico and MDBT42Q machine, callback, fault, lifecycle and resource execution remains."
+      "notes": "Original ESP32, ESP32-C3, and Pico pass the full applicable target suite; physical MDBT42Q machine, callback, fault, lifecycle and resource execution remains."
     },
     {
       "id": "XFC-REQ-0586",
@@ -6444,7 +6444,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Original ESP32 and ESP32-C3 pass canonical clean-baseline depth-32 execution; physical Pico and MDBT42Q execution remains."
+      "notes": "Original ESP32, ESP32-C3, and Pico pass canonical clean-baseline depth-32 execution; physical MDBT42Q execution remains."
     },
     {
       "id": "XFC-REQ-0587",
@@ -6457,7 +6457,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "The verified ESP32 target fixtures enter depth 32 and perform the reviewed 65-action traversal; physical Pico and MDBT42Q evidence remains."
+      "notes": "The verified ESP32 and Pico fixtures enter depth 32 and perform the reviewed 65-action traversal; physical MDBT42Q evidence remains."
     },
     {
       "id": "XFC-REQ-0588",
@@ -6470,7 +6470,7 @@
         "XFC-CF-BUILD-006",
         "XFC-CF-RESOURCE-002"
       ],
-      "notes": "Verified ESP32 results record total/free blocks and source loading; equivalent physical Pico and MDBT42Q metadata remains."
+      "notes": "Verified ESP32 and Pico results record total/free blocks and source loading; equivalent physical MDBT42Q metadata remains."
     },
     {
       "id": "XFC-REQ-0589",
@@ -7190,7 +7190,7 @@
     {
       "id": "XFC-REQ-0647",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7199,12 +7199,12 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Representative Linux and ESP32 measurements pass; runtime resource measurement on a specification-designated constrained Pico or MDBT42Q remains."
+      "notes": "Representative Linux, ESP32, and constrained Pico measurements pass; Pico records flash, JsVar, arena, persistent, peak, stack, timing, diagnostic, allocation, cleanup, and callback behavior."
     },
     {
       "id": "XFC-REQ-0648",
       "coverage": "mapped",
-      "evidence": "partial",
+      "evidence": "pass",
       "caseIds": [
         "XFC-CF-RESOURCE-001",
         "XFC-CF-RESOURCE-002",
@@ -7213,7 +7213,7 @@
         "XFC-CF-LIMIT-002",
         "XFC-CF-LIMIT-003"
       ],
-      "notes": "Existing timings identify JavaScript-guard-inclusive cases, but constrained-target structural versus application-callback timing remains to be recorded explicitly."
+      "notes": "Pico timing records distinguish structural dispatch cases from guarded JavaScript callback dispatch, including depth-32 parent fallback and the 256-microstep boundary."
     },
     {
       "id": "XFC-REQ-0649",
@@ -7400,7 +7400,7 @@
       "caseIds": [
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "The complete bidirectional index exists; the 11 remaining partial requirements prevent the final complete-evidence claim."
+      "notes": "The complete bidirectional index exists; the 9 remaining partial requirements prevent the final complete-evidence claim."
     },
     {
       "id": "XFC-REQ-0665",
@@ -7409,7 +7409,7 @@
       "caseIds": [
         "XFC-CF-COMPAT-007"
       ],
-      "notes": "Every requirement is classified, but the 11 constrained-target and final-coverage requirements remain partial."
+      "notes": "Every requirement is classified, but 9 MDBT42Q target-matrix and final-coverage requirements remain partial."
     },
     {
       "id": "XFC-REQ-0666",
@@ -7844,7 +7844,7 @@
         "XFC-CF-COMPAT-007",
         "XFC-CF-BUILD-006"
       ],
-      "notes": "Build records identify unavailable runtime fields explicitly; complete physical Pico and MDBT42Q runtime metadata remains."
+      "notes": "Pico physical runtime metadata is complete; MDBT42Q build records identify unavailable runtime fields explicitly and physical metadata remains."
     },
     {
       "id": "XFC-REQ-0705",

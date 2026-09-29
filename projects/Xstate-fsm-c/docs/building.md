@@ -4,8 +4,8 @@
 
 - Build-document status: all seven M6 batches and the post-M6 whole-build
   resource review are verified for their applicable scope; original ESP32
-  M7.4 and ESP32-C3 C3-D are Conformance verified, the reduced-profile Pico
-  and constrained Bluetooth MDBT42Q builds are verified, and both constrained
+  M7.4, ESP32-C3 C3-D, and the reduced-profile Pico are Conformance verified,
+  the constrained Bluetooth MDBT42Q build is verified, and constrained
   targets await physical qualification
 - Current implementation branch: `feature/xfsm-profile1`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
@@ -317,7 +317,7 @@ Commands and required toolchain revisions will be recorded separately for:
 
 | Target | Board/build definition | Command status |
 | --- | --- | --- |
-| Espruino Pico | `PICO_R1_3`, STM32F401 | Current reduced-profile build verified; physical runtime not tested |
+| Espruino Pico | `PICO_R1_3`, STM32F401 | Conformance verified on the current reduced product profile |
 | MDBT42Q | nRF52832 | Constrained Bluetooth product-profile build and DFU verified; physical runtime not tested |
 | Original ESP32 | `ESP32_IDF5`, 32-bit Xtensa | Conformance verified on the optimized stock 70 KB full-feature profile |
 | ESP32-C3 | `ESP32C3_IDF5`, 32-bit RISC-V | Conformance verified on the optimized stock 70 KB full-feature profile |
@@ -351,6 +351,14 @@ adds 26,928 bytes (9.35%) to its matching 287,864-byte baseline, and passes the
 327,680-byte size gate with 12,888 bytes free. The stock board file was not
 changed. See the [constrained-target report](reports/2026-09-29-m8-constrained-target-builds.md)
 and [current build record](../tests/results/pico/2026-09-29-product-profile-build.json).
+
+The same production image is physically qualified in the [Pico result](../tests/results/pico/2026-09-29-m8-physical-qualification.json).
+It passes 20 portable suites, nine canonical traces, direct and Storage-backed
+maximum depth, allocation pressure and recovery, host callbacks, GPIO/timer
+integration, save/reboot/reset, cleanup, and the instrumented stack and timing
+measurements. The tested firmware was written at the Pico application address
+`0x08010000`; each write completed loader byte verification. Production
+firmware was restored after the `XFC_MEASURE=1 XFC_TEST=1` run.
 
 The current MDBT42Q build uses the target provisioning script, its pinned
 EspruinoBuildTools ARM GCC 13.2.1 archive, and the existing nRF5 SDK 12 tree.

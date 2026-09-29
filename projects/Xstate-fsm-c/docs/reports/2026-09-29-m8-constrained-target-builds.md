@@ -16,8 +16,11 @@ This package rechecks the current complete engine on the two constrained ARM
 candidate targets. Its machine-readable records are the [Pico result](../../tests/results/pico/2026-09-29-product-profile-build.json)
 and [MDBT42Q result](../../tests/results/mdbt42q/2026-09-29-product-profile-build.json).
 
-No Pico or MDBT42Q was physically attached. The results therefore establish
-current build capacity and viable product profiles, not runtime conformance.
+No Pico or MDBT42Q was physically attached during this matched-build run. This
+report therefore establishes build capacity and viable product profiles. The
+Pico was subsequently qualified physically in the [Pico qualification
+report](2026-09-29-m8-pico-physical-qualification.md); MDBT42Q remains
+build-only.
 
 ## Matched Builds
 
@@ -40,10 +43,11 @@ JavaScript-backed networking. Growth since the 2026-09-26 feasibility build is
 decision. The image retains 12,888 bytes, or 3.93% of its 327,680-byte
 application region.
 
-The Pico remains **Build verified**. The remaining gate is physical execution
-of the portable semantic and validation corpus, maximum-depth fixture,
-allocation-failure paths, callback/pin/timer integration, save/restoration,
-and resource, timing, stack, and cleanup measurements.
+This build initially established **Build verified**. The subsequent physical
+qualification passes the portable semantic and validation corpus,
+maximum-depth fixture, allocation-failure paths, callback/pin/timer
+integration, save/restoration, and resource, timing, stack, and cleanup
+measurements, advancing Pico to **Conformance verified**.
 
 ## MDBT42Q Decision
 
@@ -75,11 +79,10 @@ matrix now has evidence-based status for all four product targets:
 
 - original ESP32 IDF5: Conformance verified;
 - ESP32-C3 IDF5: Conformance verified;
-- Pico reduced profile: Build verified; and
+- Pico reduced profile: Conformance verified by the subsequent physical run; and
 - MDBT42Q constrained Bluetooth profile: Build verified.
 
 `XFC-CF-BUILD-006` and `XFC-CF-RESOURCE-003` remain open because their defined
-closure includes physical constrained-target qualification. A physical Pico
-is the next required target. This report does not fill missing runtime
-metadata such as `process.memory().blocksize`, and it does not infer ARM
-conformance from the two verified ESP32 architectures.
+closure includes physical MDBT42Q qualification. The separate Pico result
+fills its runtime metadata, including `process.memory().blocksize`; this build
+report alone still makes no physical claim.

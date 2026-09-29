@@ -26,16 +26,18 @@ conformance strategy.
 M0 normative traceability is complete. The first four grouped M8 closure
 packages pass nine canonical traces and close public/configuration,
 runtime-contract, diagnostics, native-format, host-boundary, and compatibility
-review; current work is closing the two remaining target/resource cases,
-remaining physical-target qualification, and M8 release readiness. The stock
-full-feature 70 KB original ESP32 and ESP32-C3 profiles are Conformance
+review; current work is closing the two remaining target/resource cases through
+MDBT42Q qualification and completing M8 release readiness. The stock
+full-feature 70 KB original ESP32 and ESP32-C3 profiles and the reduced Pico
+profile are Conformance
 verified after matched builds, portable and target-specific runtime suites, deterministic allocation faults,
 maximum-depth execution, cleanup, save/restoration, native/flash callback and
 timer integration, and combined XFSM/BLE/WiFi/TLS service tests. Private arena
 Format Version 1 is frozen; the hierarchy and microstep limits retain their
 separate resource-review status. Current matched builds establish viable
-reduced product profiles for Pico and Bluetooth-capable MDBT42Q, both Build
-verified pending physical qualification.
+reduced product profiles for Pico and Bluetooth-capable MDBT42Q. Pico has
+completed physical qualification; MDBT42Q is Build verified pending physical
+qualification.
 
 Current work, revisions, and next tasks are recorded in the
 [implementation status](docs/implementation-status.md). The

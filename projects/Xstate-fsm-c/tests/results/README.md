@@ -32,3 +32,8 @@ Prefer concise machine-readable output plus a small metadata file for automated
 runs. Large binaries, transient build trees, and unrestricted console logs do
 not belong in Git. Reviewed interpretations and resource decisions belong in
 [`../../docs/reports/`](../../docs/reports/).
+
+The current constrained ARM records are the [Pico matched
+build](pico/2026-09-29-product-profile-build.json), [Pico physical
+qualification](pico/2026-09-29-m8-physical-qualification.json), and [MDBT42Q
+matched build](mdbt42q/2026-09-29-product-profile-build.json).

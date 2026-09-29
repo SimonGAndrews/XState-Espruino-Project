@@ -18,9 +18,9 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Next gate: close the two remaining target/resource cases by qualifying a
-  physical Pico and, when hardware is available, the now build-verified
-  Bluetooth-capable MDBT42Q product profile, then complete M8 release readiness
+- Next gate: close the two remaining target/resource cases by qualifying the
+  build-verified Bluetooth-capable MDBT42Q product profile, then complete M8
+  release readiness
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -40,7 +40,7 @@ and outstanding tests for final project review.
 | Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `6ed09d5d2` |
+| Current implementation HEAD | `e772a1d44` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -86,6 +86,10 @@ and streamed trace comparison on physical Xtensa and RISC-V targets.
 Current matched builds at the same implementation revision establish updated
 Pico and MDBT42Q product profiles. Their evidence is in the
 [constrained-target build report](reports/2026-09-29-m8-constrained-target-builds.md).
+The production engine at `6ed09d5d2` is now physically qualified on Pico; the
+target-portable fixture refinements from that run are committed in `e772a1d44`
+and the evidence is in the [Pico qualification
+report](reports/2026-09-29-m8-pico-physical-qualification.md).
 
 ## Completed Foundation Work
 
@@ -296,7 +300,8 @@ action-heavy depth-32 fixture on both ESP32 families with their complete
 feature sets and stock 70 KB native-heap reserve.
 
 A current reduced-profile Pico image passes its size gate with 12,888 bytes
-free, but no physical Pico runtime evidence has been collected. The optimized
+free and is now `Conformance verified` after its physical portable, canonical,
+depth, allocation, callback, cleanup, lifecycle, stack, and timing suites. The optimized
 stock full-feature ESP32-C3 image is now `Conformance verified` after C3-D
 repeated its build, portable,
 maximum-depth, resource, cleanup, host-lifecycle, allocation-fault, and
@@ -305,7 +310,7 @@ MDBT42Q constrained Bluetooth profile also passes its size check and produces
 a DFU ZIP with 3,296 bytes before reserved Storage. It retains Bluetooth while
 omitting JIT, debugger, tab completion, vector font, JavaScript-backed
 networking, and NFC. M0 normative traceability is complete: the drift- and
-orphan-checking registry covers all 707 normative units, with 693 passing, 11
+orphan-checking registry covers all 707 normative units, with 695 passing, 9
 partial, no planned-evidence entries, and three explicitly
 non-applicable dispositions. All 704 applicable requirements map to stable
 conformance cases, and every case maps back to at least one requirement. Twelve
@@ -314,9 +319,8 @@ of the fourteen audit-derived closure cases now pass; only `BUILD-006` and
 
 Immediate tasks:
 
-1. close `BUILD-006` and `RESOURCE-003` through physical Pico qualification,
-   followed by physical qualification of the build-verified MDBT42Q profile
-   when suitable hardware is available;
+1. close `BUILD-006` and `RESOURCE-003` through physical qualification of the
+   build-verified MDBT42Q profile when suitable hardware is available;
 2. produce an XFSM memory architecture and lifetime diagram that distinguishes
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
    actor storage, native heap, and the single native C stack. Show their use
@@ -329,7 +333,7 @@ Immediate tasks:
 
 | Issue | Repository | Effect | Status |
 | --- | --- | --- | --- |
-| No physical Pico or MDBT42Q was attached for the current constrained-target package | Test bench | Build capacity is verified, but runtime metadata, stack/RAM/timing, callbacks and conformance cannot be claimed | Attach a Pico first; qualify the MDBT42Q profile when suitable hardware is available |
+| No physical MDBT42Q is currently attached | Test bench | Its build capacity is verified, but runtime metadata, stack/RAM/timing, callbacks and conformance cannot be claimed | Qualify the MDBT42Q profile when suitable hardware is available |
 
 ## Evidence-Dependent Decisions
 
@@ -338,21 +342,21 @@ These are specified review gates, not unresolved Profile 1 semantics:
 | Decision | Required evidence | Review milestone |
 | --- | --- | --- |
 | Freeze or revise native record layout | Format Version 1 frozen after Linux, 32-bit ARM compilation, physical Xtensa/RISC-V, near-limit, sanitizer, and static review | Closed in M8 structural-contract package |
-| Retain or revise hierarchy depth 32 | Retained provisionally: direct and Storage-backed 65-action fixtures pass on stock 70 KB original-ESP32 and ESP32-C3 profiles after compiler optimization | M7 open for remaining targets |
-| Retain or revise microstep budget 256 | Retained: Linux and original ESP32 enforce the boundary; current ESP32 observation is 807.461 ms | Closed for represented targets |
-| Select per-target stack reserve | Default raised to 1,024 bytes after complete-runtime Linux measured 704 bytes and original ESP32 measured 448 bytes; remaining physical families pending | M7 |
-| Retain or revise snapshot materialization | Lazy snapshots retained provisionally after Linux and ESP32 allocation measurement; constrained-target evidence pending | M7 open |
-| Retain or revise diagnostic detail | The 48-byte detail budget is retained provisionally after complete Linux and compact ESP32 validation; constrained-target evidence pending | M7 open |
+| Retain or revise hierarchy depth 32 | Retained provisionally: direct and Storage-backed 65-action fixtures pass on original ESP32, ESP32-C3, and reduced Pico profiles | M7 open for MDBT42Q |
+| Retain or revise microstep budget 256 | Retained: Linux, original ESP32, and Pico enforce the boundary; the Pico completes it in 340.717 ms | Closed for represented targets |
+| Select per-target stack reserve | Default raised to 1,024 bytes after complete-runtime Linux measured 704 bytes, original ESP32 measured 448 bytes, and Pico measured 504 bytes; MDBT42Q pending | M7 |
+| Retain or revise snapshot materialization | Lazy snapshots retained provisionally after Linux, ESP32, and constrained Pico allocation measurement | Retained for represented targets; MDBT42Q pending |
+| Retain or revise diagnostic detail | The 48-byte detail budget is retained provisionally after complete Linux and compact ESP32/Pico validation | Retained for represented targets; MDBT42Q pending |
 | Original ESP32 IDF5 is the primary Xtensa and high-resource target | Selected; full-feature stock 70 KB profile passes M7.4 matched-build, portable, resource, lifecycle, deterministic-fault, and combined-service qualification | Closed for original ESP32 |
 | Select ESP32-C3 JsVar/native-heap profile | Stock 70 KB reserve selected; optimized action-heavy depth 32 passes with 1,174 measured blocks of headroom, combined services retain at least 40,480 native-heap bytes, and C3-D passes | Closed for ESP32-C3 |
-| Select constrained ARM product profiles | Pico reduced profile leaves 12,888 application bytes; MDBT42Q Bluetooth profile leaves 3,296 bytes before Storage without changing either stock board definition | Build decision closed; physical qualification open |
+| Select constrained ARM product profiles | Pico reduced profile leaves 12,888 application bytes and is Conformance verified; MDBT42Q Bluetooth profile leaves 3,296 bytes before Storage without changing either stock board definition | Pico closed; MDBT42Q physical qualification open |
 
 ## Target Status
 
 | Target | Current status | Latest evidence |
 | --- | --- | --- |
 | Linux Espruino | Build verified | [Post-M6 resource result](../tests/results/linux/2026-09-27-post-m6-resource-review.json) |
-| Espruino Pico | Build verified for current reduced product profile | [Current Pico build](../tests/results/pico/2026-09-29-product-profile-build.json) |
+| Espruino Pico | Conformance verified for current reduced product profile | [Physical qualification](../tests/results/pico/2026-09-29-m8-physical-qualification.json) |
 | MDBT42Q | Build verified for constrained Bluetooth product profile | [Current MDBT42Q build](../tests/results/mdbt42q/2026-09-29-product-profile-build.json) |
 | Original ESP32 IDF5 | Conformance verified on the stock full-feature 70 KB profile | [M7.4 release-candidate result](../tests/results/esp32-xtensa/2026-09-28-m7-release-candidate.json) |
 | ESP32-C3 IDF5 | Conformance verified on the stock full-feature 70 KB profile | [C3-D release-candidate result](../tests/results/esp32-riscv/2026-09-28-m7-release-candidate.json) |
@@ -365,7 +369,8 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
-| 2026-09-29 | Current matched constrained-target builds passed: Pico leaves 12,888 application bytes; MDBT42Q retains Bluetooth and leaves 3,296 bytes before Storage after optional NFC and other non-core features are omitted; both remain Build verified pending physical qualification |
+| 2026-09-29 | Reduced-profile Pico passed physical qualification: 20 portable suites, nine exact canonical traces, direct and Storage-backed depth 32, allocation failure/recovery, callbacks/GPIO/timer, exact cleanup, GC, save/reboot/reset, 504-byte maximum stack, and instrumented timing; target advanced to Conformance verified |
+| 2026-09-29 | Current matched constrained-target builds passed: Pico leaves 12,888 application bytes; MDBT42Q retains Bluetooth and leaves 3,296 bytes before Storage after optional NFC and other non-core features are omitted; this stage advanced both profiles to Build verified pending their later physical qualification |
 | 2026-09-29 | M8 compatibility closure passed `COMPAT-005` and `COMPAT-006`: 19 intentional differences, seven Stately specimens, ten differential areas and three exclusions are machine checked; pinned v5/v4 canonical traces match XFSM; and the embedded v4 trace matches on Xtensa and RISC-V |
 | 2026-09-28 | M8 structural-contract closure passed `DIAG-006`, `FORMAT-003`, and `HOST-007`; froze private native arena Format Version 1; expanded the native sanitizer suite to 73 checks; and reconciled the ledger to 620 pass, 67 partial, 17 planned, and 3 not applicable |
 | 2026-09-28 | M8 runtime-contract closure passed `ACTION-002`, `SNAP-002`, and `TRANS-005` as canonical traces, matched shared XState 5.33.2 behavior, and fixed accessor evaluation in `snapshot.matches(...)` |

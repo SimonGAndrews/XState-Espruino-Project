@@ -51,8 +51,11 @@ and [ESP32 completion result](results/esp32-xtensa/2026-09-26-completion.json).
 Current matched reduced-profile Espruino Pico and constrained Bluetooth
 MDBT42Q builds are recorded in the [Pico build
 result](results/pico/2026-09-29-product-profile-build.json) and [MDBT42Q build
-result](results/mdbt42q/2026-09-29-product-profile-build.json). Both contain
-build-capacity evidence only and make no physical-device runtime claim.
+result](results/mdbt42q/2026-09-29-product-profile-build.json). Physical Pico
+runtime, resource, canonical-trace, host-integration, and lifecycle evidence is
+recorded in the [Pico qualification
+result](results/pico/2026-09-29-m8-physical-qualification.json). MDBT42Q remains
+build-capacity evidence only and makes no physical-device runtime claim.
 M6 target resolution, wildcard lookup, migration-alias, and strict diagnostic
 evidence is recorded in the [Linux M6.1
 result](results/linux/2026-09-26-m6-target-events.json) and [ESP32 M6.1
@@ -103,3 +106,5 @@ the [compatibility closure
 result](results/linux/2026-09-29-closure-compatibility.json).
 The build-only portion of the final constrained-target package is recorded in
 the [constrained-target build report](../docs/reports/2026-09-29-m8-constrained-target-builds.md).
+The Pico portion is completed by the [physical qualification
+report](../docs/reports/2026-09-29-m8-pico-physical-qualification.md).
