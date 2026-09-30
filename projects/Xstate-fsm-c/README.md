@@ -78,6 +78,10 @@ relevant behavior and constraints.
   implementation candidate
 - [docs/native-format-v1.md](docs/native-format-v1.md) - frozen private native
   arena and actor layout
+- [docs/memory-ownership.md](docs/memory-ownership.md) - conceptual memory
+  regions, ownership and reachability
+- [docs/memory-lifetime.md](docs/memory-lifetime.md) - construction, execution,
+  hibernation and reclamation lifetimes
 - [docs/implementation-plan.md](docs/implementation-plan.md) - implementation
   milestones and evidence gates
 - [docs/implementation-status.md](docs/implementation-status.md) - current

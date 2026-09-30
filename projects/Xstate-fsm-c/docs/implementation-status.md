@@ -320,13 +320,23 @@ fourteen audit-derived closure cases pass.
 
 Immediate tasks:
 
-1. produce an XFSM memory architecture and lifetime diagram that distinguishes
+1. complete the paired XFSM [memory ownership](memory-ownership.md) and
+   [memory lifetime](memory-lifetime.md) documents. Together they distinguish
    firmware/flash, the Espruino JsVar pool, compiled arena and retained values,
-   actor storage, native heap, and the single native C stack. Show their use
+   actor storage, native heap, and the single native C stack, and show their use
    during module loading, `createMachine` compilation, `createActor`,
    `start`/`send`/`stop`, guards, actions, assignments, snapshots,
-   subscriptions, GC, save/restoration, and cleanup, including which storage is
-   persistent, temporary, shared, or application-owned.
+   subscriptions, GC, save/restoration, and cleanup;
+2. perform a source-comment review across `libs/xfsm/`, adding concise comments
+   where maintainers need design intent to preserve arena bounds, GC ownership
+   and lifetimes, transactional rollback/commit behavior, coordinator stack and
+   re-entry rules, production/test API separation, or non-obvious control flow
+   through compiler phases, fallback, callbacks, early exits, notification and
+   shared cleanup. Do not add comments that merely restate straightforward C;
+   and
+3. run the final clean enabled/disabled Linux release-candidate suite, then
+   complete the documentation, licensing, revision-consistency, and upstream
+   change-series review.
 
 ## Open Issues And Blockers
 

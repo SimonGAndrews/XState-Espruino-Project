@@ -328,13 +328,25 @@ Deliverables:
 - frozen arena format or a documented version increment (Format Version 1 was
   frozen by the 2026-09-28 structural-contract review);
 - user-facing Espruino example and module documentation;
+- reviewed memory ownership and lifetime diagrams covering the GC-managed
+  object graph, compiled arena, native stack, native heap boundary,
+  construction, execution, save/restoration, and cleanup;
+- reviewed implementation comments for non-obvious architecture and safety
+  invariants, including arena indexes and bounds, Espruino GC ownership and
+  lifetimes, compile/runtime transaction boundaries, rollback and commit
+  points, coordinator stack and re-entry rules, and production versus
+  test-only interfaces. Comments also make non-obvious control flow visible at
+  compiler phases, selection and fallback paths, callback boundaries, early
+  exits, commit/rollback points, notification, and shared cleanup;
 - licensing and provenance review;
 - clean enabled and disabled firmware builds; and
 - an upstream-suitable Espruino change series.
 
 Exit gate: no required Profile 1 evidence is missing, no target support is
 overstated, and the implementation source, documentation, and recorded results
-identify compatible revisions of both repositories.
+identify compatible revisions of both repositories. Comments explain the
+implementation's non-obvious constraints, design intent, and control flow
+without narrating self-explanatory code or duplicating the specification.
 
 ## Definition Of Profile 1 Completion
 
