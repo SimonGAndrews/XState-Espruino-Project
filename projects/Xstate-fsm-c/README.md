@@ -45,6 +45,15 @@ Current work, revisions, and next tasks are recorded in the
 review gates, and the [build guide](docs/building.md) records reproducible
 commands and development locations.
 
+## Experimental Extensions
+
+Shallow history is being explored separately on the `experiment/xfsm-history`
+branches of this repository and the Espruino implementation repository. Its
+[extension specification](docs/extensions/shallow-history.md) defines the
+proposed behaviour as a delta to Profile 1 and records the pinned XState
+evidence. It does not change the completed Profile 1 scope or conformance
+status.
+
 ## Code Development
 
 Canonical implementation code is developed in the
@@ -78,6 +87,8 @@ relevant behavior and constraints.
   implementation candidate
 - [docs/native-format-v1.md](docs/native-format-v1.md) - frozen private native
   arena and actor layout
+- [docs/extensions/shallow-history.md](docs/extensions/shallow-history.md) -
+  experimental shallow-history requirements and compatibility evidence
 - [docs/memory-ownership.md](docs/memory-ownership.md) - conceptual memory
   regions, ownership and reachability
 - [docs/memory-lifetime.md](docs/memory-lifetime.md) - construction, execution,

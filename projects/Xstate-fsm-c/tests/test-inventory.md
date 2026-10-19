@@ -186,6 +186,29 @@ integration, `save()`, pins and timers have no direct Node equivalent. Their
 exclusion from differential execution must be recorded against the relevant
 conformance cases rather than treated as missing comparison data.
 
+## Experimental Shallow-History Extension
+
+The [shallow-history extension specification](../docs/extensions/shallow-history.md)
+is a separate candidate layered on Profile 1. Its cases do not alter the 707
+Profile 1 normative units, the completed Profile 1 totals, or the Profile 1
+conformance claim.
+
+| Extension case | Coverage | Status |
+| --- | --- | --- |
+| `XFC-HIST-REF-001` | Pinned XState 5.33.2 action order, shallow restoration, fallback, multiple-node reference behaviour, inside-owner target, final completion, stop/persistence, actor isolation and exit fault | Pass: `reference/xstate-v5/trace-history-exploration.mjs` asserts eight scenarios |
+| `XFC-HIST-CONFIG-001` | Accepted declarations, placement, one-per-owner rule, fallback resolution, deep rejection, strict schema and diagnostic paths | Planned |
+| `XFC-HIST-RUNTIME-001` | Outside-owner restore, latest remembered child, transition domain and exit/transition/entry order | Planned |
+| `XFC-HIST-SHALLOW-001` | Restored compound child, normal initial descent and XState-compatible suppression of descendant initial-transition actions | Planned |
+| `XFC-HIST-FALLBACK-001` | Empty-history normal initial fallback and explicit child fallback | Planned |
+| `XFC-HIST-ACTOR-001` | Per-actor isolation, transactional rollback, GC relocation and cleanup | Planned |
+| `XFC-HIST-FINAL-001` | Remembered final child and immediate parent completion | Planned |
+| `XFC-HIST-HOST-001` | Stop semantics and Espruino whole-interpreter save/restoration without replay | Planned |
+| `XFC-HIST-FORMAT-001` | Later native-format validation, checked bounds and corruption rejection | Planned |
+| `XFC-HIST-RESOURCE-001` | Firmware, arena, actor RAM, compiler peak, dispatch timing and stack on the target matrix | Planned |
+
+When implementation begins, these extension cases need their own requirement
+registry and mapping. They must not be added to the frozen Profile 1 registry.
+
 ## Target Execution Register
 
 | Target | Build status | Tests completed | Maintenance or later extension |

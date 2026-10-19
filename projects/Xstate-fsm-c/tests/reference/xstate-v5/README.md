@@ -15,5 +15,16 @@ npm test
 transition. Differential case runners will be added here as their cases are
 entered in the [conformance matrix](../../conformance-matrix.md).
 
+The experimental [shallow-history extension](../../../docs/extensions/shallow-history.md)
+has a separate asserted reference runner:
+
+```bash
+npm run test:history
+```
+
+This command records XState behaviour used to define the extension. It does
+not claim that XFSM implements the extension and is not part of the completed
+Profile 1 totals.
+
 Do not update the dependency version or regenerate `package-lock.json` without
 reviewing the Profile 1 reference version and the affected expected traces.

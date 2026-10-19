@@ -5,7 +5,8 @@
   "description": "Pinned XState v5 differential reference for XFSM Profile 1",
   "type": "module",
   "scripts": {
-    "test": "node verify-reference.mjs"
+    "test": "node verify-reference.mjs",
+    "test:history": "node trace-history-exploration.mjs"
   },
   "engines": {
     "node": ">=20"
