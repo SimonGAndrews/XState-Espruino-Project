@@ -56,10 +56,12 @@ status.
 
 ## Code Development
 
-Canonical implementation code is developed in the
+Canonical Profile 1 implementation code is retained in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
-The current local clone is `/home/simon/Espruino-XFSM-Profile1`, and the
-canonical library location is `libs/xfsm/`.
+Experimental shallow-history development uses the derived
+`experiment/xfsm-history` branch. The current local clone is
+`/home/simon/Espruino-XFSM-Profile1`, and the canonical library location is
+`libs/xfsm/`.
 
 This umbrella repository owns the specification, planning, conformance cases,
 differential tooling, results, and reports. It does not keep a second copy of
@@ -87,6 +89,8 @@ relevant behavior and constraints.
   implementation candidate
 - [docs/native-format-v1.md](docs/native-format-v1.md) - frozen private native
   arena and actor layout
+- [docs/native-format-v2.md](docs/native-format-v2.md) - experimental shallow-
+  history arena and actor-layout delta
 - [docs/extensions/shallow-history.md](docs/extensions/shallow-history.md) -
   experimental shallow-history requirements and compatibility evidence
 - [docs/memory-ownership.md](docs/memory-ownership.md) - conceptual memory

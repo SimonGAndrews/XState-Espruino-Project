@@ -1,0 +1,93 @@
+{
+  "kind": "xfsm-experimental-shallow-history-linux",
+  "date": "2026-10-20",
+  "caseIds": [
+    "XFC-HIST-REF-001",
+    "XFC-HIST-CONFIG-001",
+    "XFC-HIST-RUNTIME-001",
+    "XFC-HIST-SHALLOW-001",
+    "XFC-HIST-FALLBACK-001",
+    "XFC-HIST-ACTOR-001",
+    "XFC-HIST-FINAL-001",
+    "XFC-HIST-HOST-001",
+    "XFC-HIST-FORMAT-001",
+    "XFC-HIST-RESOURCE-001"
+  ],
+  "xstateEspruinoProjectBaseRevision": "2af25e3b51cae04d544e512fa1cf3e00734f0b30",
+  "specificationVersion": "0.52",
+  "implementationBaseRevision": "48d8d3e8e0d32885188a40dd319d7e90b9e9b86a",
+  "branch": "experiment/xfsm-history",
+  "sourceState": "uncommitted experimental working tree identified by sourceSha256",
+  "buildFlags": "USE_XFSM=1",
+  "portableJavaScriptSuites": {
+    "count": 25,
+    "historySuites": [
+      "test_history.js",
+      "test_history_embedded.js",
+      "test_history_diagnostics.js"
+    ],
+    "gcSettledRecords": 0,
+    "result": "pass"
+  },
+  "nativeFormatSanitizers": {
+    "checks": 92,
+    "addressSanitizer": "pass",
+    "undefinedBehaviorSanitizer": "pass",
+    "leakDetection": "pass",
+    "result": "pass"
+  },
+  "staticContract": {
+    "functionsChecked": 199,
+    "sourceFiles": 12,
+    "failures": 0,
+    "result": "pass"
+  },
+  "xstateReference": {
+    "version": "5.33.2",
+    "scenarios": 8,
+    "result": "pass"
+  },
+  "resourceMeasurement": {
+    "base": {
+      "arenaBytes": 514,
+      "machinePersistentBlocks": 56,
+      "constructionPeakBlocks": 101,
+      "actorPersistentBlocks": 11,
+      "actorBytes": 16,
+      "restorePeakBlocks": 2,
+      "restoreEndBlocks": 2,
+      "restoreStackBytes": 352
+    },
+    "history": {
+      "arenaBytes": 576,
+      "machinePersistentBlocks": 58,
+      "constructionPeakBlocks": 120,
+      "actorPersistentBlocks": 11,
+      "actorBytes": 20,
+      "restorePeakBlocks": 2,
+      "restoreEndBlocks": 2,
+      "restoreStackBytes": 352
+    },
+    "delta": {
+      "arenaBytes": 62,
+      "machinePersistentBlocks": 2,
+      "constructionPeakBlocks": 19,
+      "actorPersistentBlocks": 0,
+      "actorBytes": 4,
+      "restorePeakBlocks": 0,
+      "restoreStackBytes": 0
+    },
+    "result": "pass"
+  },
+  "sourceSha256": {
+    "xfsm_compile.c": "5db39c573e75b58ac1f4dd4a3b2f65daf0f3ac44c2899f305839f980340738c3",
+    "xfsm_runtime.c": "168d5a73ecb162f869c59a09b353004058c858d1ecefb8e580f6a5ccf4bb977c",
+    "xfsm_native.c": "622d3e9fa4b73ca52dea0222a69566e80300c25a196f8f27b25f1075ec90b674",
+    "test_history.js": "071d7ded9174faa03039c1372628831ecd883059872407c102da731db696ca3e",
+    "test_history_embedded.js": "18438f743b6ca13c088f46f285f4372ca6253887dec944d9d70ec635fdad802c",
+    "test_history_diagnostics.js": "80e5a13a9563af4bcdc56abd4629f4c9d183cf2ecdbf893d7b1e0c82eeec9ae8",
+    "measure_history.js": "52e98b97c1e47c84bd309941b39c3f54748b33d486ea46939691888ba4ded124"
+  },
+  "result": "pass",
+  "report": "../../../docs/reports/2026-10-20-shallow-history-physical-qualification.md"
+}

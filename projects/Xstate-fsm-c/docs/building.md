@@ -6,9 +6,10 @@
   resource review are verified for their applicable scope; original ESP32
   M7.4, ESP32-C3 C3-D, reduced-profile Pico, and constrained Bluetooth
   MDBT42Q are Conformance verified
-- Current implementation branch: `feature/xfsm-profile1`
+- Profile 1 implementation branch: `feature/xfsm-profile1`
+- Experimental implementation branch: `experiment/xfsm-history`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current implementation revision: `190d14a90`
+- Current committed implementation revision: `48d8d3e8e`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -325,6 +326,26 @@ Commands and required toolchain revisions will be recorded separately for:
 The library must be selected through Espruino's normal optional-library
 mechanism. Target-specific board files may select `XFSM`, but must not contain
 engine semantics or duplicate its source list.
+
+The experimental shallow-history qualification uses the same stock full-
+feature ESP32 profiles. Build normal and temporary measurement images with:
+
+```bash
+source scripts/provision.sh ESP32_IDF5
+env -u DEBUG make BOARD=ESP32_IDF5 clean
+env -u DEBUG make BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 -j2
+
+source scripts/provision.sh ESP32C3_IDF5
+env -u DEBUG make BOARD=ESP32C3_IDF5 clean
+env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 -j2
+```
+
+Add `XFC_MEASURE=1` to the selected board's build and flash command only while
+running `libs/xfsm/tests/measure_history.js`. Rebuild and restore the normal
+production image afterward, then run
+`test_strict_validation_embedded.js`. Exact results and source hashes are in
+the [shallow-history physical qualification
+report](reports/2026-10-20-shallow-history-physical-qualification.md).
 
 The current Espruino Pico comparison uses the provisioned ARM GCC 13.2.1
 toolchain and the same reduced feature profile for its disabled and enabled

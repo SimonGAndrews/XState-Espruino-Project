@@ -1,11 +1,11 @@
 # Xstate-fsm-c Implementation Status
 
-- Last reviewed: 2026-09-29
+- Last reviewed: 2026-10-20
 - Overall status: implementation and Profile 1 evidence closure complete; all
   704 applicable normative requirements have passing evidence, all four
   physical target profiles are Conformance verified, and private native arena
   Format Version 1 is frozen
-- Current milestone: M8 release readiness
+- Profile 1 milestone: M8 release readiness complete
 - Implementation code status: M4 runtime plus final/completion behavior, full
   Profile 1 target forms, wildcard event lookup, v4 migration aliases, all
   Profile 1 context and assignment forms, complete transition-domain and
@@ -16,13 +16,49 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Next gate: complete final release-candidate review and the memory architecture
-  diagram
+- Current active gate: review and commit the completed experimental shallow-
+  history candidate
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
 inventory](../tests/test-inventory.md) is the consolidated record of completed
 evidence, target coverage, and remaining release-review work.
+
+## Experimental Shallow-History Status
+
+Shallow history is isolated on the `experiment/xfsm-history` branches of this
+project and the Espruino implementation repository. It does not change the
+completed Profile 1 conformance claim or frozen Native Format Version 1.
+
+The experimental compiler, runtime, and private Native Format Version 2 are
+implemented. All 25 Linux JavaScript suites pass, including the full and
+target-sized history semantic suites and the history diagnostic suite; 92
+native checks pass with address and undefined-behaviour sanitizers; the static
+contract audit passes; and the
+pinned XState 5.33.2 history reference passes all eight scenarios. Linux
+measurement records a 62-byte representative arena increase, 4 actor bytes per
+history owner, 19 additional peak construction blocks, and no measured
+restore-time JsVar or coordinator-stack increase.
+
+Physical qualification passes on the stock full-feature original ESP32 and
+ESP32-C3 IDF5 targets. Both pass the target-sized history semantics,
+diagnostics, whole-interpreter save/restoration without replay, reset lifecycle,
+and production private-API validation. Their measured history deltas agree on
+62 arena bytes, 5 persistent machine blocks, 18 peak construction blocks, and
+4 actor bytes per history owner, with no additional restore-time temporary
+blocks or coordinator stack. The production images are 1,527,984 bytes on the
+original ESP32 and 1,718,160 bytes on the C3. Same-revision matched builds show
+that full XFSM adds 36,016 bytes (2.414%) and 39,920 bytes (2.379%)
+respectively. Comparison with the frozen Profile 1 candidates indicates that
+the history change itself adds about 0.18%; that smaller figure is informative
+rather than a same-revision feature delta.
+
+The full physical record is in the [shallow-history qualification
+report](reports/2026-10-20-shallow-history-physical-qualification.md).
+
+The authoritative extension requirements and current case status are in the
+[shallow-history specification](extensions/shallow-history.md), with physical
+layout in [Native Format Version 2](native-format-v2.md).
 
 ## Current Revisions And Locations
 
@@ -32,12 +68,14 @@ evidence, target coverage, and remaining release-review work.
 | Specification project path | `projects/Xstate-fsm-c/` |
 | Current specification version | `0.52` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
-| Project base for this evidence | `ad71e30` plus the current MDBT42Q qualification records |
+| Project branch | `experiment/xfsm-history` |
+| Project base for this evidence | `2af25e3b51cae04d544e512fa1cf3e00734f0b30` plus the source-hashed experimental working tree |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
-| Implementation branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
+| Profile 1 branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
+| Experimental branch | [`experiment/xfsm-history`](https://github.com/SimonGAndrews/Espruino/tree/experiment/xfsm-history) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation HEAD | `190d14a90` |
+| Current implementation candidate | `3b3952b9cd2c1d46e4aeab3ed1b076b8d4bcc8d0` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 

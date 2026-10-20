@@ -1,0 +1,127 @@
+{
+  "kind": "xfsm-experimental-shallow-history-physical",
+  "date": "2026-10-20",
+  "caseIds": [
+    "XFC-HIST-RUNTIME-001",
+    "XFC-HIST-SHALLOW-001",
+    "XFC-HIST-FALLBACK-001",
+    "XFC-HIST-ACTOR-001",
+    "XFC-HIST-FINAL-001",
+    "XFC-HIST-HOST-001",
+    "XFC-HIST-RESOURCE-001"
+  ],
+  "xstateEspruinoProjectBaseRevision": "2af25e3b51cae04d544e512fa1cf3e00734f0b30",
+  "specificationVersion": "0.52",
+  "implementationBaseRevision": "48d8d3e8e0d32885188a40dd319d7e90b9e9b86a",
+  "branch": "experiment/xfsm-history",
+  "sourceState": "uncommitted experimental working tree identified by sourceSha256",
+  "target": {
+    "board": "ESP32_IDF5",
+    "chip": "ESP32-D0WD-V3 revision 3.1",
+    "cpuArchitecture": "Xtensa LX6",
+    "controlPort": "/dev/ttyUSB0"
+  },
+  "toolchain": {
+    "espIdf": "5.5.3",
+    "compiler": "Xtensa GCC 14.2.0",
+    "optimization": "O3 release",
+    "productionBuildFlags": "BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1",
+    "measurementBuildFlags": "BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 XFC_MEASURE=1",
+    "setDefinesOverride": false
+  },
+  "runtimeIdentity": {
+    "version": "2v29.453",
+    "gitCommit": "48d8d3e8e",
+    "xfsmCreateMachine": "function"
+  },
+  "productionBuild": {
+    "appPartitionBytes": 2048000,
+    "disabledAppImageBytes": 1491968,
+    "disabledFreeAppPartitionBytes": 556032,
+    "disabledAppImageSha256": "c1915b6d745f33d9168e7ef457c01c201863ee570a0a0e9af092fc394032a9af",
+    "disabledArchiveSha256": "3a6e12453b0d73fd26d8081f33bc9d14ac00ca7ff18c0fecd6abf74ce90f6fa5",
+    "appImageBytes": 1527984,
+    "freeAppPartitionBytes": 520016,
+    "appImageSha256": "6f58111472ed228d20e86fd876fb458fcc3b2747ec5b9f46e21fbc75e4c4aacf",
+    "archiveSha256": "c1bc05877b169b634177800da5da971ee7973c386aabf1991bc0c69c2afbe9a7",
+    "xfsmDeltaBytes": 36016,
+    "xfsmDeltaPercent": 2.41399,
+    "matchedBuildResult": "pass",
+    "result": "pass"
+  },
+  "physicalSuites": {
+    "test_history_embedded.js": "pass",
+    "test_history_diagnostics.js": "pass",
+    "test_save_restore.js": "pass",
+    "test_reset_lifecycle.js": "pass",
+    "test_strict_validation_embedded.js": "pass"
+  },
+  "embeddedExclusions": [
+    {
+      "suite": "test_history.js",
+      "reason": "desktop all-in-one source retains every scenario during evaluation; the sequential target-sized test_history_embedded.js suite passed"
+    }
+  ],
+  "saveRestore": {
+    "interpreterBytes": 39284,
+    "compressedFlashBytes": 9727,
+    "restoreWithoutReplay": true,
+    "historyRestored": true,
+    "stopRetainedHistory": true,
+    "resetWithoutExit": true,
+    "savedImageErased": true,
+    "result": "pass"
+  },
+  "resourceMeasurement": {
+    "measurementImageBytes": 1529008,
+    "measurementBuildOverheadBytes": 1024,
+    "base": {
+      "arenaBytes": 514,
+      "machinePersistentBlocks": 88,
+      "constructionPeakBlocks": 125,
+      "actorPersistentBlocks": 16,
+      "actorBytes": 16,
+      "restorePeakBlocks": 2,
+      "restoreEndBlocks": 2,
+      "restoreStackBytes": 224
+    },
+    "history": {
+      "arenaBytes": 576,
+      "machinePersistentBlocks": 93,
+      "constructionPeakBlocks": 143,
+      "actorPersistentBlocks": 16,
+      "actorBytes": 20,
+      "restorePeakBlocks": 2,
+      "restoreEndBlocks": 2,
+      "restoreStackBytes": 224
+    },
+    "delta": {
+      "arenaBytes": 62,
+      "machinePersistentBlocks": 5,
+      "constructionPeakBlocks": 18,
+      "actorPersistentBlocks": 0,
+      "actorBytes": 4,
+      "restorePeakBlocks": 0,
+      "restoreStackBytes": 0
+    },
+    "result": "pass"
+  },
+  "productionRestore": {
+    "runtimeIdentityVerified": true,
+    "privateMeasurementApiAbsent": true,
+    "compactValidationAfterRestore": "pass"
+  },
+  "sourceSha256": {
+    "xfsm_compile.c": "5db39c573e75b58ac1f4dd4a3b2f65daf0f3ac44c2899f305839f980340738c3",
+    "xfsm_runtime.c": "168d5a73ecb162f869c59a09b353004058c858d1ecefb8e580f6a5ccf4bb977c",
+    "xfsm_native.c": "622d3e9fa4b73ca52dea0222a69566e80300c25a196f8f27b25f1075ec90b674",
+    "test_history_embedded.js": "18438f743b6ca13c088f46f285f4372ca6253887dec944d9d70ec635fdad802c",
+    "test_history_diagnostics.js": "80e5a13a9563af4bcdc56abd4629f4c9d183cf2ecdbf893d7b1e0c82eeec9ae8",
+    "measure_history.js": "52e98b97c1e47c84bd309941b39c3f54748b33d486ea46939691888ba4ded124"
+  },
+  "historyIncrementComparedWithProfile1Bytes": 2736,
+  "historyIncrementComparedWithProfile1Percent": 0.17938,
+  "historyIncrementQualification": "informative comparison with the frozen Profile 1 enabled candidate, not a same-revision feature-toggle delta",
+  "result": "pass",
+  "report": "../../../docs/reports/2026-10-20-shallow-history-physical-qualification.md"
+}

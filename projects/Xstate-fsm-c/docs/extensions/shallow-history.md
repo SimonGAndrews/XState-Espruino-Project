@@ -2,8 +2,8 @@
 
 ## Status
 
-- Status: experimental specification candidate
-- Date: 2026-10-19
+- Status: experimental implementation candidate; qualification complete
+- Last reviewed: 2026-10-20
 - Project branch: `experiment/xfsm-history`
 - Implementation branch: `experiment/xfsm-history`
 - Compatibility base: XFSM Profile 1 plus this extension
@@ -232,15 +232,16 @@ release all temporary and retained storage as required by Profile 1.
 ## Native Representation and Resources
 
 `HIST-017`: Native Format Version 1 remains frozen and does not contain history
-records. An implementation of this extension MUST use a later private native
-format version, to be specified in `native-format-v2.md` when the physical
-layout is chosen. Version 1 readers MUST reject that later version normally.
+records. An implementation of this extension MUST use the separate private
+[Native Format Version 2](../native-format-v2.md). Version 1 readers MUST
+reject that later version normally.
 
 The compiler needs a history marker, owner association, and optional fallback
 target in the compiled machine. Each actor needs logically one 16-bit state
-index for each history-enabled owner. The exact packing and offsets remain an
-implementation decision; these words do not authorize an unversioned change to
-Format Version 1.
+index for each history-enabled owner. Version 2 uses one compiled eight-byte
+history record per owner and two actor-owned banks of 16-bit leaf indexes so a
+fault cannot publish a partial history change. This does not authorize an
+unversioned change to Format Version 1.
 
 `HIST-018`: Actor history storage MUST be bounded by the compiled count of
 history-enabled owners and allocated with the actor. Dispatch MUST NOT allocate
@@ -291,29 +292,39 @@ Implementation conformance requires at least these grouped cases:
 | Case | Coverage | Current status |
 | --- | --- | --- |
 | `XFC-HIST-REF-001` | eight pinned XState reference scenarios | Pass |
-| `XFC-HIST-CONFIG-001` | accepted grammar, placement, target resolution, strict rejection and paths | Planned |
-| `XFC-HIST-RUNTIME-001` | outside-owner restore, latest child and action order | Planned |
-| `XFC-HIST-SHALLOW-001` | compound child initial descent and XState-compatible initial-action rule | Planned |
-| `XFC-HIST-FALLBACK-001` | normal initial and explicit first-use fallback | Planned |
-| `XFC-HIST-ACTOR-001` | actor isolation, rollback and cleanup | Planned |
-| `XFC-HIST-FINAL-001` | remembered final child and immediate completion | Planned |
-| `XFC-HIST-HOST-001` | stop and whole-interpreter save/restoration | Planned |
-| `XFC-HIST-FORMAT-001` | later-format validation and corruption rejection | Planned |
-| `XFC-HIST-RESOURCE-001` | flash, RAM, stack, construction and dispatch measurements | Planned |
+| `XFC-HIST-CONFIG-001` | accepted grammar, placement, target resolution, strict rejection and paths | Linux, original-ESP32 and C3 pass |
+| `XFC-HIST-RUNTIME-001` | outside-owner restore, latest child and action order | Linux, original-ESP32 and C3 pass |
+| `XFC-HIST-SHALLOW-001` | compound child initial descent and XState-compatible initial-action rule | Linux, original-ESP32 and C3 pass |
+| `XFC-HIST-FALLBACK-001` | normal initial and explicit first-use fallback | Linux, original-ESP32 and C3 pass |
+| `XFC-HIST-ACTOR-001` | actor isolation, rollback and cleanup | Linux, original-ESP32 and C3 pass |
+| `XFC-HIST-FINAL-001` | remembered final child and immediate completion | Linux, original-ESP32 and C3 pass |
+| `XFC-HIST-HOST-001` | stop and whole-interpreter save/restoration | Pass: Linux stop plus original-ESP32 and C3 save/restoration and reset lifecycle |
+| `XFC-HIST-FORMAT-001` | Version 2 validation and corruption rejection | Linux sanitizer pass: 92 checks |
+| `XFC-HIST-RESOURCE-001` | flash, RAM, stack, construction and dispatch measurements | Pass: Linux, original-ESP32 and C3 measurements plus same-revision matched builds |
 
 These cases form a separate extension register. They MUST NOT be counted as
 missing Profile 1 evidence or added to the completed Profile 1 requirement
 totals.
 
-## Remaining Implementation Decisions
+The [physical qualification report](../reports/2026-10-20-shallow-history-physical-qualification.md)
+records the Linux, original-ESP32, and ESP32-C3 procedures and measurements.
 
-The behavioural contract is ready for implementation. The following physical
-choices remain deliberately open until the compiler and runtime design pass:
+## Remaining Decisions
 
-1. the exact Version 2 history-node and owner record fields;
-2. the placement and packing of per-actor history indices;
-3. checked size and offset calculations for the extended arena;
-4. the final measured target cost and acceptance decision.
+The compiler, runtime, Version 2 layout, Linux behaviour, and physical behavior
+on the original ESP32 and ESP32-C3 are implemented and pass. The production
+images use stock full-feature board profiles and leave 520,016 and 329,840
+bytes respectively in their application partitions. Same-revision disabled
+and enabled builds also pass; full XFSM adds 36,016 bytes (2.414%) on the
+original ESP32 and 39,920 bytes (2.379%) on the C3. Physical measurement on
+both architectures records a 62-byte arena delta, 5 persistent machine blocks,
+18 peak construction blocks, and 4 actor bytes per history owner, without a
+measured restore-time temporary-block or coordinator-stack increase.
+
+No implementation or physical-qualification decision remains open for the
+experimental candidate. Promoting the extension into a later public profile is
+a separate governance decision and would require its own compatibility and
+release review.
 
 Any change to the behaviour in this document requires an updated pinned trace,
 extension test-register entry, and compatibility assessment before the change
