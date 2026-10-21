@@ -1,6 +1,6 @@
 # Xstate-fsm-c Implementation Status
 
-- Last reviewed: 2026-10-20
+- Last reviewed: 2026-10-21
 - Overall status: implementation and Profile 1 evidence closure complete; all
   704 applicable normative requirements have passing evidence, all four
   physical target profiles are Conformance verified, and private native arena
@@ -425,6 +425,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-10-21 | Manual authoring check passed: simple shallow-history and nested deep-history configurations produced the expected states in the XFSM Espruino REPL and were accepted and rendered correctly by the VS Code XState extension; this is recorded as supplementary usability and tooling evidence |
 | 2026-10-20 | Deep history completed experimental qualification: pinned XState 5.33.2 reference behavior, 26 Linux JavaScript suites, 96 sanitizer-backed native checks, static audit, exact save/reboot restoration, reset cleanup, resource measurement, and timing passed on Linux, original ESP32 and ESP32-C3; deep mode adds no arena, actor, construction-peak or restore-time allocation over equivalent shallow history, while adding 176 bytes on original ESP32 and 144 bytes on ESP32-C3 |
 | 2026-09-29 | MDBT42Q constrained Bluetooth profile passed physical qualification: 20 portable suites, nine exact canonical traces, direct and Storage-backed depth 32, deterministic and production allocation faults, callbacks/GPIO/timer, exact cleanup, GC, save/reboot/reset, 504-byte maximum stack and instrumented timing; `BUILD-006` and `RESOURCE-003` closed, the target advanced to Conformance verified, and the normative ledger reached 704 pass, 0 partial, 0 planned and 3 not applicable |
 | 2026-09-29 | Reduced-profile Pico passed physical qualification: 20 portable suites, nine exact canonical traces, direct and Storage-backed depth 32, allocation failure/recovery, callbacks/GPIO/timer, exact cleanup, GC, save/reboot/reset, 504-byte maximum stack, and instrumented timing; target advanced to Conformance verified |

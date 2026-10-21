@@ -88,6 +88,20 @@ Espruino heap and no `SETDEFINES` override. Measurement firmware was temporary;
 both boards were rebuilt and reflashed with normal production firmware, then
 passed the compact private-API validation.
 
+## Manual Authoring Check
+
+On 2026-10-21, simple shallow-history and nested deep-history configurations
+were entered and exercised through the XFSM Espruino REPL. The shallow example
+restored the last active direct child, and the deep example restored the exact
+nested leaf instead of following the remembered compound state's normal
+initial transition. Both produced the expected state values.
+
+The same configurations were accepted and rendered correctly by the VS Code
+XState extension. This provides supplementary evidence that the selected
+configuration syntax is usable with existing XState authoring tooling. It is
+a manual interoperability check, not a replacement for the pinned XState
+traces or automated XFSM conformance suites.
+
 ## Outcome
 
 `XFC-HIST-CONFIG-001`, `XFC-HIST-DEEP-001`, `XFC-HIST-FORMAT-001`, and the
