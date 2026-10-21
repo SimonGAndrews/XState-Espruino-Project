@@ -348,6 +348,9 @@ totals.
 The [shallow-history qualification report](../reports/2026-10-20-shallow-history-physical-qualification.md)
 and [deep-history qualification report](../reports/2026-10-20-deep-history-qualification.md)
 record the Linux, original-ESP32, and ESP32-C3 procedures and measurements.
+The [history integration optimization report](../reports/2026-10-21-history-integration-optimization.md)
+records the subsequent compiler-workspace reduction, lazy transactional bank
+preparation, scaling fixture, and complete host regression.
 The deep-history report also records a manual authoring check in which the
 shallow and deep example configurations executed successfully through the
 XFSM Espruino REPL and were accepted and rendered by the VS Code XState

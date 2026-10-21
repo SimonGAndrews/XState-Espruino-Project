@@ -1,0 +1,83 @@
+{
+  "kind": "xfsm-experimental-history-integration-optimization-linux",
+  "date": "2026-10-21",
+  "projectBaseRevision": "aa7e835514d8abde1a2775d2ab5e93cd807cdb95",
+  "implementationRevision": "4508ea9a0b910961fcc3bdf59f3fdce48a927d5e",
+  "branch": "experiment/xfsm-history",
+  "nativeFormat": 2,
+  "compilerWorkspace": {
+    "compactStateRecordBytesBefore": 6,
+    "compactStateRecordBytesAfter": 4,
+    "baseConstructionPeakBlocks": { "before": 101, "after": 99 },
+    "historyConstructionPeakBlocks": { "before": 120, "after": 113 },
+    "matchedShallowConstructionPeakBlocks": { "before": 147, "after": 140 },
+    "matchedDeepConstructionPeakBlocks": { "before": 147, "after": 140 },
+    "arenaLayoutChanged": false
+  },
+  "historyTransaction": {
+    "preparesOnFirstHistoryWrite": true,
+    "copiesOnUnhandledEvent": false,
+    "copiesOnTargetlessTransition": false,
+    "copiesOnWithinOwnerTransition": false,
+    "copiesOnStop": false,
+    "actorLayoutChanged": false
+  },
+  "productionLinuxTiming": {
+    "sendIterations": 20000,
+    "pairIterations": 10000,
+    "samples": [
+      { "historyOwners": 0, "actorBytes": 16, "unhandledUs": 54.689658, "targetlessUs": 54.263592, "ordinaryUs": 47.790349 },
+      { "historyOwners": 1, "actorBytes": 20, "unhandledUs": 45.374596, "targetlessUs": 47.153890, "ordinaryUs": 51.823258, "historyPairUs": 90.086818 },
+      { "historyOwners": 8, "actorBytes": 48, "unhandledUs": 45.381892, "targetlessUs": 47.194695, "ordinaryUs": 52.213144, "historyPairUs": 90.970802 },
+      { "historyOwners": 32, "actorBytes": 144, "unhandledUs": 45.779848, "targetlessUs": 47.231650, "ordinaryUs": 52.863204, "historyPairUs": 92.639685 }
+    ],
+    "interpretation": "Host scheduling variation prevents a precise speedup claim; deterministic bank-copy elimination is verified separately."
+  },
+  "releaseCrossBuilds": {
+    "idfVersion": "5.5.3",
+    "useXfsm": true,
+    "flashed": false,
+    "comparisonRevision": "007d8b4b441f0729f19d41e30548b7f044ac9a89",
+    "targets": [
+      {
+        "board": "ESP32_IDF5",
+        "architecture": "Xtensa",
+        "imageBytes": 1527840,
+        "previousImageBytes": 1528160,
+        "changeBytes": -320,
+        "freeAppPartitionBytes": 520160,
+        "freeAppPartitionPercent": 25,
+        "result": "pass"
+      },
+      {
+        "board": "ESP32C3_IDF5",
+        "architecture": "RISC-V",
+        "imageBytes": 1718000,
+        "previousImageBytes": 1718304,
+        "changeBytes": -304,
+        "freeAppPartitionBytes": 330000,
+        "freeAppPartitionPercent": 16,
+        "result": "pass"
+      }
+    ]
+  },
+  "verification": {
+    "portableJavaScriptSuites": 26,
+    "gcSettledRecords": 0,
+    "nativeSanitizerChecks": 96,
+    "staticFunctionsChecked": 198,
+    "staticSourceFiles": 12,
+    "xstateShallowScenarios": 8,
+    "xstateDeepScenarioGroups": 5,
+    "result": "pass"
+  },
+  "sourceSha256": {
+    "xfsm_compile.c": "bdc9368a65744f2a8f04ac6b183839ec5170ece515f9f9fee359e7e67bcf0bb1",
+    "xfsm_runtime.c": "951e33d0cef76626360cefa309923964098c458e57e0c17af3b0f715a2b8485d",
+    "measure_history_dispatch.js": "ba92aea49e6cfc3de447e2bf1a0f0cffefdf6a1b4c889366342ededce18f7909",
+    "test_history.js": "aecc4f168f38281e1ec14ab67369e083bff7cac6e081d65d27727c95d26cd22f",
+    "test_history_embedded.js": "1e34a1ef8edba113355137da9f198da4d0ae00130dbac03855c800e49c98337b"
+  },
+  "report": "../../../docs/reports/2026-10-21-history-integration-optimization.md",
+  "result": "pass"
+}

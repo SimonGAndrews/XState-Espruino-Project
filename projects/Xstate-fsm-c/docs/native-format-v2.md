@@ -136,14 +136,16 @@ recorded history. A non-empty entry stores the last active leaf below that
 owner. The runtime derives the owner's immediate child for shallow restoration
 and uses the leaf directly for deep restoration.
 
-The flag selects the committed bank. At the start of a public actor operation,
-the runtime copies that bank to the other bank. History changes are written to
-the other bank. The operation commit point flips the flag; a fault leaves it
-unchanged. This makes history publication transactional with state and context
-without allocating during dispatch.
+The flag selects the committed bank. An operation reads that bank directly
+until it first changes history. Before the first history write, the runtime
+copies the committed bank to the other bank; all history changes in that
+operation are then written there. The operation commit point flips the flag
+only when the other bank was prepared. A fault leaves the flag unchanged.
+This makes history publication transactional with state and context without
+allocating or copying history for operations that do not change it.
 
-`stop()` may copy and commit an unchanged bank, but it MUST NOT record states
-while executing lifecycle exit actions.
+`stop()` MUST NOT record states while executing lifecycle exit actions and
+therefore does not prepare or commit the other history bank.
 
 ## Validation
 

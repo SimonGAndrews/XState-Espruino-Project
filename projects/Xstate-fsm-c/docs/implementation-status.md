@@ -37,8 +37,15 @@ and undefined-behaviour sanitizers; the static contract audit passes; and the
 pinned XState 5.33.2 shallow and deep references pass all eight shallow
 scenarios and five deep scenario groups. Linux
 measurement records a 62-byte representative arena increase, 4 actor bytes per
-history owner, 19 additional peak construction blocks, and no measured
+history owner, and no measured
 restore-time JsVar or coordinator-stack increase.
+
+The current experimental implementation removes the redundant compiler-only
+history-slot value from every state. On Linux, the representative base/history
+construction peaks are now 99/113 blocks instead of 101/120, and the matched
+shallow/deep fixture is now 140/140 instead of 147/147. History banks are also
+prepared only when an operation first records history; unhandled, targetless,
+within-owner, and stop operations no longer copy or switch unchanged banks.
 
 Physical qualification passes on the stock full-feature original ESP32 and
 ESP32-C3 IDF5 targets. Both pass the target-sized history semantics,
@@ -65,6 +72,8 @@ instrumentation.
 The full records are in the [shallow-history qualification
 report](reports/2026-10-20-shallow-history-physical-qualification.md) and
 [deep-history qualification report](reports/2026-10-20-deep-history-qualification.md).
+The later integration changes are recorded in the [history integration
+optimization report](reports/2026-10-21-history-integration-optimization.md).
 
 The authoritative extension requirements and current case status are in the
 [history-states specification](extensions/history-states.md), with physical
@@ -79,13 +88,13 @@ layout in [Native Format Version 2](native-format-v2.md).
 | Current specification version | `0.52` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
 | Project branch | `experiment/xfsm-history` |
-| Project base for this evidence | `a3c65dd32604c292d7e7bde7c4856049a9dc55b6` plus the source-hashed experimental working tree |
+| Project base for this evidence | `aa7e835514d8abde1a2775d2ab5e93cd807cdb95` plus the optimization evidence in this working tree |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Profile 1 branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Experimental branch | [`experiment/xfsm-history`](https://github.com/SimonGAndrews/Espruino/tree/experiment/xfsm-history) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation candidate | `007d8b4b441f0729f19d41e30548b7f044ac9a89` |
+| Current implementation candidate | `4508ea9a0b910961fcc3bdf59f3fdce48a927d5e` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -425,6 +434,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-10-21 | History integration optimization completed: redundant per-state compiler slot metadata was removed, reducing representative history construction peaks by seven JsVar blocks; history-bank copying is now deferred until the first history write; the 0/1/8/32-owner scaling fixture, all 26 portable suites with zero GC residue, 96 sanitizer checks, the 198-function static audit, both pinned XState history runners, and original ESP32 and ESP32-C3 release cross-builds pass |
 | 2026-10-21 | Manual authoring check passed: simple shallow-history and nested deep-history configurations produced the expected states in the XFSM Espruino REPL and were accepted and rendered correctly by the VS Code XState extension; this is recorded as supplementary usability and tooling evidence |
 | 2026-10-20 | Deep history completed experimental qualification: pinned XState 5.33.2 reference behavior, 26 Linux JavaScript suites, 96 sanitizer-backed native checks, static audit, exact save/reboot restoration, reset cleanup, resource measurement, and timing passed on Linux, original ESP32 and ESP32-C3; deep mode adds no arena, actor, construction-peak or restore-time allocation over equivalent shallow history, while adding 176 bytes on original ESP32 and 144 bytes on ESP32-C3 |
 | 2026-09-29 | MDBT42Q constrained Bluetooth profile passed physical qualification: 20 portable suites, nine exact canonical traces, direct and Storage-backed depth 32, deterministic and production allocation faults, callbacks/GPIO/timer, exact cleanup, GC, save/reboot/reset, 504-byte maximum stack and instrumented timing; `BUILD-006` and `RESOURCE-003` closed, the target advanced to Conformance verified, and the normative ledger reached 704 pass, 0 partial, 0 planned and 3 not applicable |
