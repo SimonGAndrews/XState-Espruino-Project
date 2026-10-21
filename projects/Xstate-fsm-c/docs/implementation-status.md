@@ -16,26 +16,26 @@
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage
-- Current active gate: review and commit the completed experimental shallow-
-  history candidate
+- Current active gate: review the qualified shallow/deep history extension for
+  possible promotion into a later public profile
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
 inventory](../tests/test-inventory.md) is the consolidated record of completed
 evidence, target coverage, and remaining release-review work.
 
-## Experimental Shallow-History Status
+## Experimental History-States Status
 
-Shallow history is isolated on the `experiment/xfsm-history` branches of this
-project and the Espruino implementation repository. It does not change the
+Shallow and deep history are isolated on the `experiment/xfsm-history` branches
+of this project and the Espruino implementation repository. They do not change the
 completed Profile 1 conformance claim or frozen Native Format Version 1.
 
 The experimental compiler, runtime, and private Native Format Version 2 are
-implemented. All 25 Linux JavaScript suites pass, including the full and
-target-sized history semantic suites and the history diagnostic suite; 92
-native checks pass with address and undefined-behaviour sanitizers; the static
-contract audit passes; and the
-pinned XState 5.33.2 history reference passes all eight scenarios. Linux
+implemented. All 26 Linux JavaScript suites pass, including shallow and deep
+history semantic suites and diagnostics; 96 native checks pass with address
+and undefined-behaviour sanitizers; the static contract audit passes; and the
+pinned XState 5.33.2 shallow and deep references pass all eight shallow
+scenarios and five deep scenario groups. Linux
 measurement records a 62-byte representative arena increase, 4 actor bytes per
 history owner, 19 additional peak construction blocks, and no measured
 restore-time JsVar or coordinator-stack increase.
@@ -53,11 +53,21 @@ respectively. Comparison with the frozen Profile 1 candidates indicates that
 the history change itself adds about 0.18%; that smaller figure is informative
 rather than a same-revision feature delta.
 
-The full physical record is in the [shallow-history qualification
-report](reports/2026-10-20-shallow-history-physical-qualification.md).
+Deep mode adds no arena bytes, retained JsVars, actor bytes, construction-peak
+blocks, or restore-time temporary JsVars relative to an otherwise identical
+shallow machine. Production images are 1,528,160 bytes on the original ESP32
+and 1,718,304 bytes on the C3, increases of 176 and 144 bytes over the shallow
+checkpoint. Exact deep restoration, nested owners, descendant fallback, final
+completion, fault rollback, save/reboot persistence, and physical timing pass
+on both architectures. Both boards were restored to production firmware after
+instrumentation.
+
+The full records are in the [shallow-history qualification
+report](reports/2026-10-20-shallow-history-physical-qualification.md) and
+[deep-history qualification report](reports/2026-10-20-deep-history-qualification.md).
 
 The authoritative extension requirements and current case status are in the
-[shallow-history specification](extensions/shallow-history.md), with physical
+[history-states specification](extensions/history-states.md), with physical
 layout in [Native Format Version 2](native-format-v2.md).
 
 ## Current Revisions And Locations
@@ -69,13 +79,13 @@ layout in [Native Format Version 2](native-format-v2.md).
 | Current specification version | `0.52` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
 | Project branch | `experiment/xfsm-history` |
-| Project base for this evidence | `2af25e3b51cae04d544e512fa1cf3e00734f0b30` plus the source-hashed experimental working tree |
+| Project base for this evidence | `a3c65dd32604c292d7e7bde7c4856049a9dc55b6` plus the source-hashed experimental working tree |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Profile 1 branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Experimental branch | [`experiment/xfsm-history`](https://github.com/SimonGAndrews/Espruino/tree/experiment/xfsm-history) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation candidate | `3b3952b9cd2c1d46e4aeab3ed1b076b8d4bcc8d0` |
+| Current implementation candidate | `007d8b4b441f0729f19d41e30548b7f044ac9a89` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -415,6 +425,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-10-20 | Deep history completed experimental qualification: pinned XState 5.33.2 reference behavior, 26 Linux JavaScript suites, 96 sanitizer-backed native checks, static audit, exact save/reboot restoration, reset cleanup, resource measurement, and timing passed on Linux, original ESP32 and ESP32-C3; deep mode adds no arena, actor, construction-peak or restore-time allocation over equivalent shallow history, while adding 176 bytes on original ESP32 and 144 bytes on ESP32-C3 |
 | 2026-09-29 | MDBT42Q constrained Bluetooth profile passed physical qualification: 20 portable suites, nine exact canonical traces, direct and Storage-backed depth 32, deterministic and production allocation faults, callbacks/GPIO/timer, exact cleanup, GC, save/reboot/reset, 504-byte maximum stack and instrumented timing; `BUILD-006` and `RESOURCE-003` closed, the target advanced to Conformance verified, and the normative ledger reached 704 pass, 0 partial, 0 planned and 3 not applicable |
 | 2026-09-29 | Reduced-profile Pico passed physical qualification: 20 portable suites, nine exact canonical traces, direct and Storage-backed depth 32, allocation failure/recovery, callbacks/GPIO/timer, exact cleanup, GC, save/reboot/reset, 504-byte maximum stack, and instrumented timing; target advanced to Conformance verified |
 | 2026-09-29 | Current matched constrained-target builds passed: Pico leaves 12,888 application bytes; MDBT42Q retains Bluetooth and leaves 3,296 bytes before Storage after optional NFC and other non-core features are omitted; this stage advanced both profiles to Build verified pending their later physical qualification |

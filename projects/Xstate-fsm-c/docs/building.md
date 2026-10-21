@@ -327,8 +327,9 @@ The library must be selected through Espruino's normal optional-library
 mechanism. Target-specific board files may select `XFSM`, but must not contain
 engine semantics or duplicate its source list.
 
-The experimental shallow-history qualification uses the same stock full-
-feature ESP32 profiles. Build normal and temporary measurement images with:
+The experimental shallow/deep-history qualification uses the same stock
+full-feature ESP32 profiles. Build normal and temporary measurement images
+with:
 
 ```bash
 source scripts/provision.sh ESP32_IDF5
@@ -341,11 +342,15 @@ env -u DEBUG make BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 -j2
 ```
 
 Add `XFC_MEASURE=1` to the selected board's build and flash command only while
-running `libs/xfsm/tests/measure_history.js`. Rebuild and restore the normal
-production image afterward, then run
+running `libs/xfsm/tests/measure_history.js` or
+`libs/xfsm/tests/measure_deep_history.js`. The production-safe
+`measure_deep_history_timing.js` runs on a normal image. Rebuild and restore
+the normal production image after instrumentation, then run
 `test_strict_validation_embedded.js`. Exact results and source hashes are in
 the [shallow-history physical qualification
-report](reports/2026-10-20-shallow-history-physical-qualification.md).
+report](reports/2026-10-20-shallow-history-physical-qualification.md) and
+[deep-history qualification
+report](reports/2026-10-20-deep-history-qualification.md).
 
 The current Espruino Pico comparison uses the provisioned ARM GCC 13.2.1
 toolchain and the same reduced feature profile for its disabled and enabled

@@ -47,18 +47,18 @@ commands and development locations.
 
 ## Experimental Extensions
 
-Shallow history is being explored separately on the `experiment/xfsm-history`
-branches of this repository and the Espruino implementation repository. Its
-[extension specification](docs/extensions/shallow-history.md) defines the
-proposed behaviour as a delta to Profile 1 and records the pinned XState
-evidence. It does not change the completed Profile 1 scope or conformance
-status.
+Shallow and deep history states are implemented and qualified separately on
+the `experiment/xfsm-history` branches of this repository and the Espruino
+implementation repository. The [extension specification](docs/extensions/history-states.md)
+defines the proposed behaviour as a delta to Profile 1 and links the pinned
+XState, host, and physical evidence. It does not change the completed Profile
+1 scope or conformance status.
 
 ## Code Development
 
 Canonical Profile 1 implementation code is retained in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
-Experimental shallow-history development uses the derived
+Experimental history-state development uses the derived
 `experiment/xfsm-history` branch. The current local clone is
 `/home/simon/Espruino-XFSM-Profile1`, and the canonical library location is
 `libs/xfsm/`.
@@ -89,10 +89,11 @@ relevant behavior and constraints.
   implementation candidate
 - [docs/native-format-v1.md](docs/native-format-v1.md) - frozen private native
   arena and actor layout
-- [docs/native-format-v2.md](docs/native-format-v2.md) - experimental shallow-
-  history arena and actor-layout delta
-- [docs/extensions/shallow-history.md](docs/extensions/shallow-history.md) -
-  experimental shallow-history requirements and compatibility evidence
+- [docs/native-format-v2.md](docs/native-format-v2.md) - experimental history-
+  state arena and actor-layout delta
+- [docs/extensions/history-states.md](docs/extensions/history-states.md) -
+  experimental shallow- and deep-history requirements and compatibility
+  evidence
 - [docs/memory-ownership.md](docs/memory-ownership.md) - conceptual memory
   regions, ownership and reachability
 - [docs/memory-lifetime.md](docs/memory-lifetime.md) - construction, execution,

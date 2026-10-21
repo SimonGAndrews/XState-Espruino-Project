@@ -186,9 +186,9 @@ integration, `save()`, pins and timers have no direct Node equivalent. Their
 exclusion from differential execution must be recorded against the relevant
 conformance cases rather than treated as missing comparison data.
 
-## Experimental Shallow-History Extension
+## Experimental History-States Extension
 
-The [shallow-history extension specification](../docs/extensions/shallow-history.md)
+The [history-states extension specification](../docs/extensions/history-states.md)
 is a separate candidate layered on Profile 1. Its cases do not alter the 707
 Profile 1 normative units, the completed Profile 1 totals, or the Profile 1
 conformance claim.
@@ -196,20 +196,23 @@ conformance claim.
 | Extension case | Coverage | Status |
 | --- | --- | --- |
 | `XFC-HIST-REF-001` | Pinned XState 5.33.2 action order, shallow restoration, fallback, multiple-node reference behaviour, inside-owner target, final completion, stop/persistence, actor isolation and exit fault | Pass: `reference/xstate-v5/trace-history-exploration.mjs` asserts eight scenarios |
-| `XFC-HIST-CONFIG-001` | Accepted declarations, placement, one-per-owner rule, fallback resolution, deep rejection, strict schema and diagnostic paths | Linux, original-ESP32 and C3 `test_history_diagnostics.js`: pass |
+| `XFC-HIST-DEEP-REF-001` | Pinned XState 5.33.2 deep restoration/action order, normal and descendant fallback, nested owners, final-leaf completion and fault rollback | Pass: `reference/xstate-v5/trace-deep-history.mjs` asserts five scenario groups |
+| `XFC-HIST-CONFIG-001` | Accepted declarations, placement, one-per-owner rule, mode-specific fallback resolution, strict schema and diagnostic paths | Linux, original-ESP32 and C3 pass for shallow and deep modes |
 | `XFC-HIST-RUNTIME-001` | Outside-owner restore, latest remembered child, transition domain and exit/transition/entry order | Linux `test_history.js`; original-ESP32 and C3 `test_history_embedded.js`: pass |
 | `XFC-HIST-SHALLOW-001` | Restored compound child, normal initial descent, suppression of that child's initial-transition action and normal deeper initial actions | Linux, original-ESP32 and C3: pass |
+| `XFC-HIST-DEEP-001` | Exact leaf restoration, nested owners, descendant fallback, action order, final completion and rollback | Linux `test_deep_history.js`; original-ESP32 and C3: pass |
 | `XFC-HIST-FALLBACK-001` | Empty-history normal initial fallback and explicit child fallback | Linux, original-ESP32 and C3: pass |
 | `XFC-HIST-ACTOR-001` | Per-actor isolation, transactional rollback, GC relocation and cleanup | Linux, original-ESP32 and C3: pass |
 | `XFC-HIST-FINAL-001` | Remembered final child and immediate parent completion | Linux, original-ESP32 and C3: pass |
 | `XFC-HIST-HOST-001` | Stop semantics and Espruino whole-interpreter save/restoration without replay | Pass: Linux stop plus original-ESP32 and C3 save/restoration and reset lifecycle |
-| `XFC-HIST-FORMAT-001` | Version 2 native-format validation, checked bounds and corruption rejection | Linux pass: 92 sanitizer-backed native checks, including a two-owner hand-built history arena, direct-root rejection and actor banks |
-| `XFC-HIST-RESOURCE-001` | Firmware, arena, actor RAM, compiler peak, dispatch timing and stack on the target matrix | Pass: Linux, original-ESP32 and C3 establish a 62-byte representative arena delta and 4 actor bytes per owner; physical targets add 5 persistent machine blocks and 18 construction-peak blocks with no restore temporary-block or stack increase; same-revision matched builds pass |
+| `XFC-HIST-FORMAT-001` | Version 2 native-format validation, checked bounds and corruption rejection | Linux pass: 96 sanitizer-backed native checks, including deep-mode flags and fallback corruption cases |
+| `XFC-HIST-RESOURCE-001` | Firmware, arena, actor RAM, compiler peak, dispatch timing and stack on the target matrix | Pass: deep adds no arena, persistent JsVar, actor-byte, construction-peak, or restore temporary-block cost over shallow; production timing and fit pass on both ESP32 architectures |
 
 Maintain these cases as a separate extension register and mapping. They must
 not be added to the frozen Profile 1 registry. The [physical qualification
 report](../docs/reports/2026-10-20-shallow-history-physical-qualification.md)
-links the complete host and target result records.
+and [deep-history qualification report](../docs/reports/2026-10-20-deep-history-qualification.md)
+link the complete host and target result records.
 
 ## Target Execution Register
 

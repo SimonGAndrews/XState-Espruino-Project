@@ -1,0 +1,84 @@
+{
+  "kind": "xfsm-experimental-deep-history-physical",
+  "date": "2026-10-20",
+  "caseIds": [
+    "XFC-HIST-CONFIG-001",
+    "XFC-HIST-SHALLOW-001",
+    "XFC-HIST-DEEP-001",
+    "XFC-HIST-HOST-001",
+    "XFC-HIST-RESOURCE-001"
+  ],
+  "implementationBaseRevision": "3b3952b9cd2c1d46e4aeab3ed1b076b8d4bcc8d0",
+  "branch": "experiment/xfsm-history",
+  "sourceState": "uncommitted experimental working tree identified by sourceSha256",
+  "target": {
+    "board": "ESP32C3_IDF5",
+    "chip": "ESP32-C3 revision 0.3",
+    "cpuArchitecture": "RV32IMC",
+    "controlPort": "/dev/ttyACM0"
+  },
+  "toolchain": {
+    "espIdf": "5.5.3",
+    "compiler": "RISC-V GCC 14.2.0",
+    "productionBuildFlags": "BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1",
+    "measurementBuildFlags": "BOARD=ESP32C3_IDF5 RELEASE=1 USE_XFSM=1 XFC_MEASURE=1",
+    "setDefinesOverride": false
+  },
+  "runtimeIdentity": {
+    "version": "2v29.454",
+    "gitCommit": "3b3952b9c"
+  },
+  "productionBuild": {
+    "appPartitionBytes": 2048000,
+    "shallowCheckpointImageBytes": 1718160,
+    "appImageBytes": 1718304,
+    "deepIncrementBytes": 144,
+    "deepIncrementPercent": 0.008381,
+    "freeAppPartitionBytes": 329696,
+    "measurementImageBytes": 1719568,
+    "result": "pass"
+  },
+  "physicalSuites": {
+    "test_deep_history.js": "pass",
+    "test_history_diagnostics.js": "pass",
+    "test_history_embedded.js": "pass",
+    "test_save_restore.js": "pass",
+    "test_reset_lifecycle.js": "pass",
+    "test_strict_validation_embedded.js": "pass"
+  },
+  "saveRestore": {
+    "interpreterBytes": 39351,
+    "compressedFlashBytes": 9628,
+    "exactDeepLeafRestored": true,
+    "restoreWithoutReplay": true,
+    "resetWithoutExit": true,
+    "savedImageErased": true,
+    "result": "pass"
+  },
+  "resourceMeasurement": {
+    "shallow": {"arenaBytes": 660, "machinePersistentBlocks": 104, "constructionPeakBlocks": 175, "actorPersistentBlocks": 16, "actorBytes": 20, "restorePeakBlocks": 2, "restoreStackBytes": 336},
+    "deep": {"arenaBytes": 660, "machinePersistentBlocks": 104, "constructionPeakBlocks": 175, "actorPersistentBlocks": 16, "actorBytes": 20, "restorePeakBlocks": 2, "restoreStackBytes": 256},
+    "result": "pass"
+  },
+  "dispatchTiming": {
+    "iterations": 500,
+    "shallowMicrosecondsPerExitRestorePair": 3438.834,
+    "deepMicrosecondsPerExitRestorePair": 3442.718,
+    "deltaMicrosecondsPerPair": 3.884,
+    "result": "pass"
+  },
+  "productionRestore": {
+    "privateMeasurementApiAbsent": true,
+    "compactValidationAfterRestore": "pass"
+  },
+  "sourceSha256": {
+    "xfsm_compile.c": "1ce1f0f359598a4424423e5953e02f5916cc5ed2142de9ce5c4ff89dc18ebb7e",
+    "xfsm_runtime.c": "db6738fede3d152a7b5462b2884dd6dad7f0c3e3ecc9b0ddfafb4321c3295be3",
+    "xfsm_native.c": "f512fc7bf229a821233f8051a2ddfedfd72f2e62d80df26ec63e2e6dae708536",
+    "test_deep_history.js": "2a5620a0dc200212fa5cd10a8e99115c16c325c5e0f906b2b8695df9a5ba3fd6",
+    "measure_deep_history.js": "fa1bea9a0c59635dfdd3a9d53587b4612d3023968490351676ac9b597add063f",
+    "measure_deep_history_timing.js": "43d0bdd23f301599384a4b721cc37c0443a5654eeb3e427ac22b715a74850d12"
+  },
+  "result": "pass",
+  "report": "../../../docs/reports/2026-10-20-deep-history-qualification.md"
+}

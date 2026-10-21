@@ -15,11 +15,12 @@ npm test
 transition. Differential case runners will be added here as their cases are
 entered in the [conformance matrix](../../conformance-matrix.md).
 
-The experimental [shallow-history extension](../../../docs/extensions/shallow-history.md)
-has a separate asserted reference runner:
+The experimental [history-states extension](../../../docs/extensions/history-states.md)
+has separate asserted shallow- and deep-history reference runners:
 
 ```bash
 npm run test:history
+npm run test:history:deep
 ```
 
 This command records XState behaviour used to define the extension. It does

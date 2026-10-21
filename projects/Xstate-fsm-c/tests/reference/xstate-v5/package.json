@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "node verify-reference.mjs",
-    "test:history": "node trace-history-exploration.mjs"
+    "test:history": "node trace-history-exploration.mjs",
+    "test:history:deep": "node trace-deep-history.mjs"
   },
   "engines": {
     "node": ">=20"

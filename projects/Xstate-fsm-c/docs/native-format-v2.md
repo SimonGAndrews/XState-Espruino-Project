@@ -2,13 +2,13 @@
 
 ## Status
 
-- Status: Experimental shallow-history physical layout
+- Status: Experimental shallow- and deep-history physical layout
 - Arena format version: 2
 - Public API status: Private implementation format
 - Applicable branch: `experiment/xfsm-history`
 
 This appendix defines the private native-format changes used by the
-[shallow-history extension](extensions/shallow-history.md). It is normative
+[history-states extension](extensions/history-states.md). It is normative
 for an implementation claiming conformance to that extension. It does not
 change or replace the frozen [Profile 1 Format Version 1](native-format-v1.md).
 
@@ -78,14 +78,26 @@ typedef struct {
   uint16_t owner_state;
   uint16_t history_state;
   uint16_t fallback_state;
-  uint16_t reserved;
+  uint16_t flags;
 } XfcHistoryRecord;
 ```
 
 `owner_state` MUST name a non-root compound state. `history_state` MUST name
-its direct `XFC_STATE_HISTORY` child. `fallback_state` is
-`XFC_INDEX_NONE` or one immediate non-history child of the owner. `reserved`
-MUST be zero.
+its direct `XFC_STATE_HISTORY` child. `flags` uses this definition:
+
+```c
+enum {
+  XFC_HISTORY_DEEP = UINT16_C(0x0001),
+  XFC_HISTORY_KNOWN_FLAGS = UINT16_C(0x0001)
+};
+```
+
+Zero flags select shallow history and `XFC_HISTORY_DEEP` selects deep history.
+Unknown flag bits MUST be zero. `fallback_state` is `XFC_INDEX_NONE` when no
+explicit first-use fallback exists. A shallow fallback MUST be an immediate
+ordinary child of the owner. A deep fallback MAY be an ordinary descendant at
+any depth below the owner. A fallback MUST NOT name the owner, a history node,
+or a state outside the owner's subtree.
 
 Records are ordered by increasing owner-state index. Because state records are
 indexed in parent order, their history-state indexes also increase. The
@@ -94,7 +106,9 @@ state. There MUST be no more than one record for an owner.
 
 A transition may retain a history node as its compiled target. Its transition
 domain remains the statically compiled domain between its source and that
-node. The source MUST be outside the history owner's subtree.
+node. The source MUST be outside the history owner's subtree. At runtime,
+shallow restoration derives the owner's immediate child from the stored leaf;
+deep restoration uses the stored leaf directly.
 
 ## Per-Actor Data
 
@@ -119,8 +133,8 @@ If the machine has `H` history records, its actor flat string has this layout:
 The exact actor-data size is therefore `16 + 4 * H` bytes. Each bank entry is
 one native-order 16-bit state index. `XFC_INDEX_NONE` means that owner has no
 recorded history. A non-empty entry stores the last active leaf below that
-owner; the runtime derives the owner's immediate child when shallow history is
-restored.
+owner. The runtime derives the owner's immediate child for shallow restoration
+and uses the leaf directly for deep restoration.
 
 The flag selects the committed bank. At the start of a public actor operation,
 the runtime copies that bank to the other bank. History changes are written to
@@ -140,12 +154,13 @@ In addition to all Version 1 checks, Version 2 validation MUST reject:
 - a root history state or a history state with executable behaviour;
 - a history record whose owner and node relationship is inconsistent;
 - duplicate or non-increasing owner records;
-- an invalid or non-immediate fallback state;
+- an invalid fallback, a non-immediate shallow fallback, or a deep fallback
+  outside the owner's descendants;
 - a compound initial target that names a history node;
 - an inside-owner transition targeting that owner's history node;
 - unknown actor flag bits, a wrong actor-data length, or an out-of-range stored
   history state; and
-- nonzero reserved fields.
+- unknown history-record flag bits or nonzero fields that remain reserved.
 
 All record reads and writes MUST continue to use alignment-safe copies. Actor
 size calculation MUST use checked arithmetic before its GC-owned flat string is
@@ -163,17 +178,22 @@ _Static_assert(offsetof(XfcArenaHeader, tables) == 32,
                "XfcArenaHeader table offset");
 _Static_assert(offsetof(XfcHistoryRecord, fallback_state) == 4,
                "XfcHistoryRecord fallback offset");
+_Static_assert(offsetof(XfcHistoryRecord, flags) == 6,
+               "XfcHistoryRecord flags offset");
 ```
 
 The Version 1 record-size assertions remain applicable.
 
 ## Conformance Evidence
 
-`XFC-HIST-FORMAT-001` MUST include a valid hand-built Version 2 history arena,
+`XFC-HIST-FORMAT-001` MUST include valid hand-built Version 2 shallow- and
+deep-history arenas,
 exact header and table layout checks, actor-size and two-bank checks, and
 sanitizer-backed rejection of corrupt owner, history-node, fallback, flag,
 range, index, and reserved values.
 
-The shallow-history candidate has completed its target resource measurements
-and acceptance review. Format Version 2 remains experimental with the extension
+Shallow and deep history have completed their host and physical regression,
+resource, timing, save/restoration, and acceptance gates. The native suite
+passes 96 sanitizer-backed checks, including deep-mode flag and fallback
+corruption cases. Format Version 2 remains experimental with the extension
 until a separate decision promotes the extension into a public profile.
