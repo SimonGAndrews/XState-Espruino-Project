@@ -1,20 +1,21 @@
-# XFSM History States Extension
+# XFSM Profile 2 History States
 
 ## Status
 
-- Status: experimental; technically qualified and ready for promotion review
+- Status: Normative part of public Profile 2
 - Last reviewed: 2026-10-21
-- Project branch: `experiment/xfsm-history`
-- Implementation branch: `experiment/xfsm-history`
-- Compatibility base: XFSM Profile 1 plus this extension
+- Project branch: `feature/xfsm-profile2`
+- Implementation branch: `feature/xfsm-profile2`
+- Compatibility base: XFSM Profile 1 plus these Profile 2 requirements
 - XState reference: `xstate@5.33.2`
 
-This document defines a possible history-state extension to the completed
-[Profile 1 specification](../specification.md). It is normative only for an
-implementation claiming conformance to this extension. It does not add history
-states to Profile 1 or change Profile 1's conformance result.
+This document defines the history-state capability added by the public
+[Profile 2 specification](../specification-profile-2.md) to the completed
+[Profile 1 specification](../specification.md). It is normative for an
+implementation claiming Profile 2 conformance. It does not add history states
+to Profile 1 or change Profile 1's conformance result.
 
-The extension supports shallow restoration to the immediate child that was
+Profile 2 supports shallow restoration to the immediate child that was
 active when a compound state was last exited and deep restoration to the exact
 active leaf below that child. Parallel states and general persisted-snapshot
 import remain outside scope.
@@ -104,8 +105,8 @@ Its owner MUST also contain at least one ordinary child. An owner's `initial`
 target MUST NOT select a history node.
 
 `HIST-003`: An owner MUST contain no more than one history node. XState and
-SCXML permit multiple nodes with different modes or first-use fallbacks. This
-extension uses one node to keep compilation, actor storage, and validation
+SCXML permit multiple nodes with different modes or first-use fallbacks.
+Profile 2 uses one node to keep compilation, actor storage, and validation
 bounded and clear.
 
 `HIST-004`: A `history` value other than `"shallow"` or `"deep"`, or a
@@ -260,7 +261,7 @@ release all temporary and retained storage as required by Profile 1.
 ## Native Representation and Resources
 
 `HIST-017`: Native Format Version 1 remains frozen and does not contain history
-records. An implementation of this extension MUST use the separate private
+records. A Profile 2 implementation MUST use the separate private
 [Native Format Version 2](../native-format-v2.md). Version 1 readers MUST
 reject that later version normally.
 
@@ -277,7 +278,7 @@ history-enabled owners and allocated with the actor. Dispatch MUST NOT allocate
 an unbounded history structure or traverse the JavaScript configuration. The
 existing hierarchy-depth and 256-microstep limits continue to apply.
 
-Before the extension can be accepted, matched measurements MUST report its
+Profile 2 qualification MUST include matched measurements of its
 firmware, compiled-machine, actor RAM, construction peak, dispatch timing, and
 coordinator-stack effects on the Profile 1 reference targets. History support
 MUST NOT silently reduce the published Profile 1 limits.
@@ -288,7 +289,7 @@ The primary compatibility reference is the pinned XState 5.33.2 runtime. The
 [W3C SCXML history specification](https://www.w3.org/TR/scxml/#history) is the
 algorithmic cross-check.
 
-| Area | XState 5.33.2 / SCXML | This extension |
+| Area | XState 5.33.2 / SCXML | Profile 2 |
 | --- | --- | --- |
 | shallow history and first-use fallback | supported | supported |
 | deep history | supported | supported for one active leaf; parallel configurations remain excluded |
@@ -299,7 +300,7 @@ algorithmic cross-check.
 | deep fallback target | XState and SCXML permit a descendant | one descendant supported; target arrays excluded with parallel states |
 | initial actions below a history-selected compound state | SCXML algorithm implies execution in additional cases; XState 5.33.2 omits them | follows XState 5.33.2 |
 
-These are intentional extension limits or compatibility differences, not
+These are intentional Profile 2 limits or compatibility differences, not
 changes to Profile 1.
 
 ## Conformance Evidence
@@ -341,7 +342,7 @@ Implementation conformance requires at least these grouped cases:
 | `XFC-HIST-FORMAT-001` | Version 2 validation and corruption rejection | Linux sanitizer pass: 96 checks |
 | `XFC-HIST-RESOURCE-001` | flash, RAM, stack, construction and dispatch measurements | Pass: matched Linux, original-ESP32 and C3 shallow/deep measurements and physical timing |
 
-These cases form a separate extension register. They MUST NOT be counted as
+These cases form the Profile 2 addition register. They MUST NOT be counted as
 missing Profile 1 evidence or added to the completed Profile 1 requirement
 totals.
 
@@ -360,7 +361,7 @@ XFSM Espruino REPL and were accepted and rendered by the VS Code XState
 extension. This is supplementary tooling and usability evidence; it does not
 replace the automated conformance cases above.
 
-## Remaining Decisions
+## Promotion Decision
 
 The shallow and deep compiler, runtime, Version 2 layout, Linux behaviour, and
 physical behavior on the original ESP32 and ESP32-C3 are implemented and pass.
@@ -379,9 +380,9 @@ before Storage; this narrow margin MUST be rechecked after any XFSM or upstream
 Espruino growth.
 
 The implementation, conformance, resource, and target-fit gates are complete.
-Promoting the combined extension into a later public profile remains a
-specification-governance and branch-integration decision.
+Shallow and deep history are accepted into public XFSM Profile 2. Profile 1
+remains frozen without history, and Profile 2 uses Native Format Version 2.
 
 Any change to the behaviour in this document requires an updated pinned trace,
-extension test-register entry, and compatibility assessment before the change
+Profile 2 test-register entry, and compatibility assessment before the change
 is implemented.

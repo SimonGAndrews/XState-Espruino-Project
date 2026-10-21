@@ -1,16 +1,17 @@
-# Profile 1 Test Inventory
+# XFSM Test Inventory
 
 ## Status And Purpose
 
 - Inventory status: living execution register
-- Last reviewed: 2026-09-29
-- Specification: Profile 1 version 0.52
-- Normative authority: [Profile 1 specification](../docs/specification.md)
+- Last reviewed: 2026-10-21
+- Specification: Public Profile 2, incorporating Profile 1 version 0.52
+- Normative authority: [Profile 2 specification](../docs/specification-profile-2.md)
+- Profile 2 mapping: [Profile 2 conformance record](profile-2-conformance.md)
 - Requirement mapping: [conformance matrix](conformance-matrix.md)
 - Requirement audit: [707-unit normative audit](normative-audit.md), complete
 
 This document is the single operational record of tests completed to date and
-tests still required for final Profile 1 review. It records executable suites,
+tests still required for current-profile review. It records executable suites,
 functional coverage, differential coverage, target execution, and release or
 maintenance work. The normative audit is the requirement-level authority,
 while the conformance matrix defines stable aggregate evidence cases. All
@@ -129,7 +130,7 @@ conformance list.
 | Native arena and actor records (`FORMAT-001/002/003`) | Pass | Exact frozen Version 1 layout, complete compile-time size/offset assertions, near-limit arithmetic/ranges, valid arenas, corruption rejection, byte-order mismatch, hashes, domains and actor validation across representative architectures | Maintain the frozen format and increment its version for an incompatible physical change |
 | Machine-definition lifetime and ownership (`CONFIG-001/002/003/004/005`, `HOST-001/007`) | Pass | Two-pass construction, source independence, retained bindings, accessor-safe traversal, canonical composition and implementation-map ownership closure, deterministic arena-allocation failure and cleanup; formal static ownership/lock review; original ESP32 shared-machine and pressure evidence | Repeat portable runtime cases on future qualified targets under `BUILD-006` |
 | State-node and initial-transition grammar (`CONFIG-001/003/004`) | Pass | Canonical closure covers invalid root shapes, explicit/inferred atomic, compound and final nodes, empty atomic `states`, initial descriptors, action/event order, nested-machine rejection, punctuated keys, composition, source independence and contradictory forms | Repeat the portable trace on qualified physical targets |
-| Excluded-feature rejection (`CONFIG-003`, `DIAG-001/005/006`) | Pass | Automated strict rejection covers parallel/history states, eventless/delayed transitions, invoke, activities, tags, output, actors/spawning, restored-snapshot input, custom delimiters and unsupported properties; the exhaustive category/path matrix passes | Repeat the compact subset on future qualified targets |
+| Profile 1 excluded-feature rejection (`CONFIG-003`, `DIAG-001/005/006`) | Pass | The frozen Profile 1 evidence covers parallel/history states, eventless/delayed transitions, invoke, activities, tags, output, actors/spawning, restored-snapshot input, custom delimiters and unsupported properties; Profile 2 replaces only the history exclusion with `XFC-HIST-CONFIG-001` | Repeat the applicable compact subset on future qualified targets |
 | Target grammar and ID resolution (`TRANS-001/002`) | Pass | Exact-key-first and segmented bare targets, relative dot form, root/effective ID paths, explicit IDs with punctuation, escaped period/backslash/leading punctuation, duplicate IDs, malformed and ambiguous targets | Target and path length boundaries, allocation failures, and full deep ancestor/descendant/domain combinations |
 | Event grammar and lookup (`TRANS-001/003/005`, `LIMIT-004`) | Pass | Exact strings and object events, identity and captured lookup type, malformed/reserved input rejection, guard coercion, wildcard precedence/fallback, forbidden blocking, parent fallback, collision-safe lookup, UTF-8 byte-length boundaries, event-allocation failures, and pinned shared-semantics comparison | Preserve generated deep-lookup and target-matrix coverage |
 | Migration syntax and Stately compatibility (`COMPAT-002/005`) | Pass | `cond`, `internal`, inert true v4 flags, empty compatibility maps, conflict/false/nonempty-map rejection, pinned v4.38.3 behavior, 19 registered differences, and all seven Stately specimens with checked provenance, assessment and adaptations | Repeat the portable migration trace on later qualified targets |
@@ -186,14 +187,14 @@ integration, `save()`, pins and timers have no direct Node equivalent. Their
 exclusion from differential execution must be recorded against the relevant
 conformance cases rather than treated as missing comparison data.
 
-## Experimental History-States Extension
+## Profile 2 History States
 
-The [history-states extension specification](../docs/extensions/history-states.md)
-is a separate candidate layered on Profile 1. Its cases do not alter the 707
-Profile 1 normative units, the completed Profile 1 totals, or the Profile 1
+The [history-state requirements](../docs/extensions/history-states.md) are the
+public Profile 2 addition layered on Profile 1. Their cases do not alter the
+707 Profile 1 normative units, completed Profile 1 totals, or Profile 1
 conformance claim.
 
-| Extension case | Coverage | Status |
+| Profile 2 case | Coverage | Status |
 | --- | --- | --- |
 | `XFC-HIST-REF-001` | Pinned XState 5.33.2 action order, shallow restoration, fallback, multiple-node reference behaviour, inside-owner target, final completion, stop/persistence, actor isolation and exit fault | Pass: `reference/xstate-v5/trace-history-exploration.mjs` asserts eight scenarios |
 | `XFC-HIST-DEEP-REF-001` | Pinned XState 5.33.2 deep restoration/action order, normal and descendant fallback, nested owners, final-leaf completion and fault rollback | Pass: `reference/xstate-v5/trace-deep-history.mjs` asserts five scenario groups |
@@ -208,7 +209,7 @@ conformance claim.
 | `XFC-HIST-FORMAT-001` | Version 2 native-format validation, checked bounds and corruption rejection | Linux pass: 96 sanitizer-backed native checks, including deep-mode flags and fallback corruption cases |
 | `XFC-HIST-RESOURCE-001` | Firmware, arena, actor RAM, compiler peak, dispatch timing and stack on the target matrix | Pass: deep adds no arena, persistent JsVar, actor-byte, construction-peak, or restore temporary-block cost over shallow; production timing and fit pass on both ESP32 architectures |
 
-Maintain these cases as a separate extension register and mapping. They must
+Maintain these cases as the Profile 2 addition register and mapping. They must
 not be added to the frozen Profile 1 registry. The [physical qualification
 report](../docs/reports/2026-10-20-shallow-history-physical-qualification.md)
 and [deep-history qualification report](../docs/reports/2026-10-20-deep-history-qualification.md)
@@ -218,12 +219,12 @@ link the complete host and target result records.
 
 | Target | Build status | Tests completed | Maintenance or later extension |
 | --- | --- | --- | --- |
-| Linux Espruino | Build verified | Twenty-two normal suites, separate deterministic fault suite, 73-check sanitizer suite, nine canonical traces, complete pinned differentials, static contract audit, broader GC/cross-actor behavior, complete post-M6 resource review, frozen format, and completed normative traceability | Final release-candidate rerun |
-| Original ESP32 IDF5 | [M7.4 release-candidate result](results/esp32-xtensa/2026-09-28-m7-release-candidate.json) passes; Conformance verified | Matched builds; 20 embedded portable suites; deterministic physical allocation seams; direct and Storage-backed maximum depth; exact cleanup, GC, serialization, native callbacks/GPIO/timer, save/restoration/reset; and combined XFSM/BLE/WiFi/TLS service rerun | No target-specific Profile 1 blocker; final release review only |
-| Espruino Pico | [Physical qualification](results/pico/2026-09-29-m8-physical-qualification.json) passes; Conformance verified | Matched build; 20 embedded portable suites; nine canonical traces; deterministic and production allocation faults; direct and Storage-backed maximum depth; stack/RAM/timing; exact cleanup, GC, serialization, native callbacks/GPIO/timer, and save/restoration/reset | No target-specific Profile 1 blocker; final release review only |
-| MDBT42Q | [Physical qualification](results/mdbt42q/2026-09-29-m8-physical-qualification.json) passes; Conformance verified | Matched constrained Bluetooth build; 20 embedded portable suites; nine canonical traces; deterministic and production allocation faults; direct and Storage-backed maximum depth; stack/RAM/timing; exact cleanup, GC, serialization, callbacks/GPIO/timer, and save/restoration/reset | No target-specific Profile 1 blocker; final release review only |
-| ESP32-C3 IDF5 | [C3-D release-candidate result](results/esp32-riscv/2026-09-28-m7-release-candidate.json) passes; Conformance verified | Matched builds; 20 embedded portable suites; deterministic physical allocation seams; direct and Storage-backed maximum depth; exact cleanup, GC, serialization, native callbacks/GPIO/timer, save/restoration/reset; and combined XFSM/BLE/WiFi/TLS service rerun | No target-specific Profile 1 blocker; final release review only |
-| ESP32-S3 IDF5 | Later expansion target | None required for Profile 1 | Optional after the Espruino port reaches the required maturity |
+| Linux Espruino | Profile 2 Conformance verified | 26 normal suites, separate deterministic fault suite, 96-check sanitizer suite, static audit, base canonical traces, pinned shallow/deep history differentials, scaling and resource measurements | Maintain on every implementation change |
+| Original ESP32 IDF5 | [Profile 2 promotion result](results/esp32-xtensa/2026-10-21-history-promotion-rerun.json) passes; Conformance verified | Profile 1 corpus plus target-sized shallow/deep history, diagnostics, save/reboot/reset, resource measurement and production timing | Maintain exact-candidate physical rerun |
+| Espruino Pico | Profile 2 Build verified; Profile 1 Conformance verified | Exact Profile 2 candidate builds with 11,024 bytes free; complete Profile 1 physical qualification retained | Repeat target-sized Profile 2 history runtime and lifecycle cases physically |
+| MDBT42Q | Profile 2 Build verified; Profile 1 Conformance verified | Exact Profile 2 candidate builds with 1,408 bytes before Storage; complete Profile 1 physical qualification retained | Recheck capacity and repeat target-sized Profile 2 history runtime and lifecycle cases physically |
+| ESP32-C3 IDF5 | [Profile 2 promotion result](results/esp32-riscv/2026-10-21-history-promotion-rerun.json) passes; Conformance verified | Profile 1 corpus plus target-sized shallow/deep history, diagnostics, save/reboot/reset, resource measurement and production timing | Maintain exact-candidate physical rerun |
+| ESP32-S3 IDF5 | Later expansion target | None required for Profile 2 | Optional after the Espruino port reaches the required maturity |
 
 ## Build And CI Register
 
@@ -231,15 +232,16 @@ link the complete host and target result records.
 | --- | --- | --- |
 | Linux build with XFSM disabled | Pass | Repeat at release candidate |
 | Linux build with XFSM enabled | Pass | Repeat at release candidate |
-| Linux semantic, fault, sanitizer and static CI | Configured on fork branch | Preserve all 22 normal suites, nine canonical traces, the 73-check sanitizer suite, static audit, separate `XFC_TEST=1` fault build, and disabled build |
-| Original ESP32 IDF5 enabled CI build | Configured on fork branch; M7.4 matched build and physical qualification pass; normal image leaves 522,752 app-partition bytes free | Retain as fork-development coverage |
-| Pico reduced-profile build and physical qualification | Pass locally | Decide whether to add the matched Pico build to fork CI |
-| MDBT42Q constrained Bluetooth build and physical qualification | Pass locally; Conformance verified | Keep the stock board unchanged and preserve the explicit optional profile |
-| ESP32-C3 IDF5 enabled build | C3-D matched build and physical qualification pass; normal image leaves 332,880 app-partition bytes free | Optional fork CI remains useful but is not part of the target's local conformance result |
+| Linux semantic, fault, sanitizer and static CI | Configured on fork branch | Preserve all 26 normal suites, base canonical traces, shallow/deep pinned references, the 96-check sanitizer suite, static audit, separate `XFC_TEST=1` fault build, and disabled build |
+| Original ESP32 IDF5 enabled build | Profile 2 physical qualification passes; normal image leaves 520,160 app-partition bytes free | Retain as fork-development coverage |
+| Pico reduced-profile build and physical qualification | Profile 2 build passes; Profile 1 physical qualification retained | Add Profile 2 physical history repetition when the board is available |
+| MDBT42Q constrained Bluetooth build and physical qualification | Profile 2 build passes with narrow margin; Profile 1 physical qualification retained | Recheck every size change and add Profile 2 physical history repetition |
+| ESP32-C3 IDF5 enabled build | Profile 2 physical qualification passes; normal image leaves 330,000 app-partition bytes free | Optional fork CI remains useful but is not part of the target's local conformance result |
 
 ## Final Review Closure Checklist
 
-Profile 1 cannot be declared complete until all of the following are true:
+A public profile cannot be declared complete until all of the following are
+true for the targets and status claimed:
 
 1. Every normative `MUST` and `MUST NOT` is represented in the conformance
    matrix and linked to an automated check, inspection, measurement, or

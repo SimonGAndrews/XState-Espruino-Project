@@ -1,11 +1,13 @@
 # Xstate-fsm-c Implementation Status
 
 - Last reviewed: 2026-10-21
-- Overall status: implementation and Profile 1 evidence closure complete; all
-  704 applicable normative requirements have passing evidence, all four
-  physical target profiles are Conformance verified, and private native arena
-  Format Version 1 is frozen
-- Profile 1 milestone: M8 release readiness complete
+- Overall status: public Profile 2 created from the completed Profile 1 base
+  plus qualified shallow and deep history; Native Format Version 2 is frozen
+- Profile 1 milestone: M8 release readiness complete; all 704 applicable
+  normative requirements pass and all four physical target profiles remain
+  Profile 1 Conformance verified
+- Profile 2 milestone: Linux, original ESP32 IDF5, and ESP32-C3 IDF5 are
+  Conformance verified; Pico and MDBT42Q are Build verified
 - Implementation code status: M4 runtime plus final/completion behavior, full
   Profile 1 target forms, wildcard event lookup, v4 migration aliases, all
   Profile 1 context and assignment forms, complete transition-domain and
@@ -15,22 +17,23 @@
   instrumentation, enforced stack reserve, and physical flash/native callback,
   GPIO, timer-ingress, exact settled-baseline cleanup, shared-machine stress,
   event-serialization, maximum-depth product-profile, and production
-  allocation-pressure coverage
-- Current active gate: review the qualified shallow/deep history extension for
-  possible promotion into a later public profile
+  allocation-pressure coverage, and shallow/deep history with transactional
+  actor-owned restoration
+- Current active gate: repeat the Profile 2 history runtime qualification on
+  Pico and MDBT42Q when target access is next available
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
 inventory](../tests/test-inventory.md) is the consolidated record of completed
 evidence, target coverage, and remaining release-review work.
 
-## Experimental History-States Status
+## Public Profile 2 Status
 
-Shallow and deep history are isolated on the `experiment/xfsm-history` branches
-of this project and the Espruino implementation repository. They do not change the
-completed Profile 1 conformance claim or frozen Native Format Version 1.
+Shallow and deep history are accepted into public Profile 2 on the
+`feature/xfsm-profile2` branches of this project and the Espruino implementation
+repository. Profile 1 remains frozen without history.
 
-The experimental compiler, runtime, and private Native Format Version 2 are
+The Profile 2 compiler, runtime, and frozen private Native Format Version 2 are
 implemented. All 26 Linux JavaScript suites pass, including shallow and deep
 history semantic suites and diagnostics; 96 native checks pass with address
 and undefined-behaviour sanitizers; the static contract audit passes; and the
@@ -40,7 +43,7 @@ measurement records a 62-byte representative arena increase, 4 actor bytes per
 history owner, and no measured
 restore-time JsVar or coordinator-stack increase.
 
-The current experimental implementation removes the redundant compiler-only
+The current Profile 2 implementation removes the redundant compiler-only
 history-slot value from every state. On Linux, the representative base/history
 construction peaks are now 99/113 blocks instead of 101/120, and the matched
 shallow/deep fixture is now 140/140 instead of 147/147. History banks are also
@@ -75,9 +78,10 @@ optimization report](reports/2026-10-21-history-integration-optimization.md),
 and their exact-candidate physical and constrained-target closure is in the
 [history promotion rerun](reports/2026-10-21-history-promotion-rerun.md).
 
-The authoritative extension requirements and current case status are in the
-[history-states specification](extensions/history-states.md), with physical
-layout in [Native Format Version 2](native-format-v2.md).
+The normative entry point is the [Profile 2
+specification](specification-profile-2.md). Its history requirements and case
+status are in the [history-state specification](extensions/history-states.md),
+with physical layout in [Native Format Version 2](native-format-v2.md).
 
 ## Current Revisions And Locations
 
@@ -85,16 +89,18 @@ layout in [Native Format Version 2](native-format-v2.md).
 | --- | --- |
 | Specification repository | `SimonGAndrews/XState-Espruino-Project` |
 | Specification project path | `projects/Xstate-fsm-c/` |
-| Current specification version | `0.52` |
+| Current specification version | Profile 2 document version `1.0`; Profile 1 base version `0.52` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
-| Project branch | `experiment/xfsm-history` |
-| Project base for this evidence | `2778396b75821848e611303b120a555406a2e9c6` plus the promotion evidence in this working tree |
+| Project branch | `feature/xfsm-profile2` |
+| Project base for this evidence | `3250a5f` plus the Profile 2 promotion documents in this working tree |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Profile 1 branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
-| Experimental branch | [`experiment/xfsm-history`](https://github.com/SimonGAndrews/Espruino/tree/experiment/xfsm-history) |
+| Profile 2 branch | [`feature/xfsm-profile2`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2) |
+| Preserved experiment branch | [`experiment/xfsm-history`](https://github.com/SimonGAndrews/Espruino/tree/experiment/xfsm-history) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation candidate | `6f42145347d8f4018b2a1ec221b3834bf9561a24` |
+| Qualified implementation revision | `6f42145347d8f4018b2a1ec221b3834bf9561a24` |
+| Current public implementation | `83d2691db8ea15e63912bdbfff028e9d13666f86` (profile labels, documentation, and CI coverage only after the qualified revision) |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -420,20 +426,21 @@ These are specified review gates, not unresolved Profile 1 semantics:
 
 | Target | Current status | Latest evidence |
 | --- | --- | --- |
-| Linux Espruino | Build verified | [Post-M6 resource result](../tests/results/linux/2026-09-27-post-m6-resource-review.json) |
-| Espruino Pico | Conformance verified for current reduced product profile | [Physical qualification](../tests/results/pico/2026-09-29-m8-physical-qualification.json) |
-| MDBT42Q | Conformance verified for constrained Bluetooth product profile | [Physical qualification](../tests/results/mdbt42q/2026-09-29-m8-physical-qualification.json) |
-| Original ESP32 IDF5 | Conformance verified on the stock full-feature 70 KB profile | [M7.4 release-candidate result](../tests/results/esp32-xtensa/2026-09-28-m7-release-candidate.json) |
-| ESP32-C3 IDF5 | Conformance verified on the stock full-feature 70 KB profile | [C3-D release-candidate result](../tests/results/esp32-riscv/2026-09-28-m7-release-candidate.json) |
-| ESP32-S3 IDF5 | Not yet verified | Later expansion target; not required for Version 1 qualification |
+| Linux Espruino | Profile 2 Conformance verified | [Profile 2 conformance record](../tests/profile-2-conformance.md) |
+| Espruino Pico | Profile 2 Build verified; Profile 1 Conformance verified | [Profile 2 capacity result](../tests/results/pico/2026-10-21-history-capacity.json) |
+| MDBT42Q | Profile 2 Build verified; Profile 1 Conformance verified | [Profile 2 capacity result](../tests/results/mdbt42q/2026-10-21-history-capacity.json) |
+| Original ESP32 IDF5 | Profile 2 Conformance verified on the stock full-feature 70 KB profile | [Profile 2 promotion result](../tests/results/esp32-xtensa/2026-10-21-history-promotion-rerun.json) |
+| ESP32-C3 IDF5 | Profile 2 Conformance verified on the stock full-feature 70 KB profile | [Profile 2 promotion result](../tests/results/esp32-riscv/2026-10-21-history-promotion-rerun.json) |
+| ESP32-S3 IDF5 | Not yet verified | Later Profile 2 expansion target |
 
-Statuses have the meanings defined in the Profile 1 specification. A successful
-build alone can advance a target only to `Build verified`.
+Statuses retain the meanings defined by the Profile 1 base. A successful build
+alone can advance a target only to `Build verified`.
 
 ## Status History
 
 | Date | Change |
 | --- | --- |
+| 2026-10-21 | Public Profile 2 created: the frozen Profile 1 contract is retained, qualified shallow/deep history is adopted, Native Format Version 2 is frozen, and `feature/xfsm-profile2` becomes the active project and implementation branch; Linux, original ESP32 and ESP32-C3 are Conformance verified, while Pico and MDBT42Q are Build verified pending physical history-runtime repetition |
 | 2026-10-21 | The exact optimized history candidate passed the final physical promotion rerun on stock original ESP32 and ESP32-C3 IDF5: shallow/deep semantics, diagnostics, save/reboot/reset lifecycle, private-format validation, resource measurement, and production timing pass; production firmware was restored; reduced Pico and constrained Bluetooth MDBT42Q builds also pass with 11,024 and 1,408 bytes free respectively, completing the technical promotion gate while retaining the MDBT42Q margin as a release constraint |
 | 2026-10-21 | History integration optimization completed: redundant per-state compiler slot metadata was removed, reducing representative history construction peaks by seven JsVar blocks; history-bank copying is now deferred until the first history write; the 0/1/8/32-owner scaling fixture, all 26 portable suites with zero GC residue, 96 sanitizer checks, the 198-function static audit, both pinned XState history runners, and original ESP32 and ESP32-C3 release cross-builds pass |
 | 2026-10-21 | Manual authoring check passed: simple shallow-history and nested deep-history configurations produced the expected states in the XFSM Espruino REPL and were accepted and rendered correctly by the VS Code XState extension; this is recorded as supplementary usability and tooling evidence |

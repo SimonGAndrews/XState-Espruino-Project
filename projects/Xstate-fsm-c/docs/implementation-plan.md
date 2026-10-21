@@ -2,20 +2,17 @@
 
 ## Status
 
-- Plan status: M0 evidence foundation and normative traceability, M6 behavior,
-  post-M6 resource review, original-ESP32 M7.1-M7.4, stock-profile ESP32
-  compiler-capacity optimization, ESP32-C3 C3-A through C3-D qualification,
-  and the first four grouped M8 public/configuration, runtime-contract,
-  structural-contract, and compatibility closure packages complete
-- Current milestone: M7 remaining product-profile qualification and M8
-  conformance-case closure and release readiness
-- Normative authority: [Profile 1 specification](specification.md)
-- Physical format: [Native Format Version 1](native-format-v1.md)
+- Plan status: Profile 1 milestones and evidence closure complete; Profile 2
+  history implementation, optimization, qualification, and promotion complete
+- Current milestone: Profile 2 physical history-runtime repetition on Pico and
+  MDBT42Q
+- Normative authority: [Profile 2 specification](specification-profile-2.md)
+- Physical format: [Native Format Version 2](native-format-v2.md)
 - Living progress: [Implementation Status](implementation-status.md)
 
-This plan defines implementation order, deliverables, and review gates. It does
-not change Profile 1 behaviour. A conflict is resolved in favour of the
-specification.
+This plan records the completed Profile 1 implementation sequence and the
+current Profile 2 follow-up gate. It does not change specified behaviour. A
+conflict is resolved in favour of the applicable profile specification.
 
 ## Repository Ownership
 
@@ -24,7 +21,7 @@ Xstate-fsm-c uses two repositories with no duplicated implementation source:
 | Responsibility | Repository and location |
 | --- | --- |
 | Specification, plan, status, conformance cases, differential runners, results, and reports | `XState-Espruino-Project/projects/Xstate-fsm-c/` |
-| Canonical C engine, Espruino wrapper, build integration, and upstream-suitable implementation tests | [`SimonGAndrews/Espruino`, branch `feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1), under `libs/xfsm/` and the necessary Espruino build files |
+| Canonical C engine, Espruino wrapper, build integration, and upstream-suitable implementation tests | [`SimonGAndrews/Espruino`, branch `feature/xfsm-profile2`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2), under `libs/xfsm/` and the necessary Espruino build files |
 
 The current local implementation clone is
 `/home/simon/Espruino-XFSM-Profile1`. Machine-specific paths are recorded in
@@ -41,7 +38,7 @@ The current local implementation clone is
 4. Keep persistent ownership visible to Espruino's garbage collector and keep
    persistent native records pointer-free.
 5. Do not copy behaviour from FSMPlus, XState, SCXML, or an earlier XFSM
-   implementation without reviewing it against Profile 1.
+   implementation without reviewing it against the current public profile.
 6. Record an evidence-driven specification or native-format revision rather
    than silently deviating in code.
 7. Keep implementation commits small enough to associate with conformance

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "docs/specification.md",
-  "sourceSha256": "281599f6b62b45bf9140aa0e5a7b104047f066e4eb3dbba32eb21ccf191e7f2c",
+  "sourceSha256": "4a5a91283eda4c2c26cd06f3bc9ba5e80bdebe41aed7e3c33e5ed57c47299584",
   "extractionRule": "MUST and MUST NOT occurrences outside fenced code in normative sections",
   "requirementCount": 707,
   "requirements": [

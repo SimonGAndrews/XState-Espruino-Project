@@ -71,8 +71,10 @@ its own compatibility authority and decides which shared cases it adopts.
 - [Background and evolution](docs/governance/background.md)
 - [Testing strategy and ownership](docs/governance/testing-strategy.md)
 - [FSMPlus status and backlog](docs/governance/fsmPlus-status-01.md)
-- [Xstate-fsm-c Profile 1 specification](projects/Xstate-fsm-c/docs/specification.md)
-- [Xstate-fsm-c frozen private native format](projects/Xstate-fsm-c/docs/native-format-v1.md)
+- [Xstate-fsm-c Profile 2 specification](projects/Xstate-fsm-c/docs/specification-profile-2.md)
+- [Xstate-fsm-c frozen Profile 1 specification](projects/Xstate-fsm-c/docs/specification.md)
+- [Xstate-fsm-c frozen Profile 2 native format](projects/Xstate-fsm-c/docs/native-format-v2.md)
+- [Xstate-fsm-c frozen Profile 1 native format](projects/Xstate-fsm-c/docs/native-format-v1.md)
 - [Xstate-fsm-c implementation status](projects/Xstate-fsm-c/docs/implementation-status.md)
 - [Xstate-fsm-c implementation plan](projects/Xstate-fsm-c/docs/implementation-plan.md)
 - [Xstate-fsm-c build guide](projects/Xstate-fsm-c/docs/building.md)
@@ -83,20 +85,14 @@ its own compatibility authority and decides which shared cases it adopts.
 
 ## Status
 
-FSMPlus is the current working JavaScript hierarchical engine. Xstate-fsm-c is
-the active development focus: its Profile 1 specification is an implementation
-candidate, its complete M6 behaviour passes the applicable Linux suites, its
-native-format regression remains sanitizer-clean, and the post-M6 whole-build
-resource review passes on Linux. The stock full-feature 70 KB original ESP32
-IDF5 and ESP32-C3 IDF5 profiles are Conformance verified by their physical
-release-candidate suites.
-M0 normative traceability and the first four M8 grouped closure packages are
-complete; MDBT42Q physical qualification closes the final target/resource
-cases, and current work is M8 release readiness. Stage 1
-remains the flat embedded baseline.
-Current matched builds also establish viable reduced product profiles for the
-Pico and Bluetooth-capable MDBT42Q. Both are Conformance verified after their
-physical ARM qualification suites.
+FSMPlus is the working JavaScript hierarchical engine. Xstate-fsm-c is the
+active development focus: public Profile 2 retains the completed and frozen
+Profile 1 contract and adds qualified shallow and deep history states. Native
+Format Version 2 is frozen. Linux, original ESP32 IDF5, and ESP32-C3 IDF5 are
+Profile 2 Conformance verified. The reduced Pico and constrained Bluetooth
+MDBT42Q profiles are Profile 2 Build verified pending physical repetition of
+the history runtime cases; both retain their earlier Profile 1 Conformance
+verified status. Stage 1 remains the flat embedded baseline.
 
 The [current project context](docs/project-context.md) identifies the authority
 and compatibility references for each direction.

@@ -52,7 +52,7 @@ Specification, planning, conformance definitions, differential tooling, and
 reviewed evidence are contributed to this umbrella repository. Canonical C
 engine, wrapper, Espruino build integration, and build-local test changes are
 contributed to the
-[`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1)
+[`SimonGAndrews/Espruino` `feature/xfsm-profile2` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2)
 under `libs/xfsm/` and the necessary host build files.
 
 Implementation contributions must also follow Espruino's repository

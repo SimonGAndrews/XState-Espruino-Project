@@ -2,15 +2,15 @@
 
 ## Status
 
-- Status: Experimental shallow- and deep-history physical layout
+- Status: Frozen private physical layout for Profile 2
 - Arena format version: 2
 - Public API status: Private implementation format
-- Applicable branch: `experiment/xfsm-history`
+- Applicable branch: `feature/xfsm-profile2`
 
-This appendix defines the private native-format changes used by the
-[history-states extension](extensions/history-states.md). It is normative
-for an implementation claiming conformance to that extension. It does not
-change or replace the frozen [Profile 1 Format Version 1](native-format-v1.md).
+This appendix defines the private native-format changes used by
+[Profile 2 history states](extensions/history-states.md). It is normative for
+an implementation claiming Profile 2 conformance. It does not change or
+replace the frozen [Profile 1 Format Version 1](native-format-v1.md).
 
 Except for the changes below, Version 2 uses the Version 1 types, record
 layouts, byte-order rules, alignment, string pool, retained JavaScript values,
@@ -197,5 +197,5 @@ range, index, and reserved values.
 Shallow and deep history have completed their host and physical regression,
 resource, timing, save/restoration, and acceptance gates. The native suite
 passes 96 sanitizer-backed checks, including deep-mode flag and fallback
-corruption cases. Format Version 2 remains experimental with the extension
-until a separate decision promotes the extension into a public profile.
+corruption cases. Format Version 2 is frozen for public Profile 2. An
+incompatible physical change requires a later format version.

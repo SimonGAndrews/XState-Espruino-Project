@@ -1,7 +1,7 @@
 # Current Project Context
 
-- Last reviewed: 2026-09-29
-- Current development focus: Xstate-fsm-c Profile 1
+- Last reviewed: 2026-10-21
+- Current development focus: Xstate-fsm-c Profile 2
 
 This document is the umbrella repository's current navigation and authority
 guide. It does not define state-machine behaviour; each implementation
@@ -19,7 +19,7 @@ or obsolescence.
 | --- | --- | --- | --- |
 | [Stage 1: `xstate-fsm-espruino`](../projects/xstate-fsm-espruino/) | Compact flat FSM port and embedded baseline | Its submodule README, source, and tests | The `@xstate/fsm` and XState v4-era behaviour from which it was adapted |
 | [Stage 2: `xstate-fsmPlus`](../projects/xstate-fsmPlus/) | Working hierarchical JavaScript engine and parallel deployable option | FSMPlus source, tests, [status](governance/fsmPlus-status-01.md), and applicable ADRs | XState v4 and SCXML evidence as recorded by the FSMPlus documents |
-| [Stage 3: `Xstate-fsm-c`](../projects/Xstate-fsm-c/), public module `XFSM` | Native C hierarchical engine; current active development focus | [Profile 1 specification](../projects/Xstate-fsm-c/docs/specification.md), its conformance corpus, and the frozen private [native format](../projects/Xstate-fsm-c/docs/native-format-v1.md) | XState v5.33.2 primary differential reference and XState v4.38.3 secondary reference, as specified by Profile 1 |
+| [Stage 3: `Xstate-fsm-c`](../projects/Xstate-fsm-c/), public module `XFSM` | Native C hierarchical engine; current active development focus | [Profile 2 specification](../projects/Xstate-fsm-c/docs/specification-profile-2.md), its incorporated [Profile 1 base](../projects/Xstate-fsm-c/docs/specification.md) and history requirements, and frozen private [Native Format Version 2](../projects/Xstate-fsm-c/docs/native-format-v2.md) | XState v5.33.2 primary differential reference and XState v4.38.3 secondary reference, as specified by Profile 2 and its base |
 
 A reference that is authoritative or useful for one direction does not
 automatically govern another. Shared examples, traces, and tools may be reused
@@ -27,23 +27,19 @@ only after review against the receiving project's contract.
 
 ## Current Focus
 
-Xstate-fsm-c Profile 1 is the active specification-led development effort. Its
-design is an implementation candidate, no unresolved Profile 1 design questions
-are recorded, and all seven M6 behavioural batches pass their applicable Linux
-exit suites. The post-M6 whole-build resource review is complete on Linux and
-the original ESP32 IDF5; current resource decisions and constrained-target
-work are recorded in the implementation status.
+Xstate-fsm-c Profile 2 is the active specification-led development effort. It
+retains the completed Profile 1 contract and adds the qualified shallow- and
+deep-history requirements. Native Format Version 2 is frozen. Linux, original
+ESP32 IDF5, and ESP32-C3 IDF5 are Profile 2 Conformance verified; Pico and
+MDBT42Q are Profile 2 Build verified pending physical history-runtime
+repetition. Current resource decisions and target status are recorded in the
+implementation status.
 Current revisions, progress, and next tasks are recorded in its
 [implementation status](../projects/Xstate-fsm-c/docs/implementation-status.md).
 
-M0 normative traceability and the first four grouped M8 closure packages are
-complete. MDBT42Q physical qualification closes the final target/resource
-cases; the current implementation step is M8 release readiness. The stock
-full-feature 70 KB original ESP32 and ESP32-C3 profiles
-are Conformance verified. The reduced Espruino Pico profile also fits and is
-Conformance verified after physical ARM execution. The Bluetooth-capable
-MDBT42Q profile is also Conformance verified after physical ARM execution. The repeatable
-original-ESP32 procedure is recorded in the
+Profile 1 M0 traceability, grouped M8 closure, and four-target physical
+qualification remain complete. The repeatable original-ESP32 procedure is
+recorded in the
 [device-testing guide](../projects/Xstate-fsm-c/docs/esp32-device-testing.md),
 and the completed measurements are interpreted in the [post-M6 resource
 report](../projects/Xstate-fsm-c/docs/reports/2026-09-27-post-m6-resource-review.md)
@@ -54,7 +50,7 @@ and MDBT42Q details in its [physical qualification
 report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-mdbt42q-physical-qualification.md).
 
 Canonical implementation code is developed under `libs/xfsm/` in the
-[`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
+[`SimonGAndrews/Espruino` `feature/xfsm-profile2` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2).
 The umbrella repository owns the specification, conformance definitions, and
 reviewed evidence rather than a duplicate implementation tree.
 
@@ -72,19 +68,20 @@ are distinct:
 
 ### Xstate-fsm-c
 
-The [Profile 1 specification](../projects/Xstate-fsm-c/docs/specification.md)
-is the normative behavioural and public-interface authority. In particular:
+The [Profile 2 specification](../projects/Xstate-fsm-c/docs/specification-profile-2.md)
+and its incorporated Profile 1 and history requirements are the normative
+behavioural and public-interface authority. In particular:
 
 1. A conflict with an expected conformance result is resolved in favour of the
    specification.
-2. The [native-format document](../projects/Xstate-fsm-c/docs/native-format-v1.md)
-   is normative for frozen private arena Format Version 1. An incompatible
+2. The [native-format document](../projects/Xstate-fsm-c/docs/native-format-v2.md)
+   is normative for frozen private arena Format Version 2. An incompatible
    physical change requires a version increment.
 3. Stately exports, pinned Node XState runs, SCXML, existing ADRs, FSMPlus
    traces, Stage 1 behaviour, and archived sources are evidence. They do not
-   silently add or change a Profile 1 requirement.
+   silently add or change a Profile 2 or incorporated Profile 1 requirement.
 4. An intentional difference within a supported feature belongs in the
-   specification's compatibility-difference register.
+   applicable Profile 2 or incorporated Profile 1 compatibility register.
 
 ### FSMPlus
 
@@ -107,7 +104,8 @@ replace its own source, documentation, licence, or repository history.
   evolution.
 - [Testing strategy](governance/testing-strategy.md) defines shared
   scenario-driven principles. Its XState v4 truth-runner direction applies to
-  Stage 1 and FSMPlus; Xstate-fsm-c conformance is governed by Profile 1.
+  Stage 1 and FSMPlus; current Xstate-fsm-c conformance is governed by Profile
+  2.
 - [ADRs](decisions/README.md) record earlier architectural decisions and their
   scope.
 - Root `examples/` are shared evidence, not automatically normative cases for

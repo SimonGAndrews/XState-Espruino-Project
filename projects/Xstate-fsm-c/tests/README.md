@@ -1,8 +1,9 @@
 # Tests
 
-This directory owns the Profile 1 conformance definitions, differential
-runners, expected traces, and reviewed result records defined by the
-[specification](../docs/specification.md). Start with the [test
+This directory owns the Profile 1 base and Profile 2 addition conformance
+definitions, differential runners, expected traces, and reviewed result
+records. Start with the [Profile 2 conformance
+record](profile-2-conformance.md), then use the [test
 inventory](test-inventory.md) for completed evidence and release-maintenance
 work, then use the [conformance matrix](conformance-matrix.md) for requirement
 traceability.
@@ -17,7 +18,7 @@ Compatibility provenance, pins, adaptations and exclusions are checked with:
 python3 projects/Xstate-fsm-c/tests/audit_compatibility_governance.py
 ```
 
-The suite will distinguish normative Profile 1 cases, pinned Node XState
+The suite distinguishes normative Profile 1 and Profile 2 cases, pinned Node XState
 differential cases, intentional compatibility differences, native-format and
 fault-injection cases, and legacy evidence. Portable behaviour cases emit the
 specified newline-delimited JSON trace and use reviewed expected results.
@@ -26,7 +27,7 @@ Linux Espruino is the complete reference-test host. Espruino Pico, MDBT42Q,
 ESP32-C3, and one Xtensa ESP32 target provide the initial physical
 qualification matrix. Existing umbrella `examples/`, FSMPlus traces, and
 XState v4.38.3 results remain evidence until individually reviewed and adopted
-as Profile 1 cases.
+as current-profile cases.
 
 Upstream-suitable C unit tests and tests coupled to Espruino's build tree live
 with the canonical implementation under `libs/xfsm/` in the Espruino feature

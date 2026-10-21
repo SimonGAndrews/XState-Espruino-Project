@@ -5,7 +5,7 @@
 - Last reviewed: 2026-09-27
 - XFSM target: original ESP32 using Espruino `ESP32_IDF5`
 - Verified device: ESP32-D0WD-V3 revision 3.1, 4 MB flash
-- Verified implementation branch: `feature/xfsm-profile1`
+- Verified implementation branch: `feature/xfsm-profile2`
 
 This is the Xstate-fsm-c procedure for building, flashing, and testing a
 locally connected original ESP32 over USB-UART. It is adapted from the local

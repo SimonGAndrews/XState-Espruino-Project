@@ -2,14 +2,14 @@
 
 ## Document Status
 
-- Status: Profile 1 implementation candidate
+- Status: Frozen public Profile 1 baseline
 - Version: 0.52
-- Implementation status: M6 behaviour and selected M7 original-ESP32 and
-  ESP32-C3 qualification evidence recorded; remaining target and release-
-  candidate evidence remains required
+- Implementation status: Complete; all applicable requirements have passing
+  evidence and all four selected physical target profiles are Conformance
+  verified
 
-This document is the normative implementation candidate for Xstate-fsm-c
-Profile 1. Only requirements stated explicitly in this document are accepted.
+This document is the frozen normative baseline for Xstate-fsm-c Profile 1.
+Only requirements stated explicitly in this document are accepted.
 The hierarchy and microstep limits remain subject to their explicitly
 identified resource-review gates. Native arena Format Version 1 is frozen;
 an incompatible physical change requires a format-version increment.

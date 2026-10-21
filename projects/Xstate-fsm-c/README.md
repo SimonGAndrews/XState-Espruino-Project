@@ -11,33 +11,19 @@ direction relates to the Stage 1 and FSMPlus projects.
 
 ## Status
 
-The Profile 1 specification is an implementation candidate. All seven M6
-behavioural batches pass their applicable Linux exit suites, and the post-M6
-whole-build resource review passes on Linux and a physical original ESP32 IDF5
-target. The supported hierarchical subset compiles transactionally
-into the native arena and executes through the actor lifecycle, dispatch,
-actions, ordered assignment, stable snapshots, subscriptions, controlled
-stop, and callback-fault paths. The specification defines the
-supported feature scope, XState compatibility direction, native indexed arena,
-actor and context ownership, transition and action semantics, diagnostics,
-Espruino build integration, target matrix, resource measurements, and
-conformance strategy.
+Public Profile 2 is the current XFSM profile. It retains the completed Profile
+1 contract and adds one shallow- or deep-history node per compound owner.
+Profile 1 and private Native Format Version 1 remain frozen; Profile 2 uses
+frozen private Native Format Version 2.
 
-M0 normative traceability is complete. The first four grouped M8 closure
-packages pass nine canonical traces and close public/configuration,
-runtime-contract, diagnostics, native-format, host-boundary, and compatibility
-review. MDBT42Q physical qualification closes the final two target/resource
-cases; current work is M8 release readiness. The stock
-full-feature 70 KB original ESP32 and ESP32-C3 profiles and the reduced Pico
-profile are Conformance
-verified after matched builds, portable and target-specific runtime suites, deterministic allocation faults,
-maximum-depth execution, cleanup, save/restoration, native/flash callback and
-timer integration, and combined XFSM/BLE/WiFi/TLS service tests. Private arena
-Format Version 1 is frozen; the hierarchy and microstep limits retain their
-separate resource-review status. Current matched builds establish viable
-reduced product profiles for Pico and Bluetooth-capable MDBT42Q. Both
-constrained ARM profiles have completed physical qualification and are
-Conformance verified.
+The exact Profile 2 implementation passes the complete Linux history and base
+regression, pinned XState 5.33.2 comparisons, 96 sanitizer-backed native
+checks, and physical production and instrumented reruns on original ESP32 IDF5
+and ESP32-C3 IDF5. Those three environments are Profile 2 Conformance
+verified. The reduced Pico and constrained Bluetooth MDBT42Q profiles build
+successfully and are Profile 2 Build verified pending physical repetition of
+the history runtime cases. Their completed Profile 1 Conformance verified
+status remains valid.
 
 Current work, revisions, and next tasks are recorded in the
 [implementation status](docs/implementation-status.md). The
@@ -45,21 +31,20 @@ Current work, revisions, and next tasks are recorded in the
 review gates, and the [build guide](docs/building.md) records reproducible
 commands and development locations.
 
-## Experimental Extensions
+## Public Profiles
 
-Shallow and deep history states are implemented and qualified separately on
-the `experiment/xfsm-history` branches of this repository and the Espruino
-implementation repository. The [extension specification](docs/extensions/history-states.md)
-defines the proposed behaviour as a delta to Profile 1 and links the pinned
-XState, host, and physical evidence. It does not change the completed Profile
-1 scope or conformance status.
+The [Profile 2 specification](docs/specification-profile-2.md) is the current
+normative entry point. It incorporates the frozen
+[Profile 1 specification](docs/specification.md) and the qualified
+[history-state requirements](docs/extensions/history-states.md). Profile 1
+remains available as the smaller public baseline without history.
 
 ## Code Development
 
-Canonical Profile 1 implementation code is retained in the
-[`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
-Experimental history-state development uses the derived
-`experiment/xfsm-history` branch. The current local clone is
+Canonical Profile 2 implementation code is developed in the
+[`SimonGAndrews/Espruino` `feature/xfsm-profile2` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2).
+Profile 1 remains on `feature/xfsm-profile1`, and the qualification history is
+preserved on `experiment/xfsm-history`. The current local clone is
 `/home/simon/Espruino-XFSM-Profile1`, and the canonical library location is
 `libs/xfsm/`.
 
@@ -85,15 +70,16 @@ relevant behavior and constraints.
 
 ## Project Layout
 
-- [docs/specification.md](docs/specification.md) - Profile 1 normative
-  implementation candidate
+- [docs/specification-profile-2.md](docs/specification-profile-2.md) - current
+  public Profile 2 normative entry point
+- [docs/specification.md](docs/specification.md) - frozen Profile 1 normative
+  base
 - [docs/native-format-v1.md](docs/native-format-v1.md) - frozen private native
   arena and actor layout
-- [docs/native-format-v2.md](docs/native-format-v2.md) - experimental history-
-  state arena and actor-layout delta
+- [docs/native-format-v2.md](docs/native-format-v2.md) - frozen Profile 2
+  history-state arena and actor layout
 - [docs/extensions/history-states.md](docs/extensions/history-states.md) -
-  experimental shallow- and deep-history requirements and compatibility
-  evidence
+  normative Profile 2 shallow- and deep-history requirements
 - [docs/memory-ownership.md](docs/memory-ownership.md) - conceptual memory
   regions, ownership and reachability
 - [docs/memory-lifetime.md](docs/memory-lifetime.md) - construction, execution,
@@ -111,7 +97,9 @@ relevant behavior and constraints.
   reports
 - [src/](src/) - implementation ownership and source-location note
 - [tests/normative-audit.md](tests/normative-audit.md) - requirement-level
-  Profile 1 traceability audit and current progress
+  frozen Profile 1 traceability audit
+- [tests/profile-2-conformance.md](tests/profile-2-conformance.md) - Profile 2
+  composition, added cases, evidence, and target status
 - [tests/](tests/) - conformance definitions, differential tooling, results,
   and evidence indexes
 

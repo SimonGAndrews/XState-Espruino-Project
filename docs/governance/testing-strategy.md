@@ -12,10 +12,10 @@ Its XState v4 truth-runner guidance was developed for Stage 1 and FSMPlus and
 does not define Xstate-fsm-c semantics or expected results.
 
 Xstate-fsm-c test authority, pinned reference versions, trace contract, and
-conformance layers are defined by its
-[Profile 1 specification](../../projects/Xstate-fsm-c/docs/specification.md).
-Shared scenarios become Profile 1 cases only after explicit review and
-adoption.
+conformance layers are defined by its current
+[Profile 2 specification](../../projects/Xstate-fsm-c/docs/specification-profile-2.md)
+and incorporated Profile 1 base. Shared scenarios become XFSM conformance
+cases only after explicit review and adoption.
 
 ## Document Roles (to avoid duplication)
 
@@ -24,7 +24,7 @@ adoption.
 - Canonical command/operator workflow: `tools/README_espruino.md`.
 - Canonical FSMPlus status and TODO backlog: `docs/governance/fsmPlus-status-01.md`.
 - Canonical Xstate-fsm-c behaviour and conformance:
-  `projects/Xstate-fsm-c/docs/specification.md`.
+  `projects/Xstate-fsm-c/docs/specification-profile-2.md`.
 - Supporting thread/handover operational notes: `docs/notes/espruino-test-workflow.md`.
 
 ## Testing Approach
@@ -75,9 +75,9 @@ Advantages of this approach:
   - `projects/<engine>/tests/test_log.md`
 - Stage 1 and FSMPlus tests may run against the XState v4 truth runner using the
   same inputs where possible.
-- Xstate-fsm-c maintains its Profile 1 suite under
+- Xstate-fsm-c maintains its profile suites under
   `projects/Xstate-fsm-c/tests/` and may adopt a shared scenario after review
-  against the Profile 1 specification.
+  against the current profile specification.
 
 ## Truth Runner For Stage 1 And FSMPlus (XState v4)
 
@@ -105,7 +105,7 @@ best bridge between existing flat semantics and the richer FSMPlus surface.
   for anomalies, but **XState v4 remains the reference truth** for the Stage 1
   and FSMPlus work covered by this section.
 - Xstate-fsm-c instead uses the pinned v5 primary and v4 secondary differential
-  references required by Profile 1.
+  references required by its current profile and frozen base.
 
 ## Issue Tracking: Ownership Model
 

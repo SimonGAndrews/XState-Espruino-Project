@@ -2,14 +2,15 @@
 
 ## Status
 
-- Build-document status: all seven M6 batches and the post-M6 whole-build
-  resource review are verified for their applicable scope; original ESP32
-  M7.4, ESP32-C3 C3-D, reduced-profile Pico, and constrained Bluetooth
-  MDBT42Q are Conformance verified
-- Profile 1 implementation branch: `feature/xfsm-profile1`
-- Experimental implementation branch: `experiment/xfsm-history`
+- Build-document status: Profile 2 production and measurement builds are
+  verified on original ESP32 and ESP32-C3; current reduced Pico and constrained
+  Bluetooth MDBT42Q Profile 2 capacity builds pass
+- Current implementation branch: `feature/xfsm-profile2`
+- Frozen Profile 1 branch: `feature/xfsm-profile1`
+- Preserved history experiment branch: `experiment/xfsm-history`
 - Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current committed implementation revision: `48d8d3e8e`
+- Current public implementation revision: `83d2691db`
+- Exact functionally qualified revision: `6f4214534`
 - Base source: official `espruino/Espruino` `master`
 
 This document records the reproducible two-repository build arrangement. Add a
@@ -28,7 +29,7 @@ revision.
 
 - Fork remote: `git@github.com:SimonGAndrews/Espruino.git`
 - Official upstream: `https://github.com/espruino/Espruino.git`
-- Branch: `feature/xfsm-profile1`
+- Branch: `feature/xfsm-profile2`
 - Current local clone: `/home/simon/Espruino-XFSM-Profile1`
 - Canonical library directory: `libs/xfsm/`
 
@@ -40,7 +41,7 @@ not copy them into `projects/Xstate-fsm-c/src/`.
 For a new clone:
 
 ```bash
-git clone --branch feature/xfsm-profile1 \
+git clone --branch feature/xfsm-profile2 \
   git@github.com:SimonGAndrews/Espruino.git Espruino-XFSM-Profile1
 cd Espruino-XFSM-Profile1
 git remote add upstream https://github.com/espruino/Espruino.git
@@ -327,7 +328,7 @@ The library must be selected through Espruino's normal optional-library
 mechanism. Target-specific board files may select `XFSM`, but must not contain
 engine semantics or duplicate its source list.
 
-The experimental shallow/deep-history qualification uses the same stock
+Profile 2 shallow/deep-history qualification uses the same stock
 full-feature ESP32 profiles. Build normal and temporary measurement images
 with:
 
@@ -371,19 +372,23 @@ make BOARD=PICO_R1_3 RELEASE=1 USE_XFSM=1 USE_JIT=0 USE_DEBUGGER=0 \
   SETDEFINES=<(printf '%s\n' 'DEFINES += -DNO_VECTOR_FONT=1') -j2
 ```
 
-At implementation revision `6ed09d5d2`, the enabled image is 314,792 bytes,
-adds 26,928 bytes (9.35%) to its matching 287,864-byte baseline, and passes the
-327,680-byte size gate with 12,888 bytes free. The stock board file was not
-changed. See the [constrained-target report](reports/2026-09-29-m8-constrained-target-builds.md)
-and [current build record](../tests/results/pico/2026-09-29-product-profile-build.json).
+At Profile 2 implementation revision `6f4214534`, the enabled image is 316,656
+bytes and passes the 327,680-byte size gate with 11,024 bytes free. The stock
+board file was not changed. See the [Profile 2 capacity
+result](../tests/results/pico/2026-10-21-history-capacity.json). The earlier
+matched Profile 1 comparison remains in the [constrained-target
+report](reports/2026-09-29-m8-constrained-target-builds.md).
 
-The same production image is physically qualified in the [Pico result](../tests/results/pico/2026-09-29-m8-physical-qualification.json).
-It passes 20 portable suites, nine canonical traces, direct and Storage-backed
+The Profile 1 production image is physically qualified in the [Pico
+result](../tests/results/pico/2026-09-29-m8-physical-qualification.json). It
+passes 20 portable suites, nine canonical traces, direct and Storage-backed
 maximum depth, allocation pressure and recovery, host callbacks, GPIO/timer
 integration, save/reboot/reset, cleanup, and the instrumented stack and timing
 measurements. The tested firmware was written at the Pico application address
 `0x08010000`; each write completed loader byte verification. Production
-firmware was restored after the `XFC_MEASURE=1 XFC_TEST=1` run.
+firmware was restored after the `XFC_MEASURE=1 XFC_TEST=1` run. Profile 2 is
+Build verified on Pico; its history runtime cases have not yet been repeated
+physically there.
 
 The current MDBT42Q build uses the target provisioning script, its pinned
 EspruinoBuildTools ARM GCC 13.2.1 archive, and the existing nRF5 SDK 12 tree.
@@ -405,21 +410,23 @@ make BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 \
 
 The selected profile retains Bluetooth, filesystem, graphics, network/HTTP,
 crypto/SHA-256, and NeoPixel while omitting JIT, debugger, tab completion,
-vector font, JavaScript-backed networking, and NFC. The enabled build adds
-27,104 bytes (9.52%) to its matched 284,840-byte baseline, passes the target
-size check with 3,296 bytes before reserved Storage, and produces a DFU ZIP.
-The stock board definition remains unchanged. Exact results and the preceding
-feature trade study are in the [constrained-target report](reports/2026-09-29-m8-constrained-target-builds.md)
-and [current build record](../tests/results/mdbt42q/2026-09-29-product-profile-build.json).
+vector font, JavaScript-backed networking, and NFC. At Profile 2 implementation
+revision `6f4214534`, the enabled build reports 313,832 code bytes, leaves
+1,408 bytes before reserved Storage, and produces a DFU ZIP. The stock board
+definition remains unchanged. The narrow margin must be rechecked after XFSM
+or upstream Espruino growth. See the [Profile 2 capacity
+result](../tests/results/mdbt42q/2026-10-21-history-capacity.json).
 
-The same production profile is physically qualified in the [MDBT42Q
+The Profile 1 production profile is physically qualified in the [MDBT42Q
 result](../tests/results/mdbt42q/2026-09-29-m8-physical-qualification.json).
 It passes 20 portable suites, nine canonical traces, direct and Storage-backed
 maximum depth, production and deterministic allocation faults, callbacks,
 GPIO/timer integration, exact cleanup, GC, save/reboot/reset, and instrumented
 stack and timing measurements. Large trace source is temporarily loaded from
 Storage on this 2,950-block target and erased after execution. Production
-firmware was restored after the `XFC_MEASURE=1 XFC_TEST=1` run.
+firmware was restored after the `XFC_MEASURE=1 XFC_TEST=1` run. Profile 2 is
+Build verified on MDBT42Q; its history runtime cases have not yet been repeated
+physically there.
 
 The original ESP32 comparison uses ESP-IDF 5.5.3 and the provisioned Xtensa
 GCC 14.2.0 toolchain. Both builds use the same implementation revision and
@@ -617,7 +624,7 @@ current XFSM JavaScript suites, the native-format sanitizer suite, and an
 XFSM-enabled `ESP32_IDF5` build. It selects `USE_XFSM=1` explicitly and does
 not add XFSM to a stock board definition. The ordinary firmware workflow uses
 the `**` branch pattern so pushes to slash-named branches such as
-`feature/xfsm-profile1` are not silently omitted.
+`feature/xfsm-profile2` are not silently omitted.
 
 This workflow is branch-development infrastructure. It can remain fork-local
 or be excluded from a future upstream implementation pull request without

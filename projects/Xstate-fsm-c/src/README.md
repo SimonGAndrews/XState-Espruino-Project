@@ -5,15 +5,16 @@ second copy of the Xstate-fsm-c implementation.
 
 The canonical native engine, Espruino wrapper, and build integration are
 developed under `libs/xfsm/` in the
-[`SimonGAndrews/Espruino` `feature/xfsm-profile1` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1).
+[`SimonGAndrews/Espruino` `feature/xfsm-profile2` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2).
 The current local implementation clone is `/home/simon/Espruino-XFSM-Profile1`;
 the optional-library shell and portable native-format foundation are committed
 there together with the M3 compiler, M4 actor runtime, and M5 measurement
 instrumentation.
 
 This umbrella repository retains the
-[Profile 1 specification](../docs/specification.md),
-[native format](../docs/native-format-v1.md),
+[Profile 2 specification](../docs/specification-profile-2.md), its frozen
+[Profile 1 base](../docs/specification.md),
+[native format](../docs/native-format-v2.md),
 [implementation plan](../docs/implementation-plan.md), conformance definitions,
 and reviewed evidence. Do not copy implementation source back into this
 directory; link compatible revisions of the two repositories in result
