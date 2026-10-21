@@ -1,0 +1,21 @@
+{
+  "kind": "xfsm-history-constrained-target-capacity",
+  "date": "2026-10-21",
+  "implementationRevision": "6f42145347d8f4018b2a1ec221b3834bf9561a24",
+  "target": "MDBT42Q",
+  "board": "MDBT42Q",
+  "profile": "Constrained Bluetooth profile without JIT, debugger, tab completion, vector font, JavaScript-backed networking, or NFC",
+  "buildFlags": "BOARD=MDBT42Q RELEASE=1 DFU_UPDATE_BUILD=1 USE_XFSM=1 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 USE_NFC=0 SETDEFINES=<NO_VECTOR_FONT> -j2",
+  "storageStart": "0x6c000",
+  "codeEnd": "0x6ba80",
+  "reportedCodeBytes": 313832,
+  "freeBytesBeforeStorage": 1408,
+  "previousQualifiedCodeBytes": 311944,
+  "changeSincePreviousQualifiedCandidateBytes": 1888,
+  "elfSha256": "d67bb6e14ca6a41f55017a2cc9d03bd66cd79041390ffbeae0d9f1d19cecafaf",
+  "dfuZipSha256": "4a44252226f96fbcf6d6af6a1e097a04ee3d51b46adf7b89a0f95423da3d922b",
+  "physicalRuntimeRerun": false,
+  "releaseConstraint": "The 1408-byte margin must be rechecked after any XFSM or upstream Espruino growth.",
+  "result": "pass",
+  "report": "../../../docs/reports/2026-10-21-history-promotion-rerun.md"
+}

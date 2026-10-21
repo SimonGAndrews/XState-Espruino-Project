@@ -48,32 +48,32 @@ prepared only when an operation first records history; unhandled, targetless,
 within-owner, and stop operations no longer copy or switch unchanged banks.
 
 Physical qualification passes on the stock full-feature original ESP32 and
-ESP32-C3 IDF5 targets. Both pass the target-sized history semantics,
-diagnostics, whole-interpreter save/restoration without replay, reset lifecycle,
-and production private-API validation. Their measured history deltas agree on
-62 arena bytes, 5 persistent machine blocks, 18 peak construction blocks, and
-4 actor bytes per history owner, with no additional restore-time temporary
-blocks or coordinator stack. The production images are 1,527,984 bytes on the
-original ESP32 and 1,718,160 bytes on the C3. Same-revision matched builds show
-that full XFSM adds 36,016 bytes (2.414%) and 39,920 bytes (2.379%)
-respectively. Comparison with the frozen Profile 1 candidates indicates that
-the history change itself adds about 0.18%; that smaller figure is informative
-rather than a same-revision feature delta.
+ESP32-C3 IDF5 targets. The final rerun used the exact optimized candidate and
+passed target-sized shallow/deep semantics, diagnostics, whole-interpreter
+save/restoration without replay, reset lifecycle, production private-API
+validation, resource measurement, and timing. Its production images are
+1,527,840 bytes on the original ESP32 and 1,718,000 bytes on the C3, leaving
+520,160 and 330,000 application-partition bytes respectively. Instrumentation
+measures 20 actor bytes, two restore-time temporary blocks, and matched
+shallow/deep construction peaks of 168 and 174 blocks on the two targets.
 
 Deep mode adds no arena bytes, retained JsVars, actor bytes, construction-peak
 blocks, or restore-time temporary JsVars relative to an otherwise identical
-shallow machine. Production images are 1,528,160 bytes on the original ESP32
-and 1,718,304 bytes on the C3, increases of 176 and 144 bytes over the shallow
-checkpoint. Exact deep restoration, nested owners, descendant fallback, final
-completion, fault rollback, save/reboot persistence, and physical timing pass
-on both architectures. Both boards were restored to production firmware after
-instrumentation.
+shallow machine. Exact deep restoration, nested owners, descendant fallback,
+final completion, fault rollback, save/reboot persistence, and physical timing
+pass on both architectures. Both boards were restored to production firmware
+after instrumentation. The current reduced Pico profile builds with 11,024
+bytes free. The constrained Bluetooth MDBT42Q profile builds with 1,408 bytes
+before Storage, which is a release constraint to recheck after any XFSM or
+upstream growth.
 
 The full records are in the [shallow-history qualification
 report](reports/2026-10-20-shallow-history-physical-qualification.md) and
 [deep-history qualification report](reports/2026-10-20-deep-history-qualification.md).
 The later integration changes are recorded in the [history integration
-optimization report](reports/2026-10-21-history-integration-optimization.md).
+optimization report](reports/2026-10-21-history-integration-optimization.md),
+and their exact-candidate physical and constrained-target closure is in the
+[history promotion rerun](reports/2026-10-21-history-promotion-rerun.md).
 
 The authoritative extension requirements and current case status are in the
 [history-states specification](extensions/history-states.md), with physical
@@ -88,13 +88,13 @@ layout in [Native Format Version 2](native-format-v2.md).
 | Current specification version | `0.52` |
 | Local specification clone | `/home/simon/XState-Espruino-Project` |
 | Project branch | `experiment/xfsm-history` |
-| Project base for this evidence | `aa7e835514d8abde1a2775d2ab5e93cd807cdb95` plus the optimization evidence in this working tree |
+| Project base for this evidence | `2778396b75821848e611303b120a555406a2e9c6` plus the promotion evidence in this working tree |
 | Implementation repository | [`SimonGAndrews/Espruino`](https://github.com/SimonGAndrews/Espruino) |
 | Profile 1 branch | [`feature/xfsm-profile1`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile1) |
 | Experimental branch | [`experiment/xfsm-history`](https://github.com/SimonGAndrews/Espruino/tree/experiment/xfsm-history) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
 | Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
-| Current implementation candidate | `4508ea9a0b910961fcc3bdf59f3fdce48a927d5e` |
+| Current implementation candidate | `6f42145347d8f4018b2a1ec221b3834bf9561a24` |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -434,6 +434,7 @@ build alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-10-21 | The exact optimized history candidate passed the final physical promotion rerun on stock original ESP32 and ESP32-C3 IDF5: shallow/deep semantics, diagnostics, save/reboot/reset lifecycle, private-format validation, resource measurement, and production timing pass; production firmware was restored; reduced Pico and constrained Bluetooth MDBT42Q builds also pass with 11,024 and 1,408 bytes free respectively, completing the technical promotion gate while retaining the MDBT42Q margin as a release constraint |
 | 2026-10-21 | History integration optimization completed: redundant per-state compiler slot metadata was removed, reducing representative history construction peaks by seven JsVar blocks; history-bank copying is now deferred until the first history write; the 0/1/8/32-owner scaling fixture, all 26 portable suites with zero GC residue, 96 sanitizer checks, the 198-function static audit, both pinned XState history runners, and original ESP32 and ESP32-C3 release cross-builds pass |
 | 2026-10-21 | Manual authoring check passed: simple shallow-history and nested deep-history configurations produced the expected states in the XFSM Espruino REPL and were accepted and rendered correctly by the VS Code XState extension; this is recorded as supplementary usability and tooling evidence |
 | 2026-10-20 | Deep history completed experimental qualification: pinned XState 5.33.2 reference behavior, 26 Linux JavaScript suites, 96 sanitizer-backed native checks, static audit, exact save/reboot restoration, reset cleanup, resource measurement, and timing passed on Linux, original ESP32 and ESP32-C3; deep mode adds no arena, actor, construction-peak or restore-time allocation over equivalent shallow history, while adding 176 bytes on original ESP32 and 144 bytes on ESP32-C3 |

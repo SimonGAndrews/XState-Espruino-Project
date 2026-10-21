@@ -1,0 +1,18 @@
+{
+  "kind": "xfsm-history-constrained-target-capacity",
+  "date": "2026-10-21",
+  "implementationRevision": "6f42145347d8f4018b2a1ec221b3834bf9561a24",
+  "target": "Espruino Pico",
+  "board": "PICO_R1_3",
+  "profile": "Reduced product profile without JIT, debugger, tab completion, vector font, or JavaScript-backed networking",
+  "buildFlags": "BOARD=PICO_R1_3 RELEASE=1 USE_XFSM=1 USE_JIT=0 USE_DEBUGGER=0 USE_TAB_COMPLETE=0 USE_NETWORK_JS=0 SETDEFINES=<NO_VECTOR_FONT> -j2",
+  "applicationRegionBytes": 327680,
+  "binaryBytes": 316656,
+  "freeBytes": 11024,
+  "previousQualifiedBinaryBytes": 314792,
+  "changeSincePreviousQualifiedCandidateBytes": 1864,
+  "binarySha256": "52269b86074e7fea35e4bbb8f0a7daedadc70e1d6fe7a269dda4fd2ca099db15",
+  "physicalRuntimeRerun": false,
+  "result": "pass",
+  "report": "../../../docs/reports/2026-10-21-history-promotion-rerun.md"
+}

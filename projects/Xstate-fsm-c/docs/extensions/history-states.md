@@ -2,8 +2,8 @@
 
 ## Status
 
-- Status: experimental; shallow and deep history qualified
-- Last reviewed: 2026-10-20
+- Status: experimental; technically qualified and ready for promotion review
+- Last reviewed: 2026-10-21
 - Project branch: `experiment/xfsm-history`
 - Implementation branch: `experiment/xfsm-history`
 - Compatibility base: XFSM Profile 1 plus this extension
@@ -351,6 +351,9 @@ record the Linux, original-ESP32, and ESP32-C3 procedures and measurements.
 The [history integration optimization report](../reports/2026-10-21-history-integration-optimization.md)
 records the subsequent compiler-workspace reduction, lazy transactional bank
 preparation, scaling fixture, and complete host regression.
+The [history promotion rerun](../reports/2026-10-21-history-promotion-rerun.md)
+records physical execution of that exact optimized candidate and its current
+Pico and MDBT42Q capacity checks.
 The deep-history report also records a manual authoring check in which the
 shallow and deep example configurations executed successfully through the
 XFSM Espruino REPL and were accepted and rendered by the VS Code XState
@@ -361,19 +364,23 @@ replace the automated conformance cases above.
 
 The shallow and deep compiler, runtime, Version 2 layout, Linux behaviour, and
 physical behavior on the original ESP32 and ESP32-C3 are implemented and pass.
-Deep mode reuses the shallow record and actor slot: matched measurements show
-no arena, persistent JsVar, actor-byte, construction-peak, or runtime temporary
-JsVar increase. The production images use stock full-feature board profiles
-and leave 519,840 and 329,696 bytes respectively in their application
-partitions. Compared with the shallow checkpoint, deep support adds 176 bytes
-on the original ESP32 and 144 bytes on the C3.
+The exact optimized candidate was rebuilt and physically rerun on both boards;
+its stock full-feature production images are 1,527,840 and 1,718,000 bytes and
+leave 520,160 and 330,000 application-partition bytes respectively. Deep mode
+reuses the shallow record and actor slot: matched measurements show no arena,
+persistent JsVar, actor-byte, construction-peak, or runtime temporary JsVar
+increase.
 
 The measured deep restore used less coordinator stack than shallow restore in
 the representative nested machine. A 500-cycle production benchmark found no
-practical dispatch penalty: small differences changed direction between the
-two processor architectures. Promoting the combined extension into a later
-public profile remains a separate governance decision and requires its own
-compatibility and release review.
+practical dispatch penalty. The reduced Pico profile also builds with 11,024
+bytes free. The constrained Bluetooth MDBT42Q profile builds with 1,408 bytes
+before Storage; this narrow margin MUST be rechecked after any XFSM or upstream
+Espruino growth.
+
+The implementation, conformance, resource, and target-fit gates are complete.
+Promoting the combined extension into a later public profile remains a
+specification-governance and branch-integration decision.
 
 Any change to the behaviour in this document requires an updated pinned trace,
 extension test-register entry, and compatibility assessment before the change

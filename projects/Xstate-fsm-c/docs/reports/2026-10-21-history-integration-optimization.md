@@ -18,7 +18,7 @@ Machine-readable host evidence is in the [Linux result](../../tests/results/linu
 | Project base revision | `aa7e835514d8abde1a2775d2ab5e93cd807cdb95` |
 | Implementation branch | `experiment/xfsm-history` |
 | Compiler optimization | `5a044617a` |
-| Complete implementation | `4508ea9a0b910961fcc3bdf59f3fdce48a927d5e` |
+| Reviewed implementation | `6f42145347d8f4018b2a1ec221b3834bf9561a24` |
 | Native format | Experimental Version 2; physical layout unchanged |
 
 ## Compiler Workspace
@@ -103,6 +103,8 @@ complete implementation revision:
 | ESP32-C3 `ESP32C3_IDF5` | 1,718,000 bytes | 1,718,304 bytes | -304 bytes | 330,000 bytes (16%) |
 
 These builds verify compilation and layout on both Xtensa and RISC-V targets.
-They were not flashed in this optimization pass. Physical runtime
-qualification therefore remains the earlier history candidate's evidence
-until these optimizations receive a target rerun.
+The exact optimized candidate was subsequently flashed and passed the complete
+target-sized history, diagnostics, save/restoration, reset, measurement, and
+production-timing rerun on both boards. Normal production firmware was
+restored afterward. See the [history promotion
+rerun](2026-10-21-history-promotion-rerun.md).

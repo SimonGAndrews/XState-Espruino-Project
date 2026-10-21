@@ -1,0 +1,57 @@
+{
+  "kind": "xfsm-history-promotion-rerun",
+  "date": "2026-10-21",
+  "projectRevision": "2778396b75821848e611303b120a555406a2e9c6",
+  "implementationRevision": "6f42145347d8f4018b2a1ec221b3834bf9561a24",
+  "branch": "experiment/xfsm-history",
+  "target": {
+    "board": "ESP32_IDF5",
+    "chip": "ESP32-D0WD-V3 revision 3.1",
+    "architecture": "Xtensa LX6",
+    "port": "/dev/ttyUSB0"
+  },
+  "runtime": { "version": "2v29.459", "gitCommit": "6f4214534" },
+  "productionBuild": {
+    "flags": "BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1",
+    "imageBytes": 1527840,
+    "imageSha256": "0a056440e06aacf564841c18a3acc953009ce084bf7f70eb6fef9fd3485adac1",
+    "freeAppPartitionBytes": 520160,
+    "freeAppPartitionPercent": 25,
+    "flashHashesVerified": true,
+    "result": "pass"
+  },
+  "productionSuites": {
+    "test_history_embedded.js": "pass",
+    "test_deep_history.js": "pass",
+    "test_history_diagnostics.js": "pass",
+    "test_strict_validation_embedded.js": "pass",
+    "test_save_restore.js": "pass",
+    "test_reset_lifecycle.js": "pass"
+  },
+  "saveRestore": {
+    "interpreterBytes": 39284,
+    "compressedFlashBytes": 9759,
+    "exactDeepLeafRestored": true,
+    "restoredWithoutReplay": true,
+    "resetWithoutExit": true,
+    "savedImageErased": true
+  },
+  "measurementBuild": {
+    "flags": "BOARD=ESP32_IDF5 RELEASE=1 USE_XFSM=1 XFC_MEASURE=1",
+    "imageBytes": 1528864,
+    "shallow": { "arenaBytes": 660, "machinePersistentBlocks": 99, "constructionPeakBlocks": 168, "actorPersistentBlocks": 16, "actorBytes": 20, "restorePeakBlocks": 2, "restoreStackBytes": 304 },
+    "deep": { "arenaBytes": 660, "machinePersistentBlocks": 99, "constructionPeakBlocks": 168, "actorPersistentBlocks": 16, "actorBytes": 20, "restorePeakBlocks": 2, "restoreStackBytes": 224 },
+    "result": "pass"
+  },
+  "productionTiming": {
+    "iterations": 500,
+    "shallowMicrosecondsPerPair": 2655.284,
+    "deepMicrosecondsPerPair": 2649.858,
+    "deltaMicrosecondsPerPair": -5.426,
+    "result": "pass"
+  },
+  "productionRestored": true,
+  "privateTestApisAbsentAfterRestore": true,
+  "result": "pass",
+  "report": "../../../docs/reports/2026-10-21-history-promotion-rerun.md"
+}
