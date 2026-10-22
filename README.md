@@ -51,7 +51,9 @@ Project: [`projects/xstate-fsmPlus/`](projects/xstate-fsmPlus/)
 Specification-led native C hierarchical engine, exposed to Espruino JavaScript
 as the `XFSM` module. This is the current active development focus.
 
-Project: [`projects/Xstate-fsm-c/`](projects/Xstate-fsm-c/)
+Canonical project: [`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM)
+
+Migration-source snapshot: [`projects/Xstate-fsm-c/`](projects/Xstate-fsm-c/)
 
 ## Testing Approach
 
@@ -71,23 +73,20 @@ its own compatibility authority and decides which shared cases it adopts.
 - [Background and evolution](docs/governance/background.md)
 - [Testing strategy and ownership](docs/governance/testing-strategy.md)
 - [FSMPlus status and backlog](docs/governance/fsmPlus-status-01.md)
-- [Xstate-fsm-c Profile 2 specification](projects/Xstate-fsm-c/docs/specification-profile-2.md)
-- [Xstate-fsm-c frozen Profile 1 specification](projects/Xstate-fsm-c/docs/specification.md)
-- [Xstate-fsm-c frozen Profile 2 native format](projects/Xstate-fsm-c/docs/native-format-v2.md)
-- [Xstate-fsm-c frozen Profile 1 native format](projects/Xstate-fsm-c/docs/native-format-v1.md)
-- [Xstate-fsm-c implementation status](projects/Xstate-fsm-c/docs/implementation-status.md)
-- [Xstate-fsm-c implementation plan](projects/Xstate-fsm-c/docs/implementation-plan.md)
-- [Xstate-fsm-c build guide](projects/Xstate-fsm-c/docs/building.md)
-- [Xstate-fsm-c ESP32 device testing](projects/Xstate-fsm-c/docs/esp32-device-testing.md)
+- [XFSM Profile 2 specification](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/specification-profile-2.md)
+- [XFSM implementation status](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/implementation-status.md)
+- [XFSM build guide](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/building.md)
+- [XFSM Espruino integration workflow](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/espruino-integration.md)
 - [Espruino CLI test workflow](tools/README_espruino.md)
 - [Architectural decisions](docs/decisions/)
 - [References](docs/references/links.md)
 
 ## Status
 
-FSMPlus is the working JavaScript hierarchical engine. Xstate-fsm-c is the
-active development focus: public Profile 2 retains the completed and frozen
-Profile 1 contract and adds qualified shallow and deep history states. Native
+FSMPlus is the working JavaScript hierarchical engine. XFSM is the active
+development focus in its standalone repository: public Profile 2 retains the
+completed and frozen Profile 1 contract and adds qualified shallow and deep
+history states. Native
 Format Version 2 is frozen. Linux, original ESP32 IDF5, and ESP32-C3 IDF5 are
 Profile 2 Conformance verified. The reduced Pico and constrained Bluetooth
 MDBT42Q profiles are Profile 2 Build verified pending physical repetition of

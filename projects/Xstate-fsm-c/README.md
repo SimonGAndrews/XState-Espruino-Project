@@ -1,5 +1,11 @@
 # Xstate-fsm-c
 
+> **Migrated:** Current XFSM source, specifications, conformance records, and
+> project documentation are maintained in
+> [`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM).
+> This directory is the migration-source snapshot and should not receive new
+> XFSM development.
+
 Xstate-fsm-c is the Stage 3 native C state-machine project within the
 XState-Espruino-Project umbrella repository.
 
@@ -41,16 +47,18 @@ remains available as the smaller public baseline without history.
 
 ## Code Development
 
-Canonical Profile 2 implementation code is developed in the
+Canonical Profile 2 source and documentation are developed in
+[`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM).
+Its `xfsm/` tree is deployed in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile2` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2).
-Profile 1 remains on `feature/xfsm-profile1`, and the qualification history is
-preserved on `experiment/xfsm-history`. The current local clone is
-`/home/simon/Espruino-XFSM-Profile1`, and the canonical library location is
-`libs/xfsm/`.
+Profile 1 remains on the historical `feature/xfsm-profile1` integration branch,
+and qualification history is preserved on `experiment/xfsm-history`. The
+current standalone clone is `/home/simon/Espruino-XFSM`; the Espruino
+integration clone is `/home/simon/Espruino-XFSM-Profile1`.
 
-This umbrella repository owns the specification, planning, conformance cases,
-differential tooling, results, and reports. It does not keep a second copy of
-the C engine or Espruino wrapper.
+The standalone repository owns the specification, planning, implementation,
+conformance cases, differential tooling, results, and reports. This directory
+retains their state at migration for umbrella-project history only.
 
 ## Relationship to Existing Work
 

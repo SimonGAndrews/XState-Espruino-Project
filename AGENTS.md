@@ -6,29 +6,23 @@ repository contains three parallel implementation directions that arose through
 the project's evolution; do not assume that a decision for one direction is a
 requirement for another.
 
-The current active development focus is `projects/Xstate-fsm-c/`. For work on
-that project, read these documents in order:
+The current active development focus is XFSM, now maintained in the standalone
+[`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM)
+repository. Its current local clone is `/home/simon/Espruino-XFSM`; read its
+`AGENTS.md` before XFSM work. `projects/Xstate-fsm-c/` is the migration-source
+snapshot and must not receive new implementation, specification, test, or
+evidence work.
 
-1. `projects/Xstate-fsm-c/README.md`
-2. `projects/Xstate-fsm-c/docs/specification-profile-2.md`
-3. `projects/Xstate-fsm-c/docs/specification.md` for the frozen Profile 1 base
-4. `projects/Xstate-fsm-c/docs/extensions/history-states.md`
-5. `projects/Xstate-fsm-c/docs/native-format-v2.md` when physical layout is
-   relevant
-6. `projects/Xstate-fsm-c/docs/implementation-status.md` and
-   `projects/Xstate-fsm-c/docs/building.md` before implementation work
-7. `projects/Xstate-fsm-c/CONTRIBUTING.md` before adding implementation source
+Canonical XFSM implementation code is under `xfsm/` in the standalone
+repository. It is deployed unchanged under `libs/xfsm/` in the
+`feature/xfsm-profile2` branch of `SimonGAndrews/Espruino`. The current local
+Espruino integration clone is `/home/simon/Espruino-XFSM-Profile1`.
 
-Canonical Xstate-fsm-c implementation code is developed under `libs/xfsm/` in
-the `feature/xfsm-profile2` branch of `SimonGAndrews/Espruino`. The current
-local implementation clone is `/home/simon/Espruino-XFSM-Profile1`. Do not add
-a duplicate C engine or Espruino wrapper under
-`projects/Xstate-fsm-c/src/`; that directory is a source-location marker.
-
-The Profile 2 specification and its incorporated Profile 1 and history
-requirements are authoritative for current Xstate-fsm-c behaviour. Older ADRs,
-FSMPlus behaviour, shared examples, archived sources, and XState reference
-runs are evidence only unless the specification explicitly adopts them.
+The standalone repository's Profile 2 specification and its incorporated
+Profile 1 and history requirements are authoritative for current XFSM
+behaviour. Older ADRs, this migration snapshot, FSMPlus behaviour, shared
+examples, archived sources, and XState reference runs are evidence only unless
+the current specification explicitly adopts them.
 
 For Stage 1 or FSMPlus work, use that project's own README, implementation,
 tests, and status documents. Preserve the Git submodule and archive boundaries,

@@ -1,7 +1,7 @@
 # Current Project Context
 
-- Last reviewed: 2026-10-21
-- Current development focus: Xstate-fsm-c Profile 2
+- Last reviewed: 2026-10-22
+- Current development focus: standalone Espruino-XFSM Profile 2
 
 This document is the umbrella repository's current navigation and authority
 guide. It does not define state-machine behaviour; each implementation
@@ -19,7 +19,7 @@ or obsolescence.
 | --- | --- | --- | --- |
 | [Stage 1: `xstate-fsm-espruino`](../projects/xstate-fsm-espruino/) | Compact flat FSM port and embedded baseline | Its submodule README, source, and tests | The `@xstate/fsm` and XState v4-era behaviour from which it was adapted |
 | [Stage 2: `xstate-fsmPlus`](../projects/xstate-fsmPlus/) | Working hierarchical JavaScript engine and parallel deployable option | FSMPlus source, tests, [status](governance/fsmPlus-status-01.md), and applicable ADRs | XState v4 and SCXML evidence as recorded by the FSMPlus documents |
-| [Stage 3: `Xstate-fsm-c`](../projects/Xstate-fsm-c/), public module `XFSM` | Native C hierarchical engine; current active development focus | [Profile 2 specification](../projects/Xstate-fsm-c/docs/specification-profile-2.md), its incorporated [Profile 1 base](../projects/Xstate-fsm-c/docs/specification.md) and history requirements, and frozen private [Native Format Version 2](../projects/Xstate-fsm-c/docs/native-format-v2.md) | XState v5.33.2 primary differential reference and XState v4.38.3 secondary reference, as specified by Profile 2 and its base |
+| [Stage 3: `Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM), public module `XFSM` | Native C hierarchical engine; current active development focus | The standalone repository's Profile 2 specification, incorporated Profile 1 base and history requirements, and frozen private Native Format Version 2 | XState v5.33.2 primary differential reference and XState v4.38.3 secondary reference, as specified by Profile 2 and its base |
 
 A reference that is authoritative or useful for one direction does not
 automatically govern another. Shared examples, traces, and tools may be reused
@@ -27,15 +27,15 @@ only after review against the receiving project's contract.
 
 ## Current Focus
 
-Xstate-fsm-c Profile 2 is the active specification-led development effort. It
+Espruino-XFSM Profile 2 is the active specification-led development effort. It
 retains the completed Profile 1 contract and adds the qualified shallow- and
 deep-history requirements. Native Format Version 2 is frozen. Linux, original
 ESP32 IDF5, and ESP32-C3 IDF5 are Profile 2 Conformance verified; Pico and
 MDBT42Q are Profile 2 Build verified pending physical history-runtime
 repetition. Current resource decisions and target status are recorded in the
-implementation status.
-Current revisions, progress, and next tasks are recorded in its
-[implementation status](../projects/Xstate-fsm-c/docs/implementation-status.md).
+implementation status. Current revisions, progress, and next tasks are
+recorded in the standalone
+[implementation status](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/implementation-status.md).
 
 Profile 1 M0 traceability, grouped M8 closure, and four-target physical
 qualification remain complete. The repeatable original-ESP32 procedure is
@@ -49,10 +49,12 @@ report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-pico-physical-qualif
 and MDBT42Q details in its [physical qualification
 report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-mdbt42q-physical-qualification.md).
 
-Canonical implementation code is developed under `libs/xfsm/` in the
+Canonical source, specifications, conformance definitions, and reviewed
+evidence are maintained in `SimonGAndrews/Espruino-XFSM`. Its `xfsm/` tree is
+deployed unchanged under `libs/xfsm/` in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile2` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2).
-The umbrella repository owns the specification, conformance definitions, and
-reviewed evidence rather than a duplicate implementation tree.
+The umbrella project directory is retained as the migration-source snapshot,
+not a second active authority.
 
 The Xstate-fsm-c project name, public module name, and implementation identifiers
 are distinct:
@@ -68,13 +70,15 @@ are distinct:
 
 ### Xstate-fsm-c
 
-The [Profile 2 specification](../projects/Xstate-fsm-c/docs/specification-profile-2.md)
+The standalone
+[Profile 2 specification](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/specification-profile-2.md)
 and its incorporated Profile 1 and history requirements are the normative
 behavioural and public-interface authority. In particular:
 
 1. A conflict with an expected conformance result is resolved in favour of the
    specification.
-2. The [native-format document](../projects/Xstate-fsm-c/docs/native-format-v2.md)
+2. The standalone
+   [native-format document](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/native-format-v2.md)
    is normative for frozen private arena Format Version 2. An incompatible
    physical change requires a version increment.
 3. Stately exports, pinned Node XState runs, SCXML, existing ADRs, FSMPlus
