@@ -1,13 +1,14 @@
 # Xstate-fsm-c Implementation Status
 
-- Last reviewed: 2026-10-21
+- Last reviewed: 2026-10-22
 - Overall status: public Profile 2 created from the completed Profile 1 base
   plus qualified shallow and deep history; Native Format Version 2 is frozen
 - Profile 1 milestone: M8 release readiness complete; all 704 applicable
   normative requirements pass and all four physical target profiles remain
   Profile 1 Conformance verified
-- Profile 2 milestone: Linux, original ESP32 IDF5, and ESP32-C3 IDF5 are
-  Conformance verified; Pico and MDBT42Q are Build verified
+- Profile 2 milestone: qualified revision `6f4214534` is Conformance verified
+  on Linux, original ESP32 IDF5, and ESP32-C3 IDF5; Pico and MDBT42Q are Build
+  verified
 - Implementation code status: M4 runtime plus final/completion behavior, full
   Profile 1 target forms, wildcard event lookup, v4 migration aliases, all
   Profile 1 context and assignment forms, complete transition-domain and
@@ -19,8 +20,9 @@
   event-serialization, maximum-depth product-profile, and production
   allocation-pressure coverage, and shallow/deep history with transactional
   actor-owned restoration
-- Current active gate: repeat the Profile 2 history runtime qualification on
-  Pico and MDBT42Q when target access is next available
+- Current active gate: repeat target builds and physical qualification after
+  the 2026-10-22 upstream merge; then repeat the Profile 2 history runtime
+  qualification on Pico and MDBT42Q when target access is next available
 
 This is the living status dashboard. The stable milestone definitions and exit
 criteria are in the [Implementation Plan](implementation-plan.md). The [test
@@ -42,6 +44,13 @@ scenarios and five deep scenario groups. Linux
 measurement records a 62-byte representative arena increase, 4 actor bytes per
 history owner, and no measured
 restore-time JsVar or coordinator-stack increase.
+
+Current public revision `55f45513f` merges official upstream `master` at
+`3b5c8d97f` and adapts XFSM to the extended `jsvCompareString` API without
+changing comparison semantics. Its clean Linux build, all 26 portable suites,
+96 sanitizer-backed native checks, and static contract audit pass. Physical
+target and capacity results below remain tied to qualified revision
+`6f4214534` until repeated against the current public revision.
 
 The current Profile 2 implementation removes the redundant compiler-only
 history-slot value from every state. On Linux, the representative base/history
@@ -98,9 +107,9 @@ with physical layout in [Native Format Version 2](native-format-v2.md).
 | Profile 2 branch | [`feature/xfsm-profile2`](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2) |
 | Preserved experiment branch | [`experiment/xfsm-history`](https://github.com/SimonGAndrews/Espruino/tree/experiment/xfsm-history) |
 | Local implementation clone | `/home/simon/Espruino-XFSM-Profile1` |
-| Official upstream base | `espruino/Espruino` `master` at `84c190da7feb10a976d7ca422be39adaa10fb3c2` |
+| Official upstream base | `espruino/Espruino` `master` at `3b5c8d97fa0678ec1da49a322f5f1fa990374a7a` |
 | Qualified implementation revision | `6f42145347d8f4018b2a1ec221b3834bf9561a24` |
-| Current public implementation | `83d2691db8ea15e63912bdbfff028e9d13666f86` (profile labels, documentation, and CI coverage only after the qualified revision) |
+| Current public implementation | `55f45513f1e0024bd032d4bcc506c3573067fc57` (current-upstream merge and string-comparison API adaptation; Linux verified) |
 | Canonical source path | `libs/xfsm/` |
 | Original ESP32 procedure | [Device testing guide](esp32-device-testing.md) |
 
@@ -440,6 +449,7 @@ alone can advance a target only to `Build verified`.
 
 | Date | Change |
 | --- | --- |
+| 2026-10-22 | Merged 68 official upstream commits through `3b5c8d97f` into `feature/xfsm-profile2` without changing fork `master`; adapted the one XFSM call affected by the extended `jsvCompareString` API; clean Linux build, all 26 portable suites with zero GC residue, 96 native sanitizer checks, and the static contract audit pass at `55f45513f`; physical target evidence remains assigned to `6f4214534` pending repetition |
 | 2026-10-21 | Public Profile 2 created: the frozen Profile 1 contract is retained, qualified shallow/deep history is adopted, Native Format Version 2 is frozen, and `feature/xfsm-profile2` becomes the active project and implementation branch; Linux, original ESP32 and ESP32-C3 are Conformance verified, while Pico and MDBT42Q are Build verified pending physical history-runtime repetition |
 | 2026-10-21 | The exact optimized history candidate passed the final physical promotion rerun on stock original ESP32 and ESP32-C3 IDF5: shallow/deep semantics, diagnostics, save/reboot/reset lifecycle, private-format validation, resource measurement, and production timing pass; production firmware was restored; reduced Pico and constrained Bluetooth MDBT42Q builds also pass with 11,024 and 1,408 bytes free respectively, completing the technical promotion gate while retaining the MDBT42Q margin as a release constraint |
 | 2026-10-21 | History integration optimization completed: redundant per-state compiler slot metadata was removed, reducing representative history construction peaks by seven JsVar blocks; history-bank copying is now deferred until the first history write; the 0/1/8/32-owner scaling fixture, all 26 portable suites with zero GC residue, 96 sanitizer checks, the 198-function static audit, both pinned XState history runners, and original ESP32 and ESP32-C3 release cross-builds pass |

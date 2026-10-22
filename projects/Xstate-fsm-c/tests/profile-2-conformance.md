@@ -2,15 +2,16 @@
 
 ## Status
 
-- Status: Complete for the public Profile 2 implementation
+- Status: Complete for qualified Profile 2 revision `6f4214534`; current public
+  revision is Linux regression verified pending target repetition
 - Profile authority: [Profile 2 specification](../docs/specification-profile-2.md)
 - Profile 1 base: version 0.52, 704 applicable requirements passing and three
   requirements classified not applicable
 - Profile 2 addition: `HIST-001` through `HIST-018`
 - Qualified implementation: `6f42145347d8f4018b2a1ec221b3834bf9561a24`
-- Public implementation: `83d2691db8ea15e63912bdbfff028e9d13666f86`
-  (profile labels, documentation, and CI coverage only after the qualified
-  revision)
+- Public implementation: `55f45513f1e0024bd032d4bcc506c3573067fc57`
+  (official upstream through `3b5c8d97f`, plus the required string-comparison
+  API adaptation)
 
 ## Composition
 

@@ -8,8 +8,8 @@
 - Current implementation branch: `feature/xfsm-profile2`
 - Frozen Profile 1 branch: `feature/xfsm-profile1`
 - Preserved history experiment branch: `experiment/xfsm-history`
-- Current implementation base: `84c190da7feb10a976d7ca422be39adaa10fb3c2`
-- Current public implementation revision: `83d2691db`
+- Current implementation base: `3b5c8d97fa0678ec1da49a322f5f1fa990374a7a`
+- Current public implementation revision: `55f45513f`
 - Exact functionally qualified revision: `6f4214534`
 - Base source: official `espruino/Espruino` `master`
 
