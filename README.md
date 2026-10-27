@@ -86,12 +86,9 @@ its own compatibility authority and decides which shared cases it adopts.
 FSMPlus is the working JavaScript hierarchical engine. XFSM is the active
 development focus in its standalone repository: public Profile 2 retains the
 completed and frozen Profile 1 contract and adds qualified shallow and deep
-history states. Native
-Format Version 2 is frozen. Linux, original ESP32 IDF5, and ESP32-C3 IDF5 are
-Profile 2 Conformance verified. The reduced Pico and constrained Bluetooth
-MDBT42Q profiles are Profile 2 Build verified pending physical repetition of
-the history runtime cases; both retain their earlier Profile 1 Conformance
-verified status. Stage 1 remains the flat embedded baseline.
+history states. Native Format Version 2 is frozen. Linux, original ESP32 IDF5,
+ESP32-C3 IDF5, the reduced Pico, and the constrained Bluetooth MDBT42Q profile
+are Profile 2 Conformance verified. Stage 1 remains the flat embedded baseline.
 
 The [current project context](docs/project-context.md) identifies the authority
 and compatibility references for each direction.

@@ -1,6 +1,6 @@
 # Current Project Context
 
-- Last reviewed: 2026-10-22
+- Last reviewed: 2026-10-27
 - Current development focus: standalone Espruino-XFSM Profile 2
 
 This document is the umbrella repository's current navigation and authority
@@ -29,12 +29,11 @@ only after review against the receiving project's contract.
 
 Espruino-XFSM Profile 2 is the active specification-led development effort. It
 retains the completed Profile 1 contract and adds the qualified shallow- and
-deep-history requirements. Native Format Version 2 is frozen. Linux, original
-ESP32 IDF5, and ESP32-C3 IDF5 are Profile 2 Conformance verified; Pico and
-MDBT42Q are Profile 2 Build verified pending physical history-runtime
-repetition. Current resource decisions and target status are recorded in the
-implementation status. Current revisions, progress, and next tasks are
-recorded in the standalone
+deep-history requirements. Native Format Version 2 is frozen. Linux and all
+four specified physical target profiles are Profile 2 Conformance verified:
+original ESP32 IDF5, ESP32-C3 IDF5, reduced Pico, and constrained Bluetooth
+MDBT42Q. Current resource decisions, qualified revisions, progress, and next
+tasks are recorded in the standalone
 [implementation status](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/implementation-status.md).
 
 Profile 1 M0 traceability, grouped M8 closure, and four-target physical
