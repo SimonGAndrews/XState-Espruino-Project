@@ -49,11 +49,17 @@ Project: [`projects/xstate-fsmPlus/`](projects/xstate-fsmPlus/)
 ### Stage 3: Xstate-fsm-c (Native C Engine)
 
 Specification-led native C hierarchical engine, exposed to Espruino JavaScript
-as the `XFSM` module. This is the current active development focus.
+as the `XFSM` module. XFSM progressed through this umbrella project and is now
+the current active development focus in its own repository.
 
-Canonical project: [`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM)
+Current project and authority:
+[`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM)
 
-Migration-source snapshot: [`projects/Xstate-fsm-c/`](projects/Xstate-fsm-c/)
+Umbrella journey and relocation record:
+[`projects/Xstate-fsm-c/`](projects/Xstate-fsm-c/)
+
+Final complete umbrella snapshot:
+[`xfsm-umbrella-snapshot-final`](https://github.com/SimonGAndrews/XState-Espruino-Project/tree/xfsm-umbrella-snapshot-final/projects/Xstate-fsm-c)
 
 ## Testing Approach
 
@@ -97,8 +103,9 @@ and compatibility references for each direction.
 
 This umbrella repository contains projects, an upstream source archive, and a
 Git submodule with distinct licensing boundaries. See [LICENSING.md](LICENSING.md)
-for the path-to-licence map. Xstate-fsm-c is licensed separately under
-MPL-2.0.
+for the path-to-licence map. The retained Xstate-fsm-c record and tagged
+snapshot are licensed under MPL-2.0; the standalone Espruino-XFSM repository
+publishes its own path-based licensing map.
 
 ## Acknowledgements
 

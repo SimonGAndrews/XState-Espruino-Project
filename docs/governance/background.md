@@ -132,12 +132,23 @@ The native engine aims to:
 - offer faster event handling and lower overhead
 - provide stronger guarantees around memory and execution order
 
-XFSM Profile 1 begins with hierarchical machines composed of atomic and
-compound states. Its first implementation step is a vertical slice on Linux
-Espruino that exercises the native engine and wrapper, measures the provisional
-physical design, and establishes evidence before full implementation. The
-[Profile 1 specification](../../projects/Xstate-fsm-c/docs/specification.md)
-defines the current plan.
+XFSM was developed through a specification-led sequence. Profile 1 established
+the atomic and compound-state engine, actor API, validation, and target
+qualification. Profile 2 retained that contract and added shallow and deep
+history states. Native Format Version 2 is frozen, and the implementation has
+been verified on Linux Espruino and the four specified physical target
+profiles.
+
+Current XFSM development, specifications, tests, evidence, examples, and
+integration guidance now live in the standalone
+[`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM)
+repository. Its [Profile 2
+specification](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/specification-profile-2.md)
+defines the current behavioural contract. The umbrella repository retains an
+[XFSM history and relocation record](../../projects/Xstate-fsm-c/), while the
+complete pre-relocation project remains available at the
+[`xfsm-umbrella-snapshot-final`](https://github.com/SimonGAndrews/XState-Espruino-Project/tree/xfsm-umbrella-snapshot-final/projects/Xstate-fsm-c)
+tag.
 
 ---
 
@@ -166,8 +177,8 @@ references, and development lifecycles:
 
 Shared scenarios can provide behavioural and performance evidence across these
 directions, but each project decides which cases it adopts and which external
-reference defines the expected result. Xstate-fsm-c is the current active
-development focus.
+reference defines the expected result. XFSM remains the current active
+development focus and is maintained in its standalone repository.
 
 ---
 

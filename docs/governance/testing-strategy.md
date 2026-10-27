@@ -9,11 +9,11 @@ The emphasis is on **observable behaviour**, not exhaustive unit testing.
 
 This document defines shared scenario, trace, and issue-ownership principles.
 Its XState v4 truth-runner guidance was developed for Stage 1 and FSMPlus and
-does not define Xstate-fsm-c semantics or expected results.
+does not define XFSM semantics or expected results.
 
-Xstate-fsm-c test authority, pinned reference versions, trace contract, and
+XFSM test authority, pinned reference versions, trace contract, and
 conformance layers are defined by its current
-[Profile 2 specification](../../projects/Xstate-fsm-c/docs/specification-profile-2.md)
+[Profile 2 specification](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/specification-profile-2.md)
 and incorporated Profile 1 base. Shared scenarios become XFSM conformance
 cases only after explicit review and adoption.
 
@@ -23,8 +23,9 @@ cases only after explicit review and adoption.
 - Current cross-project status and authority: `docs/project-context.md`.
 - Canonical command/operator workflow: `tools/README_espruino.md`.
 - Canonical FSMPlus status and TODO backlog: `docs/governance/fsmPlus-status-01.md`.
-- Canonical Xstate-fsm-c behaviour and conformance:
-  `projects/Xstate-fsm-c/docs/specification-profile-2.md`.
+- Canonical XFSM behaviour and conformance: the standalone
+  [Profile 2 specification](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/specification-profile-2.md)
+  and [test documentation](https://github.com/SimonGAndrews/Espruino-XFSM/tree/main/tests).
 - Supporting thread/handover operational notes: `docs/notes/espruino-test-workflow.md`.
 
 ## Testing Approach
@@ -75,9 +76,9 @@ Advantages of this approach:
   - `projects/<engine>/tests/test_log.md`
 - Stage 1 and FSMPlus tests may run against the XState v4 truth runner using the
   same inputs where possible.
-- Xstate-fsm-c maintains its profile suites under
-  `projects/Xstate-fsm-c/tests/` and may adopt a shared scenario after review
-  against the current profile specification.
+- Espruino-XFSM maintains its conformance records under standalone `tests/`
+  and the executable library suites under `xfsm/tests/`. It may adopt a shared
+  umbrella scenario after review against the current profile specification.
 
 ## Truth Runner For Stage 1 And FSMPlus (XState v4)
 
@@ -104,7 +105,7 @@ best bridge between existing flat semantics and the richer FSMPlus surface.
 - Node-based FSMPlus runs are used as **rapid feedback** and a **sanity check**
   for anomalies, but **XState v4 remains the reference truth** for the Stage 1
   and FSMPlus work covered by this section.
-- Xstate-fsm-c instead uses the pinned v5 primary and v4 secondary differential
+- XFSM instead uses the pinned v5 primary and v4 secondary differential
   references required by its current profile and frozen base.
 
 ## Issue Tracking: Ownership Model
@@ -116,13 +117,24 @@ Issues are logged based on **ownership**, not where the problem was first observ
 Log issues in the **XState-Espruino-Project** repository when they involve:
 
 - FSMPlus (hierarchical JavaScript engine)
-- XFSM (native C engine)
-- integration between engines
-- test harnesses or example scenarios
+- integration or comparison between implementation directions
+- shared test harnesses or example scenarios
 - behavioural mismatches between implementations
-- performance or determinism concerns
+- umbrella documentation and project history
 
 These issues often arise during scenario testing and cross-engine comparison.
+
+### XFSM Repository Issues
+
+Log issues in the standalone
+[`Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM/issues)
+repository when they involve:
+
+- the native C engine or its JavaScript API
+- the current XFSM specifications and conformance suites
+- XFSM resource use, performance, or determinism
+- exporting XFSM into Espruino, building it, or testing it on devices
+- XFSM examples, tutorials, or documentation
 
 ### Submodule Repository Issues
 
@@ -155,7 +167,7 @@ Use these labels in **XState-Espruino-Project**:
   Issues specific to the hierarchical JavaScript engine
 
 - `xfsm`  
-  Issues specific to the native C FSM engine
+  Historical or cross-project XFSM issues retained in the umbrella repository
 
 - `integration`  
   Issues involving interaction between engines, tests, or examples
@@ -168,6 +180,9 @@ Use these labels in **XState-Espruino-Project**:
 
 - `question`  
   Design questions or clarifications that are not yet bugs
+
+Current XFSM-specific labels and issue handling belong in the standalone
+`Espruino-XFSM` repository.
 
 ### Submodule Repository Labels
 

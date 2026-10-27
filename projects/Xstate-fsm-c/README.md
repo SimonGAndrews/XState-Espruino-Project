@@ -1,123 +1,69 @@
-# Xstate-fsm-c
+# Xstate-fsm-c (XFSM)
 
-> **Migrated:** Current XFSM source, specifications, conformance records, and
-> project documentation are maintained in
-> [`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM).
-> This directory is the migration-source snapshot and should not receive new
-> XFSM development.
+XFSM is the Stage 3 native C state-machine project that grew from the
+XState-Espruino-Project exploration of state machines for Espruino.
 
-Xstate-fsm-c is the Stage 3 native C state-machine project within the
-XState-Espruino-Project umbrella repository.
+The project is now developed and maintained in the standalone
+[`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM)
+repository. This directory is retained as a permanent record of XFSM's place
+in the umbrella project's development journey. It is not a second project
+copy, and no implementation, specification, test, or evidence work is
+maintained here.
 
-Its public Espruino module is `XFSM`, loaded by application JavaScript with
-`require("XFSM")`.
+## Current Project
 
-The umbrella [project context](../../docs/project-context.md) records how this
-direction relates to the Stage 1 and FSMPlus projects.
+| Information | Current location |
+| --- | --- |
+| Project overview | [Espruino-XFSM README](https://github.com/SimonGAndrews/Espruino-XFSM#readme) |
+| Public Profile 2 contract | [Profile 2 specification](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/specification-profile-2.md) |
+| Current progress and qualified revisions | [Implementation status](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/implementation-status.md) |
+| Canonical native library | [`xfsm/`](https://github.com/SimonGAndrews/Espruino-XFSM/tree/main/xfsm) |
+| Tests and recorded evidence | [`tests/`](https://github.com/SimonGAndrews/Espruino-XFSM/tree/main/tests) |
+| Build and device guidance | [Building XFSM](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/building.md) |
+| Examples | [`examples/`](https://github.com/SimonGAndrews/Espruino-XFSM/tree/main/examples) |
+| Contribution guidance | [CONTRIBUTING.md](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/CONTRIBUTING.md) |
 
-## Status
+The canonical `xfsm/` library is exported unchanged into Espruino's
+`libs/xfsm/` directory for integration builds. The standalone
+[Espruino integration workflow](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/espruino-integration.md)
+explains that process.
 
-Public Profile 2 is the current XFSM profile. It retains the completed Profile
-1 contract and adds one shallow- or deep-history node per compound owner.
-Profile 1 and private Native Format Version 1 remain frozen; Profile 2 uses
-frozen private Native Format Version 2.
+## Place In The Umbrella Project
 
-The exact Profile 2 implementation passes the complete Linux history and base
-regression, pinned XState 5.33.2 comparisons, 96 sanitizer-backed native
-checks, and physical production and instrumented reruns on original ESP32 IDF5
-and ESP32-C3 IDF5. Those three environments are Profile 2 Conformance
-verified. The reduced Pico and constrained Bluetooth MDBT42Q profiles build
-successfully and are Profile 2 Build verified pending physical repetition of
-the history runtime cases. Their completed Profile 1 Conformance verified
-status remains valid.
+The umbrella project records three implementation directions:
 
-Current work, revisions, and next tasks are recorded in the
-[implementation status](docs/implementation-status.md). The
-[implementation plan](docs/implementation-plan.md) defines the milestone and
-review gates, and the [build guide](docs/building.md) records reproducible
-commands and development locations.
+1. Stage 1 adapted the compact `@xstate/fsm` model for Espruino.
+2. Stage 2 developed the hierarchical JavaScript FSMPlus engine.
+3. Stage 3 developed XFSM as a native C hierarchical state-machine engine
+   exposed through Espruino's `XFSM` module.
 
-## Public Profiles
+XFSM began here as a specification-led design and evidence project while its
+native implementation was developed through an Espruino integration branch.
+It progressed through Profile 1, added shallow and deep history in Profile 2,
+and was then consolidated into a self-contained repository holding the source,
+specifications, tests, evidence, examples, tools, and project guidance.
 
-The [Profile 2 specification](docs/specification-profile-2.md) is the current
-normative entry point. It incorporates the frozen
-[Profile 1 specification](docs/specification.md) and the qualified
-[history-state requirements](docs/extensions/history-states.md). Profile 1
-remains available as the smaller public baseline without history.
+The umbrella [project context](../../docs/project-context.md) describes how the
+three directions relate to one another.
 
-## Code Development
+## Historical Snapshot
 
-Canonical Profile 2 source and documentation are developed in
-[`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM).
-Its `xfsm/` tree is deployed in the
-[`SimonGAndrews/Espruino` `feature/xfsm-profile2` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2).
-Profile 1 remains on the historical `feature/xfsm-profile1` integration branch,
-and qualification history is preserved on `experiment/xfsm-history`. The
-current standalone clone is `/home/simon/Espruino-XFSM`; the Espruino
-integration clone is `/home/simon/Espruino-XFSM-Profile1`.
+The last complete copy of this directory is preserved by the annotated tag
+[`xfsm-umbrella-snapshot-final`](https://github.com/SimonGAndrews/XState-Espruino-Project/tree/xfsm-umbrella-snapshot-final/projects/Xstate-fsm-c)
+at umbrella commit
+[`b00c90af5169e7192772976d19991344d631aaa8`](https://github.com/SimonGAndrews/XState-Espruino-Project/commit/b00c90af5169e7192772976d19991344d631aaa8).
+Use that tag when investigating the former umbrella layout or an old path.
 
-The standalone repository owns the specification, planning, implementation,
-conformance cases, differential tooling, results, and reports. This directory
-retains their state at migration for umbrella-project history only.
+Early native implementation commits were extracted from the Espruino
+repository into the standalone repository. The standalone
+[migrated commit map](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/migrated-commit-map.md)
+connects the original Espruino commit identifiers with their standalone XFSM
+equivalents. Historical reports retain their original identifiers and paths as
+evidence.
 
-## Relationship to Existing Work
+## Licensing
 
-The existing projects and documents provide evidence and experience for the
-design discussion:
-
-- `projects/xstate-fsm-espruino/` provides the flat FSM baseline.
-- `projects/xstate-fsmPlus/` provides the hierarchical JavaScript engine.
-- `projects/xstate-v4-truth/` provides the secondary XState v4 reference runner
-  and legacy evidence.
-- `examples/` contains shared behavioral scenarios and expected traces.
-- `docs/decisions/` records earlier umbrella-project decisions.
-
-These sources are design inputs. They are not automatically normative for
-Xstate-fsm-c; the specification must explicitly adopt, revise, or reject the
-relevant behavior and constraints.
-
-## Project Layout
-
-- [docs/specification-profile-2.md](docs/specification-profile-2.md) - current
-  public Profile 2 normative entry point
-- [docs/specification.md](docs/specification.md) - frozen Profile 1 normative
-  base
-- [docs/native-format-v1.md](docs/native-format-v1.md) - frozen private native
-  arena and actor layout
-- [docs/native-format-v2.md](docs/native-format-v2.md) - frozen Profile 2
-  history-state arena and actor layout
-- [docs/extensions/history-states.md](docs/extensions/history-states.md) -
-  normative Profile 2 shallow- and deep-history requirements
-- [docs/memory-ownership.md](docs/memory-ownership.md) - conceptual memory
-  regions, ownership and reachability
-- [docs/memory-lifetime.md](docs/memory-lifetime.md) - construction, execution,
-  hibernation and reclamation lifetimes
-- [docs/implementation-plan.md](docs/implementation-plan.md) - implementation
-  milestones and evidence gates
-- [docs/implementation-status.md](docs/implementation-status.md) - current
-  revisions, progress, and next work
-- [docs/building.md](docs/building.md) - two-repository build and target guide
-- [docs/esp32-device-testing.md](docs/esp32-device-testing.md) - original ESP32
-  USB-UART flashing, execution, and evidence procedure
-- [docs/compatibility/](docs/compatibility/) - raw Stately v4/v5 exports and
-  their assessments
-- [docs/reports/](docs/reports/) - reviewed measurements and qualification
-  reports
-- [src/](src/) - implementation ownership and source-location note
-- [tests/normative-audit.md](tests/normative-audit.md) - requirement-level
-  frozen Profile 1 traceability audit
-- [tests/profile-2-conformance.md](tests/profile-2-conformance.md) - Profile 2
-  composition, added cases, evidence, and target status
-- [tests/](tests/) - conformance definitions, differential tooling, results,
-  and evidence indexes
-
-## Licensing And Contributions
-
-Xstate-fsm-c is licensed under the Mozilla Public License 2.0. See
-[LICENSE](LICENSE) for the complete terms,
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for provenance, and
-[CONTRIBUTING.md](CONTRIBUTING.md) for the source-header and contribution
-rules.
-
-The licence applies to this project directory and does not relicense sibling
-projects, the XState source archive, the Stage 1 Git submodule, or Espruino.
+This placeholder and the tagged XFSM snapshot are licensed under the Mozilla
+Public License 2.0. See [LICENSE](LICENSE). The standalone repository has its
+own [licensing map](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/LICENSING.md),
+including its MIT-licensed examples boundary.

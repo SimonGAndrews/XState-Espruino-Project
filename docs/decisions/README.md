@@ -21,12 +21,12 @@ umbrella repository.
 | ADR-0001 | Early umbrella scope decision and FSMPlus; Xstate-fsm-c independently records the same Version 1 exclusion in Profile 1 |
 | ADR-0002 through ADR-0007 | FSMPlus architecture, behaviour, or tooling compatibility |
 
-For Xstate-fsm-c, the
-[Profile 1 specification](../../projects/Xstate-fsm-c/docs/specification.md)
-is authoritative. ADRs, FSMPlus behaviour, and shared traces are design
-evidence only unless that specification explicitly adopts them. See the
-[current project context](../project-context.md) for the complete authority
-map.
+For XFSM, the standalone
+[Profile 2 specification](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/specification-profile-2.md)
+and its incorporated Profile 1 and history requirements are authoritative.
+ADRs, FSMPlus behaviour, and shared traces are design evidence only unless the
+current specification explicitly adopts them. See the [current project
+context](../project-context.md) for the complete authority map.
 
 ## Why ADRs Are Used Here
 

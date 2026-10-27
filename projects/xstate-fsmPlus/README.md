@@ -14,8 +14,8 @@ custom firmware.
 ## Status
 
 FSMPlus is a parallel development track in this umbrella repository. The
-umbrella project's current active development focus is Xstate-fsm-c; this does
-not replace or deprecate FSMPlus.
+umbrella project's current active development focus is XFSM in its standalone
+repository; this does not replace or deprecate FSMPlus.
 
 - Scope is intentionally limited to deliver a working subset quickly.
 - Parallel state support is explicitly excluded (see ADR-0001).
@@ -88,14 +88,16 @@ It is not the canonical implementation and should not be treated as current.
 
 ### Stage 3 Native Engine (XFSM)
 
-A native C FSM engine is being developed in parallel under the umbrella repository:
+A native C FSM engine is developed in parallel in the standalone repository:
 
-- `projects/Xstate-fsm-c/`
+- [`SimonGAndrews/Espruino-XFSM`](https://github.com/SimonGAndrews/Espruino-XFSM)
 
-FSMPlus provides the working JavaScript hierarchical engine. Xstate-fsm-c has
-its own Profile 1 contract and is expected to provide improved performance and
-determinism; FSMPlus behaviour is evidence for that project rather than an
-automatic parity requirement.
+The umbrella [XFSM project directory](../Xstate-fsm-c/) records the project's
+history and relocation. FSMPlus provides the working JavaScript hierarchical
+engine. XFSM has its own Profile 2 contract, incorporating the completed
+Profile 1 base and history requirements, and provides improved performance and
+determinism. FSMPlus behaviour is evidence for XFSM rather than an automatic
+parity requirement.
 
 ## Testing Strategy
 
@@ -129,5 +131,5 @@ var tuned = machine.withConfig({
 
 The canonical capability summary and backlog are maintained in the
 [FSMPlus status](../../docs/governance/fsmPlus-status-01.md). Shared scenarios
-may be compared with Xstate-fsm-c after they are reviewed against both projects'
+may be compared with XFSM after they are reviewed against both projects'
 contracts; exact parity is not assumed where the documented semantics differ.

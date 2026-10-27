@@ -39,21 +39,24 @@ tasks are recorded in the standalone
 Profile 1 M0 traceability, grouped M8 closure, and four-target physical
 qualification remain complete. The repeatable original-ESP32 procedure is
 recorded in the
-[device-testing guide](../projects/Xstate-fsm-c/docs/esp32-device-testing.md),
+[device-testing guide](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/device-testing.md),
 and the completed measurements are interpreted in the [post-M6 resource
-report](../projects/Xstate-fsm-c/docs/reports/2026-09-27-post-m6-resource-review.md)
-and [constrained-target build report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-constrained-target-builds.md),
-with Pico details in the [physical qualification
-report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-pico-physical-qualification.md)
-and MDBT42Q details in its [physical qualification
-report](../projects/Xstate-fsm-c/docs/reports/2026-09-29-m8-mdbt42q-physical-qualification.md).
+report](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/reports/2026-09-27-post-m6-resource-review.md)
+and [constrained-target build report](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/reports/2026-09-29-m8-constrained-target-builds.md),
+with current Pico details in the [standalone qualification
+report](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/reports/2026-10-27-pico-standalone-qualification.md)
+and MDBT42Q details in its [standalone qualification
+report](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/reports/2026-10-26-mdbt42q-standalone-qualification.md).
 
 Canonical source, specifications, conformance definitions, and reviewed
 evidence are maintained in `SimonGAndrews/Espruino-XFSM`. Its `xfsm/` tree is
 deployed unchanged under `libs/xfsm/` in the
 [`SimonGAndrews/Espruino` `feature/xfsm-profile2` branch](https://github.com/SimonGAndrews/Espruino/tree/feature/xfsm-profile2).
-The umbrella project directory is retained as the migration-source snapshot,
-not a second active authority.
+The umbrella [XFSM project directory](../projects/Xstate-fsm-c/) is retained as
+a history and relocation record, not a second active authority. The final
+complete umbrella snapshot remains available at the
+[`xfsm-umbrella-snapshot-final`](https://github.com/SimonGAndrews/XState-Espruino-Project/tree/xfsm-umbrella-snapshot-final/projects/Xstate-fsm-c)
+tag.
 
 The Xstate-fsm-c project name, public module name, and implementation identifiers
 are distinct:

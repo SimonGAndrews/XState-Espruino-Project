@@ -6,7 +6,7 @@
 > It is not authoritative for Xstate-fsm-c. Profile 1 now uses pinned XState
 > v5.33.2 as its primary differential reference and XState v4.38.3 as its
 > secondary reference; see the
-> [Xstate-fsm-c specification](../../projects/Xstate-fsm-c/docs/specification.md#node-xstate-differential-execution).
+> [standalone XFSM Profile 1 specification](https://github.com/SimonGAndrews/Espruino-XFSM/blob/main/docs/specification.md#node-xstate-differential-execution).
 
 ## Original Question
 I’m considering setting up another project to enable the official X state V5 to be run on the test cases which we are generating as a ultimate truth set:
